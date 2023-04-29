@@ -43,14 +43,16 @@
   }
   
   .button:hover {
-   background-color: #5754ff;
+   background: #5754ff;
    color: white;
 	}
 
   .button:focus {
    color: white;
+   background: #5754ff;
 	}
 
  .button:blur {
   color: black;
+  background: #f0f0f0;
 	}
