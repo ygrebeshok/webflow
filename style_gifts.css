@@ -43,16 +43,16 @@
   }
   
   .button:hover {
-   background-color: "#5754ff";
+   background-color: purple;
    color: white;
 	}
 
   .button:focus {
    color: white;
-   background-color: "#5754ff";
+   background-color: purple;
 	}
 
  .button:blur {
   color: black;
-  background-color: "#f0f0f0";
+  background-color: white;
 	}
