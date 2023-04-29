@@ -47,13 +47,12 @@
   color: white;
 	}
 
-.button:focus {
+  .button:focus {
   background-color: #5754ff;
   color: white;
 	}
 
-.button:blur {
+ .button:blur {
   background-color: #f0f0f0;
   color: black;
 	}
-
