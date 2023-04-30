@@ -64,3 +64,8 @@
    color: white;
    background-color: #7977ff;
 	}
+
+  .disablegrid {
+        pointer-events: none;
+        opacity: 0.5;
+    }
