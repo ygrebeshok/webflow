@@ -44,6 +44,7 @@
 
   .logo-home {
     mix-blend-mode: difference;
+    position: relative;
   }
 
   .button {
