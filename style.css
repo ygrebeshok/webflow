@@ -39,7 +39,11 @@
 	}
   
   .menu-parent {
-  	mix-blend-mode: difference;
+    mix-blend-mode: difference;
+  }
+
+  .logo-home {
+    mix-blend-mode: difference;
   }
 
   .button {
