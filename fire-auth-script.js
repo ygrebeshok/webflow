@@ -1,3 +1,4 @@
+
 firebase.initializeApp(webflowAuth.firebaseConfig);
 
 firebase.analytics && firebase.analytics();
@@ -59,7 +60,6 @@ firebase.analytics && firebase.analytics();
   signupForms.forEach(function(el) {
     var signupEmail = el.querySelector('[data-signup-email]');
     var signupPassword = el.querySelector('[data-signup-password]');
-    var signupName = el.querySelector('[data-signup-name]');
 
     el.addEventListener('submit', function(e) {
       e.preventDefault();
@@ -69,17 +69,22 @@ firebase.analytics && firebase.analytics();
       signupLoading.forEach(function(el) { el.style.display = 'block'; });
       signupIdle.forEach(function(el) { el.style.display = 'none'; });
       
-      firebase.auth().createUserWithEmailAndPassword(signupEmail.value, signupPassword.value, signupName.value)
-      .then(function(authUser) {
-        user = authUser;
-        window.location.href = webflowAuth.signupRedirectPath;
-      })
-      .catch(function(error) {
+      firebase.auth().createUserWithEmailAndPassword(signupEmail.value, signupPassword.value)
+      .then(function(userCredential) {
+          userCredential.user.updateProfile({
+          displayName: signupName.value
+       }).then(function() {
+          user = userCredential.user;
+          window.location.href = webflowAuth.signupRedirectPath;
+       }).catch(function(error) {
+          console.error(error);
+       });
+      }).catch(function(error) {
         signupErrors.forEach(function(el) {
           el.innerText = error.message;
           el.style.display = 'block';
-        });
-
+      });
+        
         setTimeout(function() {
           signupLoading.forEach(function(el) { el.style.display = 'none'; });
           signupIdle.forEach(function(el) { el.style.display = null; });
@@ -105,35 +110,21 @@ firebase.analytics && firebase.analytics();
       loginIdle.forEach(function(el) { el.style.display = 'none'; });
       loginLoading.forEach(function(el) { el.style.display = 'block'; });
 
-      firebase.auth().createUserWithEmailAndPassword(signupEmail.value, signupPassword.value).then(function(userCredential) {
-        userCredential.user.updateProfile({
+      firebase.auth().signInWithEmailAndPassword(loginEmail.value, loginPassword.value)
+      .then(function(userCredential) {
+          userCredential.user.updateProfile({
           displayName: signupName.value
-        }).then(function() {
+       }).then(function() {
           user = userCredential.user;
           window.location.href = webflowAuth.signupRedirectPath;
-        }).catch(function(error) {
+       }).catch(function(error) {
           console.error(error);
-        });
+       });
       }).catch(function(error) {
         signupErrors.forEach(function(el) {
           el.innerText = error.message;
           el.style.display = 'block';
-        });
-
-        setTimeout(function() {
-          signupLoading.forEach(function(el) { el.style.display = 'none'; });
-          signupIdle.forEach(function(el) { el.style.display = null; });
-        }, 1000);
       });
-      .then(function(authUser) {
-        user = authUser;
-        window.location.href = webflowAuth.loginRedirectPath;
-      })
-      .catch(function(error) {
-        loginErrors.forEach(function(el) {
-          el.innerText = error.message;
-          el.style.display = 'block';
-        });
 
         setTimeout(function() {
           loginIdle.forEach(function(el) { el.style.display = null; });
