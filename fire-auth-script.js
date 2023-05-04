@@ -1,4 +1,5 @@
 
+
 firebase.initializeApp(webflowAuth.firebaseConfig);
 
 firebase.analytics && firebase.analytics();
@@ -70,21 +71,16 @@ firebase.analytics && firebase.analytics();
       signupIdle.forEach(function(el) { el.style.display = 'none'; });
       
       firebase.auth().createUserWithEmailAndPassword(signupEmail.value, signupPassword.value)
-      .then(function(userCredential) {
-          userCredential.user.updateProfile({
-          displayName: signupName.value
-       }).then(function() {
-          user = userCredential.user;
-          window.location.href = webflowAuth.signupRedirectPath;
-       }).catch(function(error) {
-          console.error(error);
-       });
-      }).catch(function(error) {
+      .then(function(authUser) {
+        user = authUser;
+        window.location.href = webflowAuth.signupRedirectPath;
+      })
+      .catch(function(error) {
         signupErrors.forEach(function(el) {
           el.innerText = error.message;
           el.style.display = 'block';
-      });
-        
+        });
+
         setTimeout(function() {
           signupLoading.forEach(function(el) { el.style.display = 'none'; });
           signupIdle.forEach(function(el) { el.style.display = null; });
@@ -111,20 +107,15 @@ firebase.analytics && firebase.analytics();
       loginLoading.forEach(function(el) { el.style.display = 'block'; });
 
       firebase.auth().signInWithEmailAndPassword(loginEmail.value, loginPassword.value)
-      .then(function(userCredential) {
-          userCredential.user.updateProfile({
-          displayName: signupName.value
-       }).then(function() {
-          user = userCredential.user;
-          window.location.href = webflowAuth.signupRedirectPath;
-       }).catch(function(error) {
-          console.error(error);
-       });
-      }).catch(function(error) {
-        signupErrors.forEach(function(el) {
+      .then(function(authUser) {
+        user = authUser;
+        window.location.href = webflowAuth.loginRedirectPath;
+      })
+      .catch(function(error) {
+        loginErrors.forEach(function(el) {
           el.innerText = error.message;
           el.style.display = 'block';
-      });
+        });
 
         setTimeout(function() {
           loginIdle.forEach(function(el) { el.style.display = null; });
