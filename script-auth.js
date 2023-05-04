@@ -59,6 +59,7 @@ firebase.analytics && firebase.analytics();
   signupForms.forEach(function(el) {
     var signupEmail = el.querySelector('[data-signup-email]');
     var signupPassword = el.querySelector('[data-signup-password]');
+    var signupName = el.querySelector('[data-signup-name]');
 
     el.addEventListener('submit', function(e) {
       e.preventDefault();
@@ -68,7 +69,7 @@ firebase.analytics && firebase.analytics();
       signupLoading.forEach(function(el) { el.style.display = 'block'; });
       signupIdle.forEach(function(el) { el.style.display = 'none'; });
       
-      firebase.auth().createUserWithEmailAndPassword(signupEmail.value, signupPassword.value)
+      firebase.auth().createUserWithEmailAndPassword(signupEmail.value, signupPassword.value, signupName.value)
       .then(function(authUser) {
         user = authUser;
         window.location.href = webflowAuth.signupRedirectPath;
