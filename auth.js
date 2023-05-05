@@ -1,5 +1,4 @@
 
-
 firebase.initializeApp(webflowAuth.firebaseConfig);
 
 firebase.analytics && firebase.analytics();
@@ -25,9 +24,6 @@ firebase.analytics && firebase.analytics();
       el.innerText = el.innerText.replace(/\{\{([^\}]+)\}\}/g, function(match, variable) {
         return typeof user[variable] === 'undefined' ? '' : user[variable];
       });
-    });
-    userDisplayName.forEach(function(el) {
-      el.innerText = user.displayName
     });
   }
 
@@ -60,7 +56,6 @@ firebase.analytics && firebase.analytics();
   var signupErrors = document.querySelectorAll('[data-signup-error]');
   var signupLoading = document.querySelectorAll('[data-signup-loading]');
   var signupIdle = document.querySelectorAll('[data-signup-idle]');
-  var signupName = document.querySelector('#sign-up-name');
 
   signupForms.forEach(function(el) {
     var signupEmail = el.querySelector('[data-signup-email]');
@@ -77,9 +72,6 @@ firebase.analytics && firebase.analytics();
       firebase.auth().createUserWithEmailAndPassword(signupEmail.value, signupPassword.value)
       .then(function(authUser) {
         user = authUser;
-        user.updateProfile({
-          displayName: signupName.value
-        });
         window.location.href = webflowAuth.signupRedirectPath;
       })
       .catch(function(error) {
