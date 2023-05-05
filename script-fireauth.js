@@ -27,7 +27,7 @@ firebase.analytics && firebase.analytics();
       });
     });
     userDisplayName.forEach(function(el) {
-      el.innerText = user.displayName;
+      el.innerText = user.displayName
     });
   }
 
@@ -78,7 +78,7 @@ firebase.analytics && firebase.analytics();
       .then(function(authUser) {
         user = authUser;
         user.updateProfile({
-          displayName: signupName.value;
+          displayName: signupName.value
         });
         window.location.href = webflowAuth.signupRedirectPath;
       })
