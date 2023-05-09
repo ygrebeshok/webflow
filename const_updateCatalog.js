@@ -1,3 +1,20 @@
+const openaiApiKey = "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";
+const output = document.getElementById("output");
+const mainButton = document.getElementById("toGifts");
+const linkInput = document.getElementById("link-container");
+const results = document.getElementById("recommendations");
+const sorry = document.getElementById("sorry");
+const input = document.getElementById("input");
+const priceButton = document.getElementById("price-button");
+const lottieLoader = document.getElementById("lottie-loader");
+const searchAgain = document.getElementById("search-again");
+const openaiRec = document.getElementById("openai-rec");
+const priceFilterContainer = document.getElementById("price-filter-container");
+const holidayGrid = document.getElementById("holiday-grid");
+const holidayTemplate = document.querySelector(".birthday");
+let selected_holiday = "";
+const errorAlert = document.getElementById("error-alert");
+
 function updateCatalog() {
 
       giftsRef.get().then((querySnapshot) => {
