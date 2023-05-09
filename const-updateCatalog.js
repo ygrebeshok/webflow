@@ -1,4 +1,3 @@
-const openaiApiKey = "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";
 const output = document.getElementById("output");
 const mainButton = document.getElementById("toGifts");
 const linkInput = document.getElementById("link-container");
