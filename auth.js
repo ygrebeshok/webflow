@@ -12,6 +12,24 @@ firebase.analytics && firebase.analytics();
   var userDisplayName = document.querySelectorAll('[data-user-displayName]');
   var userEmail = document.querySelectorAll('[data-user-email]');
   var userContent = document.querySelectorAll('[data-user]');
+  
+  var googleProvider = new firebase.auth.GoogleAuthProvider();
+
+  var signInWithGoogleBtn = document.querySelector('#sign-in-with-google-btn');
+
+  signInWithGoogleBtn.addEventListener('click', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    firebase.auth().signInWithPopup(googleProvider)
+    .then(function(authUser) {
+      user = authUser.user;
+      // Do something with the user
+    })
+    .catch(function(error) {
+      // Handle error
+    });
+  });
 
   userAuth.forEach(function(el) { el.style.display = 'none'; });
   userUnauth.forEach(function(el) { el.style.display = 'none'; });
