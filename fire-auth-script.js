@@ -1,5 +1,4 @@
 
-document.addEventListener('DOMContentLoaded', function() {
 firebase.initializeApp(webflowAuth.firebaseConfig);
 
 firebase.analytics && firebase.analytics();
@@ -160,4 +159,3 @@ firebase.analytics && firebase.analytics();
     });
   })
 }
-});
