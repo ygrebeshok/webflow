@@ -18,19 +18,21 @@ firebase.analytics && firebase.analytics();
 
   var signInWithGoogleBtn = document.querySelector('#sign-in-with-google-btn');
 
-  signInWithGoogleBtn.addEventListener('click', function(e) {
-    e.preventDefault();
-    e.stopPropagation();
+  if (signInWithGoogleBtn) {
+    signInWithGoogleBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
 
-    firebase.auth().signInWithPopup(googleProvider)
-    .then(function(authUser) {
-      user = authUser.user;
-      // Do something with the user
-    })
-    .catch(function(error) {
-      // Handle error
+      firebase.auth().signInWithPopup(googleProvider)
+      .then(function(authUser) {
+        user = authUser.user;
+        // Do something with the user
+      })
+      .catch(function(error) {
+        // Handle error
+      });
     });
-  });
+  }
 
   userAuth.forEach(function(el) { el.style.display = 'none'; });
   userUnauth.forEach(function(el) { el.style.display = 'none'; });
