@@ -58,6 +58,7 @@ function updateCatalog() {
       const favoriteBtns = document.querySelectorAll('.favorite-btn');
       favoriteBtns.forEach(function(favoriteBtn) {
         favoriteBtn.addEventListener('click', function() {
+          favoriteBtn.textContent = "In Favorites";
           const user = firebase.auth().currentUser;
           if (!user) {
             // Prompt user to log in or sign up
