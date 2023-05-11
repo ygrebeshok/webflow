@@ -10,9 +10,10 @@ function toggleFavorite() {
   }
 
   const uid = user.uid;
+
   const productId = favoriteBtn.dataset.productId;
   const favoritesRef = firebase.firestore().collection('favorites').doc(uid);
-
+  const productsRef = firebase.firestore().collection('products').doc(productId);
   favoritesRef.get().then(doc => {
     if (doc.exists && doc.data().products.includes(productId)) {
       // Product is already in favorites; remove it
@@ -21,13 +22,14 @@ function toggleFavorite() {
       }).then(() => {
         // Update button image
         favoriteBtn.classList.remove('favorited');
-
-        // Unmark gift as favorite
-        const giftId = favoriteBtn.dataset.giftId;
-        const giftsRef = firebase.firestore().collection('gifts');
-        giftsRef.doc(giftId).update({ favorite: false })
-          .then(() => console.log("Gift unmarked as favorite"))
-          .catch(error => console.error("Error unmarking gift as favorite: ", error));
+        // Update product favorite field
+        productsRef.update({
+          favorite: false
+        }).then(() => {
+          console.log("Product removed from favorites");
+        }).catch((error) => {
+          console.error("Error updating product favorite field: ", error);
+        });
       });
     } else {
       // Product is not in favorites; add it
@@ -36,15 +38,15 @@ function toggleFavorite() {
       }, { merge: true }).then(() => {
         // Update button image
         favoriteBtn.classList.add('favorited');
-
-        // Mark gift as favorite
-        const giftId = favoriteBtn.dataset.giftId;
-        const giftsRef = firebase.firestore().collection('gifts');
-        giftsRef.doc(giftId).update({ favorite: true })
-          .then(() => console.log("Gift marked as favorite"))
-          .catch(error => console.error("Error marking gift as favorite: ", error));
+        // Update product favorite field
+        productsRef.update({
+          favorite: true
+        }).then(() => {
+          console.log("Product added to favorites");
+        }).catch((error) => {
+          console.error("Error updating product favorite field: ", error);
+        });
       });
     }
   });
 }
-
