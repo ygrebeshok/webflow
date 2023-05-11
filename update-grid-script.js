@@ -28,7 +28,14 @@ function updateCatalog() {
         card.querySelector("#price").textContent = `$${data.price}`,
         card.querySelector("#description").textContent = data.description,
         card.querySelector("#keywords").textContent = data.openai_keywords + ',' + data.image_labels,
-        card.querySelector("#link-container").href = data.product_link
+        card.querySelector("#link-container").href = data.product_link,
+        const favoriteBtn = card.querySelector("#favorite-btn"); // Get the favorite button
+        favoriteBtn.addEventListener('click', () => {
+            toggleFavorite();
+            //favoriteBtn.classList.toggle('favorited');
+            //const isFavorite = favoriteBtn.classList.contains('favorited');
+            // Do something with the favorite state, such as updating the database
+        });
 
         catalogGrid.appendChild(card);
 
