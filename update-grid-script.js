@@ -29,7 +29,7 @@ function updateCatalog() {
         card.querySelector("#description").textContent = data.description,
         card.querySelector("#keywords").textContent = data.openai_keywords + ',' + data.image_labels,
         card.querySelector("#link-container").href = data.product_link,
-        const favoriteBtn = card.querySelector("#favorite-btn"); // Get the favorite button
+        let favoriteBtn = card.querySelector("#favorite-btn"); // Get the favorite button
         favoriteBtn.addEventListener('click', () => {
             toggleFavorite();
             //favoriteBtn.classList.toggle('favorited');
