@@ -1,6 +1,5 @@
-const favoriteBtns = document.querySelectorAll('.favorite-btn');
-favoriteBtns.forEach(favoriteBtn => {
-  favoriteBtn.addEventListener('click', () => {
+const favoriteBtn = document.querySelector('.favorite-btn');
+favoriteBtn.addEventListener('click', () => {
     const user = firebase.auth().currentUser;
   if (!user) {
     // Prompt user to log in or sign up
@@ -45,4 +44,3 @@ favoriteBtns.forEach(favoriteBtn => {
     console.error("Error marking gift as favorite: ", error);
   });
   });
-});
