@@ -1,4 +1,3 @@
-
 function toggleFavorite() {
   const user = firebase.auth().currentUser;
   if (!user) {
@@ -19,19 +18,19 @@ function toggleFavorite() {
         products: firebase.firestore.FieldValue.arrayRemove(productId)
       }).then(() => {
         // Update button image
-        this.classList.remove('favorited');
+        this.textContent = "Add to Favorites";
       });
     } else {
       // Product is not in favorites; add it
       favoritesRef.set({
         products: firebase.firestore.FieldValue.arrayUnion(productId)
       }, { merge: true }).then(() => {
-        // Update button image
-        this.classList.add('favorited');
+        // Update button
+        this.textContent = "In Favorites";
       });
     }
   });
-  
+
   const giftId = card.dataset.giftId;
   const giftsRef = firebase.firestore().collection('gifts');
   const giftRef = giftsRef.doc(giftId);
@@ -44,3 +43,8 @@ function toggleFavorite() {
     console.error("Error marking gift as favorite: ", error);
   });
 }
+
+const favoriteBtns = document.querySelectorAll('.favorite-btn');
+favoriteBtns.forEach(favoriteBtn => {
+  favoriteBtn.addEventListener('click', toggleFavorite);
+});
