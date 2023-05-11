@@ -1,10 +1,7 @@
 const favoriteBtns = document.querySelectorAll('.favorite-btn');
 favoriteBtns.forEach(favoriteBtn => {
-  favoriteBtn.addEventListener('click', toggleFavorite);
-});
-
-function toggleFavorite() {
-  const user = firebase.auth().currentUser;
+  favoriteBtn.addEventListener('click', () => {
+    const user = firebase.auth().currentUser;
   if (!user) {
     // Prompt user to log in or sign up
     window.location.replace('/sign-up');
@@ -47,4 +44,5 @@ function toggleFavorite() {
   }).catch((error) => {
     console.error("Error marking gift as favorite: ", error);
   });
-}
+  });
+});
