@@ -43,8 +43,3 @@ function toggleFavorite() {
     console.error("Error marking gift as favorite: ", error);
   });
 }
-
-const favoriteBtns = document.querySelectorAll('.favorite-btn');
-favoriteBtns.forEach(favoriteBtn => {
-  favoriteBtn.addEventListener('click', toggleFavorite);
-});
