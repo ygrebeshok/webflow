@@ -16,16 +16,31 @@ firebase.analytics && firebase.analytics();
   userAuth.forEach(function(el) { el.style.display = 'none'; });
   userUnauth.forEach(function(el) { el.style.display = 'none'; });
 
-  function updateContent() {
-    if (!user) {
-      return;
-    }
-    userContent.forEach(function(el) { 
-      el.innerText = el.innerText.replace(/\{\{([^\}]+)\}\}/g, function(match, variable) {
-        return typeof user[variable] === 'undefined' ? '' : user[variable];
-      });
-    });
+  async function updateContent() {
+  if (!user) {
+    return;
   }
+  userContent.forEach(function (el) {
+    el.innerText = el.innerText.replace(/\{\{([^\}]+)\}\}/g, function (match, variable) {
+      return typeof user[variable] === 'undefined' ? '' : user[variable];
+    });
+  });
+
+  if (user.email) {
+    await firebase.firestore().collection("users")
+      .where("email", "==", user.email)
+      .get()
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          favorites = doc.data().favorites;
+        });
+      })
+      .catch((error) => {
+        console.error("Error getting favorites: ", error);
+      });
+  }
+}
+
 
   firebase.auth().onAuthStateChanged(function(authUser) {
     user = authUser;
@@ -57,36 +72,44 @@ firebase.analytics && firebase.analytics();
   var signupLoading = document.querySelectorAll('[data-signup-loading]');
   var signupIdle = document.querySelectorAll('[data-signup-idle]');
 
-  signupForms.forEach(function(el) {
-    var signupEmail = el.querySelector('[data-signup-email]');
-    var signupPassword = el.querySelector('[data-signup-password]');
+  signupForms.forEach(function (el) {
+  var signupEmail = el.querySelector('[data-signup-email]');
+  var signupPassword = el.querySelector('[data-signup-password]');
 
-    el.addEventListener('submit', function(e) {
-      e.preventDefault();
-      e.stopPropagation();
+  el.addEventListener('submit', function (e) {
+    e.preventDefault();
+    e.stopPropagation();
 
-      signupErrors.forEach(function(el) { el.style.display = 'none'; });
-      signupLoading.forEach(function(el) { el.style.display = 'block'; });
-      signupIdle.forEach(function(el) { el.style.display = 'none'; });
-      
-      firebase.auth().createUserWithEmailAndPassword(signupEmail.value, signupPassword.value)
-      .then(function(authUser) {
+    signupErrors.forEach(function (el) { el.style.display = 'none'; });
+    signupLoading.forEach(function (el) { el.style.display = 'block'; });
+    signupIdle.forEach(function (el) { el.style.display = 'none'; });
+
+    firebase.auth().createUserWithEmailAndPassword(signupEmail.value, signupPassword.value)
+      .then(async function (authUser) {
         user = authUser;
+
+        // Add the new user to the 'users' collection in Firestore with an empty favorites field
+        await firebase.firestore().collection("users").doc(user.uid).set({
+          email: user.email,
+          favorites: {}
+        });
+
         window.location.href = webflowAuth.signupRedirectPath;
       })
-      .catch(function(error) {
-        signupErrors.forEach(function(el) {
+      .catch(function (error) {
+        signupErrors.forEach(function (el) {
           el.innerText = error.message;
           el.style.display = 'block';
         });
 
-        setTimeout(function() {
-          signupLoading.forEach(function(el) { el.style.display = 'none'; });
-          signupIdle.forEach(function(el) { el.style.display = null; });
+        setTimeout(function () {
+          signupLoading.forEach(function (el) { el.style.display = 'none'; });
+          signupIdle.forEach(function (el) { el.style.display = null; });
         }, 1000);
       });
-    });
   });
+});
+
 
   var loginForms = document.querySelectorAll('[data-login-form]');
   var loginErrors = document.querySelectorAll('[data-login-error]');
