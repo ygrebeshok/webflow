@@ -1,11 +1,10 @@
 function toggleFavorite() {
-  firebase.auth();
+  firebase.auth()
   event.preventDefault();
   const id = event.target.getAttribute('data-id');
-  const product = document.querySelector(`.card`);
   const favoriteBtn = event.target;
-  let isFavorite = false;
 
+  let isFavorite = false; // add a flag variable to keep track of the favorite state
   if (favoriteBtn.innerText === 'Remove from Favorites') {
     isFavorite = true;
     favoriteBtn.innerText = 'Add to Favorites';
@@ -14,44 +13,45 @@ function toggleFavorite() {
     favoriteBtn.innerText = 'Remove from Favorites';
   }
 
-  if (product) {
-    if (isFavorite) {
-      product.classList.remove('favorite');
-    } else {
-      product.classList.add('favorite');
-    }
-  } else {
-    console.error(`Could not find product with data-id=${id}`);
-    return;
-  }
-
-  const user = firebase.auth().currentUser;
-  if (!user) {
-    window.location.replace('/sign-up');
-    return;
-  }
-
-  const uid = user.uid;
-
+  // Update the card class based on the flag variable
   const card = event.target.closest('.card');
   if (!card) {
     console.error("Could not find card element");
     return;
   }
 
+  if (isFavorite) {
+    card.classList.remove('favorite');
+  } else {
+    card.classList.add('favorite');
+  }
+
+  const user = firebase.auth().currentUser;
+  if (!user) {
+    // Prompt user to log in or sign up
+    window.location.replace('/sign-up');
+    return;
+  }
+
+  const uid = user.uid;
+
   const productId = card.dataset.productId;
   const favoritesRef = firebase.firestore().collection('favorites').doc(uid);
   favoritesRef.get().then(doc => {
     if (doc.exists && doc.data().products.includes(productId)) {
+      // Product is already in favorites; remove it
       favoritesRef.update({
         products: firebase.firestore.FieldValue.arrayRemove(productId)
       }).then(() => {
+        // Update button image
         favoriteBtn.textContent = "Add to Favorites";
       });
     } else {
+      // Product is not in favorites; add it
       favoritesRef.set({
         products: firebase.firestore.FieldValue.arrayUnion(productId)
       }, { merge: true }).then(() => {
+        // Update button
         favoriteBtn.textContent = "In Favorites";
       });
     }
