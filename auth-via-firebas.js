@@ -122,7 +122,7 @@ firebase.analytics && firebase.analytics();
       loginLoading.forEach(function(el) { el.style.display = 'block'; });
 
       firebase.auth().signInWithEmailAndPassword(loginEmail.value, loginPassword.value)
-      .then(function(authUser) {
+      .then(async function(authUser) {
         user = authUser;
         let favorites = {};
 
