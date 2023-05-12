@@ -16,9 +16,9 @@ function toggleFavorite() {
 
   // Update the product class based on the flag variable
   if (isFavorite) {
-    product.classList.remove('favorite');
+    product.setAttribute('class', 'product');
   } else {
-    product.classList.add('favorite');
+    product.setAttribute('class', 'product favorite');
   }
 
   const user = firebase.auth().currentUser;
