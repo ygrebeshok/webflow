@@ -1,4 +1,5 @@
 function toggleFavorite() {
+  firebase.auth()
   const user = firebase.auth().currentUser;
   if (!user) {
     // Prompt user to log in or sign up
