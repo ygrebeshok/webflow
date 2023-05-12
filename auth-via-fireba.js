@@ -19,23 +19,12 @@ firebase.analytics && firebase.analytics();
   const auth = firebase.auth();
 
   async function updateContent() {
-  if (!user) {
-    return;
-  }
-  userContent.forEach(function (el) {
-    el.innerText = el.innerText.replace(/\{\{([^\}]+)\}\}/g, function (match, variable) {
-      return typeof user[variable] === 'undefined' ? '' : user[variable];
-    });
-  });
-  let favorites = {};
-
-  await firestore
-    .collection("users")
-    .where("email", "==", auth.currentUser.email)
-    .get()
-    .then((querySnapshot) => {
-      querySnapshot.forEach((doc) => {
-        favorites = doc.data().favorites;
+    if (!user) {
+      return;
+    }
+    userContent.forEach(function (el) {
+      el.innerText = el.innerText.replace(/\{\{([^\}]+)\}\}/g, function (match, variable) {
+        return typeof user[variable] === 'undefined' ? '' : user[variable];
       });
     });
   }
@@ -86,18 +75,18 @@ firebase.analytics && firebase.analytics();
     firebase.auth().createUserWithEmailAndPassword(signupEmail.value, signupPassword.value)
       .then(async function (authUser) {
         user = authUser;
-     
-      const favorites = {};
+        
+        const favorites = {};
       
-      const querySnapshot = await firestore.collection("gifts").get();
-      querySnapshot.docs.forEach(element => {
-        favorites[element.get("name").toString()] = false;
-      });
+        const querySnapshot = await firestore.collection("gifts").get();
+        querySnapshot.docs.forEach(element => {
+          favorites[element.get("name").toString()] = false;
+        });
 
-      await firestore.collection("users").add({
-        email: auth.currentUser.email,
-        favorites: favorites
-      });
+        await firestore.collection("users").doc(authUser.user.uid).set({
+          email: authUser.user.email,
+          favorites: favorites
+        });
 
         window.location.href = webflowAuth.signupRedirectPath;
       })
@@ -114,7 +103,6 @@ firebase.analytics && firebase.analytics();
       });
   });
 });
-
 
   var loginForms = document.querySelectorAll('[data-login-form]');
   var loginErrors = document.querySelectorAll('[data-login-error]');
@@ -136,6 +124,16 @@ firebase.analytics && firebase.analytics();
       firebase.auth().signInWithEmailAndPassword(loginEmail.value, loginPassword.value)
       .then(function(authUser) {
         user = authUser;
+        let favorites = {};
+
+        await firestore
+          .collection("users")
+          .doc(auth.currentUser.uid) // reference the current user's document ID
+          .get()
+          .then((doc) => {
+            favorites = doc.data().favorites;
+          });
+        
         window.location.href = webflowAuth.loginRedirectPath;
       })
       .catch(function(error) {
