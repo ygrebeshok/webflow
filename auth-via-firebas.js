@@ -15,20 +15,17 @@ firebase.analytics && firebase.analytics();
 
   userAuth.forEach(function(el) { el.style.display = 'none'; });
   userUnauth.forEach(function(el) { el.style.display = 'none'; });
-  const firestore = firebase.firestore();
-  const auth = firebase.auth();
 
-  async function updateContent() {
+  function updateContent() {
     if (!user) {
       return;
     }
-    userContent.forEach(function (el) {
-      el.innerText = el.innerText.replace(/\{\{([^\}]+)\}\}/g, function (match, variable) {
+    userContent.forEach(function(el) { 
+      el.innerText = el.innerText.replace(/\{\{([^\}]+)\}\}/g, function(match, variable) {
         return typeof user[variable] === 'undefined' ? '' : user[variable];
       });
     });
   }
-
 
   firebase.auth().onAuthStateChanged(function(authUser) {
     user = authUser;
@@ -60,49 +57,36 @@ firebase.analytics && firebase.analytics();
   var signupLoading = document.querySelectorAll('[data-signup-loading]');
   var signupIdle = document.querySelectorAll('[data-signup-idle]');
 
-  signupForms.forEach(function (el) {
-  var signupEmail = el.querySelector('[data-signup-email]');
-  var signupPassword = el.querySelector('[data-signup-password]');
+  signupForms.forEach(function(el) {
+    var signupEmail = el.querySelector('[data-signup-email]');
+    var signupPassword = el.querySelector('[data-signup-password]');
 
-  el.addEventListener('submit', function (e) {
-    e.preventDefault();
-    e.stopPropagation();
+    el.addEventListener('submit', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
 
-    signupErrors.forEach(function (el) { el.style.display = 'none'; });
-    signupLoading.forEach(function (el) { el.style.display = 'block'; });
-    signupIdle.forEach(function (el) { el.style.display = 'none'; });
-
-    firebase.auth().createUserWithEmailAndPassword(signupEmail.value, signupPassword.value)
-      .then(async function (authUser) {
-        user = authUser;
-        
-        const favorites = {};
+      signupErrors.forEach(function(el) { el.style.display = 'none'; });
+      signupLoading.forEach(function(el) { el.style.display = 'block'; });
+      signupIdle.forEach(function(el) { el.style.display = 'none'; });
       
-        const querySnapshot = await firestore.collection("gifts").get();
-        querySnapshot.docs.forEach(element => {
-          favorites[element.get("name").toString()] = false;
-        });
-
-        await firestore.collection("users").doc(authUser.user.uid).set({
-          email: authUser.user.email,
-          favorites: favorites
-        });
-
+      firebase.auth().createUserWithEmailAndPassword(signupEmail.value, signupPassword.value)
+      .then(function(authUser) {
+        user = authUser;
         window.location.href = webflowAuth.signupRedirectPath;
       })
-      .catch(function (error) {
-        signupErrors.forEach(function (el) {
+      .catch(function(error) {
+        signupErrors.forEach(function(el) {
           el.innerText = error.message;
           el.style.display = 'block';
         });
 
-        setTimeout(function () {
-          signupLoading.forEach(function (el) { el.style.display = 'none'; });
-          signupIdle.forEach(function (el) { el.style.display = null; });
+        setTimeout(function() {
+          signupLoading.forEach(function(el) { el.style.display = 'none'; });
+          signupIdle.forEach(function(el) { el.style.display = null; });
         }, 1000);
       });
+    });
   });
-});
 
   var loginForms = document.querySelectorAll('[data-login-form]');
   var loginErrors = document.querySelectorAll('[data-login-error]');
@@ -122,18 +106,8 @@ firebase.analytics && firebase.analytics();
       loginLoading.forEach(function(el) { el.style.display = 'block'; });
 
       firebase.auth().signInWithEmailAndPassword(loginEmail.value, loginPassword.value)
-      .then(async function(authUser) {
+      .then(function(authUser) {
         user = authUser;
-        let favorites = {};
-
-        await firestore
-          .collection("users")
-          .doc(auth.currentUser.uid) // reference the current user's document ID
-          .get()
-          .then((doc) => {
-            favorites = doc.data().favorites;
-          });
-        
         window.location.href = webflowAuth.loginRedirectPath;
       })
       .catch(function(error) {
