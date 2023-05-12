@@ -1,6 +1,3 @@
-// Import Firestore SDK
-import firebase.firestore from 'firebase/firestore';
-
 // Initialize Firestore with Firebase project config
 firebase.initializeApp(webflowAuth.firebaseConfig);
 firebase.analytics && firebase.analytics();
