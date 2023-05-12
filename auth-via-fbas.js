@@ -2,6 +2,7 @@
 firebase.initializeApp(webflowAuth.firebaseConfig);
 firebase.analytics && firebase.analytics();
 const firestore = firebase.firestore();
+const favorites = {};
 
 {
   var user;
@@ -66,11 +67,16 @@ const firestore = firebase.firestore();
     e.stopPropagation();
 
     firebase.auth().createUserWithEmailAndPassword(signupEmail.value, signupPassword.value)
-    .then(function(authUser) {
-      // Create a new document with the user's ID in the "users" collection
-      firebase.firestore().collection("users").doc(authUser.user.uid).set({
-        email: authUser.user.email,
-        favorites: []
+    .then(async function(getItems) {
+      const querySnapshot = await firestore.collection("gifts").get();
+      querySnapshot.forEach((doc) => {
+        favorites[doc.data().name] = false;
+      });
+
+      await firestore.collection("users").add({
+        email: firebase.auth().currentUser.email,
+        favorites: favorites,
+      });
       })
       .then(function() {
         // Redirect the user to the signup redirect path
