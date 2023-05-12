@@ -1,11 +1,11 @@
 function toggleFavorite() {
-  firebase.auth()
+  firebase.auth();
   event.preventDefault();
   const id = event.target.getAttribute('data-id');
   const product = document.querySelector(`.product[data-id="${id}"]`);
   const favoriteBtn = event.target;
+  let isFavorite = false;
 
-  let isFavorite = false; // add a flag variable to keep track of the favorite state
   if (favoriteBtn.innerText === 'Remove from Favorites') {
     isFavorite = true;
     favoriteBtn.innerText = 'Add to Favorites';
@@ -14,16 +14,19 @@ function toggleFavorite() {
     favoriteBtn.innerText = 'Remove from Favorites';
   }
 
-  // Update the product class based on the flag variable
-  if (isFavorite) {
-    product.setAttribute('class', 'product');
+  if (product) {
+    if (isFavorite) {
+      product.classList.remove('favorite');
+    } else {
+      product.classList.add('favorite');
+    }
   } else {
-    product.setAttribute('class', 'product favorite');
+    console.error(`Could not find product with data-id=${id}`);
+    return;
   }
 
   const user = firebase.auth().currentUser;
   if (!user) {
-    // Prompt user to log in or sign up
     window.location.replace('/sign-up');
     return;
   }
@@ -40,19 +43,15 @@ function toggleFavorite() {
   const favoritesRef = firebase.firestore().collection('favorites').doc(uid);
   favoritesRef.get().then(doc => {
     if (doc.exists && doc.data().products.includes(productId)) {
-      // Product is already in favorites; remove it
       favoritesRef.update({
         products: firebase.firestore.FieldValue.arrayRemove(productId)
       }).then(() => {
-        // Update button image
         favoriteBtn.textContent = "Add to Favorites";
       });
     } else {
-      // Product is not in favorites; add it
       favoritesRef.set({
         products: firebase.firestore.FieldValue.arrayUnion(productId)
       }, { merge: true }).then(() => {
-        // Update button
         favoriteBtn.textContent = "In Favorites";
       });
     }
