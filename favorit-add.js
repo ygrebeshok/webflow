@@ -2,7 +2,7 @@ function toggleFavorite() {
   firebase.auth();
   event.preventDefault();
   const id = event.target.getAttribute('data-id');
-  const product = document.querySelector(`.product[data-id="${id}"]`);
+  const product = document.querySelector(`.card`);
   const favoriteBtn = event.target;
   let isFavorite = false;
 
