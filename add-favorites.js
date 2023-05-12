@@ -1,21 +1,19 @@
-if (!Element.prototype.closest) {
-  if (!Element.prototype.matches) {
-    Element.prototype.matches = Element.prototype.msMatchesSelector || Element.prototype.webkitMatchesSelector;
-  }
-  Element.prototype.closest = function(s) {
-    var el = this;
-    var ancestor = this;
-    if (!document.documentElement.contains(el)) return null;
-    do {
-      if (ancestor.matches(s)) return ancestor;
-      ancestor = ancestor.parentElement;
-    } while (ancestor !== null);
-    return null;
-  };
-}
 
 function toggleFavorite() {
   firebase.auth()
+  event.preventDefault();
+  const id = event.target.getAttribute('data-id');
+  const product = document.querySelector(`.product[data-id="${id}"]`);
+  const favoriteBtn = event.target;
+
+  if (product.classList.contains('favorite')) {
+    product.classList.remove('favorite');
+    favoriteBtn.innerText = 'Add to Favorites';
+  } else {
+    product.classList.add('favorite');
+    favoriteBtn.innerText = 'Remove from Favorites';
+  }
+
   const user = firebase.auth().currentUser;
   if (!user) {
     // Prompt user to log in or sign up
