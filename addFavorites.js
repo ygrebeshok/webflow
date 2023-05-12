@@ -1,4 +1,3 @@
-
 function toggleFavorite() {
   firebase.auth()
   event.preventDefault();
@@ -23,7 +22,12 @@ function toggleFavorite() {
 
   const uid = user.uid;
 
-  const card = this.closest('.card');
+  const card = event.target.closest('.card');
+  if (!card) {
+    console.error("Could not find card element");
+    return;
+  }
+
   const productId = card.dataset.productId;
   const favoritesRef = firebase.firestore().collection('favorites').doc(uid);
   favoritesRef.get().then(doc => {
@@ -33,7 +37,7 @@ function toggleFavorite() {
         products: firebase.firestore.FieldValue.arrayRemove(productId)
       }).then(() => {
         // Update button image
-        this.textContent = "Add to Favorites";
+        favoriteBtn.textContent = "Add to Favorites";
       });
     } else {
       // Product is not in favorites; add it
@@ -41,7 +45,7 @@ function toggleFavorite() {
         products: firebase.firestore.FieldValue.arrayUnion(productId)
       }, { merge: true }).then(() => {
         // Update button
-        this.textContent = "In Favorites";
+        favoriteBtn.textContent = "In Favorites";
       });
     }
   });
