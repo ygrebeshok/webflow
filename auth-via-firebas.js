@@ -1,7 +1,10 @@
+// Import Firestore SDK
+import firebase.firestore from 'firebase/firestore';
 
+// Initialize Firestore with Firebase project config
 firebase.initializeApp(webflowAuth.firebaseConfig);
-
 firebase.analytics && firebase.analytics();
+const firestore = firebase.firestore();
 
 {
   var user;
@@ -65,16 +68,23 @@ firebase.analytics && firebase.analytics();
       e.preventDefault();
       e.stopPropagation();
 
-      signupErrors.forEach(function(el) { el.style.display = 'none'; });
-      signupLoading.forEach(function(el) { el.style.display = 'block'; });
-      signupIdle.forEach(function(el) { el.style.display = 'none'; });
-      
       firebase.auth().createUserWithEmailAndPassword(signupEmail.value, signupPassword.value)
       .then(function(authUser) {
-        user = authUser;
-        window.location.href = webflowAuth.signupRedirectPath;
+        // Add user email to Firestore "users" collection
+        firebase.firestore().collection('users').doc(authUser.user.uid).set({
+          email: authUser.user.email,
+          favorites: []
+        })
+        .then(function() {
+          // Redirect to signup success page
+          window.location.href = webflowAuth.signupRedirectPath;
+        })
+        .catch(function(error) {
+          console.error("Error adding user email to Firestore: ", error);
+        });
       })
       .catch(function(error) {
+        // Handle signup errors
         signupErrors.forEach(function(el) {
           el.innerText = error.message;
           el.style.display = 'block';
