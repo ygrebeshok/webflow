@@ -5,12 +5,20 @@ function toggleFavorite() {
   const product = document.querySelector(`.product[data-id="${id}"]`);
   const favoriteBtn = event.target;
 
-  if (product.classList.contains('favorite')) {
-    product.classList.remove('favorite');
+  let isFavorite = false; // add a flag variable to keep track of the favorite state
+  if (favoriteBtn.innerText === 'Remove from Favorites') {
+    isFavorite = true;
     favoriteBtn.innerText = 'Add to Favorites';
   } else {
-    product.classList.add('favorite');
+    isFavorite = false;
     favoriteBtn.innerText = 'Remove from Favorites';
+  }
+
+  // Update the product class based on the flag variable
+  if (isFavorite) {
+    product.classList.remove('favorite');
+  } else {
+    product.classList.add('favorite');
   }
 
   const user = firebase.auth().currentUser;
