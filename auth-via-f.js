@@ -66,11 +66,19 @@ const firestore = firebase.firestore();
       e.stopPropagation();
 
       firebase.auth().createUserWithEmailAndPassword(signupEmail.value, signupPassword.value)
-      .then(function(authUser) {
-        // Add user email to Firestore "users" collection
-        firebase.firestore().collection('users').doc(authUser.user.uid).set({
-          email: authUser.user.email,
-          favorites: []
+      .then(async function(createUser) {
+        const usersRef = db.collection('users');
+        const querySnapshot = await usersRef.where('email', '==', user.email).get();
+        if (querySnapshot.empty) {
+          // create a new user document
+          await usersRef.doc(user.id).set(user);
+          console.log('User created successfully');
+        } else {
+          // update the existing user document
+          const docRef = querySnapshot.docs[0].ref;
+          await docRef.update(user);
+          console.log('User updated successfully');
+        }
         })
         .then(function() {
           // Redirect to signup success page
