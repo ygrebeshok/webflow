@@ -15,6 +15,7 @@ firebase.analytics && firebase.analytics();
 
   userAuth.forEach(function(el) { el.style.display = 'none'; });
   userUnauth.forEach(function(el) { el.style.display = 'none'; });
+  const firestore = firebase.firestore();
 
   async function updateContent() {
   if (!user) {
@@ -25,21 +26,18 @@ firebase.analytics && firebase.analytics();
       return typeof user[variable] === 'undefined' ? '' : user[variable];
     });
   });
+  let favorites = {};
 
-  if (user.email) {
-    await firebase.firestore().collection("users")
-      .where("email", "==", user.email)
-      .get()
-      .then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          favorites = doc.data().favorites;
-        });
-      })
-      .catch((error) => {
-        console.error("Error getting favorites: ", error);
+  await firestore
+    .collection("users")
+    .where("email", "==", auth.currentUser.email)
+    .get()
+    .then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        favorites = doc.data().favorites;
       });
+    });
   }
-}
 
 
   firebase.auth().onAuthStateChanged(function(authUser) {
@@ -87,12 +85,18 @@ firebase.analytics && firebase.analytics();
     firebase.auth().createUserWithEmailAndPassword(signupEmail.value, signupPassword.value)
       .then(async function (authUser) {
         user = authUser;
+     
+      const favorites = {};
+      
+      const querySnapshot = await firestore.collection("gifts").get();
+      querySnapshot.docs.forEach(element => {
+        favorites[element.get("name").toString()] = false;
+      });
 
-        // Add the new user to the 'users' collection in Firestore with an empty favorites field
-        await firebase.firestore().collection("users").doc(user.uid).set({
-          email: user.email,
-          favorites: {}
-        });
+      await firestore.collection("users").add({
+        email: auth.currentUser.email,
+        favorites: favorites
+      });
 
         window.location.href = webflowAuth.signupRedirectPath;
       })
