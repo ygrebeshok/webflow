@@ -79,7 +79,6 @@ const firestore = firebase.firestore();
           await docRef.update(user);
           console.log('User updated successfully');
         }
-        })
         .then(function() {
           // Redirect to signup success page
           window.location.href = webflowAuth.signupRedirectPath;
