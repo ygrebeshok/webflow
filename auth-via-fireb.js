@@ -16,6 +16,7 @@ firebase.analytics && firebase.analytics();
   userAuth.forEach(function(el) { el.style.display = 'none'; });
   userUnauth.forEach(function(el) { el.style.display = 'none'; });
   const firestore = firebase.firestore();
+  const auth = firebase.auth();
 
   async function updateContent() {
   if (!user) {
