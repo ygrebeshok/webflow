@@ -44,8 +44,8 @@ firebase.analytics && firebase.analytics();
 
       userEmail.forEach(function(el) { el.innerText = user.email; });
       userDisplayName.forEach(function(el) { el.innerText = user.displayName; });
-      var userId = firebase.auth().currentUser.uid;
-      var userEmail = firebase.auth().currentUser.email;
+      var userId = user.uid;
+      var userEmail = user.email;
       
       db.collection("users").doc(userId).set({
         email: userEmail,
