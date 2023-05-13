@@ -36,6 +36,9 @@ function updateCatalog() {
           const userId = user.uid;
           console.log(userId);
           console.log(productId);
+          firebase.firestore().collection("users").doc(userId).update({
+            favorites: firebase.firestore.FieldValue.arrayUnion(productId)
+          });
         });
 
         catalogGrid.appendChild(card);
