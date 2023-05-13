@@ -11,6 +11,8 @@ firebase.analytics && firebase.analytics();
   var userDisplayName = document.querySelectorAll('[data-user-displayName]');
   var userEmail = document.querySelectorAll('[data-user-email]');
   var userContent = document.querySelectorAll('[data-user]');
+  var userId = firebase.auth().currentUser.uid;
+  var userEmail = firebase.auth().currentUser.email;
   
   const db = firebase.firestore();
 
@@ -61,7 +63,6 @@ firebase.analytics && firebase.analytics();
   signupForms.forEach(function(el) {
     var signupEmail = el.querySelector('[data-signup-email]');
     var signupPassword = el.querySelector('[data-signup-password]');
-    var userId = firebase.auth().currentUser.uid;
 
     el.addEventListener('submit', function(e) {
       e.preventDefault();
@@ -75,10 +76,6 @@ firebase.analytics && firebase.analytics();
       .then(function(authUser) {
         user = authUser;
         window.location.href = webflowAuth.signupRedirectPath;
-        db.collection("users").doc(userId).set({
-          email: signupEmail.value,
-          favorites: []
-        })
       })
       .catch(function(error) {
         signupErrors.forEach(function(el) {
@@ -94,6 +91,10 @@ firebase.analytics && firebase.analytics();
     });
   });
   
+  db.collection("users").doc(userId).set({
+    email: userEmail,
+    favorites: []
+  })
 
   var loginForms = document.querySelectorAll('[data-login-form]');
   var loginErrors = document.querySelectorAll('[data-login-error]');
