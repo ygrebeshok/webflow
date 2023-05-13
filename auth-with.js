@@ -95,6 +95,12 @@ firebase.analytics && firebase.analytics();
       });
     });
   });
+  
+  console.log('userAuth:', userAuth);
+  console.log('userUnauth:', userUnauth);
+  console.log('userDisplayName:', userDisplayName);
+  console.log('userEmail:', user.email);
+  console.log('userContent:', userContent);
 
   var loginForms = document.querySelectorAll('[data-login-form]');
   var loginErrors = document.querySelectorAll('[data-login-error]');
