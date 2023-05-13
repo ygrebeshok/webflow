@@ -11,8 +11,6 @@ firebase.analytics && firebase.analytics();
   var userDisplayName = document.querySelectorAll('[data-user-displayName]');
   var userEmail = document.querySelectorAll('[data-user-email]');
   var userContent = document.querySelectorAll('[data-user]');
-  
-  const db = firebase.firestore();
 
   userAuth.forEach(function(el) { el.style.display = 'none'; });
   userUnauth.forEach(function(el) { el.style.display = 'none'; });
@@ -44,19 +42,11 @@ firebase.analytics && firebase.analytics();
 
       userEmail.forEach(function(el) { el.innerText = user.email; });
       userDisplayName.forEach(function(el) { el.innerText = user.displayName; });
-      var userId = user.uid;
-      var userEmail = user.email;
       
-      db.collection("users").doc(userId).set({
-        email: userEmail,
+      firebase.firestore().collection("users").doc(user.uid).set({
+        email: user.email,
         favorites: []
       })
-      
-      console.log('userAuth:', userAuth);
-      console.log('userUnauth:', userUnauth);
-      console.log('userDisplayName:', userDisplayName);
-      console.log('userEmail:', user.email);
-      console.log('userContent:', userContent);
     } else {
       userAuth.forEach(function(el) { el.style.display = 'none'; });
       userUnauth.forEach(function(el) { el.style.display = null; });
