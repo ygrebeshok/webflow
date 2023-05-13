@@ -30,9 +30,9 @@ function updateCatalog() {
         card.querySelector("#description").textContent = data.description,
         card.querySelector("#keywords").textContent = data.openai_keywords + ',' + data.image_labels,
         card.querySelector("#link-container").href = data.product_link,
-        card.querySelector("#favorite-btn").setAttribute('data-product-id', doc.id);
         card.querySelector("#favorite-btn").addEventListener('click', () => {
-          const productId = card.querySelector("#favorite-btn").getAttribute('data-product-id');
+          const productId = card.querySelector("#name").textContent;
+          console.log(productId);
           toggleFavorite();
         });
 
