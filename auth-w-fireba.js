@@ -39,9 +39,9 @@ firebase.analytics && firebase.analytics();
     if (user) {
       userAuth.forEach(function(el) { el.style.display = null; });
       userUnauth.forEach(function(el) { el.style.display = 'none'; });
-
+      
       userEmail.forEach(function(el) { el.innerText = user.email; });
-      user.displayName = document.getElementById("data-user-name").value;
+      userDisplayName.forEach(function(el) { el.textContent = user.displayName; });
       
       firebase.firestore().collection("users").doc(user.uid).set({
         email: user.email,
