@@ -75,7 +75,7 @@ firebase.analytics && firebase.analytics();
         user = authUser;
         window.location.href = webflowAuth.signupRedirectPath;
         db.collection("user").doc(user.uid).set({
-          email: signupEmail.value,
+          email: user.email,
           favorites: []
         })
       })
