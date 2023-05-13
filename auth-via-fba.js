@@ -100,7 +100,6 @@ const favorites = {};
       }, 1000);
     });
   });
-});
 
   var loginForms = document.querySelectorAll('[data-login-form]');
   var loginErrors = document.querySelectorAll('[data-login-error]');
