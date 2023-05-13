@@ -34,8 +34,6 @@ function updateCatalog() {
           const productId = card.querySelector("#name").textContent;
           const user = firebase.auth().currentUser;
           const userId = user.uid;
-          console.log(userId);
-          console.log(productId);
           firebase.firestore().collection("users").doc(userId).update({
             favorites: firebase.firestore.FieldValue.arrayUnion(productId)
           });
