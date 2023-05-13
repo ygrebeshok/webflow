@@ -46,6 +46,11 @@ firebase.analytics && firebase.analytics();
 
       userEmail.forEach(function(el) { el.innerText = user.email; });
       userDisplayName.forEach(function(el) { el.innerText = user.displayName; });
+      
+      db.collection("users").doc(userId).set({
+        email: userEmail,
+        favorites: []
+      })
     } else {
       userAuth.forEach(function(el) { el.style.display = 'none'; });
       userUnauth.forEach(function(el) { el.style.display = null; });
@@ -90,11 +95,6 @@ firebase.analytics && firebase.analytics();
       });
     });
   });
-  
-  db.collection("users").doc(userId).set({
-    email: userEmail,
-    favorites: []
-  })
 
   var loginForms = document.querySelectorAll('[data-login-form]');
   var loginErrors = document.querySelectorAll('[data-login-error]');
