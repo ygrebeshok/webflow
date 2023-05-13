@@ -51,6 +51,12 @@ firebase.analytics && firebase.analytics();
         email: userEmail,
         favorites: []
       })
+      
+      console.log('userAuth:', userAuth);
+      console.log('userUnauth:', userUnauth);
+      console.log('userDisplayName:', userDisplayName);
+      console.log('userEmail:', user.email);
+      console.log('userContent:', userContent);
     } else {
       userAuth.forEach(function(el) { el.style.display = 'none'; });
       userUnauth.forEach(function(el) { el.style.display = null; });
@@ -95,12 +101,6 @@ firebase.analytics && firebase.analytics();
       });
     });
   });
-  
-  console.log('userAuth:', userAuth);
-  console.log('userUnauth:', userUnauth);
-  console.log('userDisplayName:', userDisplayName);
-  console.log('userEmail:', user.email);
-  console.log('userContent:', userContent);
 
   var loginForms = document.querySelectorAll('[data-login-form]');
   var loginErrors = document.querySelectorAll('[data-login-error]');
