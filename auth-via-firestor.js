@@ -95,6 +95,7 @@ firebase.auth().createUserWithEmailAndPassword(signupEmail.value, signupPassword
       signupIdle.forEach(function(el) { el.style.display = null; });
     }, 1000);
   });
+ });
 });
 
   var loginForms = document.querySelectorAll('[data-login-form]');
