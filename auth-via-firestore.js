@@ -66,40 +66,36 @@ const favorites = {};
     e.preventDefault();
     e.stopPropagation();
 
-    firebase.auth().createUserWithEmailAndPassword(signupEmail.value, signupPassword.value)
-    .then(async function(getItems) {
-      const querySnapshot = await firestore.collection("gifts").get();
-      querySnapshot.forEach((doc) => {
-        favorites[doc.data().name] = false;
-      });
-
-      await firestore.collection("users").add({
-        email: firebase.auth().currentUser.email,
-        favorites: favorites,
-      });
-      })
-      .then(function() {
-        // Redirect the user to the signup redirect path
-        window.location.href = webflowAuth.signupRedirectPath;
-      })
-      .catch(function(error) {
-        // Handle any errors that occurred while adding the user to the "users" collection
-        console.error("Error adding user to Firestore:", error);
-      });
-    })
-    .catch(function(error) {
-      // Handle any errors that occurred while creating the user
-      signupErrors.forEach(function(el) {
-        el.innerText = error.message;
-        el.style.display = 'block';
-      });
-
-      setTimeout(function() {
-        signupLoading.forEach(function(el) { el.style.display = 'none'; });
-        signupIdle.forEach(function(el) { el.style.display = null; });
-      }, 1000);
+firebase.auth().createUserWithEmailAndPassword(signupEmail.value, signupPassword.value)
+  .then(async function() {
+    const favorites = {};
+    const querySnapshot = await firestore.collection("gifts").get();
+    querySnapshot.forEach((doc) => {
+      favorites[doc.data().name] = false;
     });
+
+    await firestore.collection("users").add({
+      email: firebase.auth().currentUser.email,
+      favorites: favorites,
+    });
+
+    // Redirect the user to the signup redirect path
+    window.location.href = webflowAuth.signupRedirectPath;
+
+  })
+  .catch(function(error) {
+    // Handle any errors that occurred while creating the user
+    signupErrors.forEach(function(el) {
+      el.innerText = error.message;
+      el.style.display = 'block';
+    });
+
+    setTimeout(function() {
+      signupLoading.forEach(function(el) { el.style.display = 'none'; });
+      signupIdle.forEach(function(el) { el.style.display = null; });
+    }, 1000);
   });
+});
 
   var loginForms = document.querySelectorAll('[data-login-form]');
   var loginErrors = document.querySelectorAll('[data-login-error]');
