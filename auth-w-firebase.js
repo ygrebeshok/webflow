@@ -10,7 +10,7 @@ firebase.analytics && firebase.analytics();
   var userUnauth = document.querySelectorAll('[data-user-unauth]');
   var userEmail = document.querySelectorAll('[data-user-email]');
   var userContent = document.querySelectorAll('[data-user]');
-  var userDisplayName = document.querySelectorAll('[data-user-displayName]').value;
+  var userDisplayName = document.querySelectorAll('[data-user-displayName]');
 
   userAuth.forEach(function(el) { el.style.display = 'none'; });
   userUnauth.forEach(function(el) { el.style.display = 'none'; });
@@ -45,7 +45,7 @@ firebase.analytics && firebase.analytics();
       
       firebase.firestore().collection("users").doc(user.uid).set({
         email: user.email,
-        name: user.displayName,
+        name: "",
         favorites: []
       })
     } else {
@@ -78,6 +78,9 @@ firebase.analytics && firebase.analytics();
       .then(function(authUser) {
         user = authUser;
         window.location.href = webflowAuth.signupRedirectPath;
+        return firebase.firestore().collection("users").doc(authUser.uid).set({
+          name: document.getElementById("name").value
+        })
       })
       .catch(function(error) {
         signupErrors.forEach(function(el) {
