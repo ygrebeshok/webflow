@@ -11,8 +11,6 @@ firebase.analytics && firebase.analytics();
   var userDisplayName = document.querySelectorAll('[data-user-displayName]');
   var userEmail = document.querySelectorAll('[data-user-email]');
   var userContent = document.querySelectorAll('[data-user]');
-  var userId = firebase.auth().currentUser.uid;
-  var userEmail = firebase.auth().currentUser.email;
   
   const db = firebase.firestore();
 
@@ -46,6 +44,8 @@ firebase.analytics && firebase.analytics();
 
       userEmail.forEach(function(el) { el.innerText = user.email; });
       userDisplayName.forEach(function(el) { el.innerText = user.displayName; });
+      var userId = firebase.auth().currentUser.uid;
+      var userEmail = firebase.auth().currentUser.email;
       
       db.collection("users").doc(userId).set({
         email: userEmail,
