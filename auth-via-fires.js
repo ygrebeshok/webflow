@@ -73,18 +73,18 @@ firebase.analytics && firebase.analytics();
       firebase.auth().createUserWithEmailAndPassword(signupEmail.value, signupPassword.value)
       .then(function(authUser) {
         user = authUser;
+        window.location.href = webflowAuth.signupRedirectPath;
         // Add a new document in collection "cities"
         db.collection("users").doc(authUser.uid).set({
-          email: authUser.email,
-          favorites: []
+            email: signupEmail.value,
+            favorites: []
         })
-        window.location.href = webflowAuth.signupRedirectPath;
-      .then(() => {
-          console.log("Document successfully written!");
-      })
-      .catch((error) => {
-          console.error("Error writing document: ", error);
-      });
+        .then(() => {
+            console.log("Document successfully written!");
+        })
+        .catch((error) => {
+            console.error("Error writing document: ", error);
+        });
       })
       .catch(function(error) {
         signupErrors.forEach(function(el) {
