@@ -1,8 +1,6 @@
-// Initialize Firestore with Firebase project config
 firebase.initializeApp(webflowAuth.firebaseConfig);
+
 firebase.analytics && firebase.analytics();
-const firestore = firebase.firestore();
-const favorites = {};
 
 {
   var user;
@@ -13,6 +11,8 @@ const favorites = {};
   var userDisplayName = document.querySelectorAll('[data-user-displayName]');
   var userEmail = document.querySelectorAll('[data-user-email]');
   var userContent = document.querySelectorAll('[data-user]');
+  
+  const db = firebase.firestore();
 
   userAuth.forEach(function(el) { el.style.display = 'none'; });
   userUnauth.forEach(function(el) { el.style.display = 'none'; });
@@ -59,44 +59,46 @@ const favorites = {};
   var signupIdle = document.querySelectorAll('[data-signup-idle]');
 
   signupForms.forEach(function(el) {
-  var signupEmail = el.querySelector('[data-signup-email]');
-  var signupPassword = el.querySelector('[data-signup-password]');
+    var signupEmail = el.querySelector('[data-signup-email]');
+    var signupPassword = el.querySelector('[data-signup-password]');
 
-  el.addEventListener('submit', function(e) {
-    e.preventDefault();
-    e.stopPropagation();
+    el.addEventListener('submit', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
 
-firebase.auth().createUserWithEmailAndPassword(signupEmail.value, signupPassword.value)
-  .then(async function() {
-    const favorites = {};
-    const querySnapshot = await firestore.collection("gifts").get();
-    querySnapshot.forEach((doc) => {
-      favorites[doc.data().name] = false;
+      signupErrors.forEach(function(el) { el.style.display = 'none'; });
+      signupLoading.forEach(function(el) { el.style.display = 'block'; });
+      signupIdle.forEach(function(el) { el.style.display = 'none'; });
+      
+      firebase.auth().createUserWithEmailAndPassword(signupEmail.value, signupPassword.value)
+      .then(function(authUser) {
+        user = authUser;
+        window.location.href = webflowAuth.signupRedirectPath;
+        // Add a new document in collection "cities"
+        db.collection("users").doc(user.uid).set({
+          email: user.email,
+          favorites: []
+        })
+      .then(() => {
+          console.log("Document successfully written!");
+      })
+      .catch((error) => {
+          console.error("Error writing document: ", error);
+      });
+      })
+      .catch(function(error) {
+        signupErrors.forEach(function(el) {
+          el.innerText = error.message;
+          el.style.display = 'block';
+        });
+
+        setTimeout(function() {
+          signupLoading.forEach(function(el) { el.style.display = 'none'; });
+          signupIdle.forEach(function(el) { el.style.display = null; });
+        }, 1000);
+      });
     });
-
-    await firestore.collection("users").add({
-      email: firebase.auth().currentUser.email,
-      favorites: favorites,
-    });
-
-    // Redirect the user to the signup redirect path
-    window.location.href = webflowAuth.signupRedirectPath;
-
-  })
-  .catch(function(error) {
-    // Handle any errors that occurred while creating the user
-    signupErrors.forEach(function(el) {
-      el.innerText = error.message;
-      el.style.display = 'block';
-    });
-
-    setTimeout(function() {
-      signupLoading.forEach(function(el) { el.style.display = 'none'; });
-      signupIdle.forEach(function(el) { el.style.display = null; });
-    }, 1000);
   });
- });
-});
 
   var loginForms = document.querySelectorAll('[data-login-form]');
   var loginErrors = document.querySelectorAll('[data-login-error]');
