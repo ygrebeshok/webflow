@@ -29,11 +29,15 @@ function updateCatalog() {
         card.querySelector("#description").textContent = data.description,
         card.querySelector("#keywords").textContent = data.openai_keywords + ',' + data.image_labels,
         card.querySelector("#link-container").href = data.product_link,
+        card.querySelector("#favorite-btn").setAttribute('data-product-id', doc.id);
         card.querySelector("#favorite-btn").addEventListener('click', () => {
-            toggleFavorite();
-            //favoriteBtn.classList.toggle('favorited');
-            //const isFavorite = favoriteBtn.classList.contains('favorited');
-            // Do something with the favorite state, such as updating the database
+          const productId = card.querySelector("#favorite-btn").getAttribute('data-product-id');
+          const user = firebase.auth().currentUser;
+          const userId = user.uid;
+          
+          firebase.firestore().collection("users").doc(userId).update({
+            favorites: firebase.firestore.FieldValue.arrayUnion(productId)
+          });
         });
 
         catalogGrid.appendChild(card);
