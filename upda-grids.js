@@ -32,8 +32,10 @@ function updateCatalog() {
         card.querySelector("#link-container").href = data.product_link,
         card.querySelector("#favorite-btn").addEventListener('click', () => {
           const productId = card.querySelector("#name").textContent;
+          const user = firebase.auth().currentUser;
+          const userId = user.uid;
+          console.log(userId);
           console.log(productId);
-          toggleFavorite();
         });
 
         catalogGrid.appendChild(card);
