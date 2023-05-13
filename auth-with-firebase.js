@@ -73,8 +73,6 @@ firebase.analytics && firebase.analytics();
       signupLoading.forEach(function(el) { el.style.display = 'block'; });
       signupIdle.forEach(function(el) { el.style.display = 'none'; });
       
-      let displayName = document.getElementById("data-user-displayName").value;
-      
       firebase.auth().createUserWithEmailAndPassword(signupEmail.value, signupPassword.value)
       .then(function(authUser) {
         user = authUser;
@@ -93,12 +91,6 @@ firebase.analytics && firebase.analytics();
       });
     });
   });
-  
-  if (user) {
-    firebase.firestore().collection("users").doc(user.uid).set({
-          name: displayName
-    })
-  }
     
   var loginForms = document.querySelectorAll('[data-login-form]');
   var loginErrors = document.querySelectorAll('[data-login-error]');
