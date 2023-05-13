@@ -42,11 +42,12 @@ firebase.analytics && firebase.analytics();
       userUnauth.forEach(function(el) { el.style.display = 'none'; });
 
       userEmail.forEach(function(el) { el.innerText = user.email; });
+      userName.forEach(function(el) { el.innerText = user.name; });
       userDisplayName.forEach(function(el) { el.innerText = user.displayName; });
       
       firebase.firestore().collection("users").doc(user.uid).set({
         email: user.email,
-        name: userName.value,
+        name: user.name,
         favorites: []
       })
     } else {
