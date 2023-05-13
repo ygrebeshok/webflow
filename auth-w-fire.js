@@ -8,10 +8,8 @@ firebase.analytics && firebase.analytics();
   var bodyUnauth = document.body.getAttribute('data-user-unauth');
   var userAuth = document.querySelectorAll('[data-user-auth]');
   var userUnauth = document.querySelectorAll('[data-user-unauth]');
-  var userDisplayName = document.querySelectorAll('[data-user-displayName]');
   var userEmail = document.querySelectorAll('[data-user-email]');
   var userContent = document.querySelectorAll('[data-user]');
-  var userName = document.querySelectorAll('[data-user-name]');
 
   userAuth.forEach(function(el) { el.style.display = 'none'; });
   userUnauth.forEach(function(el) { el.style.display = 'none'; });
@@ -42,12 +40,11 @@ firebase.analytics && firebase.analytics();
       userUnauth.forEach(function(el) { el.style.display = 'none'; });
 
       userEmail.forEach(function(el) { el.innerText = user.email; });
-      userDisplayName.forEach(function(el) { el.innerText = user.displayName; });
-      userName.forEach(function(el) { el.innerText = user.name; })
+      user.displayName = document.getElementById("data-user-name").value;
       
       firebase.firestore().collection("users").doc(user.uid).set({
         email: user.email,
-        name: user.name,
+        name: user.displayName,
         favorites: []
       })
     } else {
@@ -55,7 +52,7 @@ firebase.analytics && firebase.analytics();
       userUnauth.forEach(function(el) { el.style.display = null; });
 
       userEmail.forEach(function(el) { el.innerText = ''; });
-      userDisplayName.forEach(function(el) { el.innerText = ''; });
+      user.displayName = "";
     }
   });
 
