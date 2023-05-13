@@ -39,9 +39,9 @@ function updateCatalog() {
           console.log(productId);
           console.log(user.uid);
           
-          firebase.firestore().collection("users").doc(userId).update({
-            favorites: firebase.firestore.FieldValue.arrayUnion(productId)
-          });
+          //firebase.firestore().collection("users").doc(userId).update({
+            //favorites: firebase.firestore.FieldValue.arrayUnion(productId)
+          //});
         });
 
         catalogGrid.appendChild(card);
