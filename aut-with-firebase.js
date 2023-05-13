@@ -45,7 +45,6 @@ firebase.analytics && firebase.analytics();
       
       firebase.firestore().collection("users").doc(user.uid).set({
         email: user.email,
-        name: "",
         favorites: []
       })
     } else {
@@ -65,7 +64,6 @@ firebase.analytics && firebase.analytics();
   signupForms.forEach(function(el) {
     var signupEmail = el.querySelector('[data-signup-email]');
     var signupPassword = el.querySelector('[data-signup-password]');
-    var displayName = el.querySelector('[data-user-displayName]');
 
     el.addEventListener('submit', function(e) {
       e.preventDefault();
@@ -75,9 +73,7 @@ firebase.analytics && firebase.analytics();
       signupLoading.forEach(function(el) { el.style.display = 'block'; });
       signupIdle.forEach(function(el) { el.style.display = 'none'; });
       
-      firebase.firestore().collection("users").doc(user.uid).set({
-        name: displayName
-      })
+      let displayName = document.getElementById("data-user-displayName").value;
       
       firebase.auth().createUserWithEmailAndPassword(signupEmail.value, signupPassword.value)
       .then(function(authUser) {
@@ -97,7 +93,13 @@ firebase.analytics && firebase.analytics();
       });
     });
   });
-
+  
+  if (user) {
+    firebase.firestore().collection("users").doc(user.uid).set({
+          name: displayName
+    })
+  }
+    
   var loginForms = document.querySelectorAll('[data-login-form]');
   var loginErrors = document.querySelectorAll('[data-login-error]');
   var loginLoading = document.querySelectorAll('[data-login-loading]');
