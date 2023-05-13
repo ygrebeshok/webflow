@@ -73,12 +73,12 @@ firebase.analytics && firebase.analytics();
       firebase.auth().createUserWithEmailAndPassword(signupEmail.value, signupPassword.value)
       .then(function(authUser) {
         user = authUser;
-        window.location.href = webflowAuth.signupRedirectPath;
         // Add a new document in collection "cities"
-        db.collection("users").doc(user.uid).set({
-          email: user.email,
+        db.collection("users").doc(authUser.uid).set({
+          email: authUser.email,
           favorites: []
         })
+        window.location.href = webflowAuth.signupRedirectPath;
       .then(() => {
           console.log("Document successfully written!");
       })
