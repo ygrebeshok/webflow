@@ -74,17 +74,10 @@ firebase.analytics && firebase.analytics();
       .then(function(authUser) {
         user = authUser;
         window.location.href = webflowAuth.signupRedirectPath;
-        // Add a new document in collection "cities"
-        db.collection("users").doc(authUser.uid).set({
-            email: signupEmail.value,
-            favorites: []
+        db.collection("user").doc(user.uid).set({
+          email: signupEmail.value,
+          favorites: []
         })
-        .then(() => {
-            console.log("Document successfully written!");
-        })
-        .catch((error) => {
-            console.error("Error writing document: ", error);
-        });
       })
       .catch(function(error) {
         signupErrors.forEach(function(el) {
