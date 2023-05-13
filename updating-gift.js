@@ -1,3 +1,8 @@
+import firebase from "firebase/app";
+import "firebase/analytics";
+import "firebase/auth";
+import "firebase/firestore";
+
 const output = document.getElementById("output");
 const mainButton = document.getElementById("toGifts");
 const linkInput = document.getElementById("link-container");
