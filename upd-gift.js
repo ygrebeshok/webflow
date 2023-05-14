@@ -15,6 +15,10 @@ const holidayTemplate = document.querySelector(".birthday");
 let selected_holiday = "";
 const errorAlert = document.getElementById("error-alert");
 
+firebase.auth().onAuthStateChanged(function(authUser) {
+    
+});
+
 function updateCatalog() {
 
       giftsRef.get().then((querySnapshot) => {
