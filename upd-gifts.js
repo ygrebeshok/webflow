@@ -30,13 +30,48 @@ function updateCatalog() {
         card.querySelector("#description").textContent = data.description,
         card.querySelector("#keywords").textContent = data.openai_keywords + ',' + data.image_labels,
         card.querySelector("#link-container").href = data.product_link,
-        card.querySelector("#favorite-btn").addEventListener('click', () => {
-          const productId = card.querySelector("#name").textContent;
-          const user = firebase.auth().currentUser;
-          const userId = user.uid;
-          firebase.firestore().collection("users").doc(userId).update({
-            favorites: firebase.firestore.FieldValue.arrayUnion(productId)
+        const favoriteBtn = card.querySelector("#favorite-btn");
+        const productId = card.querySelector("#name").textContent;
+        const user = firebase.auth().currentUser;
+        const userId = user.uid;
+
+        // Check if product is already in favorites array
+        firebase.firestore().collection("users").doc(userId).get()
+          .then(doc => {
+            const favorites = doc.data().favorites;
+            if (favorites.includes(productId)) {
+              favoriteBtn.textContent = "Remove from Favorites";
+            }
+          })
+          .catch(error => {
+            console.log("Error getting favorites:", error);
           });
+
+        // Add or remove product from favorites array when button is clicked
+        favoriteBtn.addEventListener('click', () => {
+          const isFavorite = favoriteBtn.textContent === "Remove from Favorites";
+
+          if (isFavorite) {
+            firebase.firestore().collection("users").doc(userId).update({
+              favorites: firebase.firestore.FieldValue.arrayRemove(productId)
+            })
+            .then(() => {
+              favoriteBtn.textContent = "Add to Favorites";
+            })
+            .catch(error => {
+              console.log("Error removing product from favorites:", error);
+            });
+          } else {
+            firebase.firestore().collection("users").doc(userId).update({
+              favorites: firebase.firestore.FieldValue.arrayUnion(productId)
+            })
+            .then(() => {
+              favoriteBtn.textContent = "Remove from Favorites";
+            })
+            .catch(error => {
+              console.log("Error adding product to favorites:", error);
+            });
+          }
         });
 
         catalogGrid.appendChild(card);
