@@ -36,6 +36,7 @@ firebase.analytics && firebase.analytics();
     } else if (!user && bodyAuth) {
       window.location.href = webflowAuth.loginPath;
     }
+    
     if (user) {
       userAuth.forEach(function(el) { el.style.display = null; });
       userUnauth.forEach(function(el) { el.style.display = 'none'; });
@@ -43,10 +44,17 @@ firebase.analytics && firebase.analytics();
       userEmail.forEach(function(el) { el.innerText = user.email; });
       userDisplayName.forEach(function(el) { el.innerText = user.displayName; });
       
-      firebase.firestore().collection("users").doc(user.uid).set({
-        email: user.email,
-        favorites: []
-      })
+      firebase.firestore().collection("users").doc(user.uid).get({
+        .then(function(doc) {
+          if (doc.exists) {
+            user.favorites = doc.data().favorites;
+          } else {
+            firebase.firestore().collection("users").doc(user.uid).set({
+              email: user.email,
+              favorites: []
+            });
+          }
+        });
     } else {
       userAuth.forEach(function(el) { el.style.display = 'none'; });
       userUnauth.forEach(function(el) { el.style.display = null; });
