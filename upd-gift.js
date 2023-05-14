@@ -29,7 +29,8 @@ function updateCatalog() {
         card.querySelector("#price").textContent = `$${data.price}`,
         card.querySelector("#description").textContent = data.description,
         card.querySelector("#keywords").textContent = data.openai_keywords + ',' + data.image_labels,
-        card.querySelector("#link-container").href = data.product_link,
+        card.querySelector("#link-container").href = data.product_link
+        
         const favoriteBtn = card.querySelector("#favorite-btn");
         const productId = card.querySelector("#name").textContent;
         const user = firebase.auth().currentUser;
