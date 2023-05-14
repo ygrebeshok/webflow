@@ -15,18 +15,6 @@ const holidayTemplate = document.querySelector(".birthday");
 let selected_holiday = "";
 const errorAlert = document.getElementById("error-alert");
 
-var bodyAuth = document.body.getAttribute('data-user-auth');
-
-firebase.auth().onAuthStateChanged(function(authUser) {
-    user = authUser;
-    
-    if (user && bodyUnauth) {
-      window.location.href = '/recommendations';
-    } else if (!user && bodyAuth) {
-      window.location.href = '/log-in';
-    }
-});
-
 function updateCatalog() {
 
       giftsRef.get().then((querySnapshot) => {
