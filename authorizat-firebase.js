@@ -45,7 +45,6 @@ firebase.analytics && firebase.analytics();
       userDisplayName.forEach(function(el) { el.innerText = user.displayName; });
       
       firebase.firestore().collection("users").doc(user.uid).get({
-        .then(function(doc) {
           if (doc.exists) {
             user.favorites = doc.data().favorites;
           } else {
