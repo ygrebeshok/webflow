@@ -44,16 +44,22 @@ firebase.analytics && firebase.analytics();
       userEmail.forEach(function(el) { el.innerText = user.email; });
       userDisplayName.forEach(function(el) { el.innerText = user.displayName; });
       
-      firebase.firestore().collection("users").doc(user.uid).get({
-          if (doc.exists) {
-            user.favorites = doc.data().favorites;
-          } else {
-            firebase.firestore().collection("users").doc(user.uid).set({
-              email: user.email,
-              favorites: []
-            });
-          }
-        });
+      firebase.firestore().collection("users").doc(user.uid).get()
+      .then(function(doc) {
+        if (doc.exists) {
+          // Update the user object with the favorites array
+          user.favorites = doc.data().favorites;
+        } else {
+          // If the user document doesn't exist, create it with an empty favorites array
+          firebase.firestore().collection("users").doc(user.uid).set({
+            email: user.email,
+            favorites: []
+          });
+        }
+      })
+      .catch(function(error) {
+        console.error("Error retrieving user's favorites:", error);
+      });
     } else {
       userAuth.forEach(function(el) { el.style.display = 'none'; });
       userUnauth.forEach(function(el) { el.style.display = null; });
