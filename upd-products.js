@@ -17,9 +17,8 @@ const errorAlert = document.getElementById("error-alert");
 
 firebase.auth().onAuthStateChanged(function(authUser) {
     user = authUser;
-    if (user) {
-    } else {
-      window.location.href = "/user";    
+    if (!user) {
+      window.location.href = '/log-in';
     }
 });
 
