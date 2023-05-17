@@ -53,7 +53,8 @@ firebase.analytics && firebase.analytics();
           // If the user document doesn't exist, create it with an empty favorites array
           firebase.firestore().collection("users").doc(user.uid).set({
             email: user.email,
-            favorites: []
+            favorites: [],
+            shared_favorites: []
           });
         }
       })
