@@ -19,10 +19,12 @@ const brandFilterContainer = document.getElementById("brand-filter");
 function populateBrandFilter(brands) {
   brands.forEach((brand) => {
     var label = document.createElement('label');
+    label.className = 'brand-checkbox-label';  // Add this line
     var checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
     checkbox.value = brand;
     checkbox.id = 'brand-' + brand;
+    checkbox.className = 'brand-checkbox';  // Add this line
 
     checkbox.addEventListener('change', function() {
       handleBrandCheckboxChange(this);
@@ -32,7 +34,7 @@ function populateBrandFilter(brands) {
     label.appendChild(document.createTextNode(brand));
 
     brandFilterContainer.appendChild(label);
-    brandFilterContainer.appendChild(document.createElement('br')); // adds a line break for better readability
+    brandFilterContainer.appendChild(document.createElement('br'));
   });
 }
 
