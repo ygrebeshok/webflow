@@ -77,6 +77,9 @@ function filterCatalog() {
   const minPrice = 0;
   const maxPrice = parseInt(priceRange.value);
 
+  const priceDisplay = document.getElementById("price-display");
+  priceDisplay.textContent = `$${minPrice} - $${maxPrice}`;
+
   let visibleCards;
 
   if (brandFilters.length === 0) {
@@ -203,7 +206,6 @@ function updateCatalog() {
           var brands = Array.from(brandsSet); // add this line
           populateBrandFilter(brands);
 
-    	    const priceDisplay = document.getElementById("price-display");
           priceRange = document.getElementById("price-range");
     
           // This ensures that the filterCatalog function is only attached once.
