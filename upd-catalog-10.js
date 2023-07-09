@@ -17,6 +17,11 @@ const errorAlert = document.getElementById("error-alert");
 const brandFilterContainer = document.getElementById("brand-filter");
 
 function populateBrandFilter(brands) {
+  // Clear existing brand filters
+  while (brandFilterContainer.firstChild) {
+    brandFilterContainer.removeChild(brandFilterContainer.firstChild);
+  }
+
   brands.forEach((brand) => {
     var label = document.createElement('label');
     label.className = 'brand-checkbox-label';  // Add this line
@@ -38,12 +43,45 @@ function populateBrandFilter(brands) {
   });
 }
 
+function resetBrandFilters() {
+  // Reset brand filter
+  brandFilters = [];
+  const brandCheckboxes = document.querySelectorAll('.brand-checkbox');
+  brandCheckboxes.forEach(checkbox => {
+    checkbox.checked = false;
+  });
+}
+
+let brandFilters = [];
+
 function handleBrandCheckboxChange(checkbox) {
   if (checkbox.checked) {
     // Add brand to filter
+    brandFilters.push(checkbox.value);
   } else {
     // Remove brand from filter
+    const index = brandFilters.indexOf(checkbox.value);
+    if (index > -1) {
+      brandFilters.splice(index, 1);
+    }
   }
+  
+  // Filter allCards based on the brands in the brandFilters array
+  const filteredCards = allCards.filter(card => {
+    const cardBrand = card.querySelector("#brand").textContent; // Assuming each card has a "#brand" element showing its brand
+    return brandFilters.includes(cardBrand);
+  });
+  
+  catalogGrid.innerHTML = "";
+  filteredCards.forEach(card => {
+    card.style.opacity = 0;
+    catalogGrid.appendChild(card);
+
+    setTimeout(() => {
+      card.style.transition = "opacity 0.5s";
+      card.style.opacity = 1;
+    }, 0);
+  });
 }
 
 let allCards = [];
