@@ -135,6 +135,28 @@ function updateCatalog() {
 
           var brands = Array.from(brandsSet); // add this line
           populateBrandFilter(brands);
-            
+
+          const priceRange = document.getElementById("price-range");
+	        const priceDisplay = document.getElementById("price-display");  
+
+          priceRange.addEventListener("input", () => {
+            const minPrice = 0;
+            const maxPrice = parseInt(priceRange.value);
+            priceDisplay.textContent = `$${minPrice} - $${maxPrice}`;
+            const filteredCards = visibleCards.filter(card => {
+              const price = parseFloat(card.querySelector("#price").textContent.replace("$", ""));
+              return price >= minPrice && price <= maxPrice;
+            });
+            catalogGrid.innerHTML = "";
+  	        filteredCards.forEach(card => {
+              card.style.opacity = 0;
+              catalogGrid.appendChild(card);
+
+              setTimeout(() => {
+                card.style.transition = "opacity 0.5s";
+                card.style.opacity = 1;
+              }, 0);
+  	        });
+          }); 
         });
       }
