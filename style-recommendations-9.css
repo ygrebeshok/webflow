@@ -50,15 +50,23 @@
   .brand-checkbox-label {
     font-family: 'Montserrat', sans-serif;
     font-weight: 400;
-    font-size: larger;
+    font-size: 1em;
   }
 
   .brand-checkbox {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
     height: 20px;
     width: 20px;
     border: 1px solid #5654ff;
     margin-right: 10px;
-    color: #4b00ff;
+    background: #FFF;
+  }
+
+  .brand-checkbox:checked {
+    background-color: #4b00ff;
+    border-color: #4b00ff;
   }
 
   .button {
