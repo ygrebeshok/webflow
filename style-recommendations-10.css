@@ -49,8 +49,8 @@
 
   .brand-checkbox-label {
     font-family: 'Montserrat', sans-serif;
-    font-weight: 400;
-    font-size: 1em;
+    font-weight: 500;
+    font-size: 1.2em;
   }
 
   .brand-checkbox {
@@ -59,7 +59,7 @@
     appearance: none;
     height: 20px;
     width: 20px;
-    border: 1px solid #5654ff;
+    border: 1px solid #4b00ff;
     margin-right: 10px;
     background: #FFF;
   }
