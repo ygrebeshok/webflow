@@ -54,6 +54,7 @@ function resetBrandFilters() {
 
 let brandFilters = [];
 let priceRange;
+let priceRangeInitialized = false;
 
 function handleBrandCheckboxChange(checkbox) {
   if (checkbox.checked) {
@@ -202,9 +203,13 @@ function updateCatalog() {
           var brands = Array.from(brandsSet); // add this line
           populateBrandFilter(brands);
 
-          const priceRange = document.getElementById("price-range");
     	    const priceDisplay = document.getElementById("price-display");
-
-          priceRange.addEventListener("input", filterCatalog); 
+          priceRange = document.getElementById("price-range");
+    
+          // This ensures that the filterCatalog function is only attached once.
+          if (!priceRangeInitialized) {
+              priceRange.addEventListener("input", filterCatalog);
+              priceRangeInitialized = true;
+          }
       });
     }
