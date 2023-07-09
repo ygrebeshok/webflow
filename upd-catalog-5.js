@@ -19,12 +19,12 @@ const brandFilterContainer = document.getElementById("brand-filter");
 function populateBrandFilter(brands) {
   brands.forEach((brand) => {
     var label = document.createElement('label');
-    label.className = 'form-control';  // Updated class name
+    label.className = 'brand-checkbox-label';  // Add this line
     var checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
     checkbox.value = brand;
     checkbox.id = 'brand-' + brand;
-    checkbox.className = '';  // Removed class as styles are applied to input[type="checkbox"]
+    checkbox.className = 'brand-checkbox';  // Add this line
 
     checkbox.addEventListener('change', function() {
       handleBrandCheckboxChange(this);
