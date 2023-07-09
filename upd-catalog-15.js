@@ -204,7 +204,14 @@ function updateCatalog() {
           const priceRange = document.getElementById("price-range");
     	    const priceDisplay = document.getElementById("price-display");
 
-          priceRange.addEventListener("input", filterCatalog);
+          priceRange.addEventListener("input", () => {
+            const minPrice = 0;
+            const maxPrice = parseInt(priceRange.value);
+            priceDisplay.textContent = `$${minPrice} - $${maxPrice}`;
+            const filteredCards = allCards.filter(card => { // Filter allCards instead of the cards currently in the catalog
+              const price = parseFloat(card.querySelector("#price").textContent.replace("$", ""));
+              return price >= minPrice && price <= maxPrice;
+          });
         
           catalogGrid.innerHTML = "";
           filteredCards.forEach(card => {
