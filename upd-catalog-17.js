@@ -53,6 +53,7 @@ function resetBrandFilters() {
 }
 
 let brandFilters = [];
+let priceRange;
 
 function handleBrandCheckboxChange(checkbox) {
   if (checkbox.checked) {
