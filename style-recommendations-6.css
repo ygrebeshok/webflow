@@ -51,13 +51,13 @@
     font-family: 'Montserrat', sans-serif;
     font-weight: 400;
     font-size: larger;
-    margin-right: 10px;  /* Adjust this to set the space between the label and checkbox */
   }
 
   .brand-checkbox {
     height: 20px;  /* Adjust this to change the size of the checkbox */
     width: 20px;  /* Adjust this to change the size of the checkbox */
     border: 1px solid #5654ff;
+    margin-right: 10px;
   }
 
   .button {
