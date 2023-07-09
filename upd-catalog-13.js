@@ -70,13 +70,21 @@ function handleBrandCheckboxChange(checkbox) {
 }
 
 function filterCatalog() {
-  const visibleBrandCards = allCards.filter(card => {
-    const brand = card.querySelector("#brand").textContent;
-    return brandFilters.includes(brand);
-  });
+  let visibleCards;
+  
+  // If there are no brand filters selected, show all cards.
+  // Otherwise, only show cards that match the selected brands.
+  if (brandFilters.length === 0) {
+    visibleCards = allCards;
+  } else {
+    visibleCards = allCards.filter(card => {
+      const brand = card.querySelector("#brand").textContent;
+      return brandFilters.includes(brand);
+    });
+  }
 
   catalogGrid.innerHTML = "";
-  visibleBrandCards.forEach(card => {
+  visibleCards.forEach(card => {
     card.style.opacity = 0;
     catalogGrid.appendChild(card);
     
