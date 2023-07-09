@@ -100,3 +100,12 @@
   .disableGrid:hover {
     transform: scale(1.0);
   }
+
+  #filters-container {
+    transition: transform 0.5s ease;
+    transform: translateX(100%);
+  }
+
+  #filters-container.show {
+    transform: translateX(0);
+  }
