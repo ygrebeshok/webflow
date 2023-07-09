@@ -56,7 +56,9 @@
   .brand-checkbox {
     height: 20px;  /* Adjust this to change the size of the checkbox */
     width: 20px;  /* Adjust this to change the size of the checkbox */
-    border: 1px solid #5654ff;
+    border: 1px;
+    border-style: solid;
+    border-color: #5654ff;
   }
 
   .button {
