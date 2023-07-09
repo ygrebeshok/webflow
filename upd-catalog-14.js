@@ -61,19 +61,22 @@ function handleBrandCheckboxChange(checkbox) {
   } else {
     // Remove brand from filter
     const index = brandFilters.indexOf(checkbox.value);
-    if (index !== -1) {
+    if (index > -1) {
       brandFilters.splice(index, 1);
     }
   }
-  // Refresh the catalog according to current brandFilters
+
+  // Filter the catalog whenever a brand checkbox changes
   filterCatalog();
 }
 
 function filterCatalog() {
+  // Obtain the currently set price range
+  const minPrice = 0;
+  const maxPrice = parseInt(priceRange.value);
+
   let visibleCards;
-  
-  // If there are no brand filters selected, show all cards.
-  // Otherwise, only show cards that match the selected brands.
+
   if (brandFilters.length === 0) {
     visibleCards = allCards;
   } else {
@@ -83,11 +86,17 @@ function filterCatalog() {
     });
   }
 
+  // Further filter the visibleCards by the price range
+  visibleCards = visibleCards.filter(card => {
+    const price = parseFloat(card.querySelector("#price").textContent.replace("$", ""));
+    return price >= minPrice && price <= maxPrice;
+  });
+
   catalogGrid.innerHTML = "";
   visibleCards.forEach(card => {
     card.style.opacity = 0;
     catalogGrid.appendChild(card);
-    
+
     setTimeout(() => {
       card.style.transition = "opacity 0.5s";
       card.style.opacity = 1;
@@ -195,14 +204,8 @@ function updateCatalog() {
           const priceRange = document.getElementById("price-range");
     	    const priceDisplay = document.getElementById("price-display");
 
-    	    priceRange.addEventListener("input", () => {
-            const minPrice = 0;
-            const maxPrice = parseInt(priceRange.value);
-            priceDisplay.textContent = `$${minPrice} - $${maxPrice}`;
-            const filteredCards = allCards.filter(card => { // Filter allCards instead of the cards currently in the catalog
-              const price = parseFloat(card.querySelector("#price").textContent.replace("$", ""));
-              return price >= minPrice && price <= maxPrice;
-          });
+          priceRange.addEventListener("input", filterCatalog);
+        
           catalogGrid.innerHTML = "";
           filteredCards.forEach(card => {
             card.style.opacity = 0;
