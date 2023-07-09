@@ -59,7 +59,6 @@ function updateCatalog() {
         const data = doc.data();
         if (data.brand) {
           brandsSet.add(data.brand);
-          allCards.push(card);
         }
             
         const card = cardTemplate.cloneNode(true);
@@ -70,6 +69,8 @@ function updateCatalog() {
         card.querySelector("#description").textContent = data.description,
         card.querySelector("#keywords").textContent = data.openai_keywords + ',' + data.image_labels,
         card.querySelector("#link-container").href = data.product_link
+
+        allCards.push(card);
         
         const favoriteBtn = card.querySelector("#favorite-btn");
         const productId = card.querySelector("#name").textContent;
