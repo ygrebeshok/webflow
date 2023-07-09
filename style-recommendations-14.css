@@ -101,11 +101,11 @@
     transform: scale(1.0);
   }
 
-  #filtersContainer {
+  #filters-container {
     transition: transform 0.5s ease;
     transform: translateX(100%);
   }
 
-  #filtersContainer.show {
+  #filters-container.show {
     transform: translateX(0);
   }
