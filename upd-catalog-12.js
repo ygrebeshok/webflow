@@ -61,22 +61,25 @@ function handleBrandCheckboxChange(checkbox) {
   } else {
     // Remove brand from filter
     const index = brandFilters.indexOf(checkbox.value);
-    if (index > -1) {
+    if (index !== -1) {
       brandFilters.splice(index, 1);
     }
   }
-  
-  // Filter allCards based on the brands in the brandFilters array
-  const filteredCards = allCards.filter(card => {
-    const cardBrand = card.querySelector("#brand").textContent; // Assuming each card has a "#brand" element showing its brand
-    return brandFilters.includes(cardBrand);
+  // Refresh the catalog according to current brandFilters
+  filterCatalog();
+}
+
+function filterCatalog() {
+  const visibleBrandCards = allCards.filter(card => {
+    const brand = card.querySelector("#brand").textContent;
+    return brandFilters.includes(brand);
   });
-  
+
   catalogGrid.innerHTML = "";
-  filteredCards.forEach(card => {
+  visibleBrandCards.forEach(card => {
     card.style.opacity = 0;
     catalogGrid.appendChild(card);
-
+    
     setTimeout(() => {
       card.style.transition = "opacity 0.5s";
       card.style.opacity = 1;
