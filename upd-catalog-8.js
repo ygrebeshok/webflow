@@ -46,15 +46,20 @@ function handleBrandCheckboxChange(checkbox) {
   }
 }
 
+let allCards = [];
+
 function updateCatalog() {
       var brandsSet = new Set();
 
       giftsRef.get().then((querySnapshot) => {
       catalogGrid.innerHTML = "";
+      allCards = [];
+      
       querySnapshot.forEach((doc) => {
         const data = doc.data();
         if (data.brand) {
           brandsSet.add(data.brand);
+          allCards.push(card);
         }
             
         const card = cardTemplate.cloneNode(true);
@@ -137,18 +142,18 @@ function updateCatalog() {
           populateBrandFilter(brands);
 
           const priceRange = document.getElementById("price-range");
-    	  const priceDisplay = document.getElementById("price-display");
+    	    const priceDisplay = document.getElementById("price-display");
 
-    	  priceRange.addEventListener("input", () => {
-      	    const minPrice = 0;
-      	    const maxPrice = parseInt(priceRange.value);
-      	    priceDisplay.textContent = `$${minPrice} - $${maxPrice}`;
-      	    const filteredCards = Array.from(catalogGrid.childNodes).filter(card => {
+    	    priceRange.addEventListener("input", () => {
+            const minPrice = 0;
+            const maxPrice = parseInt(priceRange.value);
+            priceDisplay.textContent = `$${minPrice} - $${maxPrice}`;
+            const filteredCards = allCards.filter(card => { // Filter allCards instead of the cards currently in the catalog
               const price = parseFloat(card.querySelector("#price").textContent.replace("$", ""));
               return price >= minPrice && price <= maxPrice;
-      	    });
-      	    catalogGrid.innerHTML = "";
-      	    filteredCards.forEach(card => {
+          });
+          catalogGrid.innerHTML = "";
+          filteredCards.forEach(card => {
             card.style.opacity = 0;
             catalogGrid.appendChild(card);
 
