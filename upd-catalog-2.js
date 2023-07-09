@@ -51,7 +51,9 @@ function updateCatalog() {
       catalogGrid.innerHTML = "";
       querySnapshot.forEach((doc) => {
         const data = doc.data();
-        brandsSet.add(data.brand);
+        if (data.brand) {
+          brandsSet.add(data.brand);
+        }
             
         const card = cardTemplate.cloneNode(true);
 
