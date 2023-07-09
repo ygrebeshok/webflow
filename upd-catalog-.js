@@ -14,14 +14,45 @@ const holidayGrid = document.getElementById("holiday-grid");
 const holidayTemplate = document.querySelector(".birthday");
 let selected_holiday = "";
 const errorAlert = document.getElementById("error-alert");
+const brandFilterContainer = document.getElementById("brand-filter");
+
+function populateBrandFilter(brands) {
+  brands.forEach((brand) => {
+    var label = document.createElement('label');
+    var checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.value = brand;
+    checkbox.id = 'brand-' + brand;
+
+    checkbox.addEventListener('change', function() {
+      handleBrandCheckboxChange(this);
+    });
+
+    label.appendChild(checkbox);
+    label.appendChild(document.createTextNode(brand));
+
+    brandFilterContainer.appendChild(label);
+    brandFilterContainer.appendChild(document.createElement('br')); // adds a line break for better readability
+  });
+}
+
+function handleBrandCheckboxChange(checkbox) {
+  if (checkbox.checked) {
+    // Add brand to filter
+  } else {
+    // Remove brand from filter
+  }
+}
 
 function updateCatalog() {
+      var brandsSet = new Set();
 
       giftsRef.get().then((querySnapshot) => {
       catalogGrid.innerHTML = "";
       querySnapshot.forEach((doc) => {
         const data = doc.data();
-
+        brandsSet.add(data.brand);
+            
         const card = cardTemplate.cloneNode(true);
 
         card.querySelector("#product_image").src = data.image_url,
@@ -97,5 +128,9 @@ function updateCatalog() {
             });
           });
          });
+
+          var brands = Array.from(brandsSet); // add this line
+          populateBrandFilter(brands);
+            
         });
       }
