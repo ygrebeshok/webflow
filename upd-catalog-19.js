@@ -15,6 +15,9 @@ const holidayTemplate = document.querySelector(".birthday");
 let selected_holiday = "";
 const errorAlert = document.getElementById("error-alert");
 const brandFilterContainer = document.getElementById("brand-filter");
+const filtersContainer = document.getElementById("filters-container");
+const closeFilters = document.getElementById("close-filters");
+const filterActivator = document.getElementById("filter-activator");
 
 function populateBrandFilter(brands) {
   // Clear existing brand filters
