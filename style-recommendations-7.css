@@ -58,6 +58,7 @@
     width: 20px;  /* Adjust this to change the size of the checkbox */
     border: 1px solid #5654ff;
     margin-right: 10px;
+    background-color: #4b00ff;
   }
 
   .button {
