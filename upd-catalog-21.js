@@ -18,6 +18,32 @@ const brandFilterContainer = document.getElementById("brand-filter");
 const filtersContainer = document.getElementById("filters-container");
 const closeFilters = document.getElementById("close-filters");
 const filterActivator = document.getElementById("filter-activator");
+const lowestPriceButton = document.getElementById('lowestPrice');
+const highestPriceButton = document.getElementById('highestPrice');
+
+lowestPriceButton.addEventListener("click", () => {
+  // Sort visibleCards by price in ascending order
+  allCards.sort((cardA, cardB) => {
+    const priceA = parseFloat(cardA.querySelector("#price").textContent.replace("$", ""));
+    const priceB = parseFloat(cardB.querySelector("#price").textContent.replace("$", ""));
+    return priceA - priceB;
+  });
+
+  // Then re-render the catalog
+  filterCatalog();
+});
+
+highestPriceButton.addEventListener("click", () => {
+  // Sort visibleCards by price in descending order
+  allCards.sort((cardA, cardB) => {
+    const priceA = parseFloat(cardA.querySelector("#price").textContent.replace("$", ""));
+    const priceB = parseFloat(cardB.querySelector("#price").textContent.replace("$", ""));
+    return priceB - priceA;
+  });
+
+  // Then re-render the catalog
+  filterCatalog();
+});
 
 function populateBrandFilter(brands) {
   // Clear existing brand filters
