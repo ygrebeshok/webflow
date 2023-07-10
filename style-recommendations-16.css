@@ -107,3 +107,9 @@
   #filters-container.show {
     transform: translateX(0);
   }
+
+  .button-selected {
+    border: none;
+    color: white;
+    background-color: #7977ff;
+  }
