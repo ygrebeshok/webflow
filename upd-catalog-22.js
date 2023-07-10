@@ -22,6 +22,9 @@ const lowestPriceButton = document.getElementById('lowestPrice');
 const highestPriceButton = document.getElementById('highestPrice');
 
 lowestPriceButton.addEventListener("click", () => {
+  lowestPriceButton.classList.add('button-selected');
+  highestPriceButton.classList.remove('button-selected');
+  
   // Sort visibleCards by price in ascending order
   allCards.sort((cardA, cardB) => {
     const priceA = parseFloat(cardA.querySelector("#price").textContent.replace("$", ""));
@@ -34,6 +37,9 @@ lowestPriceButton.addEventListener("click", () => {
 });
 
 highestPriceButton.addEventListener("click", () => {
+  highestPriceButton.classList.add('button-selected');
+  lowestPriceButton.classList.remove('button-selected');
+  
   // Sort visibleCards by price in descending order
   allCards.sort((cardA, cardB) => {
     const priceA = parseFloat(cardA.querySelector("#price").textContent.replace("$", ""));
