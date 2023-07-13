@@ -20,6 +20,11 @@ const closeFilters = document.getElementById("close-filters");
 const filterActivator = document.getElementById("filter-activator");
 const lowestPriceButton = document.getElementById('lowestPrice');
 const highestPriceButton = document.getElementById('highestPrice');
+const holidayImage = document.getElementById('holiday-image');
+const holidayTitle = document.getElementById('holiday-title');
+const holidayDesc = document.getElementById('holiday-desc');
+const holidayPrice = document.getElementById('holiday-price');
+const holidayLink = document.getElementById('holiday-link');
 
 lowestPriceButton.addEventListener("click", () => {
   lowestPriceButton.classList.add('button-selected');
@@ -63,17 +68,12 @@ function loadHolidayData() {
             var data = doc.data();
             
             // Populate the HTML elements
-            document.getElementById('holiday-title').textContent = data.name;
-            document.getElementById('holiday-desc').textContent = data.description;
-            
-            var holidayImage = document.getElementById('holiday-image');
+            holidayTitle.textContent = data.name;
+            holidayDesc.textContent = data.description;
             holidayImage.src = data.image_url;
             holidayImage.alt = data.name;
-            
-            var holidayLink = document.getElementById('holiday-link');
             holidayLink.href = data.product_link;
-            
-            document.getElementById('holiday-price').textContent = data.price;
+            holidayPrice.textContent = "$" + data.price;
         });
     }).catch((error) => {
         console.log("Error getting documents: ", error);
