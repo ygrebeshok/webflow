@@ -21,7 +21,6 @@ const filterActivator = document.getElementById("filter-activator");
 const lowestPriceButton = document.getElementById('lowestPrice');
 const highestPriceButton = document.getElementById('highestPrice');
 const holidayContainer = document.getElementById('holiday-container');
-const holidayCard = document.getElementById('holiday-card');
 
 lowestPriceButton.addEventListener("click", () => {
   lowestPriceButton.classList.add('button-selected');
@@ -56,32 +55,22 @@ highestPriceButton.addEventListener("click", () => {
 function loadHolidayData() {
 
     holidayRef.get().then((querySnapshot) => {
+	    catalogGrid.innerHTML = "";
 
-        // Clear the existing children of the container
-        while (holidayContainer.firstChild) {
-            holidayContainer.firstChild.remove();
-        }
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
 
-        querySnapshot.forEach((doc) => {
-            console.log(doc.id, " => ", doc.data());
+	      const holiday = holidayCardTemplate.cloneNode(true);
 
-            // Clone the product structure
-            var productClone = holidayCard.cloneNode(true);
+        holiday.querySelector(‘#holiday-title').textContent = data.name;
+        holiday.querySelector(‘#holiday-desc').textContent = data.description;
+        holiday.querySelector(‘#holiday-image').src = data.image_url;
+        holiday.querySelector(‘#holiday-image').alt = data.name;
+        holiday.querySelector(‘#holiday-link').href = data.product_link;
+        holiday.querySelector(‘#holiday-price').textContent = "$" + data.price;
 
-            // Get the data from the document
-            var data = doc.data();
-
-            // Populate the HTML elements of the cloned structure
-            productClone.querySelector('.holiday-title').textContent = data.name;
-            productClone.querySelector('.holiday-desc').textContent = data.description;
-            productClone.querySelector('.holiday-image').src = data.image_url;
-            productClone.querySelector('.holiday-image').alt = data.name;
-            productClone.querySelector('.holiday-link').href = data.product_link;
-            productClone.querySelector('.holiday-price').textContent = "$" + data.price;
-
-            // Add the new product element to the container
-            holidayContainer.appendChild(productClone);
-        });
+        holidayContainer.appendChild(holiday);
+      });
     }).catch((error) => {
         console.log("Error getting documents: ", error);
     });
