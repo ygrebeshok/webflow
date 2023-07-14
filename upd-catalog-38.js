@@ -69,25 +69,28 @@ function loadHolidayData() {
             holiday.querySelector("#holiday-price").textContent = "$" + data.price;
 
             holidayContainer.appendChild(holiday);
+	    let holidaySection = document.getElementById("current-holiday");
 
-	    holiday.addEventListener('mouseenter', () => {
+	    holiday.addEventListener("mouseenter", () => {
 	      holiday.animate([
-	        { transform: 'translateY(0px)' },
-	        { transform: 'translateY(-100px)' }
+	        { transform: "translateY(0px)" },
+	        { transform: "translateY(-100px)" }
 	      ], {
 	        duration: 200,
-	        fill: 'forwards'
+	        fill: "forwards"
 	      });
+	      holidaySection.style.filter = "blur(10px)";
 	   });
 	
-	holiday.addEventListener('mouseleave', () => {
+	holiday.addEventListener("mouseleave", () => {
 	    holiday.animate([
-	        { transform: 'translateY(-100px)' },
-	        { transform: 'translateY(0px)' }
+	        { transform: "translateY(-100px)" },
+	        { transform: "translateY(0px)" }
 	    ], {
 	        duration: 200,
-	        fill: 'forwards'
+	        fill: "forwards"
 	    });
+	    holidaySection.style.filter = "blur(0px)";
 	  });
         });
     }).catch((error) => {
