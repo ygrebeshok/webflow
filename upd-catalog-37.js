@@ -71,24 +71,24 @@ function loadHolidayData() {
             holidayContainer.appendChild(holiday);
 
 	    holiday.addEventListener('mouseenter', () => {
-            	holiday.animate([
-             	{ transform: 'scale(1)' },
-             	{ transform: 'scale(1.05)' }
-            	], {
-            	duration: 200,
-            	fill: 'forwards'
-            	});
-            });
-
-            holiday.addEventListener('mouseleave', () => {
-            	holiday.animate([
-            	{ transform: 'scale(1.05)' },
-            	{ transform: 'scale(1)' }
-            	], {
-            	duration: 200,
-            	fill: 'forwards'
-            	});
-             });
+	      holiday.animate([
+	        { transform: 'translateY(0px)' },
+	        { transform: 'translateY(-100px)' }
+	      ], {
+	        duration: 200,
+	        fill: 'forwards'
+	      });
+	   });
+	
+	holiday.addEventListener('mouseleave', () => {
+	    holiday.animate([
+	        { transform: 'translateY(-100px)' },
+	        { transform: 'translateY(0px)' }
+	    ], {
+	        duration: 200,
+	        fill: 'forwards'
+	    });
+	  });
         });
     }).catch((error) => {
         console.log("Error getting documents: ", error);
