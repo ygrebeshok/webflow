@@ -69,7 +69,7 @@ function loadHolidayData() {
             holiday.querySelector("#holiday-price").textContent = "$" + data.price;
 
             holidayContainer.appendChild(holiday);
-	    holidayContainer.removeChild(holidayCardTemplate);
+	    holidayCardTemplate.parentNode.removeChild(holidayCardTemplate);
 
 	    holiday.addEventListener('mouseenter', () => {
             	holiday.animate([
