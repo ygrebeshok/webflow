@@ -55,7 +55,7 @@ highestPriceButton.addEventListener("click", () => {
 function loadHolidayData() {
 
     holidayRef.get().then((querySnapshot) => {
-	  catalogGrid.innerHTML = "";
+	holidayContainer.innerHTML = "";
 
         querySnapshot.forEach((doc) => {
           const data = doc.data();
