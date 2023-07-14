@@ -113,3 +113,27 @@
     color: white;
     background-color: #7977ff;
   }
+
+  #holiday-container {
+    overflow-x: scroll;
+    white-space: nowrap;
+    height: 300px; /* default height for screens larger than 568px */
+  }
+
+  /* for screens smaller or equal to 568px and larger than 320px */
+  @media screen and (max-width: 568px) {
+    #holiday-container {
+      height: 350px;
+    }
+  }
+
+  /* for screens smaller or equal to 320px */
+  @media screen and (max-width: 320px) {
+    #holiday-container {
+      height: 300px;
+    }
+  }
+
+  #holiday-card {
+    display: inline-flex;
+  }
