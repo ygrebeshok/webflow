@@ -78,7 +78,7 @@ function loadHolidayData() {
 	        duration: 200,
 	        fill: "forwards"
 	      });
-	      holidaySection.style.filter = "blur(10px)";
+	      holidayBack.style.filter = "blur(5px)";
 	   });
 	
 	holiday.addEventListener("mouseleave", () => {
@@ -89,7 +89,7 @@ function loadHolidayData() {
 	        duration: 200,
 	        fill: "forwards"
 	    });
-	    holidaySection.style.filter = "blur(0px)";
+	    holidayBack.style.filter = "blur(0px)";
 	  });
         });
     }).catch((error) => {
