@@ -69,7 +69,6 @@ function loadHolidayData() {
             holiday.querySelector("#holiday-price").textContent = "$" + data.price;
 
             holidayContainer.appendChild(holiday);
-	    let holidaySection = document.getElementById("current-holiday");
 
 	    holiday.addEventListener("mouseenter", () => {
 	      holiday.animate([
