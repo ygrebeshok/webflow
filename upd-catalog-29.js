@@ -53,23 +53,30 @@ highestPriceButton.addEventListener("click", () => {
 });
 
 function loadHolidayData() {
-
     holidayRef.get().then((querySnapshot) => {
-      catalogGrid.innerHTML = "";
+        catalogGrid.innerHTML = "";
 
-      querySnapshot.forEach((doc) => {
-        const data = doc.data();
-	const holiday = holidayCardTemplate.cloneNode(true);
+        querySnapshot.forEach((doc) => {
+            const data = doc.data();
+            const holiday = holidayCardTemplate.cloneNode(true);
 
-        holiday.querySelector("#holiday-title").textContent = data.name;
-        holiday.querySelector("#holiday-desc").textContent = data.description;
-        holiday.querySelector("#holiday-image").src = data.image_url;
-        holiday.querySelector("#holiday-image").alt = data.name;
-        holiday.querySelector("#holiday-link").href = data.product_link;
-        holiday.querySelector("#holiday-price").textContent = "$" + data.price;
+            // Remove the id from the cloned card
+            holiday.removeAttribute('id');
 
-        holidayContainer.appendChild(holiday);
-      });
+            // Populate the cloned card with data
+            holiday.querySelector(".holiday-title").textContent = data.name;
+            holiday.querySelector(".holiday-desc").textContent = data.description;
+            holiday.querySelector(".holiday-image").src = data.image_url;
+            holiday.querySelector(".holiday-image").alt = data.name;
+            holiday.querySelector(".holiday-link").href = data.product_link;
+            holiday.querySelector(".holiday-price").textContent = "$" + data.price;
+
+            // Append the cloned card to the container
+            holidayContainer.appendChild(holiday);
+        });
+
+        // Remove the template card from the DOM
+        holidayCardTemplate.parentNode.removeChild(holidayCardTemplate);
     }).catch((error) => {
         console.log("Error getting documents: ", error);
     });
