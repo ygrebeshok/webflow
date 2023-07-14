@@ -75,7 +75,7 @@ function loadHolidayData() {
             	holiday.animate([
              	{ transform: 'scale(1)' },
              	{ transform: 'scale(1.05)' }
-            	 ], {
+            	], {
             	duration: 200,
             	fill: 'forwards'
             	});
@@ -90,7 +90,6 @@ function loadHolidayData() {
             	fill: 'forwards'
             	});
              });
-           });
         });
     }).catch((error) => {
         console.log("Error getting documents: ", error);
