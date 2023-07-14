@@ -73,7 +73,7 @@ function loadHolidayData() {
 	    holiday.addEventListener("mouseenter", () => {
 	      holiday.animate([
 	        { transform: "translateY(0px)" },
-	        { transform: "translateY(-100px)" }
+	        { transform: "translateY(-90px)" }
 	      ], {
 	        duration: 200,
 	        fill: "forwards"
@@ -83,7 +83,7 @@ function loadHolidayData() {
 	
 	holiday.addEventListener("mouseleave", () => {
 	    holiday.animate([
-	        { transform: "translateY(-100px)" },
+	        { transform: "translateY(-90px)" },
 	        { transform: "translateY(0px)" }
 	    ], {
 	        duration: 200,
