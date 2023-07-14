@@ -69,10 +69,10 @@ function loadHolidayData() {
             holiday.querySelector("#holiday-price").textContent = "$" + data.price;
 
             holidayContainer.appendChild(holiday);
-	          holidayCardTemplate.parentNode.removeChild(holidayCardTemplate);
+	    holidayContainer.removeChild(holidayCardTemplate);
 
-	          holiday.addEventListener('mouseenter', () => {
-            	card.animate([
+	    holiday.addEventListener('mouseenter', () => {
+            	holiday.animate([
              	{ transform: 'scale(1)' },
              	{ transform: 'scale(1.05)' }
             	 ], {
@@ -82,7 +82,7 @@ function loadHolidayData() {
             });
 
             holiday.addEventListener('mouseleave', () => {
-            	card.animate([
+            	holiday.animate([
             	{ transform: 'scale(1.05)' },
             	{ transform: 'scale(1)' }
             	], {
