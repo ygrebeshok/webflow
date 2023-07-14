@@ -78,7 +78,7 @@ function loadHolidayData() {
 	        duration: 200,
 	        fill: "forwards"
 	      });
-	      holidayBack.style.filter = "blur(5px)";
+	      holidayBack.style.filter = "blur(2px)";
 	   });
 	
 	holiday.addEventListener("mouseleave", () => {
