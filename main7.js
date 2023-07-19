@@ -109,55 +109,24 @@
     function filterVisibleCards(openaiKeywords) {
       let visibleCards = [];
       const stringSimilarityThreshold = 0.6;
-
+    
       catalogGrid.childNodes.forEach((card) => {
         let cardKeywords = card.querySelector("#keywords").textContent.toLowerCase().split(",").flatMap(keyword => keyword.trim());
         cardKeywords = cardKeywords.map(str => str.replace(/^\s+|\s+$/g, '').replace(/[,.\'"*•-]+/g, ''));
         cardKeywords = cardKeywords.filter(keyword => keyword !== "");
-        const cardKeywordsSet = new Set(cardKeywords);
-        const intersection = new Set([...openaiKeywords].filter(x => cardKeywordsSet.has(x)));
-        if (intersection.size === 0) {
-          card.style.display = "none";
+        const cardKeywordsArray = Array.from(cardKeywords); // Convert to an array
+    
+        const intersection = stringSimilarity.findBestMatch(selected_holiday, cardKeywordsArray);
+        if (intersection.bestMatch.rating >= stringSimilarityThreshold) {
+          visibleCards.push(card);
+          card.style.display = "";
         } else {
-          visibleCards.push(card);
-          card.style.display = "";
+          card.style.display = "none";
         }
-
-        let cardTitle = card.querySelector("#name").textContent.toLowerCase();
-        cardTitle = cardTitle.replace(/[,.\'"*•-]+/g, '');
-        let cardTitleWords = cardTitle.split(" ");
-        cardTitleWords = cardTitleWords.map(str => str.replace(/[\W_]+/g, ''));
-        const cardDescription = card.querySelector("#description").textContent.toLowerCase().replace(/[,.\'"*•-]+/g, '');
-        let cardDescriptionWords = cardDescription.split(" ");
-        cardDescriptionWords = cardDescriptionWords.map(str => str.replace(/[\W_]+/g, ''));
-  
-        let matchedWords = [];
-        let similarity = 0;
-
-        for (let i = 0; i < cardTitleWords.length; i++) {
-          const word = cardTitleWords[i];
-          const match = stringSimilarity.findBestMatch(word, keywords);
-          if (match.bestMatch.rating >= stringSimilarityThreshold && !matchedWords.includes(match.bestMatch.target)) {
-            matchedWords.push(match.bestMatch.target);
-            similarity += match.bestMatch.rating;
-          }
-        }
-        for (let i = 0; i < cardDescriptionWords.length; i++) {
-          const word = cardDescriptionWords[i];
-          const match = stringSimilarity.findBestMatch(word, keywords);
-          if (match.bestMatch.rating >= stringSimilarityThreshold && !matchedWords.includes(match.bestMatch.target)) {
-            matchedWords.push(match.bestMatch.target);
-            similarity += match.bestMatch.rating;
-          }
-        }
-        if (matchedWords.length >= 2 && similarity / matchedWords.length >= stringSimilarityThreshold) {
-          visibleCards.push(card);
-          card.style.display = "";
-        }
-
+    
         visibleCards = removeDuplicates(visibleCards);
       });
-
+    
       return visibleCards;
     }
 
