@@ -2,7 +2,7 @@
   // Function to initialize the app
   function initializeApp() {
     setupUI();
-    mainButton.addEventListener("click", handleSearch);
+    mainButton.addEventListener("click", recommend);
   }
 
   function holidays() {
@@ -30,7 +30,7 @@
     }
   }
 
-  function recommend() {
+  async function recommend() {
     event.preventDefault();
     
     const priceRange = document.getElementById("price-range");
