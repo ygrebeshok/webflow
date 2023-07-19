@@ -3,9 +3,6 @@
   function initializeApp() {
     setupUI();
     mainButton.addEventListener("click", handleSearch);
-
-    const closePopupButton = document.getElementById("close-popup");
-    closePopupButton.addEventListener("click", hidePopup);
   }
 
   function holidays() {
@@ -179,31 +176,5 @@
     document.getElementById("textarea").style.color = "white";
     searchAgain.style.visibility = "hidden";
     holidayGrid.classList.remove("disablegrid");
-  }
-
-  function showPopup(productData) {
-    // ... Your existing pop-up display logic ...
-
-    // Set the pop-up content with the product information
-    const popupImage = document.getElementById("popup-image");
-    const popupName = document.getElementById("popup-name");
-    const popupBrand = document.getElementById("popup-brand");
-    const popupDescription = document.getElementById("popup-description");
-    const popupPrice = document.getElementById("popup-price");
-    const popupLink = document.getElementById("popup-link");
-
-    popupImage.src = productData.image;
-    popupName.textContent = productData.name;
-    popupBrand.textContent = productData.brand;
-    popupDescription.textContent = productData.description;
-    popupPrice.textContent = productData.price;
-    popupLink.href = productData.link;
-
-    popupContainer.style.display = "block";
-  }
-
-  // Function to hide the pop-up
-  function hidePopup() {
-    popupContainer.style.display = "none";
   }
 
