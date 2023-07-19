@@ -1,3 +1,8 @@
+  function loader() {
+    const loader = document.getElementById("loader");
+    const content = document.getElementById("content");
+    content.style.display = "none";
+  }
 
   // Function to initialize the app
   function initializeApp() {
