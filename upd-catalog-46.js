@@ -28,7 +28,7 @@ const popupDesc = document.getElementById('popup_desc');
 const popupLink = document.getElementById('popup_link');
 const popupPrice = document.getElementById('popup_price');
 const quickLook = document.getElementById('quick_look');
-const popupContainer = document.getElementById('popup');
+const popupContainer = document.getElementById('popup-fade');
 const popupClose = document.getElementById('popup-close');
 
 lowestPriceButton.addEventListener("click", () => {
