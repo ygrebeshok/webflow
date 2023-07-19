@@ -30,6 +30,7 @@ const popupPrice = document.getElementById('popup_price');
 const quickLook = document.getElementById('quick_look');
 const popupContainer = document.getElementById('popup-fade');
 const popupClose = document.getElementById('popup-close');
+const popupFavoriteBtn = document.getElementById("look-fav-btn");
 
 lowestPriceButton.addEventListener("click", () => {
   lowestPriceButton.classList.add('button-selected');
@@ -156,6 +157,47 @@ function showPopup(productData) {
   popupLink.href = productData.product_link;
   popupPrice.textContent = `$${productData.price}`;
 
+  const user = firebase.auth().currentUser;
+  const userId = user.uid;
+  const productId = productData.name;
+
+  firebase.firestore().collection("users").doc(userId).get()
+    .then(doc => {
+      const favorites = doc.data().favorites;
+      if (favorites.includes(productId)) {
+        popupFavoriteBtn.textContent = "Remove from Favorites";
+      }
+    })
+    .catch(error => {
+      console.log("Error getting favorites:", error);
+    });
+
+  popupFavoriteBtn.addEventListener('click', () => {
+    const isFavorite = popupFavoriteBtn.textContent === "Remove from Favorites";
+
+    if (isFavorite) {
+      firebase.firestore().collection("users").doc(userId).update({
+        favorites: firebase.firestore.FieldValue.arrayRemove(productId)
+      })
+      .then(() => {
+        popupFavoriteBtn.textContent = "Add to Favorites";
+      })
+      .catch(error => {
+        console.log("Error removing product from favorites:", error);
+      });
+    } else {
+      firebase.firestore().collection("users").doc(userId).update({
+        favorites: firebase.firestore.FieldValue.arrayUnion(productId)
+      })
+      .then(() => {
+        popupFavoriteBtn.textContent = "Remove from Favorites";
+      })
+      .catch(error => {
+        console.log("Error adding product to favorites:", error);
+      });
+    }
+  });
+	
   popupContainer.style.display = "flex";
 }
 
