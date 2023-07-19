@@ -79,7 +79,7 @@ function loadHolidayData() {
 
             holidayContainer.appendChild(holiday);
 
-	    const holidayFavorite = card.querySelector("#holiday-favorite");
+	    const holidayFavorite = holiday.querySelector("#holiday-favorite");
             const productId = holiday.querySelector("#holiday-title").textContent;
             const user = firebase.auth().currentUser;
             const userId = user.uid;
@@ -119,6 +119,7 @@ function loadHolidayData() {
                       console.log("Error adding product to favorites:", error);
                     });
                  }
+	      });
 
 	    holiday.addEventListener("mouseenter", () => {
 	      holiday.animate([
