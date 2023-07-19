@@ -188,7 +188,8 @@
     		keywords[0] = keywords[0].substring(2);
   		}
 		}
-
+		
+// Вот здесь отредактированные keywords, и они добавляются во множество openaiKeywords уже для порога в stringSimilarity
     const openaiKeywords = new Set(keywords);
     let visibleCards = [];
     const stringSimilarityThreshold = 0.6;
