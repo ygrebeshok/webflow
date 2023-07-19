@@ -10,7 +10,7 @@
 <script src="//unpkg.com/string-similarity/umd/string-similarity.min.js"></script>
   
 <script>
-  const openaiApiKey = "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";
+  const openaiApiKey = "XXXXXXXXXXXXXXXXXXXXXXXXX";
   window.addEventListener('load', function(){
   	const loader = document.getElementById('loader');
   	const content = document.getElementById('content');
