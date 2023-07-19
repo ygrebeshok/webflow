@@ -61,76 +61,75 @@
   }
 
   // Function to fetch data from OpenAI API
-    async function fetchOpenAIResponse(text) {
-      const response = await fetch("https://api.openai.com/v1/engines/text-davinci-003/completions", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${openaiApiKey}`
-        },
-        body: JSON.stringify({
-          prompt: "Give some gift recommendations for " + selected_holiday + "\n" + "Here is the case: " + text,
-          max_tokens: 1024,
-          temperature: 0.5,
-          top_p: 1,
-          frequency_penalty: 0,
-          presence_penalty: 0
-        })
-      });
+  async function fetchOpenAIResponse(text) {
+  const response = await fetch("https://api.openai.com/v1/engines/text-davinci-003/completions", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${openaiApiKey}`
+    },
+    body: JSON.stringify({
+      prompt: "Give some gift recommendations for " + selected_holiday + "\n" + "Here is the case: " + text,
+      max_tokens: 1024,
+      temperature: 0.5,
+      top_p: 1,
+      frequency_penalty: 0,
+      presence_penalty: 0
+    })
+  });
 
-      const data = await response.json();
-      return data.choices[0].text;
+  const data = await response.json();
+  return data.choices[0].text;
+}
+
+// Function to extract keywords from OpenAI response
+function extractKeywords(responseText) {
+  let keywords = responseText.toLowerCase().split(",").flatMap(keyword => keyword.trim());
+  keywords = keywords.map(str => str.replace(/^\s+|\s+$/g, '').replace(/[,.\'"*•-]+/g, ''));
+  keywords = keywords.filter(keyword => keyword !== "");
+
+  if (keywords.length > 0) {
+    if (keywords[0].charAt(0) == " ") {
+      keywords[0] = keywords[0].substring(1);
     }
 
-    // Function to extract keywords from OpenAI response
-    function extractKeywords(responseText) {
-      let keywords = responseText.replace(/\n/g, '');
-      keywords = keywords.toLowerCase().split(",").flatMap(keyword => keyword.trim());
-      keywords = keywords.map(str => str.replace(/^\s+|\s+$/g, '').replace(/[,.\'"*•-]+/g, ''));
-      keywords = keywords.filter(keyword => keyword !== "");
+    if (keywords[0].startsWith("\n\n")) {
+      keywords[0] = keywords[0].substring(2);
+    }
+  }
 
-      if (keywords.length > 0) {
-        if (keywords[0].charAt(0) == " ") {
-          keywords[0] = keywords[0].substring(1);
-        }
+  return new Set(keywords);
+}
 
-        if (keywords[0].startsWith("\n\n")) {
-          keywords[0] = keywords[0].substring(2);
-        }
-      }
+// Function to filter and display visible cards based on keywords
+function filterVisibleCards(openaiKeywords) {
+  let visibleCards = [];
+  const stringSimilarityThreshold = 0.6;
 
-      return new Set(keywords);
+  catalogGrid.childNodes.forEach((card) => {
+    let cardKeywords = card.querySelector("#keywords").textContent.toLowerCase().split(",").flatMap(keyword => keyword.trim());
+    cardKeywords = cardKeywords.map(str => str.replace(/^\s+|\s+$/g, '').replace(/[,.\'"*•-]+/g, ''));
+    cardKeywords = cardKeywords.filter(keyword => keyword !== "");
+    const cardKeywordsArray = Array.from(cardKeywords); // Convert to an array
+
+    const intersection = stringSimilarity.findBestMatch(selected_holiday, cardKeywordsArray);
+    if (intersection.bestMatch.rating >= stringSimilarityThreshold) {
+      visibleCards.push(card);
+      card.style.display = "";
+    } else {
+      card.style.display = "none";
     }
 
-    // Function to filter and display visible cards based on keywords
-    function filterVisibleCards(openaiKeywords) {
-      let visibleCards = [];
-      const stringSimilarityThreshold = 0.6;
-    
-      catalogGrid.childNodes.forEach((card) => {
-        let cardKeywords = card.querySelector("#keywords").textContent.toLowerCase().split(",").flatMap(keyword => keyword.trim());
-        cardKeywords = cardKeywords.map(str => str.replace(/^\s+|\s+$/g, '').replace(/[,.\'"*•-]+/g, ''));
-        cardKeywords = cardKeywords.filter(keyword => keyword !== "");
-        const cardKeywordsArray = Array.from(cardKeywords); // Convert to an array
-    
-        const intersection = stringSimilarity.findBestMatch(selected_holiday, cardKeywordsArray);
-        if (intersection.bestMatch.rating >= stringSimilarityThreshold) {
-          visibleCards.push(card);
-          card.style.display = "";
-        } else {
-          card.style.display = "none";
-        }
-    
-        visibleCards = removeDuplicates(visibleCards);
-      });
-    
-      return visibleCards;
-    }
+    visibleCards = removeDuplicates(visibleCards);
+  });
 
-    // Function to remove duplicates from an array
-    function removeDuplicates(array) {
-      return Array.from(new Set(array));
-    }
+  return visibleCards;
+}
+
+// Function to remove duplicates from an array
+function removeDuplicates(array) {
+  return Array.from(new Set(array));
+}
 
     // Function to handle the search logic
     async function handleSearch(event) {
@@ -156,13 +155,13 @@
         const responseText = await fetchOpenAIResponse(text);
         const openaiKeywords = extractKeywords(responseText);
         const visibleCards = filterVisibleCards(openaiKeywords);
-
+    
         output.textContent = `${visibleCards.length} gift(s) found`;
         openaiRec.textContent = [...openaiKeywords].join(', ');
         lottieLoader.style.visibility = "hidden";
         results.scrollIntoView({ behavior: 'smooth' });
         searchAgain.style.visibility = "visible";
-
+    
       } catch (error) {
         console.error(error);
         errorAlert.style.visibility = "visible";
