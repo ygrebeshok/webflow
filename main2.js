@@ -13,15 +13,15 @@
   // Function to initialize Firebase
   function initializeFirebase() {
     const firebaseConfig = {
-		apiKey: firebaseKey,
-    authDomain: "smappy-ai.firebaseapp.com",
-    projectId: "smappy-ai",
-    storageBucket: "smappy-ai.appspot.com",
-    messagingSenderId: "1054219735418",
-    appId: "1:1054219735418:web:c6871596bd39d95afd46c3",
-    measurementId: "G-D56TMT6SBE"
-	  };
-	  firebase.initializeApp(firebaseConfig);
+    	apiKey: firebaseKey,
+    	authDomain: "smappy-ai.firebaseapp.com",
+    	projectId: "smappy-ai",
+    	storageBucket: "smappy-ai.appspot.com",
+    	messagingSenderId: "1054219735418",
+    	appId: "1:1054219735418:web:c6871596bd39d95afd46c3",
+    	measurementId: "G-D56TMT6SBE"
+    };
+    firebase.initializeApp(firebaseConfig);
 
     firebase.auth().onAuthStateChanged(function(authUser) {
       user = authUser;
@@ -32,12 +32,6 @@
         window.location.href = '/log-in';
       }
     });
-  }
-
-  function loader() {
-    const loader = document.getElementById("loader");
-    const content = document.getElementById("content");
-    content.style.display = "none";
   }
 
   function holidays() {
