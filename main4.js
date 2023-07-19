@@ -1,36 +1,11 @@
 
   // Function to initialize the app
   function initializeApp() {
-    initializeFirebase();
     setupUI();
     mainButton.addEventListener("click", handleSearch);
 
     const closePopupButton = document.getElementById("close-popup");
     closePopupButton.addEventListener("click", hidePopup);
-  }
-
-  // Function to initialize Firebase
-  function initializeFirebase() {
-    const firebaseConfig = {
-    	apiKey: firebaseKey,
-    	authDomain: "smappy-ai.firebaseapp.com",
-    	projectId: "smappy-ai",
-    	storageBucket: "smappy-ai.appspot.com",
-    	messagingSenderId: "1054219735418",
-    	appId: "1:1054219735418:web:c6871596bd39d95afd46c3",
-    	measurementId: "G-D56TMT6SBE"
-    };
-    firebase.initializeApp(firebaseConfig);
-
-    firebase.auth().onAuthStateChanged(function(authUser) {
-      user = authUser;
-
-      if (user && bodyUnauth) {
-        window.location.href = '/user';
-      } else if (!user && bodyAuth) {
-        window.location.href = '/log-in';
-      }
-    });
   }
 
   function holidays() {
