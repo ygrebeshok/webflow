@@ -21,6 +21,15 @@ const filterActivator = document.getElementById("filter-activator");
 const lowestPriceButton = document.getElementById('lowestPrice');
 const highestPriceButton = document.getElementById('highestPrice');
 const holidayContainer = document.getElementById('holiday-container');
+const popupImage = document.getElementById('popup_image');
+const popupTitle = document.getElementById('popup_title');
+const popupBrand = document.getElementById('popup_brand');
+const popupDesc = document.getElementById('popup_desc');
+const popupLink = document.getElementById('popup_link');
+const popupPrice = document.getElementById('popup_price');
+const quickLook = document.getElementById('quick_look');
+const popupContainer = document.getElementById('popup');
+const popupClose = document.getElementById('popup-close');
 
 lowestPriceButton.addEventListener("click", () => {
   lowestPriceButton.classList.add('button-selected');
@@ -96,6 +105,21 @@ function loadHolidayData() {
         console.log("Error getting documents: ", error);
     });
 }
+
+function showPopup(productData) {
+  popupImage.src = productData.image_url;
+  popupTitle.textContent = productData.name;
+  popupBrand.textContent = productData.brand;
+  popupDesc.textContent = productData.description;
+  popupLink.href = productData.product_link;
+  popupPrice.textContent = `$${productData.price}`;
+
+  popupContainer.style.display = "flex";
+}
+
+popupClose.addEventListener("click", () => {
+  popupContainer.style.display = "none";
+});
 
 function populateBrandFilter(brands) {
   // Clear existing brand filters
@@ -260,6 +284,20 @@ function updateCatalog() {
             });
           }
         });
+
+	const quickLookBtn = card.querySelector("#quick_look");
+	quickLookBtn.addEventListener("click", () => {
+	  const productData = {
+	    image_url: card.querySelector("#product_image").src,
+	    name: card.querySelector("#name").textContent,
+	    brand: card.querySelector("#brand").textContent,
+	    description: card.querySelector("#description").textContent,
+	    product_link: card.querySelector("#link-container").href,
+	    price: card.querySelector("#price").textContent.replace("$", "")
+	  };
+	
+	  showPopup(productData);
+	});
 
         catalogGrid.appendChild(card);
 
