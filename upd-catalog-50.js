@@ -62,7 +62,7 @@ highestPriceButton.addEventListener("click", () => {
   filterCatalog();
 });
 
-function toggleFavorite(element) {
+function toggleFavorite(element, userId, productId) {
   const isFavorite = element.textContent === "Remove from Favorites";
 
   if (isFavorite) {
