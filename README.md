@@ -4,9 +4,14 @@ This is main repo for Smappy AI code.
 Main.js
 The main code script for recommendations.
 
-When mainButton is clicked, the process for sending prompt to OpenAI is initialized.
-In fetchOpenAIResponse(text) a prompt to Open AI is sent, the response is stored then as "responseText".
-Then in extractKeywords() the "responseText" is taken and edited: paragraphs are removed, the text is split into array, then every keyword is cleaned as well.
+All stuff related to forming keywords and filtering the catalogGrid using them is in recommend().
 
-handleSearch() - function of mainButton
+Going in details about recommend():
+
+
+Upd-catalog.js
+The script with collateral functions like brand and price filters, sorting, etc.
+
+Style-recommendations.css
+The css file where all properties for elements on Recommendations page are stored.
 
