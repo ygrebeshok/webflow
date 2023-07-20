@@ -32,7 +32,12 @@
 
   async function recommend() {
     event.preventDefault();
-    
+    // Resets price filter, if was initialized
+    const priceRange = document.getElementById("price-range");
+    const priceDisplay = document.getElementById("price-display");
+    priceRange.value = priceRange.max;
+    priceDisplay.textContent = `$0 - $${priceRange.max}`;
+    // Resets brand filter, if was initialized
     resetBrandFilters();
     
     document.getElementById("textarea").disabled = true;
@@ -42,7 +47,8 @@
     document.getElementById("textarea").style.color = "black";
     lottieLoader.style.visibility = "visible";
     const text = document.getElementById("textarea").value;
-		
+
+    // Prompt to Open AI
     try {
       const response = await fetch("https://api.openai.com/v1/engines/text-davinci-003/completions", {
         method: "POST",
@@ -61,8 +67,10 @@
       });
 
     const data = await response.json();
+    // responseText is the OpenAI's response
     const responseText = data.choices[0].text;
 
+    // Second prompt to Open AI to get keywords from the initial response which is just like a general gift recommendation
     const response2 = await fetch("https://api.openai.com/v1/engines/text-davinci-003/completions", {
       method: "POST",
       headers: {
@@ -80,6 +88,7 @@
     });
 
     const data2 = await response2.json();
+    // Keywords received from OpenAI
     let keywords = data2.choices[0].text;
     const newKeywords = keywords.replace(/\n/g, '');
 
@@ -96,16 +105,20 @@
         keywords[0] = keywords[0].substring(2);
       }
     }
+    // Correctly formatted keywords at this point
 
     const openaiKeywords = new Set(keywords);
     let visibleCards = [];
     const stringSimilarityThreshold = 0.6;
 
+    // Now catalog grid's card keywords are retrieved and formatted correctly
     catalogGrid.childNodes.forEach((card) => {
       let cardKeywords = card.querySelector("#keywords").textContent.toLowerCase().split(",").flatMap(keyword => keyword.trim());
       cardKeywords = cardKeywords.map(str => str.replace(/^\s+|\s+$/g, '').replace(/[,.\'"*•-]+/g, ''));
       cardKeywords = cardKeywords.filter(keyword => keyword !== "");
       const cardKeywordsSet = new Set(cardKeywords);
+
+   // In intersection openaiKeywords and cardKeywords sets are checked for joint keywords, if founde -> keywords are stored in intersection set
       const intersection = new Set([...openaiKeywords].filter(x => cardKeywordsSet.has(x)));
       
       if (intersection.size === 0) {
@@ -115,6 +128,7 @@
         card.style.display = "";
       }
 
+      // To improve search, catalog grid's card title and description are taken, formatted correctly and are splitted into array of additional card's keywords
       let cardTitle = card.querySelector("#name").textContent.toLowerCase();
       cardTitle = cardTitle.replace(/[,.\'"*•-]+/g, '');
       let cardTitleWords = cardTitle.split(" ");
@@ -126,6 +140,7 @@
       let matchedWords = [];
       let similarity = 0;
 
+      // Here the second check is conducted for matched products with finding similarity between card's title and description keywords and Open AI's keywords
       for (let i = 0; i < cardTitleWords.length; i++) {
         const word = cardTitleWords[i];
         const match = stringSimilarity.findBestMatch(word, keywords);
@@ -142,6 +157,7 @@
           similarity += match.bestMatch.rating;
         }
       }
+      // If matching products are found through the second check, then the product card is pushed to appeat in the grid
       if (matchedWords.length >= 2 && similarity / matchedWords.length >= stringSimilarityThreshold) {
         visibleCards.push(card);
         card.style.display = "";
