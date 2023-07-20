@@ -44,7 +44,6 @@
     errorAlert.style.visibility = "hidden";
     holidayGrid.classList.add('disablegrid');
     searchAgain.style.visibility = "hidden";
-    filtersContainer.style.visibility = "hidden";
     document.getElementById("textarea").style.color = "black";
     lottieLoader.style.visibility = "visible";
     const text = document.getElementById("textarea").value;
