@@ -1,8 +1,4 @@
 
-const filtersContainer = document.getElementById("filters-container");
-const closeFilters = document.getElementById("close-filters");
-const filterActivator = document.getElementById("filter-activator");
-
   // Function to initialize the app
   function initializeApp() {
     setupUI();
@@ -199,14 +195,6 @@ const filterActivator = document.getElementById("filter-activator");
     const favoriteBtns = document.querySelectorAll(".favorite-btn");
     favoriteBtns.forEach((favoriteBtn) => {
       favoriteBtn.addEventListener("click", toggleFavorite);
-    });
-
-    closeFilters.addEventListener("click", async (event) => {
-      filtersContainer.classList.remove('show');
-    });
-
-    filterActivator.addEventListener("click", async (event) => {
-      filtersContainer.classList.add('show');
     });
   }
 
