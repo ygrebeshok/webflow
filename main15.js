@@ -33,11 +33,6 @@
   async function recommend() {
     event.preventDefault();
     
-    const priceRange = document.getElementById("price-range");
-    const priceDisplay = document.getElementById("price-display");
-    priceRange.value = priceRange.max;
-    priceDisplay.textContent = `$0 - $${priceRange.max}`;
-    
     resetBrandFilters();
     
     document.getElementById("textarea").disabled = true;
