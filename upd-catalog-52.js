@@ -15,9 +15,6 @@ const holidayTemplate = document.querySelector(".birthday");
 let selected_holiday = "";
 const errorAlert = document.getElementById("error-alert");
 const brandFilterContainer = document.getElementById("brand-filter");
-const filtersContainer = document.getElementById("filters-container");
-const closeFilters = document.getElementById("close-filters");
-const filterActivator = document.getElementById("filter-activator");
 const lowestPriceButton = document.getElementById('lowestPrice');
 const highestPriceButton = document.getElementById('highestPrice');
 const holidayContainer = document.getElementById('holiday-container');
@@ -31,14 +28,6 @@ const quickLook = document.getElementById('quick_look');
 const popupContainer = document.getElementById('popup-fade');
 const popupClose = document.getElementById('popup-close');
 const popupFavoriteBtn = document.getElementById("look-fav-btn");
-
-closeFilters.addEventListener("click", async (event) => {
-  filtersContainer.classList.remove('show');
-});
-
-filterActivator.addEventListener("click", async (event) => {
-  filtersContainer.classList.add('show');
-});
 
 lowestPriceButton.addEventListener("click", () => {
   lowestPriceButton.classList.add('button-selected');
