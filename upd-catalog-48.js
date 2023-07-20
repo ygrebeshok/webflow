@@ -62,6 +62,32 @@ highestPriceButton.addEventListener("click", () => {
   filterCatalog();
 });
 
+function toggleFavorite(element) {
+  const isFavorite = element.textContent === "Remove from Favorites";
+
+  if (isFavorite) {
+    firebase.firestore().collection("users").doc(userId).update({
+    favorites: firebase.firestore.FieldValue.arrayRemove(productId)
+    })
+    .then(() => {
+      element.textContent = "Add to Favorites";
+    })
+    .catch(error => {
+      console.log("Error removing product from favorites:", error);
+    });
+  } else {
+    firebase.firestore().collection("users").doc(userId).update({
+      favorites: firebase.firestore.FieldValue.arrayUnion(productId)
+    })
+    .then(() => {
+      element.textContent = "Remove from Favorites";
+    })
+    .catch(error => {
+      console.log("Error adding product to favorites:", error);
+    });
+   }
+}
+
 function loadHolidayData() {
 
     holidayRef.get().then((querySnapshot) => {
@@ -97,29 +123,7 @@ function loadHolidayData() {
               });
 
               holidayFavorite.addEventListener('click', () => {
-                const isFavorite = holidayFavorite.textContent === "Remove from Favorites";
-
-                  if (isFavorite) {
-                    firebase.firestore().collection("users").doc(userId).update({
-                    favorites: firebase.firestore.FieldValue.arrayRemove(productId)
-                  })
-                  .then(() => {
-                    holidayFavorite.textContent = "Add to Favorites";
-                  })
-                  .catch(error => {
-                    console.log("Error removing product from favorites:", error);
-                  });
-                  } else {
-                    firebase.firestore().collection("users").doc(userId).update({
-                      favorites: firebase.firestore.FieldValue.arrayUnion(productId)
-                    })
-                    .then(() => {
-                      holidayFavorite.textContent = "Remove from Favorites";
-                    })
-                    .catch(error => {
-                      console.log("Error adding product to favorites:", error);
-                    });
-                 }
+                toggleFavorite(holidayFavorite);  
 	      });
 
 	    holiday.addEventListener("mouseenter", () => {
@@ -173,29 +177,7 @@ function showPopup(productData) {
     });
 
   popupFavoriteBtn.addEventListener('click', () => {
-    const isFavorite = popupFavoriteBtn.textContent === "Remove from Favorites";
-
-    if (isFavorite) {
-      firebase.firestore().collection("users").doc(userId).update({
-        favorites: firebase.firestore.FieldValue.arrayRemove(productId)
-      })
-      .then(() => {
-        popupFavoriteBtn.textContent = "Add to Favorites";
-      })
-      .catch(error => {
-        console.log("Error removing product from favorites:", error);
-      });
-    } else {
-      firebase.firestore().collection("users").doc(userId).update({
-        favorites: firebase.firestore.FieldValue.arrayUnion(productId)
-      })
-      .then(() => {
-        popupFavoriteBtn.textContent = "Remove from Favorites";
-      })
-      .catch(error => {
-        console.log("Error adding product to favorites:", error);
-      });
-    }
+    toggleFavorite(popupFavoriteBtn);
   });
 	
   popupContainer.style.display = "flex";
@@ -344,29 +326,7 @@ function updateCatalog() {
 
         // Add or remove product from favorites array when button is clicked
         favoriteBtn.addEventListener('click', () => {
-          const isFavorite = favoriteBtn.textContent === "Remove from Favorites";
-
-          if (isFavorite) {
-            firebase.firestore().collection("users").doc(userId).update({
-              favorites: firebase.firestore.FieldValue.arrayRemove(productId)
-            })
-            .then(() => {
-              favoriteBtn.textContent = "Add to Favorites";
-            })
-            .catch(error => {
-              console.log("Error removing product from favorites:", error);
-            });
-          } else {
-            firebase.firestore().collection("users").doc(userId).update({
-              favorites: firebase.firestore.FieldValue.arrayUnion(productId)
-            })
-            .then(() => {
-              favoriteBtn.textContent = "Remove from Favorites";
-            })
-            .catch(error => {
-              console.log("Error adding product to favorites:", error);
-            });
-          }
+          toggleFavorite(favoriteBtn);
         });
 
 	const quickLookBtn = card.querySelector("#quick_look");
