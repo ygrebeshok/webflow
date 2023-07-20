@@ -115,7 +115,7 @@ function loadHolidayData() {
               .then(doc => {
                 const favorites = doc.data().favorites;
                 if (favorites.includes(productId)) {
-                  favoriteBtn.textContent = "Remove from Favorites";
+                  holidayFavorite.textContent = "Remove from Favorites";
                 }
               })
               .catch(error => {
@@ -123,7 +123,7 @@ function loadHolidayData() {
               });
 
               holidayFavorite.addEventListener('click', () => {
-                toggleFavorite(holidayFavorite);  
+	        toggleFavorite(holidayFavorite, userId, productId);
 	      });
 
 	    holiday.addEventListener("mouseenter", () => {
@@ -177,7 +177,7 @@ function showPopup(productData) {
     });
 
   popupFavoriteBtn.addEventListener('click', () => {
-    toggleFavorite(popupFavoriteBtn);
+    toggleFavorite(favoriteBtn, userId, productId);
   });
 	
   popupContainer.style.display = "flex";
@@ -326,8 +326,8 @@ function updateCatalog() {
 
         // Add or remove product from favorites array when button is clicked
         favoriteBtn.addEventListener('click', () => {
-          toggleFavorite(favoriteBtn);
-        });
+  	  toggleFavorite(favoriteBtn, userId, productId);
+	});
 
 	const quickLookBtn = card.querySelector("#quick_look");
 	quickLookBtn.addEventListener("click", () => {
