@@ -1,5 +1,5 @@
 # webflow Smappy AI
-This is main repo for Smappy AI code. 
+This is the main repo for Smappy AI code. 
 
 Main.js
 The main code script for recommendations.
