@@ -5,6 +5,14 @@
     mainButton.addEventListener("click", recommend);
   }
 
+  filterActivator.addEventListener("click", async (event) => {
+    filtersContainer.classList.add('show');
+  });
+
+  closeFilters.addEventListener("click", async (event) => {
+    filtersContainer.classList.remove('show');
+  });
+
   function holidays() {
       const holidays = ["Birthday", "Christmas", "Thanksgiving", "Valentine's", "Mother's Day", "Easter", "Graduation", "Wedding", "Anniversary"];
       holidays.forEach((holiday) => {
