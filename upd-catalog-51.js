@@ -32,6 +32,14 @@ const popupContainer = document.getElementById('popup-fade');
 const popupClose = document.getElementById('popup-close');
 const popupFavoriteBtn = document.getElementById("look-fav-btn");
 
+closeFilters.addEventListener("click", async (event) => {
+  filtersContainer.classList.remove('show');
+});
+
+filterActivator.addEventListener("click", async (event) => {
+  filtersContainer.classList.add('show');
+});
+
 lowestPriceButton.addEventListener("click", () => {
   lowestPriceButton.classList.add('button-selected');
   highestPriceButton.classList.remove('button-selected');
