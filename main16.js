@@ -30,6 +30,31 @@
     }
   }
 
+  function who() {
+      const who = ["Mom", "Dad", "Sister", "Brother", "Grandma", "Grandpa", "Family", "Friend", "Colleague", "Dog", "Cat"];
+      who.forEach((holiday) => {
+    	  const button = document.createElement('button');
+          button.textContent = who;
+          button.className = 'who-button';
+          button.addEventListener('mouseenter', () => {
+      	    button.classList.add('hover');
+          });
+    	  button.addEventListener('mouseleave', () => {
+      	  button.classList.remove('hover');
+        });
+        button.addEventListener('focus', function() {
+    	    button.classList.add('focus');
+          selected_who = button.textContent;
+  	    });
+        whoGrid.appendChild(button);
+      });
+
+      for (let i = who.length; i < 8; i++) {
+  	    const button = whoTemplate.cloneNode(true);
+        whoGrid.appendChild(button);
+      }
+  }
+
   async function recommend() {
     event.preventDefault();
     // Resets price filter, if was initialized
