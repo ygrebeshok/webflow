@@ -95,12 +95,12 @@
   
   .button:hover {
     color: white;
-    background-color: #7977ff;
+    background-color: #9440FF;
    }
 
   .button:focus {
     color: white;
-    background-color: #7977ff;
+    background-color: #9440FF;
    }
 
   .who-button:hover {
