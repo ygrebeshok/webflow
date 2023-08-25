@@ -82,14 +82,15 @@
 
   .who-button {
    display: flex;
-   color: #4b00ff;
-   background-color: #f0f0f0;
+   color: white;
+   background-color: transparent;
    font-family: Montserrat;
    font-size: 0.95em;
    font-weight: 400;
    justify-content: center;
    align-items: center;
    border-radius: 5px;
+   border: 1px solid #f0f0f0;
   }
   
   .button:hover {
