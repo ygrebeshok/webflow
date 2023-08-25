@@ -104,12 +104,12 @@
    }
 
   .who-button:hover {
-    color: #4b00ff;
+    color: rgba(249, 249, 249, 0.6);
     background-color: #f0f0f0;
    }
 
   .who-button:focus {
-    color: #4b00ff;
+    color: rgba(249, 249, 249, 0.6);
     background-color: #f0f0f0;
    }
 
