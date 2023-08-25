@@ -83,6 +83,7 @@
   .who-button {
    display: flex;
    color: white;
+   background-color: transparent;
    font-family: Montserrat;
    font-size: 0.95em;
    font-weight: 400;
