@@ -32,7 +32,7 @@
 
   function who() {
       const who = ["Mom", "Dad", "Sister", "Brother", "Grandma", "Grandpa", "Family", "Friend", "Colleague", "Dog", "Cat"];
-      who.forEach((holiday) => {
+      who.forEach((who) => {
     	  const button = document.createElement('button');
           button.textContent = who;
           button.className = 'who-button';
