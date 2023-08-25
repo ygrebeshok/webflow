@@ -104,13 +104,13 @@
    }
 
   .who-button:hover {
-    color: rgba(249, 249, 249, 0.6);
-    background-color: #f0f0f0;
+    color: #4b00ff;
+    background-color: rgba(249, 249, 249, 0.6);
    }
 
   .who-button:focus {
-    color: rgba(249, 249, 249, 0.6);
-    background-color: #f0f0f0;
+    color: #4b00ff;
+    background-color: rgba(249, 249, 249, 0.6);
    }
 
   .disablegrid {
