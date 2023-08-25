@@ -95,22 +95,22 @@
   
   .button:hover {
     color: white;
-    background-color: #9440FF;
+    background-color: #8348FF;
    }
 
   .button:focus {
     color: white;
-    background-color: #9440FF;
+    background-color: #8348FF;
    }
 
   .who-button:hover {
     color: #4b00ff;
-    background-color: rgba(249, 249, 249, 0.6);
+    background-color: rgba(249, 249, 249, 0.75);
    }
 
   .who-button:focus {
     color: #4b00ff;
-    background-color: rgba(249, 249, 249, 0.6);
+    background-color: rgba(249, 249, 249, 0.75);
    }
 
   .disablegrid {
