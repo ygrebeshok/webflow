@@ -90,7 +90,7 @@
    justify-content: center;
    align-items: center;
    border-radius: 5px;
-   border: 0.75px solid #ffffff;
+   border: 0.8px solid #ffffff;
   }
   
   .button:hover {
@@ -101,6 +101,11 @@
   .button:focus {
     color: white;
     background-color: #7977ff;
+   }
+
+  .who-button:focus {
+    color: #4b00ff;
+    background-color: #f0f0f0;
    }
 
   .disablegrid {
@@ -125,6 +130,12 @@
     border: none;
     color: white;
     background-color: #7977ff;
+  }
+
+  .who-selected {
+    border: none;
+    color: #4b00ff;
+    background-color: #f0f0f0;
   }
 
   .holiday-card {
