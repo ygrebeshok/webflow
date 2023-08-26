@@ -34,6 +34,8 @@ const quickLook = document.getElementById('quick_look');
 const popupContainer = document.getElementById('popup-fade');
 const popupClose = document.getElementById('popup-close');
 const popupFavoriteBtn = document.getElementById("look-fav-btn");
+let selWho = document.getElementById("sel-who");
+let selHoliday = document.getElementById("sel-holiday");
 
 lowestPriceButton.addEventListener("click", () => {
   lowestPriceButton.classList.add('button-selected');
