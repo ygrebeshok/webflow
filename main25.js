@@ -74,6 +74,8 @@
     document.getElementById("textarea").disabled = true;
     errorAlert.style.visibility = "hidden";
     holidayGrid.classList.add('disablegrid');
+    whoGrid.classList.add('disablegrid');
+    mainButton.classList.add('disablegrid');
     searchAgain.style.visibility = "hidden";
     document.getElementById("textarea").style.color = "black";
     lottieLoader.style.visibility = "visible";
