@@ -5,7 +5,6 @@
     mainButton.addEventListener("click", recommend);
   }
 
-
   function holidays() {
       const holidays = ["Birthday", "Christmas", "Thanksgiving", "Valentine's", "Mother's Day", "Easter", "Graduation", "Wedding", "Anniversary"];
       holidays.forEach((holiday) => {
@@ -22,6 +21,7 @@
           if (selected_holiday !== holiday) {
             selected_holiday = holiday;
           }
+          selHoliday.textContent = selected_holiday;
         });
 
       holidayGrid.appendChild(button);
@@ -49,6 +49,7 @@
             if (selected_who !== who) {
               selected_who = who;
             }
+            selWho.textContent = selected_who;
           });
 
       whoGrid.appendChild(button);
@@ -87,7 +88,7 @@
        	  "Authorization": `Bearer ${openaiApiKey}`
         },
         body: JSON.stringify({
-          prompt: "Give some gift recommendations for " + selected_holiday + "\n" + "Here is the case: " + text,
+          prompt: "Give some gift recommendations for " + selected_who + "and for this occasion" + selected_holiday + "\n" + "Here is the gift description: " + text,
           max_tokens: 1024,
           temperature: 0.5,
           top_p: 1,
