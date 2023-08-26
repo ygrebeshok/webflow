@@ -226,6 +226,7 @@ function who() {
     mainButton.classList.add('disablegrid');
     textarea.addEventListener('input', checkInputs);
     holidayGrid.addEventListener('click', checkInputs);
+    whoGrid.addEventListener('click', checkInputs);
 
     catalogGrid.removeChild(defaultCard);
     holidayContainer.removeChild(defaultHoliday);
@@ -254,5 +255,6 @@ function who() {
     document.getElementById("textarea").style.color = "white";
     searchAgain.style.visibility = "hidden";
     holidayGrid.classList.remove("disablegrid");
+    whoGrid.classList.remove("disablegrid");
   }
 
