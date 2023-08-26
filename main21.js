@@ -15,12 +15,13 @@
         button.addEventListener('mouseenter', () => {
       	  button.classList.add('hover');
         });
-  	button.addEventListener('mouseleave', () => {
-      	  button.classList.remove('hover');
+  	    button.addEventListener('mouseleave', () => {
+          button.classList.remove('hover');
         });
         button.addEventListener('click', function() {
           if (selected_holiday !== holiday) {
             selected_holiday = holiday;
+          }
         });
 
       holidayGrid.appendChild(button);
@@ -41,16 +42,16 @@
           button.addEventListener('mouseenter', () => {
       	    button.classList.add('hover');
           });
-    	  button.addEventListener('mouseleave', () => {
-      	  button.classList.remove('hover');
-        });
-        button.addEventListener('click', function() {
-          if (selected_who !== who) {
-            selected_who = who;
-        }
-    });
+    	    button.addEventListener('mouseleave', () => {
+      	    button.classList.remove('hover');
+          });
+          button.addEventListener('click', function() {
+            if (selected_who !== who) {
+              selected_who = who;
+            }
+          });
 
-    whoGrid.appendChild(button);
+      whoGrid.appendChild(button);
       });
 
       for (let i = who.length; i < 8; i++) {
