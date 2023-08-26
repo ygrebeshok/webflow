@@ -207,16 +207,19 @@
       
       // Check if any of the keywords to exclude are present in the card's title or description
       const keywordsToExcludeFound = keywordsToExclude.some(keyword => {
-        return cardTitle.includes(keyword) || cardDescription.includes(keyword);
+        return cardTitle.includes(keyword) || cardDescription.includes(keyword) || cardBrand.includes(keyword);
       });
+      
+      // If matching products are found through the second check, then the product card is pushed to appear in the grid
+      if (matchedWords.length >= 2 && similarity / matchedWords.length >= stringSimilarityThreshold) {
+        visibleCards.push(card);
+        card.style.display = "";
+      }
 
       // If keywords to exclude are found, hide the card
       if (keywordsToExcludeFound) {
         card.style.display = "none";
-      }
-      
-      // If matching products are found through the second check, then the product card is pushed to appear in the grid
-      if (matchedWords.length >= 2 && similarity / matchedWords.length >= stringSimilarityThreshold) {
+      } else {
         visibleCards.push(card);
         card.style.display = "";
       }
