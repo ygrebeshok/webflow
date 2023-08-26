@@ -179,8 +179,7 @@
       }
 
       // To improve search, catalog grid's card title and description are taken, formatted correctly and are splitted into array of additional card's keywords
-      let cardTitle = card.querySelector("#name").textContent.toLowerCase();
-      cardTitle = cardTitle.replace(/[,.\'"*•-]+/g, '');
+      let cardTitle = card.querySelector("#name").textContent.toLowerCase().replace(/[,.\'"*•-]+/g, '');
       let cardTitleWords = cardTitle.split(" ");
       cardTitleWords = cardTitleWords.map(str => str.replace(/[\W_]+/g, ''));
       const cardDescription = card.querySelector("#description").textContent.toLowerCase().replace(/[,.\'"*•-]+/g, '');
