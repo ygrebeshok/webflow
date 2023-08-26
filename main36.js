@@ -223,13 +223,18 @@
         );
       });
 
-      // If keywords to exclude are found, hide the card
       if (keywordsToExcludeFound) {
         card.style.display = "none";
-      } else {
-        visibleCards.push(card);
-        card.style.display = "";
-      }
+        } else {
+        // Only perform similarity checks if the card is not excluded
+          const intersection = new Set([...openaiKeywords].filter(x => cardKeywordsSet.has(x)));
+          if (intersection.size === 0) {
+            card.style.display = "none";
+          } else {
+          visibleCards.push(card);
+          card.style.display = "";
+          }
+        }
 
       visibleCards = removeDuplicates(visibleCards);
     });
@@ -248,6 +253,7 @@
        console.error(error);
        errorAlert.style.visibility = "visible";
        lottieLoader.style.visibility = "hidden";
+       searchAgain.style.visibility = "visible";
      }
   }
 
