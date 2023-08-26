@@ -82,8 +82,17 @@
     // Prompt to Open AI
     try {
       const prompt = "Give some gift recommendations for " + selected_who + " and for this occasion " + selected_holiday + "\n" + "Here is the gift description: " + text;
+      const selectedWho = selected_who.toLowerCase();
+      const selectedHoliday = selected_holiday.toLowerCase();
 
-      console.log("Prompt:", prompt);
+      const keywordsToExclude = [];
+      if (selectedWho === "dog" || selectedWho === "cat") {
+        keywordsToExclude.push("dog", "cat", "pet");
+      } else if (selectedWho === "dad" || selectedWho === "grandpa" || selectedWho === "brother") {
+        keywordsToExclude.push("woman", "women", "girl");
+      } else if (selectedWho === "mom" || selectedWho === "grandma" || selectedWho === "sister") {
+        keywordsToExclude.push("man", "men", "boy");
+      }
       
       const response = await fetch("https://api.openai.com/v1/engines/text-davinci-003/completions", {
         method: "POST",
@@ -192,7 +201,18 @@
           similarity += match.bestMatch.rating;
         }
       }
-      // If matching products are found through the second check, then the product card is pushed to appeat in the grid
+      
+      // Check if any of the keywords to exclude are present in the card's title or description
+      const keywordsToExcludeFound = keywordsToExclude.some(keyword => {
+        return cardTitle.includes(keyword) || cardDescription.includes(keyword);
+      });
+
+      // If keywords to exclude are found, hide the card
+      if (keywordsToExcludeFound) {
+        card.style.display = "none";
+      }
+      
+      // If matching products are found through the second check, then the product card is pushed to appear in the grid
       if (matchedWords.length >= 2 && similarity / matchedWords.length >= stringSimilarityThreshold) {
         visibleCards.push(card);
         card.style.display = "";
