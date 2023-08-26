@@ -90,7 +90,7 @@
       const prompt = "Give some gift recommendations for " + selected_who + " and for this occasion " + selected_holiday + "\n" + "Here is the gift description: " + text;
 
       const keywordsToExclude = [];
-      if !(selected_who === "Dog" || selected_who === "Cat") {
+      if (!(selected_who === "Dog" || selected_who === "Cat")) {
         keywordsToExclude.push("dog", "bark", "cat", "meow", "pet", "paw");
       } else if (selected_who === "Dad" || selected_who === "Grandpa" || selected_who === "Brother") {
         keywordsToExclude.push("woman", "women", "girl", "stylish");
