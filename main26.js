@@ -89,9 +89,9 @@
 
       const keywordsToExclude = [];
       if (selectedWho === "dog" || selectedWho === "cat") {
-        keywordsToExclude.push("dog", "cat", "pet");
+        keywordsToExclude.push("dog", "bark", "cat", "meow", "pet", "paw");
       } else if (selectedWho === "dad" || selectedWho === "grandpa" || selectedWho === "brother") {
-        keywordsToExclude.push("woman", "women", "girl");
+        keywordsToExclude.push("woman", "women", "girl", "stylish");
       } else if (selectedWho === "mom" || selectedWho === "grandma" || selectedWho === "sister") {
         keywordsToExclude.push("man", "men", "boy");
       }
@@ -180,6 +180,7 @@
       let cardTitleWords = cardTitle.split(" ");
       cardTitleWords = cardTitleWords.map(str => str.replace(/[\W_]+/g, ''));
       const cardDescription = card.querySelector("#description").textContent.toLowerCase().replace(/[,.\'"*•-]+/g, '');
+      const cardBrand = card.querySelector("#brand").textContent.toLowerCase().replace(/[,.\'"*•-]+/g, '');
       let cardDescriptionWords = cardDescription.split(" ");
       cardDescriptionWords = cardDescriptionWords.map(str => str.replace(/[\W_]+/g, ''));
 
