@@ -88,11 +88,11 @@
       const selectedHoliday = selected_holiday.toLowerCase();
 
       const keywordsToExclude = [];
-      if (selectedWho === "Dog" || selectedWho === "Cat") {
+      if (selected_who === "Dog" || selected_who === "Cat") {
         keywordsToExclude.push("dog", "bark", "cat", "meow", "pet", "paw");
-      } else if (selectedWho === "Dad" || selectedWho === "Grandpa" || selectedWho === "Brother") {
+      } else if (selected_who === "Dad" || selected_who === "Grandpa" || selected_who === "Brother") {
         keywordsToExclude.push("woman", "women", "girl", "stylish");
-      } else if (selectedWho === "Mom" || selectedWho === "Grandma" || selectedWho === "Sister") {
+      } else if (selected_who === "Mom" || selected_who === "Grandma" || selected_who === "Sister") {
         keywordsToExclude.push("man", "men", "boy");
       }
       
