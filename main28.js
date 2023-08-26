@@ -207,7 +207,12 @@
       
       // Check if any of the keywords to exclude are present in the card's title or description
       const keywordsToExcludeFound = keywordsToExclude.some(keyword => {
-        return cardTitle.includes(keyword) || cardDescription.includes(keyword) || cardBrand.includes(keyword);
+        const lowerCaseKeyword = keyword.toLowerCase();
+        return (
+          cardTitle.includes(lowerCaseKeyword) ||
+          cardDescription.includes(lowerCaseKeyword) ||
+          cardBrand.includes(lowerCaseKeyword)
+        );
       });
       
       // If matching products are found through the second check, then the product card is pushed to appear in the grid
