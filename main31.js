@@ -205,21 +205,22 @@
         }
       }
       
-      // Check if any of the keywords to exclude are present in the card's title or description
-      const keywordsToExcludeFound = keywordsToExclude.some(keyword => {
-        const lowerCaseKeyword = keyword.toLowerCase();
-        return (
-          cardTitle.includes(lowerCaseKeyword) ||
-          cardDescription.includes(lowerCaseKeyword) ||
-          cardBrand.includes(lowerCaseKeyword)
-        );
-      });
-      
       // If matching products are found through the second check, then the product card is pushed to appear in the grid
       if (matchedWords.length >= 2 && similarity / matchedWords.length >= stringSimilarityThreshold) {
         visibleCards.push(card);
         card.style.display = "";
       }
+
+      // Check if any of the keywords to exclude are present in the card's title, description, or brand
+      const keywordsToExcludeFound = keywordsToExclude.some(keyword => {
+        const lowerCaseKeyword = keyword.toLowerCase();
+        const keywordRegExp = new RegExp(`\\b${escapeRegExp(lowerCaseKeyword)}\\b`, 'i');
+        return (
+          keywordRegExp.test(cardTitle) ||
+          keywordRegExp.test(cardDescription) ||
+          keywordRegExp.test(cardBrand)
+        );
+      });
 
       // If keywords to exclude are found, hide the card
       if (keywordsToExcludeFound) {
@@ -230,7 +231,7 @@
       }
 
       visibleCards = removeDuplicates(visibleCards);
-      });
+    });
 
     function removeDuplicates(array) {
       return Array.from(new Set(array));
