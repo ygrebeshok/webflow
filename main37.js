@@ -166,16 +166,6 @@
       cardKeywords = cardKeywords.filter(keyword => keyword !== "");
       const cardKeywordsSet = new Set(cardKeywords);
 
-   // In intersection openaiKeywords and cardKeywords sets are checked for joint keywords, if founde -> keywords are stored in intersection set
-      const intersection = new Set([...openaiKeywords].filter(x => cardKeywordsSet.has(x)));
-      
-      if (intersection.size === 0) {
-        card.style.display = "none";
-      } else {
-        visibleCards.push(card);
-        card.style.display = "";
-      }
-
       // To improve search, catalog grid's card title and description are taken, formatted correctly and are splitted into array of additional card's keywords
       let cardTitle = card.querySelector("#name").textContent.toLowerCase().replace(/[,.\'"*•-]+/g, '');
       let cardTitleWords = cardTitle.split(" ");
@@ -205,12 +195,6 @@
           similarity += match.bestMatch.rating;
         }
       }
-      
-      // If matching products are found through the second check, then the product card is pushed to appear in the grid
-      if (matchedWords.length >= 2 && similarity / matchedWords.length >= stringSimilarityThreshold) {
-        visibleCards.push(card);
-        card.style.display = "";
-      }
 
       // Check if any of the keywords to exclude are present in the card's title, description, or brand
       const keywordsToExcludeFound = keywordsToExclude.some(keyword => {
@@ -223,18 +207,19 @@
         );
       });
 
-      if (keywordsToExcludeFound) {
-        card.style.display = "none";
+      if (!keywordsToExcludeFound) {
+        const intersection = new Set([...openaiKeywords].filter(x => cardKeywordsSet.has(x)));
+        const hasSimilarity = matchedWords.length >= 2 && similarity / matchedWords.length >= stringSimilarityThreshold;
+    
+        if (intersection.size === 0 || !hasSimilarity) {
+          card.style.display = "none";
         } else {
-        // Only perform similarity checks if the card is not excluded
-          const intersection = new Set([...openaiKeywords].filter(x => cardKeywordsSet.has(x)));
-          if (intersection.size === 0) {
-            card.style.display = "none";
-          } else {
           visibleCards.push(card);
           card.style.display = "";
-          }
         }
+      } else {
+        card.style.display = "none"; // Hide the card if it has excludable keywords
+      }
 
       visibleCards = removeDuplicates(visibleCards);
     });
