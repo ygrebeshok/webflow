@@ -5,65 +5,59 @@
     mainButton.addEventListener("click", recommend);
   }
 
-function holidays() {
-  const holidays = ["Birthday", "Christmas", "Thanksgiving", "Valentine's", "Mother's Day", "Easter", "Graduation", "Wedding", "Anniversary"];
-  
-  holidays.forEach((holiday) => {
-    const button = document.createElement('button');
-    button.textContent = holiday;
-    button.className = 'button';
-    
-    button.addEventListener('mouseenter', () => {
-      button.classList.add('hover');
-    });
-    
-    button.addEventListener('mouseleave', () => {
-      button.classList.remove('hover');
-    });
-    
-    button.addEventListener('focus', function() {
-      button.classList.add('focus');
-      selected_holiday = button.textContent;
-    });
-    
-    holidayGrid.appendChild(button);
-  });
 
-  for (let i = holidays.length; i < 8; i++) {
-    const button = holidayTemplate.cloneNode(true);
-    holidayGrid.appendChild(button);
+  function holidays() {
+      const holidays = ["Birthday", "Christmas", "Thanksgiving", "Valentine's", "Mother's Day", "Easter", "Graduation", "Wedding", "Anniversary"];
+      holidays.forEach((holiday) => {
+    	const button = document.createElement('button');
+        button.textContent = holiday;
+        button.className = 'button';
+        button.addEventListener('mouseenter', () => {
+      	  button.classList.add('hover');
+        });
+  	button.addEventListener('mouseleave', () => {
+      	  button.classList.remove('hover');
+        });
+        button.addEventListener('click', function() {
+          if (selected_holiday !== holiday) {
+            selected_holiday = holiday;
+        });
+
+      holidayGrid.appendChild(button);
+      });
+
+    for (let i = holidays.length; i < 8; i++) {
+  	  const button = holidayTemplate.cloneNode(true);
+      holidayGrid.appendChild(button);
+    }
   }
-}
 
-function who() {
-  const who = ["Mom", "Dad", "Sister", "Brother", "Grandma", "Grandpa", "Family", "Friend", "Colleague", "Acquaintance", "Dog", "Cat"];
-  
-  who.forEach((who) => {
-    const button = document.createElement('button');
-    button.textContent = who;
-    button.className = 'who-button';
-    
-    button.addEventListener('mouseenter', () => {
-      button.classList.add('hover');
+  function who() {
+      const who = ["Mom", "Dad", "Sister", "Brother", "Grandma", "Grandpa", "Family", "Friend", "Colleague", "Acquaintance", "Dog", "Cat"];
+      who.forEach((who) => {
+    	  const button = document.createElement('button');
+          button.textContent = who;
+          button.className = 'who-button';
+          button.addEventListener('mouseenter', () => {
+      	    button.classList.add('hover');
+          });
+    	  button.addEventListener('mouseleave', () => {
+      	  button.classList.remove('hover');
+        });
+        button.addEventListener('click', function() {
+          if (selected_who !== who) {
+            selected_who = who;
+        }
     });
-    
-    button.addEventListener('mouseleave', () => {
-      button.classList.remove('hover');
-    });
-    
-    button.addEventListener('focus', function() {
-      button.classList.add('focus');
-      selected_who = button.textContent;
-    });
-    
-    whoGrid.appendChild(button);
-  });
 
-  for (let i = who.length; i < 8; i++) {
-    const button = whoTemplate.cloneNode(true);
     whoGrid.appendChild(button);
+      });
+
+      for (let i = who.length; i < 8; i++) {
+  	    const button = whoTemplate.cloneNode(true);
+        whoGrid.appendChild(button);
+      }
   }
-}
 
   async function recommend() {
     event.preventDefault();
