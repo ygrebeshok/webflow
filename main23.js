@@ -81,6 +81,10 @@
 
     // Prompt to Open AI
     try {
+      const prompt = "Give some gift recommendations for " + selected_who + " and for this occasion " + selected_holiday + "\n" + "Here is the gift description: " + text;
+
+      console.log("Prompt:", prompt);
+      
       const response = await fetch("https://api.openai.com/v1/engines/text-davinci-003/completions", {
         method: "POST",
         headers: {
@@ -88,7 +92,7 @@
        	  "Authorization": `Bearer ${openaiApiKey}`
         },
         body: JSON.stringify({
-          prompt: "Give some gift recommendations for " + selected_who + "and for this occasion" + selected_holiday + "\n" + "Here is the gift description: " + text,
+          prompt: prompt,
           max_tokens: 1024,
           temperature: 0.5,
           top_p: 1,
