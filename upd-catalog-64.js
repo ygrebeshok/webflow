@@ -318,27 +318,9 @@ function updateCatalog() {
 
         allCards.push(card);
         
-        const favoriteBtn = card.querySelector("#favorite-btn");
         const productId = card.querySelector("#name").textContent;
         const user = firebase.auth().currentUser;
         const userId = user.uid;
-
-        // Check if product is already in favorites array
-        firebase.firestore().collection("users").doc(userId).get()
-          .then(doc => {
-            const favorites = doc.data().favorites;
-            if (favorites.includes(productId)) {
-              favoriteBtn.textContent = "Remove from Favorites";
-            }
-          })
-          .catch(error => {
-            console.log("Error getting favorites:", error);
-          });
-
-        // Add or remove product from favorites array when button is clicked
-        favoriteBtn.addEventListener('click', () => {
-  	  toggleFavorite(favoriteBtn, userId, productId);
-	});
 
 	const quickLookBtn = card.querySelector("#quick_look");
 	quickLookBtn.addEventListener("click", () => {
