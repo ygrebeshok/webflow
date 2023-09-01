@@ -169,7 +169,7 @@ firebase.auth().onAuthStateChanged(user => {
 
            sharedFavBtn.addEventListener('click', () => {
 	     console.log("Shared Favorites Button Clicked");
-             const isSharedFavorite = sharedLabel.textContent === "Remove from my Gift List";
+             const isSharedFavorite = sharedFavBtn.textContent === "Remove from my Gift List";
 
              if (isSharedFavorite) {
                firebase.firestore().collection("users").doc(userId).update({
