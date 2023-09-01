@@ -183,7 +183,7 @@ function showPopup(productData) {
     });
 
   popupFavoriteBtn.addEventListener('click', () => {
-    toggleFavorite(popupFavoriteBtn, userId, productId);
+    toggleFavorite(favoritesLabel, userId, productId);
   });
 	
   popupContainer.style.display = "flex";
