@@ -328,7 +328,7 @@ function updateCatalog() {
 	    name: card.querySelector("#name").textContent,
 	    brand: card.querySelector("#brand").textContent,
 	    description: card.querySelector("#description").textContent,
-	    product_link: card.querySelector("#link-container").href,
+	    product_link: data.product_link,
 	    price: card.querySelector("#price").textContent.replace("$", "")
 	  };
 	
