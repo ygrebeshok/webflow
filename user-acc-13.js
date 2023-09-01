@@ -55,7 +55,6 @@ favoritesGrid.removeChild(defaultCard);
 
 const shareFavoritesButton = document.getElementById('shareFavoritesButton');
 
-
 firebase.auth().onAuthStateChanged(user => {
   if (user) {
     const userId = user.uid;
@@ -118,7 +117,7 @@ firebase.auth().onAuthStateChanged(user => {
              });
 
              if (favorites.includes(productId)) {
-               sharedLabel.textContent = "Remove from Favorites";
+               favoritesLabel.textContent = "Remove from Favorites";
              }
                 
              const formattedContentSet = new Set()
