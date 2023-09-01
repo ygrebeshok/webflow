@@ -1,4 +1,3 @@
-How to modify this snippet, so when the favoriteBtn is clicked, only the favCard of the corresponding product disappears?
 const popupImage = document.getElementById('popup_image');
 const popupTitle = document.getElementById('popup_title');
 const popupBrand = document.getElementById('popup_brand');
