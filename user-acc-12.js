@@ -15,8 +15,7 @@ const popUp = document.getElementById("pop-up");
 const closeBtn = document.getElementById("close-button");
 const favoritesLabel = document.getElementById("favorites-label");
 const favoriteBtn = document.querySelector("#favorite-btn");
-const sharedFavBtn = document.getElementById("shared-fav");
-const sharedLabel = document.getElementById("shared_label");
+const sharedFavBtn = document.getElementById("share-fav");
 
 function showPopupUser(productData) {
   popupImage.src = productData.image_url;
@@ -129,7 +128,7 @@ firebase.auth().onAuthStateChanged(user => {
                .then(sharedFavoritesQuerySnapshot => {
                  sharedFavoritesQuerySnapshot.forEach(sharedDoc => {
                    if (shared_fav.includes(productId)) {
-                     sharedLabel.textContent = "Remove from my Gift List";
+                     sharedFavBtn.textContent = "Remove from my Gift List";
                    }
                  });
                })
@@ -178,7 +177,7 @@ firebase.auth().onAuthStateChanged(user => {
                  shared_favorites: firebase.firestore.FieldValue.arrayRemove(productId)
                })
                .then(() => {
-                 sharedLabel.textContent = "Add to my Gift List";
+                 sharedFavBtn.textContent = "Add to my Gift List";
                })
                .catch(error => {
                  console.log("Error removing product from shared_favorites:", error);
@@ -188,7 +187,7 @@ firebase.auth().onAuthStateChanged(user => {
                  shared_favorites: firebase.firestore.FieldValue.arrayUnion(productId)
                })
                .then(() => {
-                 sharedLabel.textContent = "Remove from my Gift List";
+                 sharedFavBtn.textContent = "Remove from my Gift List";
                })
                .catch(error => {
                  console.log("Error adding product to shared_favorites:", error);
