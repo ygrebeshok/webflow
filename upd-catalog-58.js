@@ -162,8 +162,8 @@ function showPopup(productData) {
   popupImage.src = productData.image_url;
   popupTitle.textContent = productData.name;
   popupBrand.textContent = productData.brand;
+  popupBrand.href = productData.product_link;
   popupDesc.textContent = productData.description;
-  popupLink.href = productData.product_link;
   popupPrice.textContent = `$${productData.price}`;
 
   const user = firebase.auth().currentUser;
