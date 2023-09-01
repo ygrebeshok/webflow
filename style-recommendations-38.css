@@ -122,6 +122,14 @@
     transform: scale(1.0);
   }
 
+  .half-opacity {
+    opacity: 0.5;
+  }
+
+  .full-opacity {
+    opacity: 1;
+  }
+
   #filters-container {
     transition: transform 0.5s ease;
     transform: translateX(100%);
