@@ -37,7 +37,7 @@ const popupFavoriteBtn = document.getElementById("look-fav-btn");
 let selWho = document.getElementById("sel-who");
 let selHoliday = document.getElementById("sel-holiday");
 const favoritesLabel = document.getElementById("favorites-label");
-const heartLottie = document.getElementById("heart-lottie");
+const heart = document.getElementById("heart");
 
 lowestPriceButton.addEventListener("click", () => {
   lowestPriceButton.classList.add('button-selected');
@@ -78,6 +78,7 @@ function toggleFavorite(element, userId, productId) {
     })
     .then(() => {
       element.textContent = "Add to Favorites";
+      heart.classList.add("half-opacity");
     })
     .catch(error => {
       console.log("Error removing product from favorites:", error);
@@ -88,6 +89,7 @@ function toggleFavorite(element, userId, productId) {
     })
     .then(() => {
       element.textContent = "Remove from Favorites";
+      heart.classList.add("full-opacity");
     })
     .catch(error => {
       console.log("Error adding product to favorites:", error);
@@ -185,7 +187,6 @@ function showPopup(productData) {
 
   popupFavoriteBtn.addEventListener('click', () => {
     toggleFavorite(favoritesLabel, userId, productId);
-    heartLottie.play();
   });
 	
   popupContainer.style.display = "flex";
