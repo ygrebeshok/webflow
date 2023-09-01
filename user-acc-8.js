@@ -103,8 +103,6 @@ firebase.auth().onAuthStateChanged(user => {
                   });
                 });
                 
-              const productId = favCard.querySelector("#name").textContent;
-                
               const quickLookBtn = favCard.querySelector("#quick_look");
               quickLookBtn.addEventListener("click", () => {
                 const productData = {
