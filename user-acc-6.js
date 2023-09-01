@@ -151,6 +151,7 @@ firebase.auth().onAuthStateChanged(user => {
                   const cardToRemove = document.querySelector(`[data-product-id="${productId}"]`);
                   if (cardToRemove) {
                     cardToRemove.style.display = "none";
+		  }
                 })
                 .catch(error => {
                   console.log("Error removing product from favorites:", error);
