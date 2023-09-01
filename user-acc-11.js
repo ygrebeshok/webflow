@@ -16,7 +16,7 @@ const closeBtn = document.getElementById("close-button");
 const favoritesLabel = document.getElementById("favorites-label");
 const favoriteBtn = document.querySelector("#favorite-btn");
 const sharedFavBtn = document.getElementById("shared-fav");
-const sharedLabel = document.querySelector("#shared_label");
+const sharedLabel = document.getElementById("shared_label");
 
 function showPopupUser(productData) {
   popupImage.src = productData.image_url;
