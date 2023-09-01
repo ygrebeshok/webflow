@@ -7,39 +7,8 @@ const popupPrice = document.getElementById('popup_price');
 const quickLook = document.getElementById('quick_look');
 const popupContainer = document.getElementById('popup-fade');
 const popupClose = document.getElementById('popup-close');
-const popupFavoriteBtn = document.getElementById("look-fav-btn");
 
-function toggleFavorite(element, userId, productId) {
-  const isFavorite = element.textContent === "Remove from Favorites";
-
-  if (isFavorite) {
-    firebase.firestore().collection("users").doc(userId).update({
-    favorites: firebase.firestore.FieldValue.arrayRemove(productId)
-    })
-    .then(() => {
-      element.textContent = "Add to Favorites";
-      heart.classList.remove("full-opacity");
-      heart.classList.add("half-opacity");
-    })
-    .catch(error => {
-      console.log("Error removing product from favorites:", error);
-    });
-  } else {
-    firebase.firestore().collection("users").doc(userId).update({
-      favorites: firebase.firestore.FieldValue.arrayUnion(productId)
-    })
-    .then(() => {
-      element.textContent = "Remove from Favorites";
-      heart.classList.remove("half-opacity");
-      heart.classList.add("full-opacity");
-    })
-    .catch(error => {
-      console.log("Error adding product to favorites:", error);
-    });
-   }
-}
-
-function showPopup(productData) {
+function showPopupUser(productData) {
   popupImage.src = productData.image_url;
   popupTitle.textContent = productData.name;
   popupBrand.textContent = productData.brand;
@@ -61,10 +30,6 @@ function showPopup(productData) {
     .catch(error => {
       console.log("Error getting favorites:", error);
     });
-
-  popupFavoriteBtn.addEventListener('click', () => {
-    toggleFavorite(favoritesLabel, userId, productId);
-  });
 	
   popupContainer.style.display = "flex";
 }
