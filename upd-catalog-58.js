@@ -36,6 +36,7 @@ const popupClose = document.getElementById('popup-close');
 const popupFavoriteBtn = document.getElementById("look-fav-btn");
 let selWho = document.getElementById("sel-who");
 let selHoliday = document.getElementById("sel-holiday");
+const favoritesLabel = document.getElementById("favorites-label");
 
 lowestPriceButton.addEventListener("click", () => {
   lowestPriceButton.classList.add('button-selected');
@@ -174,7 +175,7 @@ function showPopup(productData) {
     .then(doc => {
       const favorites = doc.data().favorites;
       if (favorites.includes(productId)) {
-        popupFavoriteBtn.textContent = "Remove from Favorites";
+        favoritesLabel.textContent = "Remove from Favorites";
       }
     })
     .catch(error => {
