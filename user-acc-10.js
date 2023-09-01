@@ -15,7 +15,7 @@ const popUp = document.getElementById("pop-up");
 const closeBtn = document.getElementById("close-button");
 const favoritesLabel = document.getElementById("favorites-label");
 const favoriteBtn = document.querySelector("#favorite-btn");
-const sharedFavBtn = document.querySelector("#shared-fav");
+const sharedFavBtn = document.getElementById("shared-fav");
 const sharedLabel = document.querySelector("#shared_label");
 
 function showPopupUser(productData) {
