@@ -70,6 +70,7 @@ firebase.auth().onAuthStateChanged(user => {
             .then(querySnapshot => {
               querySnapshot.forEach(doc => {
                 const data = doc.data();
+		const productId = data.name;
                 const favCard = favCardTemplate.cloneNode(true);
                 // populate the card with product data
                 favCard.querySelector("#name").textContent = data.name;
