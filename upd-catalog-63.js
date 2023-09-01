@@ -78,6 +78,7 @@ function toggleFavorite(element, userId, productId) {
     })
     .then(() => {
       element.textContent = "Add to Favorites";
+      heart.classList.remove("full-opacity");
       heart.classList.add("half-opacity");
     })
     .catch(error => {
@@ -89,6 +90,7 @@ function toggleFavorite(element, userId, productId) {
     })
     .then(() => {
       element.textContent = "Remove from Favorites";
+      heart.classList.remove("half-opacity");
       heart.classList.add("full-opacity");
     })
     .catch(error => {
