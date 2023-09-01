@@ -37,6 +37,7 @@ const popupFavoriteBtn = document.getElementById("look-fav-btn");
 let selWho = document.getElementById("sel-who");
 let selHoliday = document.getElementById("sel-holiday");
 const favoritesLabel = document.getElementById("favorites-label");
+const heartLottie = document.getElementById("heart-lottie");
 
 lowestPriceButton.addEventListener("click", () => {
   lowestPriceButton.classList.add('button-selected');
@@ -184,6 +185,7 @@ function showPopup(productData) {
 
   popupFavoriteBtn.addEventListener('click', () => {
     toggleFavorite(favoritesLabel, userId, productId);
+    heartLottie.play();
   });
 	
   popupContainer.style.display = "flex";
