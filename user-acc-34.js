@@ -63,9 +63,6 @@ firebase.auth().onAuthStateChanged(user => {
       .then(doc => {
         const favorites = doc.data().favorites;
 	const shared_fav = doc.data().shared_favorites;
-
-	console.log("shared_fav:", shared_fav);
-	console.log("product_id:", productId);
        });
         
         favorites.forEach(favorite => {
@@ -75,6 +72,7 @@ firebase.auth().onAuthStateChanged(user => {
 		const productId = data.name;
                 const favCard = favCardTemplate.cloneNode(true);
 		
+		console.log("shared_fav:", shared_fav);
 		console.log("product_Id:", productId);
 		      
                 // populate the card with product data
