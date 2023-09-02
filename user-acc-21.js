@@ -74,7 +74,9 @@ firebase.auth().onAuthStateChanged(user => {
 
              if (shared_fav.includes(productId)) {
                sharedFavBtn.textContent = "Remove from my Gift List";
-             }
+             } else {
+	       sharedFavBtn.textContent = "Add to the Gift List";
+	     }
 
             sharedFavBtn.addEventListener('click', () => {
               const isListed = sharedFavBtn.textContent === "Remove from my Gift List";
