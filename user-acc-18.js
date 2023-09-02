@@ -160,7 +160,7 @@ firebase.auth().onAuthStateChanged(user => {
     });
 
     //Gift Listed
-    shared_fav.forEach(favorite => {
+    shared_fav.forEach(shared_favorite => {
           giftsRef.where("name", "==", favorite).get()
             .then(querySnapshot => {
               querySnapshot.forEach(doc => {
