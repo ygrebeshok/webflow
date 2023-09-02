@@ -119,9 +119,9 @@ firebase.auth().onAuthStateChanged(user => {
                 showPopupUser(productData);
 	        //Gift Listed
 		if (shared_fav.includes(productId)) {
-          	  sharedFavBtn.textContent = "Remove from my Gift List";
+          	  shareFavoritesButton.textContent = "Remove from my Gift List";
         	} else {
-          	  sharedFavBtn.textContent = "Add to the Gift List";
+          	  shareFavoritesButton.textContent = "Add to the Gift List";
         	}
 		
         	sharedFavBtn.addEventListener('click', () => {
