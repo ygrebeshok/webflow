@@ -119,22 +119,6 @@ firebase.auth().onAuthStateChanged(user => {
              if (favorites.includes(productId)) {
                favoritesLabel.textContent = "Remove from Favorites";
              }
-                
-             const formattedContentSet = new Set()
-                
-             shared_fav.forEach(favorite => {
-               giftsRef.where("name", "==", favorite).get()
-               .then(sharedFavoritesQuerySnapshot => {
-                 sharedFavoritesQuerySnapshot.forEach(sharedDoc => {
-                   if (shared_fav.includes(productId)) {
-                     sharedFavBtn.textContent = "Remove from my Gift List";
-                   }
-                 });
-               })
-               .catch(error => {
-                 console.log("Error getting shared favorites:", error);
-               });
-            });
 
             favoriteBtn.addEventListener('click', () => {
               const isFavorite = favoritesLabel.textContent === "Remove from Favorites";
@@ -166,37 +150,54 @@ firebase.auth().onAuthStateChanged(user => {
                 });
               }
            });
-
-           sharedFavBtn.addEventListener('click', () => {
-	     console.log("Shared Favorites Button Clicked");
-             const isSharedFavorite = sharedFavBtn.textContent === "Remove from my Gift List";
-
-             if (isSharedFavorite) {
-               firebase.firestore().collection("users").doc(userId).update({
-                 shared_favorites: firebase.firestore.FieldValue.arrayRemove(productId)
-               })
-               .then(() => {
-                 sharedFavBtn.textContent = "Add to my Gift List";
-               })
-               .catch(error => {
-                 console.log("Error removing product from shared_favorites:", error);
-               });
-             } else {
-               firebase.firestore().collection("users").doc(userId).update({
-                 shared_favorites: firebase.firestore.FieldValue.arrayUnion(productId)
-               })
-               .then(() => {
-                 sharedFavBtn.textContent = "Remove from my Gift List";
-               })
-               .catch(error => {
-                 console.log("Error adding product to shared_favorites:", error);
-               });
-             }
-          });
         });
       })
       .catch(error => {
         console.log("Error getting product data:", error);
+      });
+    });
+
+    //Gift Listed
+    shared_fav.forEach(favorite => {
+          giftsRef.where("name", "==", favorite).get()
+            .then(querySnapshot => {
+              querySnapshot.forEach(doc => {
+                const data = doc.data();
+		const productId = data.name;
+
+             if (shared_fav.includes(productId)) {
+               sharedFavBtn.textContent = "Remove from my Gift List";
+             }
+
+            sharedFavBtn.addEventListener('click', () => {
+              const isListed = sharedFavBtn.textContent === "Remove from my Gift List";
+
+              if (isListed) {
+                firebase.firestore().collection("users").doc(userId).update({
+                  shared_favorites: firebase.firestore.FieldValue.arrayRemove(productId)
+                })
+                .then(() => {
+                  sharedFavBtn.textContent = "Add to my Gift List";
+                })
+                .catch(error => {
+                  console.log("Error with the Gift List", error);
+                });
+              } else {
+                firebase.firestore().collection("users").doc(userId).update({
+                  shared_favorites: firebase.firestore.FieldValue.arrayUnion(productId)
+                })
+                .then(() => {
+                  sharedFavBtn.textContent = "Remove from my Gift List";
+                })
+                .catch(error => {
+                  console.log("Error with the Gift List:", error);
+                });
+              }
+           });
+        });
+      })
+      .catch(error => {
+        console.log("Error getting product data for Gift List:", error);
       });
     });
    })
