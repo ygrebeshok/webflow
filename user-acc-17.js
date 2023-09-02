@@ -17,6 +17,8 @@ const favoritesLabel = document.getElementById("favorites-label");
 const favoriteBtn = document.querySelector("#favorite-btn");
 const sharedFavBtn = document.getElementById("shareFav");
 
+sharedFavBtn.textContent = "Add to the Gift List";
+
 function showPopupUser(productData) {
   popupImage.src = productData.image_url;
   popupTitle.textContent = productData.name;
