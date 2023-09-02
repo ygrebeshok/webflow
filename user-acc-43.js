@@ -54,6 +54,34 @@ favoritesGrid.removeChild(defaultCard);
 
 const shareFavoritesButton = document.getElementById('shareFavoritesButton');
 
+sharedFavBtn.addEventListener('click', () => {
+  const isListed = sharedFavBtn.textContent === "Remove from my Gift List";
+
+  if (isListed) {
+    // Remove the product from the user's shared favorites
+    firebase.firestore().collection("users").doc(userId).update({
+      shared_favorites: firebase.firestore.FieldValue.arrayRemove(productId)
+    })
+    .then(() => {
+      sharedFavBtn.textContent = "Add to the Gift List";
+    })
+    .catch(error => {
+      console.log("Error removing from shared favorites:", error);
+    });
+   } else {
+     // Add the product to the user's shared favorites
+     firebase.firestore().collection("users").doc(userId).update({
+       shared_favorites: firebase.firestore.FieldValue.arrayUnion(productId)
+     })
+     .then(() => {
+       sharedFavBtn.textContent = "Remove from my Gift List";
+     })
+     .catch(error => {
+       console.log("Error adding to shared favorites:", error);
+     });
+   }
+});
+
 firebase.auth().onAuthStateChanged(user => {
   if (user) {
     const userId = user.uid;
@@ -104,13 +132,13 @@ firebase.auth().onAuthStateChanged(user => {
                   fill: 'forwards'
                   });
                 });
-		
-	      if (shared_fav.includes(favCard.querySelector("#name").textContent)) {
+
+	      if (shared_fav.includes(productId)) {
                 sharedFavBtn.textContent = "Remove from my Gift List";
               } else {
                 sharedFavBtn.textContent = "Add to the Gift List";
               }
-                
+		      
               const quickLookBtn = favCard.querySelector("#quick_look");
               quickLookBtn.addEventListener("click", () => {
                 const productData = {
@@ -161,47 +189,6 @@ firebase.auth().onAuthStateChanged(user => {
         console.log("Error getting product data:", error);
       });
     });
-
-    shared_fav.forEach(shared_favorite => {
-        giftsRef.where("name", "==", shared_favorite).get()
-          .then(querySnapshot => {
-            querySnapshot.forEach(doc => {
-              const data = doc.data();
-              const productId = data.name;
-
-	      sharedFavBtn.addEventListener('click', () => {
-               const isListed = sharedFavBtn.textContent === "Remove from my Gift List";
-
-               if (isListed) {
-                 // Remove the product from the user's shared favorites
-                 firebase.firestore().collection("users").doc(userId).update({
-                   shared_favorites: firebase.firestore.FieldValue.arrayRemove(productId)
-                 })
-                 .then(() => {
-              	   sharedFavBtn.textContent = "Add to the Gift List";
-            	 })
-            	 .catch(error => {
-              	   console.log("Error removing from shared favorites:", error);
-            	 });
-               } else {
-                 // Add the product to the user's shared favorites
-                 firebase.firestore().collection("users").doc(userId).update({
-              	   shared_favorites: firebase.firestore.FieldValue.arrayUnion(productId)
-           	 })
-            	 .then(() => {
-              	   sharedFavBtn.textContent = "Remove from my Gift List";
-            	 })
-            	 .catch(error => {
-              	   console.log("Error adding to shared favorites:", error);
-            	 });
-                  }
-                });
-              });
-            })
-           .catch(error => {
-       	     console.log("Error adding to shared:", error);
-     	   });
-    	});
    })
    .catch(error => {
      console.log("Error getting favorites:", error);
