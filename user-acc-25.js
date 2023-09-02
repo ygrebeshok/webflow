@@ -62,7 +62,6 @@ firebase.auth().onAuthStateChanged(user => {
     firebase.firestore().collection("users").doc(userId).get()
       .then(doc => {
         const favorites = doc.data().favorites;
-	const shared_fav = doc.data().shared_favorites;
         
         favorites.forEach(favorite => {
           giftsRef.where("name", "==", favorite).get()
@@ -71,6 +70,7 @@ firebase.auth().onAuthStateChanged(user => {
                 const data = doc.data();
 		const productId = data.name;
                 const favCard = favCardTemplate.cloneNode(true);
+		const shared_fav = doc.data().shared_favorites;
 		      
                 // populate the card with product data
                 favCard.querySelector("#name").textContent = data.name;
