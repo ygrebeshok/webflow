@@ -193,11 +193,12 @@ firebase.auth().onAuthStateChanged(user => {
             	 .catch(error => {
               	   console.log("Error adding to shared favorites:", error);
             	 });
-               }
-            });
-            });
+                  }
+                });
+              });
+            })
            .catch(error => {
-       	     console.log("Error adding to shared favorites:", error);
+       	     console.log("Error adding to shared:", error);
      	   });
     	});
    })
@@ -229,7 +230,7 @@ firebase.auth().onAuthStateChanged(user => {
 
               // Open a new pop-up window with the formatted content
               popUp.style.visibility = "visible";
-    					const giftList = document.getElementById("gift-list");
+    	      const giftList = document.getElementById("gift-list");
               giftList.innerHTML = formattedContentArray.join('');
               
               closeBtn.addEventListener('click', () => {
