@@ -63,7 +63,6 @@ firebase.auth().onAuthStateChanged(user => {
       .then(doc => {
         const favorites = doc.data().favorites;
 	const shared_fav = doc.data().shared_favorites;
-	const productId = doc.data().name;
 
 	//Gift Listed
         shared_fav.forEach(shared_favorite => {
@@ -71,6 +70,7 @@ firebase.auth().onAuthStateChanged(user => {
             .then(querySnapshot => {
               querySnapshot.forEach(doc => {
                 const data = doc.data();
+		const productId = data.name;
 
              if (shared_fav.includes(productId)) {
                sharedFavBtn.textContent = "Remove from my Gift List";
@@ -115,7 +115,9 @@ firebase.auth().onAuthStateChanged(user => {
             .then(querySnapshot => {
               querySnapshot.forEach(doc => {
                 const data = doc.data();
+		const productId = data.name;
                 const favCard = favCardTemplate.cloneNode(true);
+		      
                 // populate the card with product data
                 favCard.querySelector("#name").textContent = data.name;
                 favCard.querySelector("#description").textContent = data.description;
