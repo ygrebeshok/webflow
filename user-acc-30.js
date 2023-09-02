@@ -72,8 +72,8 @@ firebase.auth().onAuthStateChanged(user => {
                 const favCard = favCardTemplate.cloneNode(true);
 		const shared_fav = data.shared_favorites;
 		      
-		const shared_fav = doc.exists ? doc.data().shared_favorites : [];
-		console.log("shared_fav:", shared_fav);
+		const shared_fav_1 = doc.exists ? doc.data().shared_favorites : [];
+		console.log("shared_fav:", shared_fav_1);
 		      
                 // populate the card with product data
                 favCard.querySelector("#name").textContent = data.name;
