@@ -63,52 +63,6 @@ firebase.auth().onAuthStateChanged(user => {
       .then(doc => {
         const favorites = doc.data().favorites;
 	const shared_fav = doc.data().shared_favorites;
-
-	//Gift Listed
-        shared_fav.forEach(shared_favorite => {
-          giftsRef.where("name", "==", shared_favorite).get()
-            .then(querySnapshot => {
-              querySnapshot.forEach(doc => {
-                const data = doc.data();
-		const productId = data.name;
-
-             if (shared_fav.includes(productId)) {
-               sharedFavBtn.textContent = "Remove from my Gift List";
-             } else {
-	       sharedFavBtn.textContent = "Add to the Gift List";
-	     }
-
-            sharedFavBtn.addEventListener('click', () => {
-              const isListed = sharedFavBtn.textContent === "Remove from my Gift List";
-
-              if (isListed) {
-                firebase.firestore().collection("users").doc(userId).update({
-                  shared_favorites: firebase.firestore.FieldValue.arrayRemove(productId)
-                })
-                .then(() => {
-                  sharedFavBtn.textContent = "Add to my Gift List";
-                })
-                .catch(error => {
-                  console.log("Error with the Gift List", error);
-                });
-              } else {
-                firebase.firestore().collection("users").doc(userId).update({
-                  shared_favorites: firebase.firestore.FieldValue.arrayUnion(productId)
-                })
-                .then(() => {
-                  sharedFavBtn.textContent = "Remove from my Gift List";
-                })
-                .catch(error => {
-                  console.log("Error with the Gift List:", error);
-                });
-               }
-            });
-         });
-       })
-       .catch(error => {
-         console.log("Error getting product data for Gift List:", error);
-       });
-     });
         
         favorites.forEach(favorite => {
           giftsRef.where("name", "==", favorite).get()
@@ -161,6 +115,51 @@ firebase.auth().onAuthStateChanged(user => {
                 };
 
                 showPopupUser(productData);
+	        //Gift Listed
+
+		if (shared_fav.includes(productId)) {
+               	  sharedFavBtn.textContent = "Remove from my Gift List";
+             	} else {
+	       	  sharedFavBtn.textContent = "Add to the Gift List";
+	     	}
+		
+        	shared_fav.forEach(shared_favorite => {
+          	  giftsRef.where("name", "==", shared_favorite).get()
+            	  .then(querySnapshot => {
+              	    querySnapshot.forEach(doc => {
+                      const data = doc.data();
+
+            	      sharedFavBtn.addEventListener('click', () => {
+              		const isListed = sharedFavBtn.textContent === "Remove from my Gift List";
+
+              		if (isListed) {
+                	  firebase.firestore().collection("users").doc(userId).update({
+                  	    shared_favorites: firebase.firestore.FieldValue.arrayRemove(productId)
+                	  })
+                	  .then(() => {
+                  	    sharedFavBtn.textContent = "Add to my Gift List";
+                	  })
+                	  .catch(error => {
+                            console.log("Error with the Gift List", error);
+                	  });
+                        } else {
+                	  firebase.firestore().collection("users").doc(userId).update({
+                  	  shared_favorites: firebase.firestore.FieldValue.arrayUnion(productId)
+                	})
+                	.then(() => {
+                  	  sharedFavBtn.textContent = "Remove from my Gift List";
+                	})
+               	        .catch(error => {
+                  	  console.log("Error with the Gift List:", error);
+                	});
+               	      }
+                   });
+                 });
+               })
+       	       .catch(error => {
+                 console.log("Error getting product data for Gift List:", error);
+               });
+              });
              });
 
              if (favorites.includes(productId)) {
