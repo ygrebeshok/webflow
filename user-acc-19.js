@@ -161,7 +161,7 @@ firebase.auth().onAuthStateChanged(user => {
 
     //Gift Listed
     shared_fav.forEach(shared_favorite => {
-          giftsRef.where("name", "==", favorite).get()
+          giftsRef.where("name", "==", shared_favorite).get()
             .then(querySnapshot => {
               querySnapshot.forEach(doc => {
                 const data = doc.data();
