@@ -154,10 +154,6 @@ firebase.auth().onAuthStateChanged(user => {
                }
             });
 
-            if (favorites.includes(productId)) {
-              favoritesLabel.textContent = "Remove from Favorites";
-            }
-
             favoriteBtn.addEventListener('click', () => {
               const isFavorite = favoritesLabel.textContent === "Remove from Favorites";
 
