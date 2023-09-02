@@ -72,7 +72,7 @@ firebase.auth().onAuthStateChanged(user => {
                 const favCard = favCardTemplate.cloneNode(true);
 		
 		console.log("shared_fav:", shared_fav);
-		console.log("shared_fav:", productId);
+		console.log("productId:", productId);
 		      
                 // populate the card with product data
                 favCard.querySelector("#name").textContent = data.name;
@@ -104,6 +104,12 @@ firebase.auth().onAuthStateChanged(user => {
                   fill: 'forwards'
                   });
                 });
+		
+	      if (shared_fav.includes(favCard.querySelector("#name").textContent)) {
+                sharedFavBtn.textContent = "Remove from my Gift List";
+              } else {
+                sharedFavBtn.textContent = "Add to the Gift List";
+              }
                 
               const quickLookBtn = favCard.querySelector("#quick_look");
               quickLookBtn.addEventListener("click", () => {
@@ -162,11 +168,6 @@ firebase.auth().onAuthStateChanged(user => {
             querySnapshot.forEach(doc => {
               const data = doc.data();
               const productId = data.name;
-	      if (shared_fav.includes(productId)) {
-                sharedFavBtn.textContent = "Remove from my Gift List";
-              } else {
-                sharedFavBtn.textContent = "Add to the Gift List";
-              }
 
 	      sharedFavBtn.addEventListener('click', () => {
                const isListed = sharedFavBtn.textContent === "Remove from my Gift List";
