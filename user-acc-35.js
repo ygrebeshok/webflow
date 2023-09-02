@@ -1,4 +1,3 @@
-
 const popupImage = document.getElementById('popup_image');
 const popupTitle = document.getElementById('popup_title');
 const popupBrand = document.getElementById('popup_brand');
@@ -63,17 +62,17 @@ firebase.auth().onAuthStateChanged(user => {
       .then(doc => {
         const favorites = doc.data().favorites;
 	const shared_fav = doc.data().shared_favorites;
-       });
         
         favorites.forEach(favorite => {
           giftsRef.where("name", "==", favorite).get()
             .then(querySnapshot => {
               querySnapshot.forEach(doc => {
+                const data = doc.data();
 		const productId = data.name;
                 const favCard = favCardTemplate.cloneNode(true);
 		
 		console.log("shared_fav:", shared_fav);
-		console.log("product_Id:", productId);
+		console.log("shared_fav:", productId);
 		      
                 // populate the card with product data
                 favCard.querySelector("#name").textContent = data.name;
@@ -117,44 +116,44 @@ firebase.auth().onAuthStateChanged(user => {
                   price: favCard.querySelector("#price").textContent.replace("$", "")
                 };
 
-             showPopupUser(productData);
+                showPopupUser(productData);
+	        //Gift Listed
+		if (shared_fav.includes(productId)) {
+          	  sharedFavBtn.textContent = "Remove from my Gift List";
+        	} else {
+          	  sharedFavBtn.textContent = "Add to the Gift List";
+        	}
+		
+        	sharedFavBtn.addEventListener('click', () => {
+          	  const isListed = sharedFavBtn.textContent === "Remove from my Gift List";
 
-	     //Gift Listed
-	     if (shared_fav.includes(productId)) {
-               sharedFavBtn.textContent = "Remove from my Gift List";
-             } else {
-               sharedFavBtn.textContent = "Add to the Gift List";
-             }
-
-	     sharedFavBtn.addEventListener('click', () => {
-               const isListed = sharedFavBtn.textContent === "Remove from my Gift List";
-
-             if (isListed) {
-               // Remove the product from the user's shared favorites
-               firebase.firestore().collection("users").doc(userId).update({
-                 shared_favorites: firebase.firestore.FieldValue.arrayRemove(productId)
-               })
-               .then(() => {
-                 sharedFavBtn.textContent = "Add to the Gift List";
-               })
-               .catch(error => {
-                 console.log("Error removing from shared favorites:", error);
+          	  if (isListed) {
+           	    // Remove the product from the user's shared favorites
+            	    firebase.firestore().collection("users").doc(userId).update({
+              	      shared_favorites: firebase.firestore.FieldValue.arrayRemove(productId)
+            	    })
+            	    .then(() => {
+              	      sharedFavBtn.textContent = "Add to the Gift List";
+            	    })
+            	    .catch(error => {
+              	      console.log("Error removing from shared favorites:", error);
+            	    });
+          	  } else {
+                  // Add the product to the user's shared favorites
+                    firebase.firestore().collection("users").doc(userId).update({
+              	      shared_favorites: firebase.firestore.FieldValue.arrayUnion(productId)
+           	    })
+            	    .then(() => {
+              	      sharedFavBtn.textContent = "Remove from my Gift List";
+            	    })
+            	    .catch(error => {
+              	      console.log("Error adding to shared favorites:", error);
+            	    });
+          	  }
                });
-             } else {
-             // Add the product to the user's shared favorites
-               firebase.firestore().collection("users").doc(userId).update({
-               shared_favorites: firebase.firestore.FieldValue.arrayUnion(productId)
-               })
-               .then(() => {
-                 sharedFavBtn.textContent = "Remove from my Gift List";
-               })
-               .catch(error => {
-                 console.log("Error adding to shared favorites:", error);
-               });
-              }
-           });
+             });
 
-             if (favorites && favorites.includes(productId)) {
+             if (favorites.includes(productId)) {
                favoritesLabel.textContent = "Remove from Favorites";
              }
 
