@@ -1,3 +1,4 @@
+
 const popupImage = document.getElementById('popup_image');
 const popupTitle = document.getElementById('popup_title');
 const popupBrand = document.getElementById('popup_brand');
@@ -42,11 +43,7 @@ function showPopupUser(productData) {
           })
           .then(() => {
             favoritesLabel.textContent = "Add to Favorites";
-            // Remove the corresponding favCard when removing from favorites
-            const cardToRemove = document.querySelector(`[data-product-id="${productId}"]`);
-            if (cardToRemove) {
-              cardToRemove.style.display = "none";
-	    }
+	    favCard.style.display = "none";
           })
           .catch(error => {
             console.log("Error removing product from favorites:", error);
