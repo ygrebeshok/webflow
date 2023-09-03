@@ -5,13 +5,13 @@ const popupDesc = document.getElementById('popup_desc');
 const popupLink = document.getElementById('popup_link');
 const popupPrice = document.getElementById('popup_price');
 const popupClose = document.getElementById('popup-close');
-const quickLook = document.getElementById('quick_look');
 const popupContainer = document.getElementById('popup-fade');
 const favoritesGrid = document.getElementById("favoritesGrid");
 const favCardTemplate = document.querySelector("#card");
 const giftsRef = firebase.firestore().collection("gifts");
 const popUp = document.getElementById("pop-up");
 const closeBtn = document.getElementById("close-button");
+const favoritesLabel = document.getElementById("favorites-label");
 
 function showPopupUser(productData) {
   popupImage.src = productData.image_url;
@@ -68,6 +68,8 @@ firebase.auth().onAuthStateChanged(user => {
                 const favCard = favCardTemplate.cloneNode(true);
                 // populate the card with product data
                 favCard.querySelector("#name").textContent = data.name;
+		favCard.querySelector("#brand").textContent = data.brand;
+		favCard.querySelector("#brand").href = data.product_link;
                 favCard.querySelector("#description").textContent = data.description;
                 favCard.querySelector("#product_image").src = data.image_url;
                 favCard.querySelector("#price").textContent = `$${data.price}`;
@@ -97,10 +99,7 @@ firebase.auth().onAuthStateChanged(user => {
                 const favoriteBtn = favCard.querySelector("#favorite-btn");
                 const sharedFavBtn = favCard.querySelector("#shared-fav");
                 const productId = favCard.querySelector("#name").textContent;
-
-                if (favorites.includes(productId)) {
-                  favoriteBtn.textContent = "Remove from Favorites";
-                }
+		const quickLook = favCard.querySelector("#quick_look");
                 
                 const quickLookBtn = favCard.querySelector("#quick_look");
                 quickLookBtn.addEventListener("click", () => {
@@ -134,14 +133,14 @@ firebase.auth().onAuthStateChanged(user => {
                 });
 
                 favoriteBtn.addEventListener('click', () => {
-                  const isFavorite = favoriteBtn.textContent === "Remove from Favorites";
+                  const isFavorite = favoritesLabel.textContent === "Remove from Favorites";
 
                   if (isFavorite) {
                     firebase.firestore().collection("users").doc(userId).update({
                         favorites: firebase.firestore.FieldValue.arrayRemove(productId)
                       })
                       .then(() => {
-                        favoriteBtn.textContent = "Add to Favorites";
+                        favoritesLabel.textContent = "Add to Favorites";
                         favCard.style.display = "none";
                       })
                       .catch(error => {
@@ -152,7 +151,7 @@ firebase.auth().onAuthStateChanged(user => {
                         favorites: firebase.firestore.FieldValue.arrayUnion(productId)
                       })
                       .then(() => {
-                        favoriteBtn.textContent = "Remove from Favorites";
+                        favoritesLabel.textContent = "Remove from Favorites";
                       })
                       .catch(error => {
                         console.log("Error adding product to favorites:", error);
