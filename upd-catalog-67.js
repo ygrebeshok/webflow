@@ -181,6 +181,8 @@ function showPopup(productData) {
       const favorites = doc.data().favorites;
       if (favorites.includes(productId)) {
         favoritesLabel.textContent = "Remove from Favorites";
+      } else {
+	favoritesLabel.textContent = "Add to Favorites";
       }
     })
     .catch(error => {
