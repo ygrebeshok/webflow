@@ -6,15 +6,11 @@ const popupLink = document.getElementById('popup_link');
 const popupPrice = document.getElementById('popup_price');
 const quickLook = document.getElementById('quick_look');
 const popupContainer = document.getElementById('popup-fade');
-const popupClose = document.getElementById('popup-close');
 const favoritesGrid = document.getElementById("favoritesGrid");
 const favCardTemplate = document.querySelector("#card");
 const giftsRef = firebase.firestore().collection("gifts");
 const popUp = document.getElementById("pop-up");
 const closeBtn = document.getElementById("close-button");
-const favoritesLabel = document.getElementById("favorites-label");
-const favoriteBtn = document.querySelector("#favorite-btn");
-const sharedFavBtn = document.getElementById('shareFav');
 
 function showPopupUser(productData) {
   popupImage.src = productData.image_url;
@@ -54,34 +50,6 @@ favoritesGrid.removeChild(defaultCard);
 
 const shareFavoritesButton = document.getElementById('shareFavoritesButton');
 
-sharedFavBtn.addEventListener('click', () => {
-  const isListed = sharedFavBtn.textContent === "Remove from my Gift List";
-
-  if (isListed) {
-    // Remove the product from the user's shared favorites
-    firebase.firestore().collection("users").doc(userId).update({
-      shared_favorites: firebase.firestore.FieldValue.arrayRemove(productId)
-    })
-    .then(() => {
-      sharedFavBtn.textContent = "Add to the Gift List";
-    })
-    .catch(error => {
-      console.log("Error removing from shared favorites:", error);
-    });
-   } else {
-     // Add the product to the user's shared favorites
-     firebase.firestore().collection("users").doc(userId).update({
-       shared_favorites: firebase.firestore.FieldValue.arrayUnion(productId)
-     })
-     .then(() => {
-       sharedFavBtn.textContent = "Remove from my Gift List";
-     })
-     .catch(error => {
-       console.log("Error adding to shared favorites:", error);
-     });
-   }
-});
-
 firebase.auth().onAuthStateChanged(user => {
   if (user) {
     const userId = user.uid;
@@ -96,21 +64,13 @@ firebase.auth().onAuthStateChanged(user => {
             .then(querySnapshot => {
               querySnapshot.forEach(doc => {
                 const data = doc.data();
-		const productId = data.name;
                 const favCard = favCardTemplate.cloneNode(true);
-		
-		console.log("shared_fav:", shared_fav);
-		console.log("productId:", productId);
-		      
                 // populate the card with product data
                 favCard.querySelector("#name").textContent = data.name;
                 favCard.querySelector("#description").textContent = data.description;
-                favCard.querySelector("#brand").textContent = data.brand;
                 favCard.querySelector("#product_image").src = data.image_url;
                 favCard.querySelector("#price").textContent = `$${data.price}`;
 
-		favCard.dataset.productId = productId;
-		
                 favoritesGrid.appendChild(favCard);
                 
                 favCard.addEventListener('mouseenter', () => {
@@ -132,75 +92,116 @@ firebase.auth().onAuthStateChanged(user => {
                   fill: 'forwards'
                   });
                 });
+                
+                const favoriteBtn = favCard.querySelector("#favorite-btn");
+                const sharedFavBtn = favCard.querySelector("#shared-fav");
+                const productId = favCard.querySelector("#name").textContent;
 
-	      if (shared_fav.includes(productId)) {
-                sharedFavBtn.textContent = "Remove from my Gift List";
-              } else {
-                sharedFavBtn.textContent = "Add to the Gift List";
-              }
-		      
-              const quickLookBtn = favCard.querySelector("#quick_look");
-              quickLookBtn.addEventListener("click", () => {
-                const productData = {
-                  image_url: favCard.querySelector("#product_image").src,
-                  name: favCard.querySelector("#name").textContent,
-                  brand: favCard.querySelector("#brand").textContent,
-                  description: favCard.querySelector("#description").textContent,
-                  product_link: data.product_link,
-                  price: favCard.querySelector("#price").textContent.replace("$", "")
-                };
+                if (favorites.includes(productId)) {
+                  favoriteBtn.textContent = "Remove from Favorites";
+                }
+                
+                const quickLookBtn = favCard.querySelector("#quick_look");
+                quickLookBtn.addEventListener("click", () => {
+                  const productData = {
+                    image_url: favCard.querySelector("#product_image").src,
+                    name: favCard.querySelector("#name").textContent,
+                    brand: favCard.querySelector("#brand").textContent,
+                    description: favCard.querySelector("#description").textContent,
+                    product_link: data.product_link,
+                    price: favCard.querySelector("#price").textContent.replace("$", "")
+                  };
 
                 showPopupUser(productData);
-             });
-
-            favoriteBtn.addEventListener('click', () => {
-              const isFavorite = favoritesLabel.textContent === "Remove from Favorites";
-
-              if (isFavorite) {
-                firebase.firestore().collection("users").doc(userId).update({
-                  favorites: firebase.firestore.FieldValue.arrayRemove(productId)
-                })
-                .then(() => {
-                  favoritesLabel.textContent = "Add to Favorites";
-		  // Remove the corresponding favCard when removing from favorites
-                  const cardToRemove = document.querySelector(`[data-product-id="${productId}"]`);
-                  if (cardToRemove) {
-                    cardToRemove.style.display = "none";
-		  }
-                })
-                .catch(error => {
-                  console.log("Error removing product from favorites:", error);
+                
                 });
-              } else {
-                firebase.firestore().collection("users").doc(userId).update({
-                  favorites: firebase.firestore.FieldValue.arrayUnion(productId)
-                })
-                .then(() => {
-                  favoritesLabel.textContent = "Remove from Favorites";
-                })
-                .catch(error => {
-                  console.log("Error adding product to favorites:", error);
+                
+                const formattedContentSet = new Set()
+                
+                shared_fav.forEach(favorite => {
+                  giftsRef.where("name", "==", favorite).get()
+                  .then(sharedFavoritesQuerySnapshot => {
+                    sharedFavoritesQuerySnapshot.forEach(sharedDoc => {
+                      if (shared_fav.includes(productId)) {
+                        sharedFavBtn.textContent = "Remove from my Gift List";
+                      }
+                    });
+                  })
+                  .catch(error => {
+                    console.log("Error getting shared favorites:", error);
+                  });
                 });
-              }
-           });
+
+                favoriteBtn.addEventListener('click', () => {
+                  const isFavorite = favoriteBtn.textContent === "Remove from Favorites";
+
+                  if (isFavorite) {
+                    firebase.firestore().collection("users").doc(userId).update({
+                        favorites: firebase.firestore.FieldValue.arrayRemove(productId)
+                      })
+                      .then(() => {
+                        favoriteBtn.textContent = "Add to Favorites";
+                        favCard.style.display = "none";
+                      })
+                      .catch(error => {
+                        console.log("Error removing product from favorites:", error);
+                      });
+                  } else {
+                    firebase.firestore().collection("users").doc(userId).update({
+                        favorites: firebase.firestore.FieldValue.arrayUnion(productId)
+                      })
+                      .then(() => {
+                        favoriteBtn.textContent = "Remove from Favorites";
+                      })
+                      .catch(error => {
+                        console.log("Error adding product to favorites:", error);
+                      });
+                  }
+                });
+
+                sharedFavBtn.addEventListener('click', () => {
+                  const isSharedFavorite = sharedFavBtn.textContent === "Remove from my Gift List";
+
+                  if (isSharedFavorite) {
+                    firebase.firestore().collection("users").doc(userId).update({
+                        shared_favorites: firebase.firestore.FieldValue.arrayRemove(productId)
+                      })
+                      .then(() => {
+                        sharedFavBtn.textContent = "Add to my Gift List";
+                      })
+                      .catch(error => {
+                        console.log("Error removing product from shared_favorites:", error);
+                      });
+                  } else {
+                    firebase.firestore().collection("users").doc(userId).update({
+                        shared_favorites: firebase.firestore.FieldValue.arrayUnion(productId)
+                      })
+                      .then(() => {
+                        sharedFavBtn.textContent = "Remove from my Gift List";
+                      })
+                      .catch(error => {
+                        console.log("Error adding product to shared_favorites:", error);
+                      });
+                  }
+                });
+              });
+            })
+            .catch(error => {
+              console.log("Error getting product data:", error);
+            });
         });
       })
       .catch(error => {
-        console.log("Error getting product data:", error);
+        console.log("Error getting favorites:", error);
       });
-    });
-   })
-   .catch(error => {
-     console.log("Error getting favorites:", error);
-   });
       
-   // Retrieve the user's document from the "users" collection
-   const userDocRef = firebase.firestore().collection('users').doc(userId);
+      // Retrieve the user's document from the "users" collection
+      const userDocRef = firebase.firestore().collection('users').doc(userId);
 
-   shareFavoritesButton.addEventListener('click', () => {
+      shareFavoritesButton.addEventListener('click', () => {
       
-     userDocRef.get()
-       .then((doc) => {
+        userDocRef.get()
+        .then((doc) => {
           if (doc.exists) {
             const userData = doc.data();
             const sharedFavorites = userData.shared_favorites || [];
@@ -218,7 +219,7 @@ firebase.auth().onAuthStateChanged(user => {
 
               // Open a new pop-up window with the formatted content
               popUp.style.visibility = "visible";
-    	      const giftList = document.getElementById("gift-list");
+    					const giftList = document.getElementById("gift-list");
               giftList.innerHTML = formattedContentArray.join('');
               
               closeBtn.addEventListener('click', () => {
@@ -236,5 +237,7 @@ firebase.auth().onAuthStateChanged(user => {
           console.error('Error retrieving user document:', error);
         });
      });
+
   }
 });
+
