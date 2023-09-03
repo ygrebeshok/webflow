@@ -99,9 +99,8 @@ firebase.auth().onAuthStateChanged(user => {
                 const favoriteBtn = favCard.querySelector("#favorite-btn");
                 const sharedFavBtn = favCard.querySelector("#shared-fav");
                 const productId = favCard.querySelector("#name").textContent;
-		const quickLook = favCard.querySelector("#quick_look");
-                
                 const quickLookBtn = favCard.querySelector("#quick_look");
+		      
                 quickLookBtn.addEventListener("click", () => {
                   const productData = {
                     image_url: favCard.querySelector("#product_image").src,
