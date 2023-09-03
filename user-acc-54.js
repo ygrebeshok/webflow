@@ -15,7 +15,7 @@ const closeBtn = document.getElementById("close-button");
 const favoritesLabel = document.getElementById("favorites-label");
 const favoriteBtn = document.querySelector("#favorite-btn");
 
-function showPopupUser(productData) {
+function showPopupUser(productData, card) {
   popupImage.src = productData.image_url;
   popupTitle.textContent = productData.name;
   popupBrand.textContent = productData.brand;
@@ -33,7 +33,32 @@ function showPopupUser(productData) {
       if (favorites.includes(productId)) {
         favoritesLabel.textContent = "Remove from Favorites";
       }
+      favoriteBtn.addEventListener('click', () => {
+        const isFavorite = favoritesLabel.textContent === "Remove from Favorites";
 
+        if (isFavorite) {
+          firebase.firestore().collection("users").doc(userId).update({
+            favorites: firebase.firestore.FieldValue.arrayRemove(productId)
+          })
+          .then(() => {
+            favoritesLabel.textContent = "Add to Favorites";
+	    card.style.display = "none";
+          })
+          .catch(error => {
+            console.log("Error removing product from favorites:", error);
+          });
+          } else {
+            firebase.firestore().collection("users").doc(userId).update({
+              favorites: firebase.firestore.FieldValue.arrayUnion(productId)
+            })
+            .then(() => {
+              favoritesLabel.textContent = "Remove from Favorites";
+            })
+            .catch(error => {
+              console.log("Error adding product to favorites:", error);
+            });
+          }
+       });
     })
     .catch(error => {
       console.log("Error getting favorites:", error);
@@ -114,35 +139,8 @@ firebase.auth().onAuthStateChanged(user => {
                     price: favCard.querySelector("#price").textContent.replace("$", "")
                   };
 
-                showPopupUser(productData);
+                showPopupUser(productData, favCard);
                 });
-
-		favoriteBtn.addEventListener('click', () => {
-        	  const isFavorite = favoritesLabel.textContent === "Remove from Favorites";
-
-        	  if (isFavorite) {
-          	    firebase.firestore().collection("users").doc(userId).update({
-            	      favorites: firebase.firestore.FieldValue.arrayRemove(productId)
-          	    })
-          	    .then(() => {
-            	      favoritesLabel.textContent = "Add to Favorites";
-	    	      favCard.style.display = "none";
-          	    })
-          	    .catch(error => {
-            	      console.log("Error removing product from favorites:", error);
-          	    });
-          	  } else {
-            	    firebase.firestore().collection("users").doc(userId).update({
-              	      favorites: firebase.firestore.FieldValue.arrayUnion(productId)
-            	    })
-            	    .then(() => {
-              	      favoritesLabel.textContent = "Remove from Favorites";
-            	    })
-            	    .catch(error => {
-              	      console.log("Error adding product to favorites:", error);
-            	    });
-          	  }
-       	       });
                 
                 const formattedContentSet = new Set()
                 
