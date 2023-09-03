@@ -141,21 +141,24 @@ firebase.auth().onAuthStateChanged(user => {
                       })
                       .then(() => {
                         favoritesLabel.textContent = "Add to Favorites";
-                        favCard.style.display = "none";
-                      })
+                        // Remove the corresponding favCard when removing from favorites
+                  	const cardToRemove = document.querySelector(`[data-product-id="${productId}"]`);
+                  	if (cardToRemove) {
+                    	  cardToRemove.style.display = "none";
+                      	})
                       .catch(error => {
                         console.log("Error removing product from favorites:", error);
                       });
                   } else {
                     firebase.firestore().collection("users").doc(userId).update({
-                        favorites: firebase.firestore.FieldValue.arrayUnion(productId)
-                      })
-                      .then(() => {
-                        favoritesLabel.textContent = "Remove from Favorites";
-                      })
-                      .catch(error => {
-                        console.log("Error adding product to favorites:", error);
-                      });
+                      favorites: firebase.firestore.FieldValue.arrayUnion(productId)
+                    })
+                    .then(() => {
+                      favoritesLabel.textContent = "Remove from Favorites";
+                    })
+                    .catch(error => {
+                      console.log("Error adding product to favorites:", error);
+                    });
                   }
                 });
 
