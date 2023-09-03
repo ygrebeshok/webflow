@@ -4,6 +4,7 @@ const popupBrand = document.getElementById('popup_brand');
 const popupDesc = document.getElementById('popup_desc');
 const popupLink = document.getElementById('popup_link');
 const popupPrice = document.getElementById('popup_price');
+const popupClose = document.getElementById('popup-close');
 const quickLook = document.getElementById('quick_look');
 const popupContainer = document.getElementById('popup-fade');
 const favoritesGrid = document.getElementById("favoritesGrid");
