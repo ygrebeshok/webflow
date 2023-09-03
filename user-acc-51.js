@@ -32,6 +32,37 @@ function showPopupUser(productData) {
       if (favorites.includes(productId)) {
         favoritesLabel.textContent = "Remove from Favorites";
       }
+
+      favoriteBtn.addEventListener('click', () => {
+        const isFavorite = favoritesLabel.textContent === "Remove from Favorites";
+
+        if (isFavorite) {
+          firebase.firestore().collection("users").doc(userId).update({
+            favorites: firebase.firestore.FieldValue.arrayRemove(productId)
+          })
+          .then(() => {
+            favoritesLabel.textContent = "Add to Favorites";
+            // Remove the corresponding favCard when removing from favorites
+            const cardToRemove = document.querySelector(`[data-product-id="${productId}"]`);
+            if (cardToRemove) {
+              cardToRemove.style.display = "none";
+	    }
+          })
+          .catch(error => {
+            console.log("Error removing product from favorites:", error);
+          });
+          } else {
+            firebase.firestore().collection("users").doc(userId).update({
+              favorites: firebase.firestore.FieldValue.arrayUnion(productId)
+            })
+            .then(() => {
+              favoritesLabel.textContent = "Remove from Favorites";
+            })
+            .catch(error => {
+              console.log("Error adding product to favorites:", error);
+            });
+          }
+       });
     })
     .catch(error => {
       console.log("Error getting favorites:", error);
@@ -130,37 +161,6 @@ firebase.auth().onAuthStateChanged(user => {
                   .catch(error => {
                     console.log("Error getting shared favorites:", error);
                   });
-                });
-
-                favoriteBtn.addEventListener('click', () => {
-                  const isFavorite = favoritesLabel.textContent === "Remove from Favorites";
-
-                  if (isFavorite) {
-                    firebase.firestore().collection("users").doc(userId).update({
-                        favorites: firebase.firestore.FieldValue.arrayRemove(productId)
-                      })
-                      .then(() => {
-                        favoritesLabel.textContent = "Add to Favorites";
-                        // Remove the corresponding favCard when removing from favorites
-                  	const cardToRemove = document.querySelector(`[data-product-id="${productId}"]`);
-                  	if (cardToRemove) {
-                    	  cardToRemove.style.display = "none";
-			}
-                      })
-                      .catch(error => {
-                        console.log("Error removing product from favorites:", error);
-                      });
-                  } else {
-                    firebase.firestore().collection("users").doc(userId).update({
-                      favorites: firebase.firestore.FieldValue.arrayUnion(productId)
-                    })
-                    .then(() => {
-                      favoritesLabel.textContent = "Remove from Favorites";
-                    })
-                    .catch(error => {
-                      console.log("Error adding product to favorites:", error);
-                    });
-                  }
                 });
 
                 sharedFavBtn.addEventListener('click', () => {
