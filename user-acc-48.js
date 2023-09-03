@@ -12,6 +12,7 @@ const giftsRef = firebase.firestore().collection("gifts");
 const popUp = document.getElementById("pop-up");
 const closeBtn = document.getElementById("close-button");
 const favoritesLabel = document.getElementById("favorites-label");
+const favoriteBtn = document.querySelector("#favorite-btn");
 
 function showPopupUser(productData) {
   popupImage.src = productData.image_url;
