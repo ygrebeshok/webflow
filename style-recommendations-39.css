@@ -37,10 +37,7 @@
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 	}
-  
-  .menu-parent {
-    mix-blend-mode: difference;
-  }
+
 
   .logo-home {
     mix-blend-mode: difference;
