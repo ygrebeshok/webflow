@@ -415,66 +415,87 @@ function updateCatalog() {
           }
       });
     }
+const filledLike = "https://uploads-ssl.webflow.com/63754b30fc1fcb22c75e7cb3/64fd42aa4c01d1a2dce1f72d_like.png";
+const emptyLike = "https://uploads-ssl.webflow.com/63754b30fc1fcb22c75e7cb3/64fd1f04f9318a593c1544e8_like%20unfilled.png";
+
+const filledDislike = "https://uploads-ssl.webflow.com/63754b30fc1fcb22c75e7cb3/64fd42a725f96a17e1984d22_dislike.png";
+const emptyDislike = "https://uploads-ssl.webflow.com/63754b30fc1fcb22c75e7cb3/64fd21004c01d1a2dccce5dc_dislike%20unfilled.png";
 
 function toggleLike(likeImage, dislikeImage, userId, productId) {
-  const isLiked = likeImage.src === "https://uploads-ssl.webflow.com/63754b30fc1fcb22c75e7cb3/64fd42aa4c01d1a2dce1f72d_like.png";
-  const isDisliked = dislikeImage.src === "https://uploads-ssl.webflow.com/63754b30fc1fcb22c75e7cb3/64fd42a725f96a17e1984d22_dislike.png";
+  const isLiked = likeImage.src === filledLike;
+  const isDisliked = dislikeImage.src === filledDislike;
 
   if (isLiked) {
     firebase.firestore().collection("users").doc(userId).update({
       liked: firebase.firestore.FieldValue.arrayRemove(productId)
     })
     .then(() => {
-      likeImage.src = "https://uploads-ssl.webflow.com/63754b30fc1fcb22c75e7cb3/64fd1f04f9318a593c1544e8_like%20unfilled.png";
+      likeImage.src = emptyLike;
     })
     .catch(error => {
-      console.log("Error adding to liked:", error);
+      console.log("Error removing from liked:", error);
     });
   } else {
     firebase.firestore().collection("users").doc(userId).update({
       liked: firebase.firestore.FieldValue.arrayUnion(productId)
     })
     .then(() => {
-      likeImage.src = "https://uploads-ssl.webflow.com/63754b30fc1fcb22c75e7cb3/64fd42aa4c01d1a2dce1f72d_like.png";
+      likeImage.src = filledLike;
       
       // If the product was previously disliked, remove it from disliked
       if (isDisliked) {
-        toggleDislike(dislikeImage, userId, productId);
+        firebase.firestore().collection("users").doc(userId).update({
+          disliked: firebase.firestore.FieldValue.arrayRemove(productId)
+    	})
+	.then(() => {
+	  dislikeImage.src = emptyDislike;
+	})
+	.catch(error => {
+          console.log("Error removing from disliked:", error);
+        });
       }
     })
     .catch(error => {
-      console.log("Error removing liked:", error);
+      console.log("Error adding liked:", error);
     });
    }
 }
 
-function toggleDislike(dislikeImage, userId, productId) {
-  const isDisliked = dislikeImage.src === "https://uploads-ssl.webflow.com/63754b30fc1fcb22c75e7cb3/64fd42a725f96a17e1984d22_dislike.png";
+function toggleDislike(dislikeImage, likeImage, userId, productId) {
+  const isDisliked = dislikeImage.src === filledDislike;
 
   if (isDisliked) {
     firebase.firestore().collection("users").doc(userId).update({
       disliked: firebase.firestore.FieldValue.arrayRemove(productId)
     })
     .then(() => {
-      dislikeImage.src = "https://uploads-ssl.webflow.com/63754b30fc1fcb22c75e7cb3/64fd21004c01d1a2dccce5dc_dislike%20unfilled.png";
+      dislikeImage.src = emptyDislike;
     })
     .catch(error => {
-      console.log("Error adding to disliked:", error);
+      console.log("Error removing from disliked:", error);
     });
   } else {
     firebase.firestore().collection("users").doc(userId).update({
       disliked: firebase.firestore.FieldValue.arrayUnion(productId)
     })
     .then(() => {
-      dislikeImage.src = "https://uploads-ssl.webflow.com/63754b30fc1fcb22c75e7cb3/64fd42a725f96a17e1984d22_dislike.png";
+      dislikeImage.src = filledDislike;
       
       // If the product was previously liked, remove it from liked
       if (isLiked) {
-        toggleLike(likeImage, dislikeImage, userId, productId);
+        firebase.firestore().collection("users").doc(userId).update({
+          liked: firebase.firestore.FieldValue.arrayRemove(productId)
+    	})
+	.then(() => {
+	  likeImage.src = emptyLike;
+	})
+	.catch(error => {
+          console.log("Error removing from liked:", error);
+        });
       }
     })
     .catch(error => {
-      console.log("Error removing disliked:", error);
+      console.log("Error adding disliked:", error);
     });
    }
 }
