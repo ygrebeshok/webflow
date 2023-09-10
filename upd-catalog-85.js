@@ -462,6 +462,7 @@ function toggleLike(likeImage, dislikeImage, userId, productId) {
 }
 
 function toggleDislike(dislikeImage, likeImage, userId, productId) {
+  const isLiked = likeImage.src === filledLike;
   const isDisliked = dislikeImage.src === filledDislike;
 
   if (isDisliked) {
