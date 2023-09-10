@@ -377,7 +377,7 @@ function updateCatalog() {
 	});
 
 	dislikeBtn.addEventListener("click", () => {
-	  toggleDislike(dislikeImage, userId, productId);	
+	  toggleDislike(dislikeImage, likeImage, userId, productId)	
 	});
 
         catalogGrid.appendChild(card);
