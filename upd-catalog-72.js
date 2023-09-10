@@ -340,7 +340,7 @@ function updateCatalog() {
 	  showPopup(productData);
 	});
 
-	const likeBtn = card.getElementById("like-button");
+	const likeBtn = card.querySelector("#like-button");
 	likeBtn.addEventListener("click", () => {
 	  toggleLike(userId, productId);	
 	});
