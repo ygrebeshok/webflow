@@ -443,11 +443,11 @@ function toggleLike(likeImage, userId, productId) {
 }
 
 function toggleDislike(dislikeImage, userId, productId) {
-  const isDisliked = dislikeImage.src === "https://uploads-ssl.webflow.com/63754b30fc1fcb22c75e7cb3/64fd42a725f96a17e1984d22_dislike.png";
+  const isDisliked = dislikeImage.src === "https://uploads-ssl.webflow.com/63754b30fc1fcb22c75e7cb3/64fd21004c01d1a2dccce5dc_dislike%20unfilled.png";
 
   if (isDisliked) {
     firebase.firestore().collection("users").doc(userId).update({
-    disliked: firebase.firestore.FieldValue.arrayRemove(productId)
+      disliked: firebase.firestore.FieldValue.arrayRemove(productId)
     })
     .then(() => {
       dislikeImage.src = "https://uploads-ssl.webflow.com/63754b30fc1fcb22c75e7cb3/64fd42a725f96a17e1984d22_dislike.png";
