@@ -340,7 +340,7 @@ function updateCatalog() {
 	  showPopup(productData);
 	});
 
-	const likeBtn = card.querySelector("#like-button");
+	const likeBtn = card.getElementById("like-button");
 	likeBtn.addEventListener("click", () => {
 	  toggleLike(userId, productId);	
 	});
@@ -381,32 +381,15 @@ function updateCatalog() {
       });
     }
 
-function handleLike(userId, productId) {
-  if (user) {
-    // Add productId to user's liked array in the database
-    firebase.firestore().collection("users").doc(userId).update({
-      liked: firebase.firestore.FieldValue.arrayUnion(productId)
-    })
-    .then(() => {
-      console.log("Product liked!");
-    })
-    .catch(error => {
-      console.error("Error liking product:", error);
-    });
-  } else {
-    console.log("User not logged in.");
-  }
-}
-
 function toggleLike(userId, productId) {
-  const isLiked = likeImage.src === "https://uploads-ssl.webflow.com/63754b30fc1fcb22c75e7cb3/64fd1f04f9318a593c1544e8_like%20unfilled.png";
+  const isLiked = likeImage.src === "https://uploads-ssl.webflow.com/63754b30fc1fcb22c75e7cb3/64fd42aa4c01d1a2dce1f72d_like.png";
 
   if (isLiked) {
     firebase.firestore().collection("users").doc(userId).update({
     liked: firebase.firestore.FieldValue.arrayRemove(productId)
     })
     .then(() => {
-      likeImage.src = "https://uploads-ssl.webflow.com/63754b30fc1fcb22c75e7cb3/64fd42aa4c01d1a2dce1f72d_like.png";
+      likeImage.src = "https://uploads-ssl.webflow.com/63754b30fc1fcb22c75e7cb3/64fd1f04f9318a593c1544e8_like%20unfilled.png";
     })
     .catch(error => {
       console.log("Error adding to liked:", error);
@@ -416,7 +399,7 @@ function toggleLike(userId, productId) {
       liked: firebase.firestore.FieldValue.arrayUnion(productId)
     })
     .then(() => {
-      likeImage.src = "https://uploads-ssl.webflow.com/63754b30fc1fcb22c75e7cb3/64fd1f04f9318a593c1544e8_like%20unfilled.png";
+      likeImage.src = "https://uploads-ssl.webflow.com/63754b30fc1fcb22c75e7cb3/64fd42aa4c01d1a2dce1f72d_like.png";
     })
     .catch(error => {
       console.log("Error removing liked:", error);
