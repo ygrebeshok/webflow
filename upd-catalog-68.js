@@ -38,6 +38,8 @@ let selWho = document.getElementById("sel-who");
 let selHoliday = document.getElementById("sel-holiday");
 const favoritesLabel = document.getElementById("favorites-label");
 const heart = document.getElementById("heart");
+const likeBtn = document.getElementById("like");
+const dislikeBtn = document.getElementById("dislike");
 
 lowestPriceButton.addEventListener("click", () => {
   lowestPriceButton.classList.add('button-selected');
@@ -337,6 +339,14 @@ function updateCatalog() {
 	  showPopup(productData);
 	});
 
+	likeBtn.addEventListener("click", () => {
+	  handleLike(event.target.dataset.productId);	
+	});
+
+	dislikeBtn.addEventListener("click", () => {
+	  handleDislike(event.target.dataset.productId);	
+	});
+
         catalogGrid.appendChild(card);
 
         card.addEventListener('mouseenter', () => {
@@ -372,3 +382,38 @@ function updateCatalog() {
           }
       });
     }
+
+function handleLike(productId) {
+  if (user) {
+    // Add productId to user's liked array in the database
+    firebase.firestore().collection("users").doc(user.uid).update({
+      liked: firebase.firestore.FieldValue.arrayUnion(productId)
+    })
+    .then(() => {
+      console.log("Product liked!");
+    })
+    .catch(error => {
+      console.error("Error liking product:", error);
+    });
+  } else {
+    console.log("User not logged in.");
+  }
+}
+
+function handleDislike(productId) {
+  if (user) {
+    // Add productId to user's disliked array in the database
+    firebase.firestore().collection("users").doc(user.uid).update({
+      disliked: firebase.firestore.FieldValue.arrayUnion(productId)
+    })
+    .then(() => {
+      console.log("Product disliked!");
+    })
+    .catch(error => {
+      console.error("Error disliking product:", error);
+    });
+  } else {
+    console.log("User not logged in.");
+  }
+}
+
