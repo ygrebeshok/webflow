@@ -416,8 +416,9 @@ function updateCatalog() {
       });
     }
 
-function toggleLike(likeImage, userId, productId) {
+function toggleLike(likeImage, dislikeImage, userId, productId) {
   const isLiked = likeImage.src === "https://uploads-ssl.webflow.com/63754b30fc1fcb22c75e7cb3/64fd42aa4c01d1a2dce1f72d_like.png";
+  const isDisliked = dislikeImage.src === "https://uploads-ssl.webflow.com/63754b30fc1fcb22c75e7cb3/64fd42a725f96a17e1984d22_dislike.png";
 
   if (isLiked) {
     firebase.firestore().collection("users").doc(userId).update({
@@ -435,6 +436,11 @@ function toggleLike(likeImage, userId, productId) {
     })
     .then(() => {
       likeImage.src = "https://uploads-ssl.webflow.com/63754b30fc1fcb22c75e7cb3/64fd42aa4c01d1a2dce1f72d_like.png";
+      
+      // If the product was previously disliked, remove it from disliked
+      if (isDisliked) {
+        toggleDislike(dislikeImage, userId, productId);
+      }
     })
     .catch(error => {
       console.log("Error removing liked:", error);
@@ -461,6 +467,11 @@ function toggleDislike(dislikeImage, userId, productId) {
     })
     .then(() => {
       dislikeImage.src = "https://uploads-ssl.webflow.com/63754b30fc1fcb22c75e7cb3/64fd42a725f96a17e1984d22_dislike.png";
+      
+      // If the product was previously liked, remove it from liked
+      if (isLiked) {
+        toggleLike(likeImage, dislikeImage, userId, productId);
+      }
     })
     .catch(error => {
       console.log("Error removing disliked:", error);
