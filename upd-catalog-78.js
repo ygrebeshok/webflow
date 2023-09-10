@@ -373,11 +373,11 @@ function updateCatalog() {
         });
 
 	likeBtn.addEventListener("click", () => {
-	  toggleLike(userId, productId);	
+	  toggleLike(likeImage, userId, productId);	
 	});
 
 	dislikeBtn.addEventListener("click", () => {
-	  toggleDislike(userId, productId);	
+	  toggleDislike(dislikeImage, userId, productId);	
 	});
 
         catalogGrid.appendChild(card);
@@ -416,12 +416,12 @@ function updateCatalog() {
       });
     }
 
-function toggleLike(userId, productId) {
+function toggleLike(likeImage, userId, productId) {
   const isLiked = likeImage.src === "https://uploads-ssl.webflow.com/63754b30fc1fcb22c75e7cb3/64fd1f04f9318a593c1544e8_like%20unfilled.png";
 
   if (isLiked) {
     firebase.firestore().collection("users").doc(userId).update({
-    liked: firebase.firestore.FieldValue.arrayRemove(productId)
+      liked: firebase.firestore.FieldValue.arrayRemove(productId)
     })
     .then(() => {
       likeImage.src = "https://uploads-ssl.webflow.com/63754b30fc1fcb22c75e7cb3/64fd42aa4c01d1a2dce1f72d_like.png";
@@ -442,7 +442,7 @@ function toggleLike(userId, productId) {
    }
 }
 
-function toggleDislike(userId, productId) {
+function toggleDislike(dislikeImage, userId, productId) {
   const isDisliked = dislikeImage.src === "https://uploads-ssl.webflow.com/63754b30fc1fcb22c75e7cb3/64fd42a725f96a17e1984d22_dislike.png";
 
   if (isDisliked) {
