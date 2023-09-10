@@ -38,7 +38,7 @@ let selWho = document.getElementById("sel-who");
 let selHoliday = document.getElementById("sel-holiday");
 const favoritesLabel = document.getElementById("favorites-label");
 const heart = document.getElementById("heart");
-const likeBtn = document.getElementById("like");
+const likeBtn = document.getElementById("like-button");
 const likeImage = document.getElementById("image-like");
 const dislikeBtn = document.getElementById("dislike");
 
@@ -340,12 +340,9 @@ function updateCatalog() {
 	  showPopup(productData);
 	});
 
+	const likeBtn = card.querySelector("#like-button");
 	likeBtn.addEventListener("click", () => {
 	  toggleLike(userId, productId);	
-	});
-
-	dislikeBtn.addEventListener("click", () => {
-	  handleDislike(event.target.dataset.productId);	
 	});
 
         catalogGrid.appendChild(card);
