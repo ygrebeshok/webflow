@@ -341,6 +341,11 @@ function updateCatalog() {
 	  showPopup(productData);
 	});
 
+	const likeBtn = card.querySelector("#like-button");
+	const dislikeBtn = card.querySelector("#dislike-button");
+	const likeImage = card.querySelector("#image-like");
+	const dislikeImage = card.querySelector("#image-dislike");
+
 	firebase.firestore().collection("users").doc(userId).get()
     	.then(doc => {
       	  const liked = doc.data().liked;
@@ -367,12 +372,10 @@ function updateCatalog() {
           console.log("Error getting disliked:", error);
         });
 
-	const likeBtn = card.querySelector("#like-button");
 	likeBtn.addEventListener("click", () => {
 	  toggleLike(userId, productId);	
 	});
 
-	const dislikeBtn = card.querySelector("#dislike-button");
 	dislikeBtn.addEventListener("click", () => {
 	  toggleDislike(userId, productId);	
 	});
