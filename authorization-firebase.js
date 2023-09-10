@@ -54,7 +54,9 @@ firebase.analytics && firebase.analytics();
           firebase.firestore().collection("users").doc(user.uid).set({
             email: user.email,
             favorites: [],
-            shared_favorites: []
+            shared_favorites: [],
+            liked: [],
+            disliked: []
           });
         }
       })
