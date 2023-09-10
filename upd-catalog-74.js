@@ -341,6 +341,32 @@ function updateCatalog() {
 	  showPopup(productData);
 	});
 
+	firebase.firestore().collection("users").doc(userId).get()
+    	.then(doc => {
+      	  const liked = doc.data().liked;
+      	  if (liked.includes(productId)) {
+            likedImage.src = "https://uploads-ssl.webflow.com/63754b30fc1fcb22c75e7cb3/64fd42aa4c01d1a2dce1f72d_like.png";
+          } else {
+	    likedImage.src = "https://uploads-ssl.webflow.com/63754b30fc1fcb22c75e7cb3/64fd1f04f9318a593c1544e8_like%20unfilled.png";
+          }
+        })
+        .catch(error => {
+          console.log("Error getting liked:", error);
+        });
+
+	firebase.firestore().collection("users").doc(userId).get()
+    	.then(doc => {
+      	  const disliked = doc.data().disliked;
+      	  if (disliked.includes(productId)) {
+            dislikedImage.src = "https://uploads-ssl.webflow.com/63754b30fc1fcb22c75e7cb3/64fd42a725f96a17e1984d22_dislike.png";
+          } else {
+	    dislikedImage.src = "https://uploads-ssl.webflow.com/63754b30fc1fcb22c75e7cb3/64fd21004c01d1a2dccce5dc_dislike%20unfilled.png";
+          }
+        })
+        .catch(error => {
+          console.log("Error getting disliked:", error);
+        });
+
 	const likeBtn = card.querySelector("#like-button");
 	likeBtn.addEventListener("click", () => {
 	  toggleLike(userId, productId);	
@@ -388,14 +414,14 @@ function updateCatalog() {
     }
 
 function toggleLike(userId, productId) {
-  const isLiked = likeImage.src === "like.png";
+  const isLiked = likeImage.src === "https://uploads-ssl.webflow.com/63754b30fc1fcb22c75e7cb3/64fd1f04f9318a593c1544e8_like%20unfilled.png";
 
   if (isLiked) {
     firebase.firestore().collection("users").doc(userId).update({
     liked: firebase.firestore.FieldValue.arrayRemove(productId)
     })
     .then(() => {
-      likeImage.src = "like unfilled.png";
+      likeImage.src = "https://uploads-ssl.webflow.com/63754b30fc1fcb22c75e7cb3/64fd42aa4c01d1a2dce1f72d_like.png";
     })
     .catch(error => {
       console.log("Error adding to liked:", error);
@@ -405,7 +431,7 @@ function toggleLike(userId, productId) {
       liked: firebase.firestore.FieldValue.arrayUnion(productId)
     })
     .then(() => {
-      likeImage.src = "like.png";
+      likeImage.src = "https://uploads-ssl.webflow.com/63754b30fc1fcb22c75e7cb3/64fd1f04f9318a593c1544e8_like%20unfilled.png";
     })
     .catch(error => {
       console.log("Error removing liked:", error);
@@ -414,14 +440,14 @@ function toggleLike(userId, productId) {
 }
 
 function toggleDislike(userId, productId) {
-  const isDisliked = likeImage.src === "https://uploads-ssl.webflow.com/63754b30fc1fcb22c75e7cb3/64fd42aa4c01d1a2dce1f72d_like.png";
+  const isDisliked = likeImage.src === "https://uploads-ssl.webflow.com/63754b30fc1fcb22c75e7cb3/64fd42a725f96a17e1984d22_dislike.png";
 
   if (isDisliked) {
     firebase.firestore().collection("users").doc(userId).update({
     disliked: firebase.firestore.FieldValue.arrayRemove(productId)
     })
     .then(() => {
-      dislikeImage.src = "https://uploads-ssl.webflow.com/63754b30fc1fcb22c75e7cb3/64fd1f04f9318a593c1544e8_like%20unfilled.png";
+      dislikeImage.src = "https://uploads-ssl.webflow.com/63754b30fc1fcb22c75e7cb3/64fd42a725f96a17e1984d22_dislike.png";
     })
     .catch(error => {
       console.log("Error adding to disliked:", error);
@@ -431,7 +457,7 @@ function toggleDislike(userId, productId) {
       disliked: firebase.firestore.FieldValue.arrayUnion(productId)
     })
     .then(() => {
-      dislikeImage.src = "https://uploads-ssl.webflow.com/63754b30fc1fcb22c75e7cb3/64fd42aa4c01d1a2dce1f72d_like.png";
+      dislikeImage.src = "https://uploads-ssl.webflow.com/63754b30fc1fcb22c75e7cb3/64fd21004c01d1a2dccce5dc_dislike%20unfilled.png";
     })
     .catch(error => {
       console.log("Error removing disliked:", error);
