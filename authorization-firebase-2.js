@@ -56,7 +56,8 @@ firebase.analytics && firebase.analytics();
             favorites: [],
             shared_favorites: [],
             liked: [],
-            disliked: []
+            disliked: [],
+            profiles: []
           });
         }
       })
