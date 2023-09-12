@@ -27,6 +27,7 @@
           }
           selHoliday.textContent = selected_holiday;
           occasion.textContent = selected_holiday;
+          setDate();
         });
 
       holidayGrid.appendChild(button);
