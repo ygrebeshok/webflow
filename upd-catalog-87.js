@@ -36,7 +36,6 @@ const popupClose = document.getElementById('popup-close');
 const popupFavoriteBtn = document.getElementById("look-fav-btn");
 let selWho = document.getElementById("sel-who");
 let selHoliday = document.getElementById("sel-holiday");
-const occasion = document.getElementById("occasion");
 const favoritesLabel = document.getElementById("favorites-label");
 const heart = document.getElementById("heart");
 const likeBtn = document.getElementById("like-button");
