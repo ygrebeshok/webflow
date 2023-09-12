@@ -26,6 +26,7 @@
             selected_holiday = holiday;
           }
           selHoliday.textContent = selected_holiday;
+          occasion.textContent = selected_holiday;
         });
 
       holidayGrid.appendChild(button);
