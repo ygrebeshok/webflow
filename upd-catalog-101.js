@@ -42,6 +42,8 @@ const likeBtn = document.getElementById("like-button");
 const likeImage = document.getElementById("image-like");
 const dislikeBtn = document.getElementById("dislike-button");
 const dislikeImage = document.getElementById("image-dislike");
+const profileName = document.getElementById("profile-name");
+const profileAge = document.getElementById("profile-age');
 
 lowestPriceButton.addEventListener("click", () => {
   lowestPriceButton.classList.add('button-selected');
@@ -385,6 +387,41 @@ function updateCatalog() {
 	dislikeBtn.addEventListener("click", () => {
 	  toggleDislike(dislikeImage, likeImage, userId, productId, selected_who, selected_holiday)	
 	});
+
+
+	document.getElementById('createProfileButton').addEventListener('click', () => {
+	
+  	  let selected_holiday = selected_holiday === null ? customHoliday.textContent : selected_holiday;
+
+  	  const profileData = {
+    	    profile_name: profileName.textContent,
+    	    profile_age: profileAge.textContent,
+    	    receiver: selected_who,
+    	    occasion: selected_holiday,
+    	    date: profileDate.value
+  	  };
+
+  	  const userDocRef = firebase.firestore().collection('users').doc(userId);
+
+  	  firebase.firestore().runTransaction(transaction => {
+    	    return transaction.get(userDocRef).then(userDoc => {
+
+      	      const profiles = userDoc.data().profiles || [];
+      	      const updatedProfiles = [...profiles, profileData];
+
+      	      transaction.update(userDocRef, {
+        	profiles: updatedProfiles
+              });
+    	    });
+  	  })
+  	  .then(() => {
+    	    console.log("Profile created successfully!");
+  	  })
+  	  .catch(error => {
+    	    console.log("Error creating profile:", error);
+  	  });
+	});
+
 
         catalogGrid.appendChild(card);
 
