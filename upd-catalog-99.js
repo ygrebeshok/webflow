@@ -346,7 +346,7 @@ function updateCatalog() {
 	const likeImage = card.querySelector("#image-like");
 	const dislikeImage = card.querySelector("#image-dislike");
 
-	let occasion_final = selected_holiday = "" ? customHoliday.textContent : selected_holiday;
+	let occasion_final = selected_holiday = null ? customHoliday.textContent : selected_holiday;
 	      
 	firebase.firestore().collection("users").doc(userId).get()
   	.then(doc => {
