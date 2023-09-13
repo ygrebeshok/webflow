@@ -479,10 +479,7 @@ function toggleLike(likeImage, dislikeImage, userId, productId, ref_category, oc
 	// If the product was previously disliked, remove it from disliked
         if (isDisliked) {
 	  firebase.firestore().runTransaction(transaction => {
-      	    return transaction.get(userDocRef).then(userDoc => {
-              if (!userDoc.exists) {
-          	throw "User does not exist!";
-              }
+            return transaction.get(userDocRef).then(userDoc => {
 
               const dislikedArray = userDoc.data().disliked || [];
               const updatedDisliked = dislikedArray.filter(item => item.productId !== productId);
@@ -495,7 +492,7 @@ function toggleLike(likeImage, dislikeImage, userId, productId, ref_category, oc
                 disliked: updatedRefCategory
               });
 
-              dislikeImage.src = emptyDislike;
+              dislikeImage.src = emptyDisLike;
             });
           })
 	}
@@ -560,9 +557,6 @@ function toggleDislike(dislikeImage, likeImage, userId, productId, ref_category,
         if (isLiked) {
           firebase.firestore().runTransaction(transaction => {
             return transaction.get(userDocRef).then(userDoc => {
-              if (!userDoc.exists) {
-                throw "User does not exist!";
-              }
 
               const likedArray = userDoc.data().liked || [];
               const updatedLiked = likedArray.filter(item => item.productId !== productId);
