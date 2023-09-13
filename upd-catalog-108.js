@@ -77,6 +77,12 @@ createProfile.addEventListener('click', () => {
   })
   .then(() => {
     created.textContent = "Profile Created!"
+    profileName.textContent = "";
+    profileAge.value = "";
+    customHoliday.textContent = "Tap on Holiday Panel";
+    profileDate.value = "";
+    profileArea.classList.remove('move-right');
+    arrowImage.src = rightArrow;
   })
     .catch(error => {
       created.textContent = "Error Occurred on Profile Creation"
