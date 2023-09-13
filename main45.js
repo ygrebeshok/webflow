@@ -242,6 +242,17 @@
     searchAgain.style.visibility = "visible";
     profileArea.style.opacity = '1';
     profileArea.classList.remove("disablegrid");
+      
+    setTimeout(function() {
+      instruction.style.opacity = '1';
+      instruction.style.transform = 'translateX(0)';
+    }, 500);
+
+    setTimeout(function() {
+      instruction.style.opacity = '0';
+      instruction.style.display = "none";
+      instruction.style.transition = 'opacity 0.5s ease';
+    }, 6000);
 
      } catch (error) {
        console.error(error);
