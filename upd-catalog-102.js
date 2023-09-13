@@ -43,7 +43,7 @@ const likeImage = document.getElementById("image-like");
 const dislikeBtn = document.getElementById("dislike-button");
 const dislikeImage = document.getElementById("image-dislike");
 const profileName = document.getElementById("profile-name");
-const profileAge = document.getElementById("profile-age');
+const profileAge = document.getElementById("profile-age");
 
 lowestPriceButton.addEventListener("click", () => {
   lowestPriceButton.classList.add('button-selected');
