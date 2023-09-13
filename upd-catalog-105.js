@@ -45,6 +45,7 @@ const dislikeImage = document.getElementById("image-dislike");
 const profileName = document.getElementById("profile-name");
 const profileAge = document.getElementById("profile-age");
 const createProfile = document.getElementById("create-profile");
+const created = document.getElementById("created-text");
 
 lowestPriceButton.addEventListener("click", () => {
   lowestPriceButton.classList.add('button-selected');
@@ -391,13 +392,14 @@ function updateCatalog() {
 	createProfile.addEventListener('click', () => {
 	
   	  selected_holiday = selected_holiday === null ? customHoliday.textContent : selected_holiday;
+	  console.log(selected_holiday);
 
   	  const profileData = {
     	    profile_name: profileName.textContent,
     	    profile_age: profileAge.textContent,
-    	    receiver: selected_who,
+    	    receiver: selected_who || "",
     	    occasion: selected_holiday,
-    	    date: profileDate.value
+    	    date: profileDate.value || ""
   	  };
 
   	  const userDocRef = firebase.firestore().collection('users').doc(userId);
@@ -414,10 +416,10 @@ function updateCatalog() {
     	    });
   	  })
   	  .then(() => {
-    	    console.log("Profile created successfully!");
+	    created.textContent = "Profile Created!"
   	  })
   	  .catch(error => {
-    	    console.log("Error creating profile:", error);
+    	    created.textContent = "Error Occurred on Profile Creation"
   	  });
 	});
 
