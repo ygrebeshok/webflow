@@ -53,7 +53,7 @@ createProfile.addEventListener('click', () => {
   console.log(selected_holiday);
 
   const profileData = {
-    profile_name: profileName.textContent,
+    profile_name: profileName.value,
     profile_age: profileAge.value,
     receiver: selected_who || "",
     occasion: selected_holiday,
