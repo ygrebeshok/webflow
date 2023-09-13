@@ -347,28 +347,32 @@ function updateCatalog() {
 	const dislikeImage = card.querySelector("#image-dislike");
 
 	let occasion_final = selected_holiday = "" ? customHoliday.textContent : selected_holiday;
-
+	      
 	firebase.firestore().collection("users").doc(userId).get()
-    	.then(doc => {
-      	  const liked = doc.data().liked;
-      	  if (liked.includes(productId)) {
-            likeImage.src = "https://uploads-ssl.webflow.com/63754b30fc1fcb22c75e7cb3/64fd42aa4c01d1a2dce1f72d_like.png";
-          } else {
-	    likeImage.src = "https://uploads-ssl.webflow.com/63754b30fc1fcb22c75e7cb3/64fd1f04f9318a593c1544e8_like%20unfilled.png";
-          }
-        })
-        .catch(error => {
-          console.log("Error getting liked:", error);
-        });
+  	.then(doc => {
+    	  const liked = doc.data().liked;
+    	  const isLiked = liked.some(product => product.product_id === productId);
+
+    	  if (isLiked) {
+      	    likeImage.src = "https://uploads-ssl.webflow.com/63754b30fc1fcb22c75e7cb3/64fd42aa4c01d1a2dce1f72d_like.png";
+    	  } else {
+      	    likeImage.src = "https://uploads-ssl.webflow.com/63754b30fc1fcb22c75e7cb3/64fd1f04f9318a593c1544e8_like%20unfilled.png";
+    	  }
+  	})
+  	.catch(error => {
+    	  console.log("Error getting liked:", error);
+  	});
 
 	firebase.firestore().collection("users").doc(userId).get()
     	.then(doc => {
       	  const disliked = doc.data().disliked;
-      	  if (disliked.includes(productId)) {
-            dislikeImage.src = "https://uploads-ssl.webflow.com/63754b30fc1fcb22c75e7cb3/64fd42a725f96a17e1984d22_dislike.png";
-          } else {
-	    dislikeImage.src = "https://uploads-ssl.webflow.com/63754b30fc1fcb22c75e7cb3/64fd21004c01d1a2dccce5dc_dislike%20unfilled.png";
-          }
+	  const isDisliked = disliked.some(product => product.product_id === productId);
+
+	  if (isLiked) {
+      	    likeImage.src = "https://uploads-ssl.webflow.com/63754b30fc1fcb22c75e7cb3/64fd42a725f96a17e1984d22_dislike.png";
+    	  } else {
+      	    likeImage.src = "https://uploads-ssl.webflow.com/63754b30fc1fcb22c75e7cb3/64fd21004c01d1a2dccce5dc_dislike%20unfilled.png";
+    	  }
         })
         .catch(error => {
           console.log("Error getting disliked:", error);
