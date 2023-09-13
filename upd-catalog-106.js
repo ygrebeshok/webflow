@@ -47,6 +47,42 @@ const profileAge = document.getElementById("profile-age");
 const createProfile = document.getElementById("create-profile");
 const created = document.getElementById("created-text");
 
+createProfile.addEventListener('click', () => {
+	
+  selected_holiday = selected_holiday === null ? customHoliday.textContent : selected_holiday;
+  console.log(selected_holiday);
+
+  const profileData = {
+    profile_name: profileName.textContent,
+    profile_age: profileAge.value,
+    receiver: selected_who || "",
+    occasion: selected_holiday,
+    date: profileDate.value || ""
+  };
+
+  const user = firebase.auth().currentUser;
+  const userId = user.uid;
+  const userDocRef = firebase.firestore().collection('users').doc(userId);
+
+  firebase.firestore().runTransaction(transaction => {
+    return transaction.get(userDocRef).then(userDoc => {
+
+      const profiles = userDoc.data().profiles || [];
+      const updatedProfiles = [...profiles, profileData];
+
+      transaction.update(userDocRef, {
+        profiles: updatedProfiles
+      });
+    });
+  })
+  .then(() => {
+    created.textContent = "Profile Created!"
+  })
+    .catch(error => {
+      created.textContent = "Error Occurred on Profile Creation"
+    });
+  });
+
 lowestPriceButton.addEventListener("click", () => {
   lowestPriceButton.classList.add('button-selected');
   highestPriceButton.classList.remove('button-selected');
@@ -386,41 +422,6 @@ function updateCatalog() {
 
 	dislikeBtn.addEventListener("click", () => {
 	  toggleDislike(dislikeImage, likeImage, userId, productId, selected_who, selected_holiday)	
-	});
-
-
-	createProfile.addEventListener('click', () => {
-	
-  	  selected_holiday = selected_holiday === null ? customHoliday.textContent : selected_holiday;
-	  console.log(selected_holiday);
-
-  	  const profileData = {
-    	    profile_name: profileName.textContent,
-    	    profile_age: profileAge.textContent,
-    	    receiver: selected_who || "",
-    	    occasion: selected_holiday,
-    	    date: profileDate.value || ""
-  	  };
-
-  	  const userDocRef = firebase.firestore().collection('users').doc(userId);
-
-  	  firebase.firestore().runTransaction(transaction => {
-    	    return transaction.get(userDocRef).then(userDoc => {
-
-      	      const profiles = userDoc.data().profiles || [];
-      	      const updatedProfiles = [...profiles, profileData];
-
-      	      transaction.update(userDocRef, {
-        	profiles: updatedProfiles
-              });
-    	    });
-  	  })
-  	  .then(() => {
-	    created.textContent = "Profile Created!"
-  	  })
-  	  .catch(error => {
-    	    created.textContent = "Error Occurred on Profile Creation"
-  	  });
 	});
 
 
