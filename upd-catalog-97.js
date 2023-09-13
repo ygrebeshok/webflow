@@ -492,7 +492,7 @@ function toggleLike(likeImage, dislikeImage, userId, productId, ref_category, oc
                 disliked: updatedRefCategory
               });
 
-              dislikeImage.src = emptyDisLike;
+              dislikeImage.src = emptyDislike;
             });
           })
 	}
