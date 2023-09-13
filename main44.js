@@ -290,5 +290,6 @@
     holidayGrid.classList.remove("disablegrid");
     whoGrid.classList.remove("disablegrid");
     profileArea.classList.add("disablegrid");
+    profileArea.style.opacity = '0.5';
   }
 
