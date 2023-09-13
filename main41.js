@@ -28,6 +28,7 @@
           selHoliday.textContent = selected_holiday;
           if (!(selHoliday.textContent === "Type on Holiday")) {
             customHoliday.style.display = "none";
+            checkboxHoliday.checked = false;
           }  
           occasion.textContent = selected_holiday;
           setDate();
