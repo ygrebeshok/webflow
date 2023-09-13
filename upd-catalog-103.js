@@ -44,6 +44,7 @@ const dislikeBtn = document.getElementById("dislike-button");
 const dislikeImage = document.getElementById("image-dislike");
 const profileName = document.getElementById("profile-name");
 const profileAge = document.getElementById("profile-age");
+const createProfile = document.getElementById("create-profile");
 
 lowestPriceButton.addEventListener("click", () => {
   lowestPriceButton.classList.add('button-selected');
@@ -389,7 +390,7 @@ function updateCatalog() {
 	});
 
 
-	document.getElementById('createProfileButton').addEventListener('click', () => {
+	createProfile.addEventListener('click', () => {
 	
   	  let selected_holiday = selected_holiday === null ? customHoliday.textContent : selected_holiday;
 
