@@ -49,7 +49,7 @@ const created = document.getElementById("created-text");
 
 createProfile.addEventListener('click', () => {
 	
-  if (checkboxHoliday.checked === true;) {
+  if (checkboxHoliday.checked === true) {
     selected_holiday = customHoliday.value;
     console.log(selected_holiday);
   }
