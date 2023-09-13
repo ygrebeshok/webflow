@@ -49,7 +49,7 @@ const created = document.getElementById("created-text");
 
 createProfile.addEventListener('click', () => {
 	
-  selected_holiday = selected_holiday === null ? customHoliday.textContent : selected_holiday;
+  selected_holiday = selected_holiday === null ? customHoliday.value : selected_holiday;
   console.log(selected_holiday);
 
   const profileData = {
