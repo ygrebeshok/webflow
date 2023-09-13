@@ -346,6 +346,8 @@ function updateCatalog() {
 	const likeImage = card.querySelector("#image-like");
 	const dislikeImage = card.querySelector("#image-dislike");
 
+	let occasion_final = selected_holiday = "" ? customHoliday.textContent : selected_holiday;
+
 	firebase.firestore().collection("users").doc(userId).get()
     	.then(doc => {
       	  const liked = doc.data().liked;
@@ -373,11 +375,11 @@ function updateCatalog() {
         });
 
 	likeBtn.addEventListener("click", () => {
-	  toggleLike(likeImage, dislikeImage, userId, productId)	
+	  toggleLike(dislikeImage, likeImage, userId, productId, selected_who, occasion_final)	
 	});
 
 	dislikeBtn.addEventListener("click", () => {
-	  toggleDislike(dislikeImage, likeImage, userId, productId)	
+	  toggleDislike(dislikeImage, likeImage, userId, productId, selected_who, occasion_final)	
 	});
 
         catalogGrid.appendChild(card);
@@ -421,82 +423,142 @@ const emptyLike = "https://uploads-ssl.webflow.com/63754b30fc1fcb22c75e7cb3/64fd
 const filledDislike = "https://uploads-ssl.webflow.com/63754b30fc1fcb22c75e7cb3/64fd42a725f96a17e1984d22_dislike.png";
 const emptyDislike = "https://uploads-ssl.webflow.com/63754b30fc1fcb22c75e7cb3/64fd21004c01d1a2dccce5dc_dislike%20unfilled.png";
 
-function toggleLike(likeImage, dislikeImage, userId, productId) {
+function toggleLike(likeImage, dislikeImage, userId, productId, ref_category, occasion) {
   const isLiked = likeImage.src === filledLike;
   const isDisliked = dislikeImage.src === filledDislike;
 
+  const userDocRef = firebase.firestore().collection("users").doc(userId);
+
   if (isLiked) {
-    firebase.firestore().collection("users").doc(userId).update({
-      liked: firebase.firestore.FieldValue.arrayRemove(productId)
-    })
-    .then(() => {
-      likeImage.src = emptyLike;
+    // Remove the product from liked and update ref_category and occasion
+    firebase.firestore().runTransaction(transaction => {
+      return transaction.get(userDocRef).then(userDoc => {
+        if (!userDoc.exists) {
+          throw "User does not exist!";
+        }
+
+        const likedArray = userDoc.data().liked || [];
+        const updatedLiked = likedArray.filter(item => item.productId !== productId);
+
+        // Update ref_category and occasion in the liked array
+        const updatedRefCategory = updatedLiked.map(item => item.productId === productId ? { ...item, ref_category, occasion } : item);
+
+        // Update the user document
+        transaction.update(userDocRef, {
+          liked: updatedRefCategory
+        });
+
+        likeImage.src = emptyLike;
+      });
     })
     .catch(error => {
       console.log("Error removing from liked:", error);
     });
   } else {
-    firebase.firestore().collection("users").doc(userId).update({
-      liked: firebase.firestore.FieldValue.arrayUnion(productId)
-    })
-    .then(() => {
-      likeImage.src = filledLike;
-      
-      // If the product was previously disliked, remove it from disliked
-      if (isDisliked) {
-        firebase.firestore().collection("users").doc(userId).update({
-          disliked: firebase.firestore.FieldValue.arrayRemove(productId)
-    	})
-	.then(() => {
-	  dislikeImage.src = emptyDislike;
-	})
-	.catch(error => {
-          console.log("Error removing from disliked:", error);
+    // Add the product to liked and update ref_category and occasion
+    firebase.firestore().runTransaction(transaction => {
+      return transaction.get(userDocRef).then(userDoc => {
+        if (!userDoc.exists) {
+          throw "User does not exist!";
+        }
+
+        const likedArray = userDoc.data().liked || [];
+        const updatedLiked = [...likedArray, { productId, ref_category, occasion }];
+
+        // Update the user document
+        transaction.update(userDocRef, {
+          liked: updatedLiked
         });
-      }
+
+        likeImage.src = filledLike;
+
+        // If the product was previously disliked, remove it from disliked
+        if (isDisliked) {
+          const dislikedArray = userDoc.data().disliked || [];
+          const updatedDisliked = dislikedArray.filter(item => item.productId !== productId);
+
+          // Update ref_category and occasion in the disliked array
+          const updatedRefCategory = updatedDisliked.map(item => item.productId === productId ? { ...item, ref_category: '', occasion: '' } : item);
+
+          // Update the user document
+          transaction.update(userDocRef, {
+            disliked: updatedRefCategory
+          });
+        }
+      });
     })
     .catch(error => {
       console.log("Error adding liked:", error);
     });
-   }
+  }
 }
 
-function toggleDislike(dislikeImage, likeImage, userId, productId) {
+function toggleDislike(dislikeImage, likeImage, userId, productId, ref_category, occasion) {
   const isLiked = likeImage.src === filledLike;
   const isDisliked = dislikeImage.src === filledDislike;
 
+  const userDocRef = firebase.firestore().collection("users").doc(userId);
+
   if (isDisliked) {
-    firebase.firestore().collection("users").doc(userId).update({
-      disliked: firebase.firestore.FieldValue.arrayRemove(productId)
-    })
-    .then(() => {
-      dislikeImage.src = emptyDislike;
+    // Remove the product from disliked and update ref_category and occasion
+    firebase.firestore().runTransaction(transaction => {
+      return transaction.get(userDocRef).then(userDoc => {
+        if (!userDoc.exists) {
+          throw "User does not exist!";
+        }
+
+        const dislikedArray = userDoc.data().disliked || [];
+        const updatedDisliked = dislikedArray.filter(item => item.productId !== productId);
+
+        // Update ref_category and occasion in the disliked array
+        const updatedRefCategory = updatedDisliked.map(item => item.productId === productId ? { ...item, ref_category, occasion } : item);
+
+        // Update the user document
+        transaction.update(userDocRef, {
+          disliked: updatedRefCategory
+        });
+
+        dislikeImage.src = emptyDislike;
+      });
     })
     .catch(error => {
       console.log("Error removing from disliked:", error);
     });
   } else {
-    firebase.firestore().collection("users").doc(userId).update({
-      disliked: firebase.firestore.FieldValue.arrayUnion(productId)
-    })
-    .then(() => {
-      dislikeImage.src = filledDislike;
-      
-      // If the product was previously liked, remove it from liked
-      if (isLiked) {
-        firebase.firestore().collection("users").doc(userId).update({
-          liked: firebase.firestore.FieldValue.arrayRemove(productId)
-    	})
-	.then(() => {
-	  likeImage.src = emptyLike;
-	})
-	.catch(error => {
-          console.log("Error removing from liked:", error);
+    // Add the product to disliked and update ref_category and occasion
+    firebase.firestore().runTransaction(transaction => {
+      return transaction.get(userDocRef).then(userDoc => {
+        if (!userDoc.exists) {
+          throw "User does not exist!";
+        }
+
+        const dislikedArray = userDoc.data().disliked || [];
+        const updatedDisliked = [...dislikedArray, { productId, ref_category, occasion }];
+
+        // Update the user document
+        transaction.update(userDocRef, {
+          disliked: updatedDisliked
         });
-      }
+
+        dislikeImage.src = filledDislike;
+
+        // If the product was previously liked, remove it from liked
+        if (isLiked) {
+          const likedArray = userDoc.data().liked || [];
+          const updatedLiked = likedArray.filter(item => item.productId !== productId);
+
+          // Update ref_category and occasion in the liked array
+          const updatedRefCategory = updatedLiked.map(item => item.productId === productId ? { ...item, ref_category: '', occasion: '' } : item);
+
+          // Update the user document
+          transaction.update(userDocRef, {
+            liked: updatedRefCategory
+          });
+        }
+      });
     })
     .catch(error => {
       console.log("Error adding disliked:", error);
     });
-   }
+  }
 }
