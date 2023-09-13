@@ -379,7 +379,7 @@ function updateCatalog() {
         });
 
 	likeBtn.addEventListener("click", () => {
-	  toggleLike(likeImage, likeImage, userId, productId, selected_who, occasion_final)	
+	  toggleLike(likeImage, dislikeImage, userId, productId, selected_who, occasion_final)	
 	});
 
 	dislikeBtn.addEventListener("click", () => {
@@ -503,6 +503,7 @@ function toggleLike(likeImage, dislikeImage, userId, productId, ref_category, oc
     });
   }
 }
+
 
 function toggleDislike(dislikeImage, likeImage, userId, productId, ref_category, occasion) {
   const isLiked = likeImage.src === filledLike;
