@@ -348,8 +348,6 @@ function updateCatalog() {
 	const dislikeBtn = card.querySelector("#dislike-button");
 	const likeImage = card.querySelector("#image-like");
 	const dislikeImage = card.querySelector("#image-dislike");
-
-	let occasion_final = selected_holiday = null ? customHoliday.textContent : selected_holiday;
 	      
 	firebase.firestore().collection("users").doc(userId).get()
   	.then(doc => {
@@ -392,7 +390,7 @@ function updateCatalog() {
 
 	createProfile.addEventListener('click', () => {
 	
-  	  let selected_holiday = selected_holiday === null ? customHoliday.textContent : selected_holiday;
+  	  selected_holiday = selected_holiday === null ? customHoliday.textContent : selected_holiday;
 
   	  const profileData = {
     	    profile_name: profileName.textContent,
