@@ -240,6 +240,8 @@
     lottieLoader.style.visibility = "hidden";
     results.scrollIntoView({ behavior: 'smooth' });
     searchAgain.style.visibility = "visible";
+    profileArea.style.opacity = '1';
+    profileArea.classList.remove("disablegrid");
 
      } catch (error) {
        console.error(error);
@@ -287,5 +289,6 @@
     searchAgain.style.visibility = "hidden";
     holidayGrid.classList.remove("disablegrid");
     whoGrid.classList.remove("disablegrid");
+    profileArea.classList.add("disablegrid");
   }
 
