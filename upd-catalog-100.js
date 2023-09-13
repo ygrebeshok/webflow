@@ -379,11 +379,11 @@ function updateCatalog() {
         });
 
 	likeBtn.addEventListener("click", () => {
-	  toggleLike(likeImage, dislikeImage, userId, productId, selected_who, occasion_final)	
+	  toggleLike(likeImage, dislikeImage, userId, productId, selected_who, selected_holiday)	
 	});
 
 	dislikeBtn.addEventListener("click", () => {
-	  toggleDislike(dislikeImage, likeImage, userId, productId, selected_who, occasion_final)	
+	  toggleDislike(dislikeImage, likeImage, userId, productId, selected_who, selected_holiday)	
 	});
 
         catalogGrid.appendChild(card);
