@@ -26,6 +26,9 @@
             selected_holiday = holiday;
           }
           selHoliday.textContent = selected_holiday;
+          if (!(selHoliday.textContent === "Type on Holiday")) {
+            customHoliday.style.display = "none";
+          }  
           occasion.textContent = selected_holiday;
           setDate();
         });
