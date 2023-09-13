@@ -379,7 +379,7 @@ function updateCatalog() {
         });
 
 	likeBtn.addEventListener("click", () => {
-	  toggleLike(dislikeImage, likeImage, userId, productId, selected_who, occasion_final)	
+	  toggleLike(likeImage, likeImage, userId, productId, selected_who, occasion_final)	
 	});
 
 	dislikeBtn.addEventListener("click", () => {
