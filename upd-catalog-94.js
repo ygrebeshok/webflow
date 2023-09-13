@@ -476,19 +476,29 @@ function toggleLike(likeImage, dislikeImage, userId, productId, ref_category, oc
 
         likeImage.src = filledLike;
 
-        // If the product was previously disliked, remove it from disliked
+	// If the product was previously disliked, remove it from disliked
         if (isDisliked) {
-          const dislikedArray = userDoc.data().disliked || [];
-          const updatedDisliked = dislikedArray.filter(item => item.productId !== productId);
+	  firebase.firestore().runTransaction(transaction => {
+      	    return transaction.get(userDocRef).then(userDoc => {
+              if (!userDoc.exists) {
+          	throw "User does not exist!";
+              }
 
-          // Update ref_category and occasion in the disliked array
-          const updatedRefCategory = updatedDisliked.map(item => item.productId === productId ? { ...item, ref_category: '', occasion: '' } : item);
+              const dislikedArray = userDoc.data().disliked || [];
+              const updatedDisliked = dislikedArray.filter(item => item.productId !== productId);
 
-          // Update the user document
-          transaction.update(userDocRef, {
-            disliked: updatedRefCategory
-          });
-        }
+              // Update ref_category and occasion in the disliked array
+              const updatedRefCategory = updatedDisliked.map(item => item.productId === productId ? { ...item, ref_category, occasion } : item);
+
+              // Update the user document
+              transaction.update(userDocRef, {
+                disliked: updatedRefCategory
+              });
+
+              dislikeImage.src = emptyDislike;
+            });
+          })
+	}
       });
     })
     .catch(error => {
@@ -548,16 +558,26 @@ function toggleDislike(dislikeImage, likeImage, userId, productId, ref_category,
 
         // If the product was previously liked, remove it from liked
         if (isLiked) {
-          const likedArray = userDoc.data().liked || [];
-          const updatedLiked = likedArray.filter(item => item.productId !== productId);
+          firebase.firestore().runTransaction(transaction => {
+            return transaction.get(userDocRef).then(userDoc => {
+              if (!userDoc.exists) {
+                throw "User does not exist!";
+              }
 
-          // Update ref_category and occasion in the liked array
-          const updatedRefCategory = updatedLiked.map(item => item.productId === productId ? { ...item, ref_category: '', occasion: '' } : item);
+              const likedArray = userDoc.data().liked || [];
+              const updatedLiked = likedArray.filter(item => item.productId !== productId);
 
-          // Update the user document
-          transaction.update(userDocRef, {
-            liked: updatedRefCategory
-          });
+              // Update ref_category and occasion in the liked array
+              const updatedRefCategory = updatedLiked.map(item => item.productId === productId ? { ...item, ref_category, occasion } : item);
+
+              // Update the user document
+              transaction.update(userDocRef, {
+                liked: updatedRefCategory
+              });
+
+              likeImage.src = emptyLike;
+            });
+          })
         }
       });
     })
