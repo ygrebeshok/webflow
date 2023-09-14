@@ -15,8 +15,7 @@ const closeBtn = document.getElementById("close-button");
 const favoritesLabel = document.getElementById("favorites-label");
 const favoriteBtn = document.querySelector("#favorite-btn");
 
-function loadProfileData() {
-    const profiles = doc.data().profiles;
+function loadProfileData(profiles) {
     
     profiles.get().then((querySnapshot) => {
         profileContainer.innerHTML = "";
@@ -111,7 +110,8 @@ firebase.auth().onAuthStateChanged(user => {
     
     firebase.firestore().collection("users").doc(userId).get()
       .then(doc => {
-
+	      
+	const profiles = doc.data().profiles;
         loadProfileData();
 	      
         const favorites = doc.data().favorites;
