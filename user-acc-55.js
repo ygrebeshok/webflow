@@ -15,6 +15,33 @@ const closeBtn = document.getElementById("close-button");
 const favoritesLabel = document.getElementById("favorites-label");
 const favoriteBtn = document.querySelector("#favorite-btn");
 
+function loadProfileData() {
+
+    const profilesRef = db.collection("users").doc(userId).collection("profiles");
+    
+    profilesRef.get().then((querySnapshot) => {
+        profileContainer.innerHTML = "";
+
+        querySnapshot.forEach((doc) => {
+            const data = doc.data();
+            const profile = profileCardTemplate.cloneNode(true);
+
+            profile.querySelector(".profile-names").textContent = data.profile_name;
+            profile.querySelector(".occasion-mark").textContent = data.occasion;
+            profile.querySelector(".reference").textContent = data.receiver;
+            profile.querySelector(".pr-date").textContent = data.date;
+            profile.querySelector(".profile-desc").textContent = data.gift_desc;
+
+            const profileLetter = profile.querySelector('.profile-letter');
+            profileLetter.textContent = data.profile_name.charAt(0);
+
+            profileContainer.appendChild(profile);
+        });
+    }).catch((error) => {
+        console.log("Error getting documents: ", error);
+    });
+}
+
 function showPopupUser(productData, card) {
   popupImage.src = productData.image_url;
   popupTitle.textContent = productData.name;
@@ -82,9 +109,12 @@ const shareFavoritesButton = document.getElementById('shareFavoritesButton');
 firebase.auth().onAuthStateChanged(user => {
   if (user) {
     const userId = user.uid;
-
+    
     firebase.firestore().collection("users").doc(userId).get()
       .then(doc => {
+
+        loadProfileData();
+	      
         const favorites = doc.data().favorites;
 	const shared_fav = doc.data().shared_favorites;
         
