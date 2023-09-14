@@ -46,6 +46,12 @@ const profileName = document.getElementById("profile-name");
 const profileAge = document.getElementById("profile-age");
 const createProfile = document.getElementById("create-profile");
 const created = document.getElementById("created-text");
+const resetSelections = document.getElementById("reset-selections");
+
+resetSelections.addEventListener('click', () => {
+  selected_who = null;
+  selected_holiday = null;		
+});
 
 createProfile.addEventListener('click', () => {
 	
