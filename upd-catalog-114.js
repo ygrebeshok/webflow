@@ -50,7 +50,9 @@ const resetSelections = document.getElementById("reset-selections");
 
 resetSelections.addEventListener('click', () => {
   selected_who = null;
-  selected_holiday = null;		
+  selected_holiday = null;
+  selWho.textContent = "";
+  selHoliday.textContent = "";
 });
 
 createProfile.addEventListener('click', () => {
