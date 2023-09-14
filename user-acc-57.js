@@ -16,10 +16,9 @@ const favoritesLabel = document.getElementById("favorites-label");
 const favoriteBtn = document.querySelector("#favorite-btn");
 
 function loadProfileData() {
-
-    const profilesRef = firebase.firestore().collection("users").doc(userId).collection("profiles");
+    const profiles = doc.data().profiles;
     
-    profilesRef.get().then((querySnapshot) => {
+    profiles.get().then((querySnapshot) => {
         profileContainer.innerHTML = "";
 
         querySnapshot.forEach((doc) => {
