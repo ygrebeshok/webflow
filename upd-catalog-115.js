@@ -67,6 +67,7 @@ createProfile.addEventListener('click', () => {
     profile_age: profileAge.value,
     receiver: selected_who || "",
     occasion: selected_holiday,
+    gift_desc: document.getElementById("textarea").value,
     date: profileDate.value || ""
   };
 
