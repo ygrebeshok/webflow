@@ -20,6 +20,8 @@ const favoriteBtn = document.querySelector("#favorite-btn");
 function loadProfileData(profiles) {
 
   profilesContainer.innerHTML = "";
+  profiles.sort((a, b) => new Date(a.date) - new Date(b.date));
+
   profiles.forEach(data => {
 	  
     const profile = profileCardTemplate.cloneNode(true);
