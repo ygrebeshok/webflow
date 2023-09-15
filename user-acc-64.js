@@ -123,12 +123,12 @@ const shareFavoritesButton = document.getElementById('shareFavoritesButton');
 firebase.auth().onAuthStateChanged(user => {
   if (user) {
     const userId = user.uid;
+
+    const profilesRef = firebase.firestore().collection("users").doc(userId).collection("profiles");
+    loadProfileData(profilesRef);
     
     firebase.firestore().collection("users").doc(userId).get()
       .then(doc => {
-	      
-	const profilesRef = firebase.firestore().collection("users").doc(userId).collection("profiles");
-        loadProfileData(profilesRef);
 	      
         const favorites = doc.data().favorites;
 	const shared_fav = doc.data().shared_favorites;
