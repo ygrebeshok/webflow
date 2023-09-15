@@ -76,6 +76,8 @@ function loadProfileData(profiles) {
       textarea.textContent = giftDesc;
       selected_who = receiver;
       selected_holiday = occasion;
+      console.log(selected_who);
+      console.log(selected_holiday);
     }
   });
 }
