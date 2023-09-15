@@ -57,27 +57,21 @@ function loadProfileData(profiles) {
   });
 
   profilesContainer.addEventListener('click', (event) => {
-    // Check if a profile card was clicked
-    if (event.target.closest('.profile-card')) {
-      // Extract data from the clicked profile
-      const profileCard = event.target.closest('.profile-card');
-      const profileName = profileCard.querySelector('.profile-names').textContent;
-      const occasion = profileCard.querySelector('.occasion-mark').textContent;
-      const receiver = profileCard.querySelector('.reference').textContent;
-      const giftDesc = profileCard.querySelector('.profile-desc').textContent;
+    try {
+      if (event.target.closest('.profile-card')) {
+        const profileCard = event.target.closest('.profile-card');
+        const profileName = profileCard.querySelector('.profile-names').textContent;
+        const occasion = profileCard.querySelector('.occasion-mark').textContent;
+        const receiver = profileCard.querySelector('.reference').textContent;
+        const giftDesc = profileCard.querySelector('.profile-desc').textContent;
 
-      // Switch to the "Recommendations" page
-      const slug = "recommendations";
-      window.location.href = `/${slug}`;
+        const queryParams = `?selected_who=${receiver}&selected_holiday=${occasion}&gift_desc=${giftDesc}`;
 
-      // Populate elements on the "Recommendations" page
-      const textarea = document.getElementById("textarea");
-
-      textarea.textContent = giftDesc;
-      selected_who = receiver;
-      selected_holiday = occasion;
-      console.log(selected_who);
-      console.log(selected_holiday);
+        const slug = "recommendations";
+        window.location.href = `/${slug}${queryParams}`;
+      }
+    } catch (error) {
+      console.error('Error handling profile click event:', error);
     }
   });
 }
