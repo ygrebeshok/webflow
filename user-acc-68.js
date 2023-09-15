@@ -55,6 +55,29 @@ function loadProfileData(profiles) {
        });
      });
   });
+
+  profilesContainer.addEventListener('click', (event) => {
+    // Check if a profile card was clicked
+    if (event.target.closest('.profile-card')) {
+      // Extract data from the clicked profile
+      const profileCard = event.target.closest('.profile-card');
+      const profileName = profileCard.querySelector('.profile-names').textContent;
+      const occasion = profileCard.querySelector('.occasion-mark').textContent;
+      const receiver = profileCard.querySelector('.reference').textContent;
+      const giftDesc = profileCard.querySelector('.profile-desc').textContent;
+
+      // Switch to the "Recommendations" page
+      const slug = "recommendations";
+      window.location.href = `/${slug}`;
+
+      // Populate elements on the "Recommendations" page
+      const textarea = document.getElementById("textarea");
+
+      textarea.textContent = giftDesc;
+      selected_who = receiver;
+      selected_holiday = occasion;
+    }
+  });
 }
 
 function showPopupUser(productData, card) {
