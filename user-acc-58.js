@@ -18,7 +18,6 @@ const favoriteBtn = document.querySelector("#favorite-btn");
 function loadProfileData(profiles) {
     
     profiles.get().then((querySnapshot) => {
-        profileContainer.innerHTML = "";
 
         querySnapshot.forEach((doc) => {
             const data = doc.data();
