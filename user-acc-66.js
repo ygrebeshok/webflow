@@ -24,6 +24,7 @@ function loadProfileData(profiles) {
 	  
     const profile = profileCardTemplate.cloneNode(true);
      // populate the card with profile data
+     profile.querySelector(".profile-letter").textContent = data.profile_name.charAt(0);
      profile.querySelector(".profile-names").textContent = data.profile_name;
      profile.querySelector(".occasion-mark").textContent = data.occasion;
      profile.querySelector(".reference").textContent = data.receiver;
