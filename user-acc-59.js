@@ -9,6 +9,8 @@ const popupClose = document.getElementById('popup-close');
 const popupContainer = document.getElementById('popup-fade');
 const favoritesGrid = document.getElementById("favoritesGrid");
 const favCardTemplate = document.querySelector("#card");
+const profileCardTemplate = document.querySelector("#profile-card");
+const profilesContainer = document.getElementById(“profiles-grid”);
 const giftsRef = firebase.firestore().collection("gifts");
 const popUp = document.getElementById("pop-up");
 const closeBtn = document.getElementById("close-button");
@@ -16,27 +18,42 @@ const favoritesLabel = document.getElementById("favorites-label");
 const favoriteBtn = document.querySelector("#favorite-btn");
 
 function loadProfileData(profiles) {
-    
-    profiles.get().then((querySnapshot) => {
 
-        querySnapshot.forEach((doc) => {
-            const data = doc.data();
-            const profile = profileCardTemplate.cloneNode(true);
+profiles.get().then((querySnapshot) => {
+  profilesContainer.innerHTML = "";
+  querySnapshot.forEach(doc => {
+    const data = doc.data();
+    const profile = profileTemplate.cloneNode(true);
+     // populate the card with profile data
+     profile.querySelector(".profile-names").textContent = data.profile_name;
+     profile.querySelector(".occasion-mark").textContent = data.occasion;
+     profile.querySelector(".reference").textContent = data.receiver;
+     profile.querySelector(".pr-date").textContent = data.date;
+     profile.querySelector(".profile-desc").textContent = data.gift_desc;
 
-            profile.querySelector(".profile-names").textContent = data.profile_name;
-            profile.querySelector(".occasion-mark").textContent = data.occasion;
-            profile.querySelector(".reference").textContent = data.receiver;
-            profile.querySelector(".pr-date").textContent = data.date;
-            profile.querySelector(".profile-desc").textContent = data.gift_desc;
-
-            const profileLetter = profile.querySelector('.profile-letter');
-            profileLetter.textContent = data.profile_name.charAt(0);
-
-            profileContainer.appendChild(profile);
+     profilesContainer.appendChild(profile);
+                
+     profile.addEventListener('mouseenter', () => {
+       profile.animate([
+         { transform: 'scale(1)' },
+         { transform: 'scale(1.05)' }
+       ], {
+          duration: 200,
+          fill: 'forwards'
         });
-    }).catch((error) => {
-        console.log("Error getting documents: ", error);
-    });
+     });
+
+     profile.addEventListener('mouseleave', () => {
+       profile.animate([
+         { transform: 'scale(1.05)' },
+         { transform: 'scale(1)' }
+       ], {
+         duration: 200,
+         fill: 'forwards'
+       });
+     });
+  });
+});
 }
 
 function showPopupUser(productData, card) {
