@@ -263,15 +263,16 @@
   }
 
   function setupUI() {
-    if (!(textarea.textContent === "")) {
-      mainButton.classList.remove('disablegrid');
+    if (textarea.value.trim() !== '') {
+        mainButton.classList.remove('disablegrid');
+    } else {
+        mainButton.classList.add('disablegrid');
     }
     
     searchAgain.style.visibility = "hidden";
     lottieLoader.style.visibility = "hidden";
     errorAlert.style.visibility = "hidden";
     document.getElementById("button-container").classList.add('disablegrid');
-    mainButton.classList.add('disablegrid');
     textarea.addEventListener('input', checkInputs);
     holidayGrid.addEventListener('click', checkInputs);
     whoGrid.addEventListener('click', checkInputs);
