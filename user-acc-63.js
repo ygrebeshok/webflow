@@ -127,8 +127,8 @@ firebase.auth().onAuthStateChanged(user => {
     firebase.firestore().collection("users").doc(userId).get()
       .then(doc => {
 	      
-	const profiles = doc.data().profiles;
-        loadProfileData(profiles);
+	const profilesRef = firebase.firestore().collection("users").doc(userId).collection("profiles");
+        loadProfileData(profilesRef);
 	      
         const favorites = doc.data().favorites;
 	const shared_fav = doc.data().shared_favorites;
