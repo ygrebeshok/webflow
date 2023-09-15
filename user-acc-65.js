@@ -19,10 +19,9 @@ const favoriteBtn = document.querySelector("#favorite-btn");
 
 function loadProfileData(profiles) {
 
-profiles.get().then((querySnapshot) => {
   profilesContainer.innerHTML = "";
-  querySnapshot.forEach(doc => {
-    const data = doc.data();
+  profiles.forEach(data => {
+	  
     const profile = profileCardTemplate.cloneNode(true);
      // populate the card with profile data
      profile.querySelector(".profile-names").textContent = data.profile_name;
@@ -53,7 +52,6 @@ profiles.get().then((querySnapshot) => {
        });
      });
   });
-});
 }
 
 function showPopupUser(productData, card) {
@@ -123,12 +121,12 @@ const shareFavoritesButton = document.getElementById('shareFavoritesButton');
 firebase.auth().onAuthStateChanged(user => {
   if (user) {
     const userId = user.uid;
-
-    const profilesRef = firebase.firestore().collection("users").doc(userId).collection("profiles");
-    loadProfileData(profilesRef);
     
     firebase.firestore().collection("users").doc(userId).get()
       .then(doc => {
+
+	const profiles = doc.data().profiles;
+        loadProfileData(profiles);
 	      
         const favorites = doc.data().favorites;
 	const shared_fav = doc.data().shared_favorites;
