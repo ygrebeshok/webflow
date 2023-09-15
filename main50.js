@@ -263,13 +263,6 @@
   }
 
   function setupUI() {
-    if (!(textarea.value === '')) {
-        checkInputs();
-    } else {
-        document.getElementById("button-container").classList.add('disablegrid')
-        mainButton.classList.add('disablegrid');
-    }
-    
     searchAgain.style.visibility = "hidden";
     lottieLoader.style.visibility = "hidden";
     errorAlert.style.visibility = "hidden";
