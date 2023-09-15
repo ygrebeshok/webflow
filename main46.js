@@ -262,7 +262,11 @@
      }
   }
 
-  function setupUI() {  
+  function setupUI() {
+    if (!(textarea.textContent === "")) {
+      mainButton.classList.remove('disablegrid');
+    }
+    
     searchAgain.style.visibility = "hidden";
     lottieLoader.style.visibility = "hidden";
     errorAlert.style.visibility = "hidden";
