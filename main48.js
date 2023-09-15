@@ -264,8 +264,9 @@
 
   function setupUI() {
     if (textarea.value.trim() !== '') {
-        mainButton.classList.remove('disablegrid');
+        checkInputs();
     } else {
+        document.getElementById("button-container").classList.add('disablegrid')
         mainButton.classList.add('disablegrid');
     }
     
