@@ -23,7 +23,7 @@ profiles.get().then((querySnapshot) => {
   profilesContainer.innerHTML = "";
   querySnapshot.forEach(doc => {
     const data = doc.data();
-    const profile = profileTemplate.cloneNode(true);
+    const profile = profileCardTemplate.cloneNode(true);
      // populate the card with profile data
      profile.querySelector(".profile-names").textContent = data.profile_name;
      profile.querySelector(".occasion-mark").textContent = data.occasion;
