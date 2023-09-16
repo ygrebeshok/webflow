@@ -165,8 +165,6 @@
     const openaiKeywords = new Set(keywords);
     let visibleCards = [];
     const stringSimilarityThreshold = 0.6;
-    const petStores = ["Boston Barkery"];
-    const formattedPetStores = petStores.map(brand => brand.toLowerCase().replace(/[,.\'"*•-]+/g, ''));
 
     // Now catalog grid's card keywords are retrieved and formatted correctly
     catalogGrid.childNodes.forEach((card) => {
@@ -226,19 +224,18 @@
           visibleCards.push(card);
           card.style.display = "";
         }
+      } else {
+        card.style.display = "none"; // Hide the card if it has excludable keywords
+      }
 
-        console.log(selected_who);
-
-        if (!(selected_who === "Dog" || selected_who === "Cat")) {
+      console.log(selected_who);
+      if (!(selected_who === "Dog" || selected_who === "Cat")) {
         // Filter out cards with brands found in petStores
           if (petStores.includes(card.querySelector("#brand").textContent)) {
             card.style.display = "";
           }
         }
-      } else {
-        card.style.display = "none"; // Hide the card if it has excludable keywords
-      }
-
+      
       visibleCards = removeDuplicates(visibleCards);
     });
 
