@@ -92,6 +92,9 @@
     lottieLoader.style.visibility = "visible";
     const text = document.getElementById("textarea").value;
 
+    const petStores = ["Boston Barkery"];
+    const formattedPetStores = petStores.map(brand => brand.toLowerCase().replace(/[,.\'"*•-]+/g, ''));
+
     // Prompt to Open AI
     try {
       const prompt = "Give some gift recommendations for " + selected_who + " and for this occasion " + selected_holiday + "\n" + "Here is the gift description: " + text;
@@ -219,7 +222,6 @@
       if (!keywordsToExcludeFound) {
         const intersection = new Set([...openaiKeywords].filter(x => cardKeywordsSet.has(x)));
         const hasSimilarity = matchedWords.length >= 2 && similarity / matchedWords.length >= stringSimilarityThreshold;
-        const petStores = ["Boston Barkery"];
     
         if (intersection.size === 0 || !hasSimilarity) {
           card.style.display = "none";
@@ -230,9 +232,8 @@
 
         if (!(selected_who === "Dog" || selected_who === "Cat")) {
         // Filter out cards with brands found in petStores
-          const brandsToExclude = petStores.map(store => store.toLowerCase().replace(/[,.\'"*•-]+/g, ''));
           visibleCards = visibleCards.filter(card => {
-            return !brandsToExclude.includes(cardBrand);
+            return !formattedPetStores.includes(cardBrand);
           });
         }
       } else {
