@@ -78,12 +78,6 @@ resetSelections.addEventListener('click', () => {
   selHoliday.textContent = "";
 });
 
-if (selected_who === null || selected_holiday === null) {
-  resetSelections.classList.add('disablegrid');
-} else {
-  resetSelections.classList.remove('disablegrid');
-}
-
 createProfile.addEventListener('click', () => {
 	
   if (checkboxHoliday.checked === true) {
