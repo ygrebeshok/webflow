@@ -93,7 +93,6 @@
     const text = document.getElementById("textarea").value;
 
     const petStores = ["Boston Barkery"];
-    const formattedPetStores = petStores.map(brand => brand.toLowerCase().replace(/[,.\'"*•-]+/g, ''));
 
     // Prompt to Open AI
     try {
@@ -230,10 +229,12 @@
           card.style.display = "";
         }
 
+        console.log(selected_who);
+
         if (!(selected_who === "Dog" || selected_who === "Cat")) {
         // Filter out cards with brands found in petStores
           visibleCards = visibleCards.filter(card => {
-            return !formattedPetStores.includes(cardBrand);
+            return !petStores.includes(card.querySelector("#brand").textContent);
           });
         }
       } else {
