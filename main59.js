@@ -229,6 +229,8 @@
       }
 
       console.log(selected_who);
+      console.log(card.querySelector("#brand").textContent);
+      console.log(petStores);
       if (!(selected_who === "Dog" || selected_who === "Cat")) {
         // Filter out cards with brands found in petStores
           if (petStores.includes(card.querySelector("#brand").textContent)) {
