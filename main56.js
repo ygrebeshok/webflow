@@ -233,9 +233,9 @@
 
         if (!(selected_who === "Dog" || selected_who === "Cat")) {
         // Filter out cards with brands found in petStores
-          visibleCards = visibleCards.filter(card => {
-            return !petStores.includes(card.querySelector("#brand").textContent);
-          });
+          if (petStores.includes(card.querySelector("#brand").textContent)) {
+            card.style.display = "";
+          }
         }
       } else {
         card.style.display = "none"; // Hide the card if it has excludable keywords
