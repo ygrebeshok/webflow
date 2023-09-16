@@ -1,4 +1,3 @@
-
 const output = document.getElementById("output");
 const mainButton = document.getElementById("toGifts");
 const linkInput = document.getElementById("link-container");
@@ -12,10 +11,8 @@ const openaiRec = document.getElementById("openai-rec");
 const priceFilterContainer = document.getElementById("price-filter-container");
 const holidayGrid = document.getElementById("holiday-grid");
 const holidayTemplate = document.querySelector(".birthday");
-let selected_holiday = sel_holiday || null;
 const whoGrid = document.getElementById("who-grid");
 const whoTemplate = document.querySelector(".who");
-let selected_who = sel_who || null;
 const errorAlert = document.getElementById("error-alert");
 const brandFilterContainer = document.getElementById("brand-filter");
 const lowestPriceButton = document.getElementById('lowestPrice');
@@ -47,6 +44,23 @@ const profileAge = document.getElementById("profile-age");
 const createProfile = document.getElementById("create-profile");
 const created = document.getElementById("created-text");
 const resetSelections = document.getElementById("reset-selections");
+
+const urlParams = new URLSearchParams(window.location.search);
+const sel_who = urlParams.get('selected_who');
+const sel_holiday = urlParams.get('selected_holiday');
+const gift_desc = urlParams.get('gift_desc');
+
+document.getElementById("textarea").value = gift_desc; 
+  
+if (textarea.value.trim() !== '') {
+  checkInputs();
+} else {
+  document.getElementById("button-container").classList.add('disablegrid');
+  mainButton.classList.add('disablegrid');
+}
+
+let selected_who = sel_who || null;
+let selected_holiday = sel_holiday || null;
 
 resetSelections.addEventListener('click', () => {
   selected_who = null;
