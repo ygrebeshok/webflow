@@ -95,13 +95,12 @@
     // Prompt to Open AI
     try {
       const prompt = "Give some gift recommendations for " + selected_who + " and for this occasion " + selected_holiday + "\n" + "Here is the gift description: " + text;
-      console.log(prompt);
       
       const keywordsToExclude = [];
       if (!(selected_who === "Dog" || selected_who === "Cat")) {
         keywordsToExclude.push("dog", "bark", "cat", "meow", "pet", "paw");
       } else if (selected_who === "Dad" || selected_who === "Grandpa" || selected_who === "Brother") {
-        keywordsToExclude.push("woman", "women", "girl", "stylish");
+        keywordsToExclude.push("woman", "women", "girl");
       } else if (selected_who === "Mom" || selected_who === "Grandma" || selected_who === "Sister") {
         keywordsToExclude.push("man", "men", "boy");
       }
@@ -166,6 +165,8 @@
     const openaiKeywords = new Set(keywords);
     let visibleCards = [];
     const stringSimilarityThreshold = 0.6;
+    const petStores = ["Boston Barkery"];
+    const formattedPetStores = petStores.map(brand => brand.toLowerCase().replace(/[,.\'"*•-]+/g, ''));
 
     // Now catalog grid's card keywords are retrieved and formatted correctly
     catalogGrid.childNodes.forEach((card) => {
@@ -218,12 +219,21 @@
       if (!keywordsToExcludeFound) {
         const intersection = new Set([...openaiKeywords].filter(x => cardKeywordsSet.has(x)));
         const hasSimilarity = matchedWords.length >= 2 && similarity / matchedWords.length >= stringSimilarityThreshold;
+        const petStores = ["Boston Barkery"];
     
         if (intersection.size === 0 || !hasSimilarity) {
           card.style.display = "none";
         } else {
           visibleCards.push(card);
           card.style.display = "";
+        }
+
+        if (!(selected_who === "Dog" || selected_who === "Cat")) {
+        // Filter out cards with brands found in petStores
+          const brandsToExclude = petStores.map(store => store.toLowerCase().replace(/[,.\'"*•-]+/g, ''));
+          visibleCards = visibleCards.filter(card => {
+            return !brandsToExclude.includes(cardBrand);
+          });
         }
       } else {
         card.style.display = "none"; // Hide the card if it has excludable keywords
