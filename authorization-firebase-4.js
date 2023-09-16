@@ -9,18 +9,23 @@ firebase.analytics && firebase.analytics();
   var userAuth = document.querySelectorAll('[data-user-auth]');
   var userUnauth = document.querySelectorAll('[data-user-unauth]');
   var userEmail = document.querySelectorAll('[data-user-email]');
-  var userContent = document.querySelectorAll('[data-user]');
   var userDisplayName = document.querySelectorAll('[data-user-displayName]');
   var userButton = document.getElementById('userButton');
+  var storeAuth = document.querySelectorAll('[data-store-auth]');
+  var storeEmail = document.querySelectorAll('[data-store-email]');
+  var storeDisplayName = document.querySelectorAll('[data-user-displayName]');
   var storeButton = document.getElementById('storeButton');
   var registrationForms = document.querySelectorAll('[data-registration-form]');
+
+  const userForm = document.getElementById("user-form");
+  const storeForm = document.getElementById("store-form");
 
   function showUserForm() {
     registrationForms.forEach(function(form) {
       if (form.getAttribute('data-registration-type') === 'user') {
-        form.style.display = 'block';
+        userForm.style.display = 'flex';
       } else {
-        form.style.display = 'none';
+        storeForm.style.display = 'none';
       }
     });
     userButton.classList.add('active');
@@ -30,9 +35,9 @@ firebase.analytics && firebase.analytics();
   function showStoreForm() {
     registrationForms.forEach(function(form) {
       if (form.getAttribute('data-registration-type') === 'store') {
-        form.style.display = 'block';
+        storeForm.style.display = 'flex';
       } else {
-        form.style.display = 'none';
+        userForm.style.display = 'none';
       }
     });
     storeButton.classList.add('active');
@@ -46,23 +51,11 @@ firebase.analytics && firebase.analytics();
   showUserForm();
 
   userAuth.forEach(function(el) { el.style.display = 'none'; });
+  storeAuth.forEach(function(el) { el.style.display = 'none'; });
   userUnauth.forEach(function(el) { el.style.display = 'none'; });
-
-  function updateContent() {
-    if (!user) {
-      return;
-    }
-    userContent.forEach(function(el) { 
-      el.innerText = el.innerText.replace(/\{\{([^\}]+)\}\}/g, function(match, variable) {
-        return typeof user[variable] === 'undefined' ? '' : user[variable];
-      });
-    });
-  }
 
   firebase.auth().onAuthStateChanged(function(authUser) {
     user = authUser;
-
-    updateContent();
 
     if (user && bodyUnauth) {
       window.location.href = webflowAuth.loginRedirectPath;
@@ -71,45 +64,74 @@ firebase.analytics && firebase.analytics();
     }
     
     if (user) {
-      userAuth.forEach(function(el) { el.style.display = null; });
-      userUnauth.forEach(function(el) { el.style.display = 'none'; });
+
+      if (selectedRegistrationType === 'userButton') {
+        userAuth.forEach(function(el) { el.style.display = null; });
+        userUnauth.forEach(function(el) { el.style.display = 'none'; });
       
-      userEmail.forEach(function(el) { el.innerText = user.email; });
-      userDisplayName.forEach(function(el) { el.innerText = user.displayName; });
+        userEmail.forEach(function(el) { el.innerText = user.email; });
+        userDisplayName.forEach(function(el) { el.innerText = user.displayName; });
       
-      firebase.firestore().collection("users").doc(user.uid).get()
-      .then(function(doc) {
-        if (doc.exists) {
-          // Update the user object with the favorites array
-          user.favorites = doc.data().favorites;
-        } else {
-          // If the user document doesn't exist, create it with an empty favorites array
-          firebase.firestore().collection("users").doc(user.uid).set({
-            email: user.email,
-            favorites: [],
-            shared_favorites: [],
-            liked: [],
-            disliked: [],
-            profiles: []
-          });
-        }
-      })
-      .catch(function(error) {
-        console.error("Error retrieving user's favorites:", error);
-      });
+        firebase.firestore().collection("users").doc(user.uid).get()
+        .then(function(doc) {
+          if (doc.exists) {
+            // Update the user object with the favorites array
+            user.favorites = doc.data().favorites;
+          } else {
+            // If the user document doesn't exist, create it with an empty favorites array
+            firebase.firestore().collection("users").doc(user.uid).set({
+              email: user.email,
+              favorites: [],
+              shared_favorites: [],
+              liked: [],
+              disliked: [],
+              profiles: []
+            });
+          }
+        })
+        .catch(function(error) {
+          console.error("Error retrieving user's favorites:", error);
+        });
+      } else if (selectedRegistrationType === 'storeButton') {
+        storeAuth.forEach(function(el) { el.style.display = null; });
+        userUnauth.forEach(function(el) { el.style.display = 'none'; });
+
+        storeEmail.forEach(function(el) { el.innerText = user.email; });
+        storeDisplayName.forEach(function(el) { el.innerText = user.displayName; });
+
+        firebase.firestore().collection("stores").doc(user.uid).get()
+        .then(function(doc) {
+          if (doc.exists) {
+            // Update the user object
+            
+          } else {
+            // If the user document doesn't exist, create it with an empty favorites array
+            firebase.firestore().collection("stores").doc(user.uid).set({
+              email: user.email
+            });
+          }
+        })
+        .catch(function(error) {
+          console.error("Error retrieving store's infor:", error);
+        });
+      }
     } else {
       userAuth.forEach(function(el) { el.style.display = 'none'; });
+      storeAuth.forEach(function(el) { el.style.display = 'none'; });
       userUnauth.forEach(function(el) { el.style.display = null; });
 
       userEmail.forEach(function(el) { el.innerText = ''; });
+      storeEmail.forEach(function(el) { el.innerText = ''; });
       userDisplayName.forEach(function(el) { el.innerText = ''; });
+      storeDisplayName.forEach(function(el) { el.innerText = ''; });
     }
   });
 
   var signupForms = document.querySelectorAll('[data-signup-form]');
   var signupErrors = document.querySelectorAll('[data-signup-error]');
-  var signupLoading = document.querySelectorAll('[data-signup-loading]');
-  var signupIdle = document.querySelectorAll('[data-signup-idle]');
+
+  var signupStore = document.querySelectorAll('[data-store-form]');
+  var signupErrorStore = document.querySelectorAll('[data-store-error]');
 
   signupForms.forEach(function(el) {
     var signupEmail = el.querySelector('[data-signup-email]');
@@ -120,50 +142,42 @@ firebase.analytics && firebase.analytics();
       e.stopPropagation();
 
       signupErrors.forEach(function(el) { el.style.display = 'none'; });
-      signupLoading.forEach(function(el) { el.style.display = 'block'; });
-      signupIdle.forEach(function(el) { el.style.display = 'none'; });
-    
-      var selectedRegistrationType = document.querySelector('.toggle-button.active').id;
-    
+      
       firebase.auth().createUserWithEmailAndPassword(signupEmail.value, signupPassword.value)
-        .then(function(authUser) {
-          user = authUser;
-
-          // Handle registration based on selected type
-          if (selectedRegistrationType === 'userButton') {
-            // User registration
-            // Proceed with storing data in 'users' collection
-            firebase.firestore().collection("users").doc(user.uid).set({
-              email: user.email,
-              favorites: [],
-              shared_favorites: [],
-              liked: [],
-              disliked: [],
-              profiles: []
-            });
-            window.location.href = webflowAuth.signupRedirectPath; // Redirect to user page
-          } else if (selectedRegistrationType === 'storeButton') {
-            // Store registration
-            // Proceed with storing data in 'stores' collection
-            firebase.firestore().collection("stores").doc(user.uid).set({
-              email: user.email,
-              // Add any additional store-specific data here
-            });
-            // Redirect to store profile page (adjust path as needed)
-            window.location.href = '/store-profile';
-          }
-        })
-        .catch(function(error) {
-          signupErrors.forEach(function(el) {
-            el.innerText = error.message;
-            el.style.display = 'block';
-          });
-
-          setTimeout(function() {
-            signupLoading.forEach(function(el) { el.style.display = 'none'; });
-            signupIdle.forEach(function(el) { el.style.display = null; });
-          }, 1000);
+      .then(function(authUser) {
+        user = authUser;
+        window.location.href = webflowAuth.signupRedirectPath;
+      })
+      .catch(function(error) {
+        signupErrors.forEach(function(el) {
+          el.innerText = error.message;
+          el.style.display = 'block';
         });
+      });
+    });
+  });
+
+  signupStore.forEach(function(el) {
+    var signupStoreEmail = el.querySelector('[data-store-email]');
+    var signupStorePassword = el.querySelector('[data-store-password]');
+
+    el.addEventListener('submit', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      signupErrorStore.forEach(function(el) { el.style.display = 'none'; });
+      
+      firebase.auth().createUserWithEmailAndPassword(signupStoreEmail.value, signupStorePassword.value)
+      .then(function(authUser) {
+        user = authUser;
+        window.location.href = webflowAuth.signupStoreRedirectPath;
+      })
+      .catch(function(error) {
+        signupErrorStore.forEach(function(el) {
+          el.innerText = error.message;
+          el.style.display = 'block';
+        });
+      });
     });
   });
     
