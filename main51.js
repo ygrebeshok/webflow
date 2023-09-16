@@ -95,7 +95,8 @@
     // Prompt to Open AI
     try {
       const prompt = "Give some gift recommendations for " + selected_who + " and for this occasion " + selected_holiday + "\n" + "Here is the gift description: " + text;
-
+      console.log(prompt);
+      
       const keywordsToExclude = [];
       if (!(selected_who === "Dog" || selected_who === "Cat")) {
         keywordsToExclude.push("dog", "bark", "cat", "meow", "pet", "paw");
