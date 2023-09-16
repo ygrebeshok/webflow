@@ -92,8 +92,6 @@
     lottieLoader.style.visibility = "visible";
     const text = document.getElementById("textarea").value;
 
-    const petStores = ["Boston Barkery"];
-
     // Prompt to Open AI
     try {
       const prompt = "Give some gift recommendations for " + selected_who + " and for this occasion " + selected_holiday + "\n" + "Here is the gift description: " + text;
