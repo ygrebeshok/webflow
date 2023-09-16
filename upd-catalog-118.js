@@ -45,23 +45,27 @@ const createProfile = document.getElementById("create-profile");
 const created = document.getElementById("created-text");
 const resetSelections = document.getElementById("reset-selections");
 
-const urlParams = new URLSearchParams(window.location.search);
-const sel_who = urlParams.get('selected_who');
-const sel_holiday = urlParams.get('selected_holiday');
-const gift_desc = urlParams.get('gift_desc');
+document.addEventListener('DOMContentLoaded', function() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const sel_who = urlParams.get('selected_who');
+  const sel_holiday = urlParams.get('selected_holiday');
+  const gift_desc = urlParams.get('gift_desc');
 
-document.getElementById("textarea").value = gift_desc; 
+  document.getElementById("textarea").value = gift_desc; 
   
-if (textarea.value.trim() !== '') {
-  checkInputs();
-} else {
-  document.getElementById("button-container").classList.add('disablegrid');
-  mainButton.classList.add('disablegrid');
-}
+  if (textarea.value.trim() !== '') {
+    checkInputs();
+  } else {
+    document.getElementById("button-container").classList.add('disablegrid');
+    mainButton.classList.add('disablegrid');
+  }
 
-let selected_who = sel_who || null;
-let selected_holiday = sel_holiday || null;
+  let selected_who = sel_who || null;
+  let selected_holiday = sel_holiday || null;
 
+  return { selected_who, selected_holiday };
+});
+	
 resetSelections.addEventListener('click', () => {
   selected_who = null;
   selected_holiday = null;
