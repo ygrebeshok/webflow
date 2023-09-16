@@ -65,6 +65,9 @@ document.addEventListener('DOMContentLoaded', function() {
   selected_who = sel_who || null;
   selected_holiday = sel_holiday || null;
 
+  selWho.textContent = selected_who;
+  selHoliday.textContent = selected_holiday;
+
   return { selected_who, selected_holiday };
 });
 	
