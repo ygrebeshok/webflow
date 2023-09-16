@@ -219,22 +219,31 @@
         const hasSimilarity = matchedWords.length >= 2 && similarity / matchedWords.length >= stringSimilarityThreshold;
     
         if (intersection.size === 0 || !hasSimilarity) {
+          const index = visibleCards.indexOf(card);
+          if (index !== -1) {
+            visibleCards.splice(index, 1);
+          }
           card.style.display = "none";
         } else {
           visibleCards.push(card);
           card.style.display = "";
         }
       } else {
-        card.style.display = "none"; // Hide the card if it has excludable keywords
+        const index = visibleCards.indexOf(card);
+        if (index !== -1) {
+          visibleCards.splice(index, 1);
+        }
+        card.style.display = "none";
       }
 
-      console.log(selected_who);
-      console.log(card.querySelector("#brand").textContent);
-      console.log(petStores);
       if (!(selected_who === "Dog" || selected_who === "Cat")) {
         // Filter out cards with brands found in petStores
-          if (petStores.includes(card.querySelector("#brand").textContent)) {
-            card.style.display = "";
+        if (petStores.includes(card.querySelector("#brand").textContent)) {
+          const index = visibleCards.indexOf(card);
+          if (index !== -1) {
+            visibleCards.splice(index, 1);
+          }
+            card.style.display = "none";
           }
         }
       
