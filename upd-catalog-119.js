@@ -44,6 +44,8 @@ const profileAge = document.getElementById("profile-age");
 const createProfile = document.getElementById("create-profile");
 const created = document.getElementById("created-text");
 const resetSelections = document.getElementById("reset-selections");
+let selected_holiday = null;
+let selected_who = null;
 
 document.addEventListener('DOMContentLoaded', function() {
   const urlParams = new URLSearchParams(window.location.search);
@@ -60,8 +62,8 @@ document.addEventListener('DOMContentLoaded', function() {
     mainButton.classList.add('disablegrid');
   }
 
-  let selected_who = sel_who || null;
-  let selected_holiday = sel_holiday || null;
+  selected_who = sel_who || null;
+  selected_holiday = sel_holiday || null;
 
   return { selected_who, selected_holiday };
 });
