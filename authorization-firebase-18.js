@@ -32,29 +32,47 @@ firebase.analytics && firebase.analytics();
   const userLoginButton = document.getElementById("login-button");
   const storeLoginButton = document.getElementById("store-login-button");
 
-  function showUserForm(userSignup, storeSignup, userBtn, storeBtn, email, password) {
-    userSignup.style.display = 'flex';
-    storeSignup.style.display = 'none';
-    userBtn.classList.add('active');
-    storeBtn.classList.remove('active');
-    email.value = "";
-    password.value = "";
-  }
+   function showUserForm() {
+     userRegistration.style.display = 'flex';
+     storeRegistration.style.display = 'none';
+     userButton.classList.add('active');
+     storeButton.classList.remove('active');
+     storeEmail.value = "";
+     storePassword.value = "";
+   }
 
-  function showStoreForm(storeSignup, userSignup, storeBtn, userBtn, email, password) {
-    storeSignup.style.display = 'flex';
-    userSignup.style.display = 'none';
-    storeBtn.classList.add('active');
-    userBtn.classList.remove('active');
-    email.value = "";
-    password.value = "";
-  }
+   function showStoreForm() {
+     storeRegistration.style.display = 'flex';
+     userRegistration.style.display = 'none';
+     storeButton.classList.add('active');
+     userButton.classList.remove('active');
+     userEmail.value = "";
+     userPassword.value = "";
+   }
 
-  userButton.addEventListener('click', showUserForm(userRegistration, storeRegistration, userButton, storeButton, storeEmail, storePassword));
-  storeButton.addEventListener('click', showStoreForm(storeRegistration, userRegistration, storeButton, userButton, userEmail, userPassword));
+  userButton.addEventListener('click', showUserForm);
+  storeButton.addEventListener('click', showStoreForm);
 
-  userLoginToggleButton.addEventListener('click', showUserForm(userLogin, storeLogin, userLoginToggleButton, storeLoginToggleButton, storeLoginEmail, storeLoginPassword));
-  storeLoginToggleButton.addEventListener('click', showStoreForm(storeLogin, userLogin, storeLoginToggleButton, userLoginToggleButton, userLoginEmail, userLoginPassword));
+  function showUserLogin() {
+     userLogin.style.display = 'flex';
+     storeLogin.style.display = 'none';
+     userLoginToggleButton.classList.add('active');
+     storeLoginToggleButton.classList.remove('active');
+     storeLoginEmail.value = "";
+     storeLoginPassword.value = "";
+   }
+
+   function showStoreLogin() {
+     storeLogin.style.display = 'flex';
+     userLogin.style.display = 'none';
+     storeLoginToggleButton.classList.add('active');
+     userLoginToggleButton.classList.remove('active');
+     userLoginEmail.value = "";
+     userLoginPassword.value = "";
+   }
+  
+  userLoginToggleButton.addEventListener('click', showUserLogin);
+  storeLoginToggleButton.addEventListener('click', showStoreLogin);
   
   userSignupButton.addEventListener('click', function(e) {
   e.preventDefault();
