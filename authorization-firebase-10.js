@@ -59,3 +59,4 @@ firebase.analytics && firebase.analytics();
     });
     // Redirect or perform other actions after registration
   });
+}
