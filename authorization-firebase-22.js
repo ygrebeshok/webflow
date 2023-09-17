@@ -40,7 +40,7 @@ firebase.analytics && firebase.analytics();
      userLoginPassword.value = "";
    }
   
-  function userSignup() {
+  function userSignup(e) {
   e.preventDefault();
   var email = userEmail.value; 
   var password = userPassword.value;
@@ -62,7 +62,7 @@ firebase.analytics && firebase.analytics();
     });
 }
 
-function storeSignup() {
+function storeSignup(e) {
   e.preventDefault();
   var email = storeEmail.value;
   var password = storePassword.value;
@@ -81,7 +81,7 @@ function storeSignup() {
 }
 
 // Login Logic
-function userLoginProcess() {
+function userLoginProcess(e) {
   e.preventDefault();
   var email = userLoginEmail.value; 
   var password = userLoginPassword.value;
@@ -94,7 +94,7 @@ function userLoginProcess() {
     });
 }
 
-function storeLoginProcess() {
+function storeLoginProcess(e) {
   e.preventDefault();
   var email = storeLoginEmail.value;
   var password = storeLoginPassword.value;
