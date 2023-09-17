@@ -4,34 +4,6 @@ firebase.initializeApp(webflowAuth.firebaseConfig);
 firebase.analytics && firebase.analytics();
 
 {
-  // Sign up
-  const userEmail = document.getElementById('user-email');
-  const userPassword = document.getElementById('user-password');
-  var userButton = document.getElementById('userButton');
-  const storeEmail = document.getElementById('store-email');
-  const storePassword = document.getElementById('store-password');
-  var storeButton = document.getElementById('storeButton');
-
-  const userRegistration = document.getElementById("user-registration");
-  const storeRegistration = document.getElementById("store-registration");
-
-  const userSignupButton = document.getElementById("user-signup-button");
-  const storeSignupButton = document.getElementById("store-signup-button");
-
-  // Login
-  const userLoginEmail = document.getElementById("login-email");
-  const userLoginPassword = document.getElementById("login-password");
-  var userLoginToggleButton = document.getElementById("userLoginToggleButton");
-  const storeLoginEmail = document.getElementById("store-login-email");
-  const storeLoginPassword = document.getElementById("store-login-password");
-  var storeLoginToggleButton = document.getElementById("storeLoginToggleButton");
-
-  const userLogin = document.getElementById("user-login");
-  const storeLogin = document.getElementById("store-login");
-
-  const userLoginButton = document.getElementById("login-button");
-  const storeLoginButton = document.getElementById("store-login-button");
-
    function showUserForm() {
      userRegistration.style.display = 'flex';
      storeRegistration.style.display = 'none';
@@ -134,8 +106,6 @@ function storeLoginProcess() {
       console.error("Error logging in store:", error);
     });
 }
-
-const logoutButton = document.getElementById('logout-button');
 
 function logout() {
   firebase.auth().signOut()
