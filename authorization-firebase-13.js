@@ -76,3 +76,4 @@ storeSignupButton.addEventListener('click', function(e) {
       console.error("Error creating store:", error);
     });
 });
+}
