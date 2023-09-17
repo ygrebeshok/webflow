@@ -21,25 +21,15 @@ firebase.analytics && firebase.analytics();
   const storeForm = document.getElementById("store-form");
 
   function showUserForm() {
-    registrationForms.forEach(function(form) {
-      if (form.getAttribute('data-registration-type') === 'user') {
-        userForm.style.display = 'flex';
-      } else {
-        storeForm.style.display = 'none';
-      }
-    });
+    userForm.style.display = 'flex';
+    storeForm.style.display = 'none';
     userButton.classList.add('active');
     storeButton.classList.remove('active');
   }
 
   function showStoreForm() {
-    registrationForms.forEach(function(form) {
-      if (form.getAttribute('data-registration-type') === 'store') {
-        storeForm.style.display = 'flex';
-      } else {
-        userForm.style.display = 'none';
-      }
-    });
+    storeForm.style.display = 'flex';
+    userForm.style.display = 'none';
     storeButton.classList.add('active');
     userButton.classList.remove('active');
   }
