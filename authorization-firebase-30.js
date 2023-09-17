@@ -91,9 +91,10 @@ function userLoginProcess(e) {
             window.location.href = '/user';
           })
           .catch(function(error) {
-            errorUser.textContent = "No such user exists. Please, check the inputs";
+            errorUser.textContent = error;
           });
       } else {
+         errorUser.textContent = "No such user exists. Please, check the inputs";
       }
     })
     .catch(function(error) {
@@ -115,6 +116,7 @@ function storeLoginProcess(e) {
             window.location.href = '/store-profile';
           })
           .catch(function(error) {
+             errorStore.textContent = error;
           });
       } else {
         errorStore.textContent = "No such store exists. Please, check the inputs";
@@ -130,5 +132,6 @@ function logout() {
       window.location.href = '/login';
     })
     .catch(function(error) {
+       console.log(error);
     });
 }
