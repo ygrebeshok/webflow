@@ -14,6 +14,9 @@ firebase.analytics && firebase.analytics();
   const userRegistration = document.getElementById("user-registration");
   const storeRegistration = document.getElementById("store-registration");
 
+  const userSignupButton = document.getElementById("user-signup-button");
+  const storeSignupButton = document.getElementById("store-signup-button");
+
   function showUserForm() {
     userRegistration.style.display = 'flex';
     storeRegistration.style.display = 'none';
