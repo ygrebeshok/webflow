@@ -92,28 +92,11 @@ function userLoginProcess(e) {
         .then(function(querySnapshot) {
           if (!querySnapshot.empty) {
             hideLoader();
-            // If email exists in 'users' collection, user is a user
+            // Email exists in 'users' collection
             window.location.href = '/user';
           } else {
-            // If not in 'users', check 'stores' collection
-            firebase.firestore().collection('stores').where('email', '==', email).get()
-              .then(function(storeQuerySnapshot) {
-                if (!storeQuerySnapshot.empty) {
-                   hideLoader();
-                  // If email exists in 'stores' collection, user is a store
-                  window.location.href = '/store-profile';
-                } else {
-                  hideLoader();
-                  // Email doesn't exist in either collection
-                  errorUser.textContent = "User with this email does not exist.";
-                  errorStore.textContent = "User with this email does not exist.";
-                }
-              })
-              .catch(function(error) {
-                hideLoader();
-                errorUser.textContent = "Error checking email, check the profile type";
-                errorStore.textContent = "Error checking email, check the profile type";
-              });
+            hideLoader();
+            errorUser.textContent = "No user with such email, check the profile type"
           }
         })
         .catch(function(error) {
@@ -124,6 +107,38 @@ function userLoginProcess(e) {
     .catch(function(error) {
       hideLoader();
       errorUser.textContent = "Error logging in user: " + error.message;
+    });
+}
+
+function storeLoginProcess(e) {
+  e.preventDefault();
+  var email = storeLoginEmail.value; 
+  var password = storeLoginPassword.value;
+  showLoader();
+   
+  // Attempt to sign in with email and password
+  firebase.auth().signInWithEmailAndPassword(email, password)
+    .then(function(authUser) {
+      // Check if the email exists in the 'stores' collection
+      firebase.firestore().collection('stores').where('email', '==', email).get()
+        .then(function(querySnapshot) {
+          if (!querySnapshot.empty) {
+            hideLoader();
+            // Email exists in 'stores' collection
+            window.location.href = '/store-profile';
+          } else {
+            hideLoader();
+            errorStore.textContent = "No user with such email, check the profile type"
+          }
+        })
+        .catch(function(error) {
+          hideLoader();
+          errorStore.textContent = "Error checking email: " + error.message;
+        });
+    })
+    .catch(function(error) {
+      hideLoader();
+      errorStore.textContent = "Error logging in user: " + error.message;
     });
 }
 
