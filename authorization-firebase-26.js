@@ -37,11 +37,12 @@
   
   function userSignup(e) {
   e.preventDefault();
+  user = authUser;
   var email = userEmail.value; 
   var password = userPassword.value;
   firebase.auth().createUserWithEmailAndPassword(email, password)
     .then(function(authUser) {
-      firebase.firestore().collection("users").doc(authUser.user.uid).set({
+      firebase.firestore().collection("users").doc(user.uid).set({
         email: email,
         favorites: [],
         shared_favorites: [],
@@ -59,11 +60,12 @@
 
 function storeSignup(e) {
   e.preventDefault();
+  user = authUser;
   var email = storeEmail.value;
   var password = storePassword.value;
   firebase.auth().createUserWithEmailAndPassword(email, password)
     .then(function(authUser) {
-      firebase.firestore().collection("stores").doc(authUser.user.uid).set({
+      firebase.firestore().collection("stores").doc(user.uid).set({
         email: email
         // Add any additional store-specific data here
       });
