@@ -50,9 +50,6 @@ firebase.analytics && firebase.analytics();
      userPassword.value = "";
    }
 
-  userButton.addEventListener('click', showUserForm);
-  storeButton.addEventListener('click', showStoreForm);
-
   function showUserLogin() {
      userLogin.style.display = 'flex';
      storeLogin.style.display = 'none';
@@ -70,9 +67,6 @@ firebase.analytics && firebase.analytics();
      userLoginEmail.value = "";
      userLoginPassword.value = "";
    }
-  
-  userLoginToggleButton.addEventListener('click', showUserLogin);
-  storeLoginToggleButton.addEventListener('click', showStoreLogin);
   
   userSignupButton.addEventListener('click', function(e) {
   e.preventDefault();
