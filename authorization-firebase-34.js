@@ -24,6 +24,7 @@
      storeLoginToggleButton.classList.remove('active');
      storeLoginEmail.value = "";
      storeLoginPassword.value = "";
+     errorUser.textContent = "";
    }
 
    function showStoreLogin() {
@@ -33,6 +34,7 @@
      userLoginToggleButton.classList.remove('active');
      userLoginEmail.value = "";
      userLoginPassword.value = "";
+     errorStore.textContent = "";
    }
   
   function userSignup(e) {
@@ -77,10 +79,10 @@ function storeSignup(e) {
 
 // Login Logic
 function userLoginProcess(e) {
+  showLoader();
   e.preventDefault();
   var email = userLoginEmail.value; 
   var password = userLoginPassword.value;
-  showLoader();
 
   // Attempt to sign in with email and password
   firebase.auth().signInWithEmailAndPassword(email, password)
@@ -104,11 +106,13 @@ function userLoginProcess(e) {
                   hideLoader();
                   // Email doesn't exist in either collection
                   errorUser.textContent = "User with this email does not exist.";
+                  errorStore.textContent = "User with this email does not exist.";
                 }
               })
               .catch(function(error) {
                 hideLoader();
-                errorUser.textContent = "Error checking email: " + error.message;
+                errorUser.textContent = "Error checking email, check the profile type";
+                errorStore.textContent = "Error checking email, check the profile type";
               });
           }
         })
