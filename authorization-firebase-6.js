@@ -17,8 +17,8 @@ firebase.analytics && firebase.analytics();
   var storeButton = document.getElementById('storeButton');
   var registrationForms = document.querySelectorAll('[data-registration-form]');
 
-  const userForm = document.getElementById("user-form");
-  const storeForm = document.getElementById("store-form");
+  const userForm = document.getElementById("user-registration");
+  const storeForm = document.getElementById("store-registration");
 
   function showUserForm() {
     userForm.style.display = 'flex';
