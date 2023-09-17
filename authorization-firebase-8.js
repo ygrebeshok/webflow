@@ -9,8 +9,8 @@ firebase.analytics && firebase.analytics();
   var storeButton = document.getElementById('storeButton');
   var registrationForms = document.querySelectorAll('[data-registration-form]');
 
-  const userForm = document.getElementById("user-form");
-  const storeForm = document.getElementById("store-form");
+  const userFormButton = document.getElementById("user-form-button");
+  const storeFormButton = document.getElementById("store-form-button");
   const userRegistration = document.getElementById("user-registration");
   const storeRegistration = document.getElementById("store-registration");
 
