@@ -117,14 +117,5 @@ function logout() {
     });
 }
 
-function resetPassword(email, successReset) {
-  firebase.auth().sendPasswordResetEmail(email)
-    .then(function() {
-      successReset.textContent = "Email sent. Please, Check your inbox.";
-    })
-    .catch(function(error) {
-      console.error("Error sending password reset email:", error);
-    });
-}
 
 }
