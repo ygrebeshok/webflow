@@ -53,7 +53,7 @@
       window.location.href = '/user';
     })
     .catch(function(error) {
-      console.error("Error creating user:", error);
+      errorSignUser.textContent = "Error occured when creating user";
     });
 }
 
@@ -71,7 +71,7 @@ function storeSignup(e) {
       window.location.href = '/store-profile';
     })
     .catch(function(error) {
-      console.error("Error creating store:", error);
+      errorSignStore.textContent = "Error occured when creating store";
     });
 }
 
@@ -80,12 +80,23 @@ function userLoginProcess(e) {
   e.preventDefault();
   var email = userLoginEmail.value; 
   var password = userLoginPassword.value;
-  firebase.auth().signInWithEmailAndPassword(email, password)
-    .then(function(authUser) {
-      window.location.href = '/user';
+
+  // Check if the email exists in the 'users' collection
+  firebase.firestore().collection('users').where('email', '==', email).get()
+    .then(function(querySnapshot) {
+      if (!querySnapshot.empty) {
+        // If email exists in 'users' collection, attempt login
+        firebase.auth().signInWithEmailAndPassword(email, password)
+          .then(function(authUser) {
+            window.location.href = '/user';
+          })
+          .catch(function(error) {
+            errorUser.textContent = "No such user exists. Please, check the inputs";
+          });
+      } else {
+      }
     })
     .catch(function(error) {
-      console.error("Error logging in user:", error);
     });
 }
 
@@ -93,12 +104,23 @@ function storeLoginProcess(e) {
   e.preventDefault();
   var email = storeLoginEmail.value;
   var password = storeLoginPassword.value;
-  firebase.auth().signInWithEmailAndPassword(email, password)
-    .then(function(authUser) {
-      window.location.href = '/store-profile';
+
+  // Check if the email exists in the 'stores' collection
+  firebase.firestore().collection('stores').where('email', '==', email).get()
+    .then(function(querySnapshot) {
+      if (!querySnapshot.empty) {
+        // If email exists in 'stores' collection, attempt login
+        firebase.auth().signInWithEmailAndPassword(email, password)
+          .then(function(authUser) {
+            window.location.href = '/store-profile';
+          })
+          .catch(function(error) {
+          });
+      } else {
+        errorStore.textContent = "No such store exists. Please, check the inputs";
+      }
     })
     .catch(function(error) {
-      console.error("Error logging in store:", error);
     });
 }
 
@@ -108,6 +130,5 @@ function logout() {
       window.location.href = '/login';
     })
     .catch(function(error) {
-      console.error("Error logging out:", error);
     });
 }
