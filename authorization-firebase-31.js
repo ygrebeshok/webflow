@@ -91,13 +91,14 @@ function userLoginProcess(e) {
             window.location.href = '/user';
           })
           .catch(function(error) {
-            errorUser.textContent = error;
+            console.error("Error logging in user:", error);
           });
       } else {
-         errorUser.textContent = "No such user exists. Please, check the inputs";
+        console.error("Error: User with this email does not exist.");
       }
     })
     .catch(function(error) {
+      console.error("Error checking email:", error);
     });
 }
 
@@ -116,15 +117,17 @@ function storeLoginProcess(e) {
             window.location.href = '/store-profile';
           })
           .catch(function(error) {
-             errorStore.textContent = error;
+            console.error("Error logging in store:", error);
           });
       } else {
-        errorStore.textContent = "No such store exists. Please, check the inputs";
+        console.error("Error: Store with this email does not exist.");
       }
     })
     .catch(function(error) {
+      console.error("Error checking email:", error);
     });
 }
+
 
 function logout() {
   firebase.auth().signOut()
