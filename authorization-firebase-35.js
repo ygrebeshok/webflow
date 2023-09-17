@@ -79,11 +79,11 @@ function storeSignup(e) {
 
 // Login Logic
 function userLoginProcess(e) {
-  showLoader();
   e.preventDefault();
   var email = userLoginEmail.value; 
   var password = userLoginPassword.value;
-
+  showLoader();
+   
   // Attempt to sign in with email and password
   firebase.auth().signInWithEmailAndPassword(email, password)
     .then(function(authUser) {
