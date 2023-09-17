@@ -80,51 +80,46 @@ function userLoginProcess(e) {
   e.preventDefault();
   var email = userLoginEmail.value; 
   var password = userLoginPassword.value;
+  showLoader();
 
-  // Check if the email exists in the 'users' collection
-  firebase.firestore().collection('users').where('email', '==', email).get()
-    .then(function(querySnapshot) {
-      if (!querySnapshot.empty) {
-        // If email exists in 'users' collection, attempt login
-        firebase.auth().signInWithEmailAndPassword(email, password)
-          .then(function(authUser) {
+  // Attempt to sign in with email and password
+  firebase.auth().signInWithEmailAndPassword(email, password)
+    .then(function(authUser) {
+      // Check if the email exists in the 'users' collection
+      firebase.firestore().collection('users').where('email', '==', email).get()
+        .then(function(querySnapshot) {
+          if (!querySnapshot.empty) {
+            hideLoader();
+            // If email exists in 'users' collection, user is a user
             window.location.href = '/user';
-          })
-          .catch(function(error) {
-            console.error("Error logging in user:", error);
-          });
-      } else {
-        errorUser.textContent = "User with this email does not exist.";
-      }
+          } else {
+            // If not in 'users', check 'stores' collection
+            firebase.firestore().collection('stores').where('email', '==', email).get()
+              .then(function(storeQuerySnapshot) {
+                if (!storeQuerySnapshot.empty) {
+                   hideLoader();
+                  // If email exists in 'stores' collection, user is a store
+                  window.location.href = '/store-profile';
+                } else {
+                  hideLoader();
+                  // Email doesn't exist in either collection
+                  errorUser.textContent = "User with this email does not exist.";
+                }
+              })
+              .catch(function(error) {
+                hideLoader();
+                errorUser.textContent = "Error checking email: " + error.message;
+              });
+          }
+        })
+        .catch(function(error) {
+          hideLoader();
+          errorUser.textContent = "Error checking email: " + error.message;
+        });
     })
     .catch(function(error) {
-      errorUser.textContent = "Error checking email: " + error.message;
-    });
-}
-
-function storeLoginProcess(e) {
-  e.preventDefault();
-  var email = storeLoginEmail.value;
-  var password = storeLoginPassword.value;
-
-  // Check if the email exists in the 'stores' collection
-  firebase.firestore().collection('stores').where('email', '==', email).get()
-    .then(function(querySnapshot) {
-      if (!querySnapshot.empty) {
-        // If email exists in 'stores' collection, attempt login
-        firebase.auth().signInWithEmailAndPassword(email, password)
-          .then(function(authUser) {
-            window.location.href = '/store-profile';
-          })
-          .catch(function(error) {
-            console.error("Error logging in store:", error);
-          });
-      } else {
-        errorStore.textContent = "Store with this email does not exist.";
-      }
-    })
-    .catch(function(error) {
-      errorStore.textContent = "Error checking email: " + error.message;
+      hideLoader();
+      errorUser.textContent = "Error logging in user: " + error.message;
     });
 }
 
