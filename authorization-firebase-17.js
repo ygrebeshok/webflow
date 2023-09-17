@@ -1,13 +1,3 @@
-var webflowAuth = {
-  firebaseConfig: {
-    apiKey: "AIzaSyCiXlpWuCAoezO72hSsu_DZhKEbSCYPVuY",
-    authDomain: "smappy-ai.firebaseapp.com",
-    projectId: "smappy-ai",
-    storageBucket: "smappy-ai.appspot.com",
-    messagingSenderId: "1054219735418",
-    appId: "1:1054219735418:web:c6871596bd39d95afd46c3",
-    measurementId: "G-D56TMT6SBE"
-  }  
 
 firebase.initializeApp(webflowAuth.firebaseConfig);
 
