@@ -3,9 +3,11 @@ firebase.initializeApp(webflowAuth.firebaseConfig);
 firebase.analytics && firebase.analytics();
 
 {
-  var userEmail = document.querySelectorAll('[data-user-email]');
+  const userEmail = document.getElementById('user-email');
+  const userPassword = document.getElementById('user-password');
   var userButton = document.getElementById('userButton');
-  var storeEmail = document.querySelectorAll('[data-store-email]');
+  const storeEmail = document.getElementById('store-email');
+  const storePassword = document.getElementById('store-password');
   var storeButton = document.getElementById('storeButton');
   var registrationForms = document.querySelectorAll('[data-registration-form]');
 
@@ -38,28 +40,39 @@ firebase.analytics && firebase.analytics();
   showUserForm();
 
   userSignupButton.addEventListener('click', function(e) {
-    e.preventDefault();
-    // Handle user registration here
-    var email = userEmail[0].value; // Assuming there's only one email input
-    firebase.firestore().collection("users").doc(user.uid).set({
-      email: email,
-      favorites: [],
-      shared_favorites: [],
-      liked: [],
-      disliked: [],
-      profiles: []
+  e.preventDefault();
+  var email = userEmail.value; 
+  var password = userPassword.value;
+  firebase.auth().createUserWithEmailAndPassword(email, password)
+    .then(function(authUser) {
+      firebase.firestore().collection("users").doc(authUser.user.uid).set({
+        email: email,
+        favorites: [],
+        shared_favorites: [],
+        liked: [],
+        disliked: [],
+        profiles: []
+      });
+      // Redirect or perform other actions after registration
+    })
+    .catch(function(error) {
+      console.error("Error creating user:", error);
     });
-    // Redirect or perform other actions after registration
-  });
+});
 
-  storeSignupButton.addEventListener('click', function(e) {
-    e.preventDefault();
-    // Handle store registration here
-    var email = storeEmail[0].value; // Assuming there's only one email input
-    firebase.firestore().collection("stores").doc(user.uid).set({
-      email: email
-      // Add any additional store-specific data here
+storeSignupButton.addEventListener('click', function(e) {
+  e.preventDefault();
+  var email = storeEmail.value;
+  var password = storePassword.value;
+  firebase.auth().createUserWithEmailAndPassword(email, password)
+    .then(function(authUser) {
+      firebase.firestore().collection("stores").doc(authUser.user.uid).set({
+        email: email
+        // Add any additional store-specific data here
+      });
+      // Redirect or perform other actions after registration
+    })
+    .catch(function(error) {
+      console.error("Error creating store:", error);
     });
-    // Redirect or perform other actions after registration
-  });
-}
+});
