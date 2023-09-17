@@ -34,10 +34,9 @@ firebase.analytics && firebase.analytics();
   // Show User form by default
   showUserForm();
 
-  userForm.addEventListener('submit', function(e) {
+  userSignupButton.addEventListener('click', function(e) {
     e.preventDefault();
     // Handle user registration here
-    // Access the user's email using userEmail and use it for registration
     var email = userEmail[0].value; // Assuming there's only one email input
     firebase.firestore().collection("users").doc(user.uid).set({
       email: email,
@@ -50,10 +49,9 @@ firebase.analytics && firebase.analytics();
     // Redirect or perform other actions after registration
   });
 
-  storeForm.addEventListener('submit', function(e) {
+  storeSignupButton.addEventListener('click', function(e) {
     e.preventDefault();
     // Handle store registration here
-    // Access the store's email using storeEmail and use it for registration
     var email = storeEmail[0].value; // Assuming there's only one email input
     firebase.firestore().collection("stores").doc(user.uid).set({
       email: email
@@ -61,4 +59,3 @@ firebase.analytics && firebase.analytics();
     });
     // Redirect or perform other actions after registration
   });
-}
