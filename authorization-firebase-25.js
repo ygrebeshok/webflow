@@ -1,9 +1,4 @@
 
-firebase.initializeApp(webflowAuth.firebaseConfig);
-
-firebase.analytics && firebase.analytics();
-
-{
    function showUserForm() {
      userRegistration.style.display = 'flex';
      storeRegistration.style.display = 'none';
@@ -115,7 +110,4 @@ function logout() {
     .catch(function(error) {
       console.error("Error logging out:", error);
     });
-}
-
-
 }
