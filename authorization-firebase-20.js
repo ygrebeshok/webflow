@@ -68,7 +68,7 @@ firebase.analytics && firebase.analytics();
      userLoginPassword.value = "";
    }
   
-  userSignupButton.addEventListener('click', function(e) {
+  function userSignup() {
   e.preventDefault();
   var email = userEmail.value; 
   var password = userPassword.value;
@@ -88,9 +88,9 @@ firebase.analytics && firebase.analytics();
     .catch(function(error) {
       console.error("Error creating user:", error);
     });
-});
+}
 
-storeSignupButton.addEventListener('click', function(e) {
+function storeSignup() {
   e.preventDefault();
   var email = storeEmail.value;
   var password = storePassword.value;
@@ -106,10 +106,10 @@ storeSignupButton.addEventListener('click', function(e) {
     .catch(function(error) {
       console.error("Error creating store:", error);
     });
-});
+}
 
 // Login Logic
-userLoginButton.addEventListener('click', function(e) {
+function userLoginProcess() {
   e.preventDefault();
   var email = userLoginEmail.value; 
   var password = userLoginPassword.value;
@@ -120,9 +120,9 @@ userLoginButton.addEventListener('click', function(e) {
     .catch(function(error) {
       console.error("Error logging in user:", error);
     });
-});
+}
 
-storeLoginButton.addEventListener('click', function(e) {
+function storeLoginProcess() {
   e.preventDefault();
   var email = storeLoginEmail.value;
   var password = storeLoginPassword.value;
@@ -133,11 +133,11 @@ storeLoginButton.addEventListener('click', function(e) {
     .catch(function(error) {
       console.error("Error logging in store:", error);
     });
-});
+}
 
 const logoutButton = document.getElementById('logout-button');
 
-logoutButton.addEventListener('click', function() {
+function logout() {
   firebase.auth().signOut()
     .then(function() {
       window.location.href = '/login';
@@ -145,6 +145,6 @@ logoutButton.addEventListener('click', function() {
     .catch(function(error) {
       console.error("Error logging out:", error);
     });
-});
+}
 
 }
