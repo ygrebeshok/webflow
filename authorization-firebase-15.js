@@ -28,8 +28,8 @@ firebase.analytics && firebase.analytics();
   const userLogin = document.getElementById("user-login");
   const storeLogin = document.getElementById("store-login");
 
-  const userLoginButton = document.getElementById("");
-  const storeLoginButton = document.getElementById("");
+  const userLoginButton = document.getElementById("login-button");
+  const storeLoginButton = document.getElementById("store-login-button");
 
   function showUserForm(userSignup, storeSignup, userBtn, storeBtn, email, password) {
     userSignup.style.display = 'flex';
@@ -95,5 +95,43 @@ storeSignupButton.addEventListener('click', function(e) {
     });
 });
 
-  
+// Login Logic
+userLoginButton.addEventListener('click', function(e) {
+  e.preventDefault();
+  var email = userLoginEmail.value; 
+  var password = userLoginPassword.value;
+  firebase.auth().signInWithEmailAndPassword(email, password)
+    .then(function(authUser) {
+      window.location.href = '/user';
+    })
+    .catch(function(error) {
+      console.error("Error logging in user:", error);
+    });
+});
+
+storeLoginButton.addEventListener('click', function(e) {
+  e.preventDefault();
+  var email = storeLoginEmail.value;
+  var password = storeLoginPassword.value;
+  firebase.auth().signInWithEmailAndPassword(email, password)
+    .then(function(authUser) {
+      window.location.href = '/store-profile';
+    })
+    .catch(function(error) {
+      console.error("Error logging in store:", error);
+    });
+});
+
+const logoutButton = document.getElementById('logout-button');
+
+logoutButton.addEventListener('click', function() {
+  firebase.auth().signOut()
+    .then(function() {
+      window.location.href = '/login';
+    })
+    .catch(function(error) {
+      console.error("Error logging out:", error);
+    });
+});
+
 }
