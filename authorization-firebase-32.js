@@ -94,11 +94,11 @@ function userLoginProcess(e) {
             console.error("Error logging in user:", error);
           });
       } else {
-        console.error("Error: User with this email does not exist.");
+        errorUser.textContent = "User with this email does not exist.";
       }
     })
     .catch(function(error) {
-      console.error("Error checking email:", error);
+      errorUser.textContent = "Error checking email: " + error.message;
     });
 }
 
@@ -120,11 +120,11 @@ function storeLoginProcess(e) {
             console.error("Error logging in store:", error);
           });
       } else {
-        console.error("Error: Store with this email does not exist.");
+        errorStore.textContent = "Store with this email does not exist.";
       }
     })
     .catch(function(error) {
-      console.error("Error checking email:", error);
+      errorStore.textContent = "Error checking email: " + error.message;
     });
 }
 
