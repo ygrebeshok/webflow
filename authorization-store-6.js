@@ -11,7 +11,7 @@ firebase.analytics && firebase.analytics();
   var userEmail = document.querySelectorAll('[store-user-email]');
   var userContent = document.querySelectorAll('[store-user]');
   var userDisplayName = document.querySelectorAll('[store-user-displayName]');
-  var catalogLink = document.querySelectorAll('[store-signup-link]');
+  var storeLink = document.querySelectorAll('[store-signup-link]');
 
   userAuth.forEach(function(el) { el.style.display = 'none'; });
   userUnauth.forEach(function(el) { el.style.display = 'none'; });
@@ -27,6 +27,8 @@ firebase.analytics && firebase.analytics();
     });
   }
 
+  const catalogLink = storeLink.textContent;
+  
   firebase.auth().onAuthStateChanged(function(authUser) {
     user = authUser;
 
