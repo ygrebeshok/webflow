@@ -145,7 +145,7 @@ firebase.analytics && firebase.analytics();
     });
   });
 
-  var authLogout = document.querySelectorAll('[data-logout]');
+  var authLogout = document.querySelectorAll('[store-logout]');
 
   authLogout.forEach(function(el) {
     el.addEventListener('click', function(e) {
