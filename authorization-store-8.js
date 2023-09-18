@@ -52,7 +52,7 @@ firebase.analytics && firebase.analytics();
           user.catalog_link = doc.data().catalog_link;
         } else {
           // If the user document doesn't exist, create it
-          console.log(catalogLinkValue);
+          console.log(storeLink);
           firebase.firestore().collection("stores").doc(user.uid).set({
             email: user.email,
             catalog_link: storeLink
