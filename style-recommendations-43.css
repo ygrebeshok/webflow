@@ -15,14 +15,14 @@
     height: 15px;
     width: 15px;
     border: 0.5px solid #ffffff;
-    border-radius: 5px;
+    border-radius: 4px;
     margin-right: 10px;
     background: transparent;
   }
 
   .brand-checkbox:checked {
-    background-color: #6A52FF;
-    border-color: #6A52FF;
+    background-color: #7977ff;
+    border-color: #7977ff;
   }
 
   .button {
