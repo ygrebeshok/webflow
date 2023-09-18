@@ -91,10 +91,9 @@ firebase.analytics && firebase.analytics();
       .then(function(authUser) {
         user = authUser;
 
-        const catalogLinkValue = catalogLink[0].value || "";
         firebase.firestore().collection("stores").doc(user.uid).set({
           email: user.email,
-          catalog_link: catalogLinkValue
+          catalog_link: catalogLink.value
         })
         .then(function() {
           window.location.href = webflowAuth.signupRedirectPath;
