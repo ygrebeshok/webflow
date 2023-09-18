@@ -11,6 +11,7 @@ firebase.analytics && firebase.analytics();
   var userEmail = document.querySelectorAll('[store-user-email]');
   var userContent = document.querySelectorAll('[store-user]');
   var userDisplayName = document.querySelectorAll('[store-user-displayName]');
+  var catalogLink = document.querySelectorAll('[store-signup-link]');
 
   userAuth.forEach(function(el) { el.style.display = 'none'; });
   userUnauth.forEach(function(el) { el.style.display = 'none'; });
@@ -44,15 +45,16 @@ firebase.analytics && firebase.analytics();
       userEmail.forEach(function(el) { el.innerText = user.email; });
       userDisplayName.forEach(function(el) { el.innerText = user.displayName; });
       
-      firebase.firestore().collection("users").doc(user.uid).get()
+      firebase.firestore().collection("stores").doc(user.uid).get()
       .then(function(doc) {
         if (doc.exists) {
-          // Update the user object with the favorites array
-          user.favorites = doc.data().favorites;
+          // Update the user object with the catalog link
+          user.catalog_link = doc.data().catalog_link;
         } else {
-          // If the user document doesn't exist, create it with an empty favorites array
-          firebase.firestore().collection("users").doc(user.uid).set({
-            email: user.email
+          // If the user document doesn't exist, create it
+          firebase.firestore().collection("stores").doc(user.uid).set({
+            email: user.email,
+            catalog_link: catalogLink.value
           });
         }
       })
