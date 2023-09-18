@@ -11,7 +11,6 @@ firebase.analytics && firebase.analytics();
   var userEmail = document.querySelectorAll('[store-user-email]');
   var userContent = document.querySelectorAll('[store-user]');
   var userDisplayName = document.querySelectorAll('[store-user-displayName]');
-  var catalogLink = document.querySelectorAll('[store-signup-link]');
 
   userAuth.forEach(function(el) { el.style.display = 'none'; });
   userUnauth.forEach(function(el) { el.style.display = 'none'; });
@@ -52,12 +51,10 @@ firebase.analytics && firebase.analytics();
           user.catalog_link = doc.data().catalog_link;
         } else {
           // If the user document doesn't exist, create it
-          if (!user.catalog_link) {
             firebase.firestore().collection("stores").doc(user.uid).set({
               email: user.email,
               catalog_link: ""
             });
-          }
         }
       })
       .catch(function(error) {
@@ -92,20 +89,7 @@ firebase.analytics && firebase.analytics();
       firebase.auth().createUserWithEmailAndPassword(signupEmail.value, signupPassword.value)
       .then(function(authUser) {
         user = authUser;
-
-        firebase.firestore().collection("stores").doc(user.uid).set({
-          email: user.email,
-          catalog_link: catalogLink.value
-        })
-        .then(function() {
-          window.location.href = webflowAuth.signupRedirectPath;
-        })
-        .catch(function(error) {
-          signupErrors.forEach(function(el) {
-            el.innerText = error.message;
-            el.style.display = 'block';
-          });
-        });
+        window.location.href = webflowAuth.signupRedirectPath;
       })
       .catch(function(error) {
         signupErrors.forEach(function(el) {
