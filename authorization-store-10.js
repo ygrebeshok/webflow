@@ -11,7 +11,7 @@ firebase.analytics && firebase.analytics();
   var userEmail = document.querySelectorAll('[store-user-email]');
   var userContent = document.querySelectorAll('[store-user]');
   var userDisplayName = document.querySelectorAll('[store-user-displayName]');
-  var storeLink = document.getElementById('store-signup-link');
+  var catalogLink = document.querySelectorAll('[store-signup-link]');
 
   userAuth.forEach(function(el) { el.style.display = 'none'; });
   userUnauth.forEach(function(el) { el.style.display = 'none'; });
@@ -52,10 +52,9 @@ firebase.analytics && firebase.analytics();
           user.catalog_link = doc.data().catalog_link;
         } else {
           // If the user document doesn't exist, create it
-          console.log(storeLink.value);
           firebase.firestore().collection("stores").doc(user.uid).set({
             email: user.email,
-            catalog_link: storeLink.value
+            catalog_link: ""
           });
         }
       })
@@ -91,7 +90,21 @@ firebase.analytics && firebase.analytics();
       firebase.auth().createUserWithEmailAndPassword(signupEmail.value, signupPassword.value)
       .then(function(authUser) {
         user = authUser;
-        window.location.href = webflowAuth.signupRedirectPath;
+
+        const catalogLinkValue = catalogLink[0].value || "";
+        firebase.firestore().collection("stores").doc(user.uid).set({
+          email: user.email,
+          catalog_link: catalogLinkValue
+        })
+        .then(function() {
+          window.location.href = webflowAuth.signupRedirectPath;
+        })
+        .catch(function(error) {
+          signupErrors.forEach(function(el) {
+            el.innerText = error.message;
+            el.style.display = 'block';
+          });
+        });
       })
       .catch(function(error) {
         signupErrors.forEach(function(el) {
