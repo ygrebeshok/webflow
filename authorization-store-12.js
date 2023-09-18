@@ -52,10 +52,12 @@ firebase.analytics && firebase.analytics();
           user.catalog_link = doc.data().catalog_link;
         } else {
           // If the user document doesn't exist, create it
-          firebase.firestore().collection("stores").doc(user.uid).set({
-            email: user.email,
-            catalog_link: ""
-          });
+          if (!user.catalog_link) {
+            firebase.firestore().collection("stores").doc(user.uid).set({
+              email: user.email,
+              catalog_link: ""
+            });
+          }
         }
       })
       .catch(function(error) {
