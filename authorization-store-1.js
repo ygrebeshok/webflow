@@ -4,13 +4,13 @@ firebase.analytics && firebase.analytics();
 
 {
   var user;
-  var bodyAuth = document.body.getAttribute('data-user-auth');
-  var bodyUnauth = document.body.getAttribute('data-user-unauth');
-  var userAuth = document.querySelectorAll('[data-user-auth]');
-  var userUnauth = document.querySelectorAll('[data-user-unauth]');
-  var userEmail = document.querySelectorAll('[data-user-email]');
-  var userContent = document.querySelectorAll('[data-user]');
-  var userDisplayName = document.querySelectorAll('[data-user-displayName]');
+  var bodyAuth = document.body.getAttribute('store-user-auth');
+  var bodyUnauth = document.body.getAttribute('store-user-unauth');
+  var userAuth = document.querySelectorAll('[store-user-auth]');
+  var userUnauth = document.querySelectorAll('[store-user-unauth]');
+  var userEmail = document.querySelectorAll('[store-user-email]');
+  var userContent = document.querySelectorAll('[store-user]');
+  var userDisplayName = document.querySelectorAll('[store-user-displayName]');
 
   userAuth.forEach(function(el) { el.style.display = 'none'; });
   userUnauth.forEach(function(el) { el.style.display = 'none'; });
@@ -73,14 +73,14 @@ firebase.analytics && firebase.analytics();
     }
   });
 
-  var signupForms = document.querySelectorAll('[data-signup-form]');
-  var signupErrors = document.querySelectorAll('[data-signup-error]');
-  var signupLoading = document.querySelectorAll('[data-signup-loading]');
-  var signupIdle = document.querySelectorAll('[data-signup-idle]');
+  var signupForms = document.querySelectorAll('[store-signup-form]');
+  var signupErrors = document.querySelectorAll('[store-signup-error]');
+  var signupLoading = document.querySelectorAll('[store-signup-loading]');
+  var signupIdle = document.querySelectorAll('[store-signup-idle]');
 
   signupForms.forEach(function(el) {
-    var signupEmail = el.querySelector('[data-signup-email]');
-    var signupPassword = el.querySelector('[data-signup-password]');
+    var signupEmail = el.querySelector('[store-signup-email]');
+    var signupPassword = el.querySelector('[store-signup-password]');
 
     el.addEventListener('submit', function(e) {
       e.preventDefault();
@@ -109,14 +109,14 @@ firebase.analytics && firebase.analytics();
     });
   });
     
-  var loginForms = document.querySelectorAll('[data-login-form]');
-  var loginErrors = document.querySelectorAll('[data-login-error]');
-  var loginLoading = document.querySelectorAll('[data-login-loading]');
-  var loginIdle = document.querySelectorAll('[data-login-idle]');
+  var loginForms = document.querySelectorAll('[store-login-form]');
+  var loginErrors = document.querySelectorAll('[store-login-error]');
+  var loginLoading = document.querySelectorAll('[store-login-loading]');
+  var loginIdle = document.querySelectorAll('[store-login-idle]');
 
   loginForms.forEach(function(el) {
-    var loginEmail = el.querySelector('[data-login-email]');
-    var loginPassword = el.querySelector('[data-login-password]');
+    var loginEmail = el.querySelector('[store-login-email]');
+    var loginPassword = el.querySelector('[store-login-password]');
 
     el.addEventListener('submit', function(e) {
       e.preventDefault();
