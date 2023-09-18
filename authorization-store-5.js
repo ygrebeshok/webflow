@@ -52,14 +52,16 @@ firebase.analytics && firebase.analytics();
           user.catalog_link = doc.data().catalog_link;
         } else {
           // If the user document doesn't exist, create it
+          const catalogLinkValue = catalogLink.length > 0 ? catalogLink[0].value : '';
+          console.log(catalogLinkValue);
           firebase.firestore().collection("stores").doc(user.uid).set({
             email: user.email,
-            catalog_link: catalogLink.value
+            catalog_link: catalogLinkValue
           });
         }
       })
       .catch(function(error) {
-        console.error("Error retrieving user's favorites:", error);
+        console.error("Error retrieving store's info:", error);
       });
     } else {
       userAuth.forEach(function(el) { el.style.display = 'none'; });
