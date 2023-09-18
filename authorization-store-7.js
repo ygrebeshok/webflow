@@ -26,8 +26,6 @@ firebase.analytics && firebase.analytics();
       });
     });
   }
-
-  const catalogLink = storeLink.textContent;
   
   firebase.auth().onAuthStateChanged(function(authUser) {
     user = authUser;
@@ -54,11 +52,10 @@ firebase.analytics && firebase.analytics();
           user.catalog_link = doc.data().catalog_link;
         } else {
           // If the user document doesn't exist, create it
-          const catalogLinkValue = catalogLink.length > 0 ? catalogLink[0].value : '';
           console.log(catalogLinkValue);
           firebase.firestore().collection("stores").doc(user.uid).set({
             email: user.email,
-            catalog_link: catalogLinkValue
+            catalog_link: storeLink
           });
         }
       })
