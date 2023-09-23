@@ -2,6 +2,7 @@ firebase.initializeApp(webflowAuth.firebaseConfig);
 
 firebase.analytics && firebase.analytics();
 
+
 {
   var user;
   var bodyAuth = document.body.getAttribute('data-user-auth');
@@ -28,6 +29,7 @@ firebase.analytics && firebase.analytics();
 
   firebase.auth().onAuthStateChanged(function(authUser) {
     user = authUser;
+
     updateContent();
 
     if (user && bodyUnauth) {
@@ -43,25 +45,30 @@ firebase.analytics && firebase.analytics();
       userEmail.forEach(function(el) { el.innerText = user.email; });
       userDisplayName.forEach(function(el) { el.innerText = user.displayName; });
       
-      firebase.firestore().collection("users").doc(user.uid).get()
+      firebase.firestore().collection("stores").doc(user.uid).get()
       .then(function(doc) {
         if (doc.exists) {
-          // Update the user object with the favorites array
+          // Update the user doc
+          user.email = doc.data().email;
           user.favorites = doc.data().favorites;
           user.liked = doc.data().liked;
           user.disliked = doc.data().disliked;
           user.profiles = doc.data().profiles;
-          user.shared_favorites = doc.data().shared_favorites;
+          user.shared_favorites = doc.data().shared_favorites
         } else {
-          // If the user document doesn't exist, go to sign up
-          firebase.auth().signOut().then(function() {
-            user = null;
-            window.location.href = webflowAuth.signupPath;
-          })
+          // If the user document doesn't exist, create it
+            firebase.firestore().collection("stores").doc(user.uid).set({
+              email: user.email,
+              store_name: "",
+              store_bio: "",
+              store_address: "",
+              store_phone: "",
+              products: []
+            });
         }
       })
       .catch(function(error) {
-        console.error("Error retrieving user's favorites:", error);
+        console.error("Error retrieving store's info:", error);
       });
     } else {
       userAuth.forEach(function(el) { el.style.display = 'none'; });
@@ -93,15 +100,6 @@ firebase.analytics && firebase.analytics();
       .then(function(authUser) {
         user = authUser;
         window.location.href = webflowAuth.signupRedirectPath;
-
-        firebase.firestore().collection("users").doc(user.uid).set({
-          email: user.email,
-          favorites: [],
-          shared_favorites: [],
-          liked: [],
-          disliked: [],
-          profiles: []
-        });
       })
       .catch(function(error) {
         signupErrors.forEach(function(el) {
@@ -142,19 +140,4 @@ firebase.analytics && firebase.analytics();
       });
     });
   });
-
-  var authLogout = document.querySelectorAll('[data-logout]');
-
-  authLogout.forEach(function(el) {
-    el.addEventListener('click', function(e) {
-      e.preventDefault();
-      e.stopPropagation();
-
-      firebase.auth().signOut().then(function() {
-        user = null;
-        window.location.href = webflowAuth.logoutRedirectPath;
-      })
-      .catch(function() {});
-    });
-  })
 }
