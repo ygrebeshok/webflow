@@ -45,7 +45,7 @@ firebase.analytics && firebase.analytics();
       userEmail.forEach(function(el) { el.innerText = user.email; });
       userDisplayName.forEach(function(el) { el.innerText = user.displayName; });
       
-      firebase.firestore().collection("stores").doc(user.uid).get()
+      firebase.firestore().collection("users").doc(user.uid).get()
       .then(function(doc) {
         if (doc.exists) {
           // Update the user doc
@@ -68,7 +68,7 @@ firebase.analytics && firebase.analytics();
         }
       })
       .catch(function(error) {
-        console.error("Error retrieving store's info:", error);
+        console.error("Error retrieving user's info:", error);
       });
     } else {
       userAuth.forEach(function(el) { el.style.display = 'none'; });
