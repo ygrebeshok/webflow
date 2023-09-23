@@ -28,7 +28,6 @@ firebase.analytics && firebase.analytics();
 
   firebase.auth().onAuthStateChanged(function(authUser) {
     user = authUser;
-
     updateContent();
 
     if (user && bodyUnauth) {
@@ -49,16 +48,16 @@ firebase.analytics && firebase.analytics();
         if (doc.exists) {
           // Update the user object with the favorites array
           user.favorites = doc.data().favorites;
+          user.liked = doc.data().liked;
+          user.disliked = doc.data().disliked;
+          user.profiles = doc.data().profiles;
+          user.shared_favorites: doc.data().shared_favorites;
         } else {
-          // If the user document doesn't exist, create it with an empty favorites array
-          firebase.firestore().collection("users").doc(user.uid).set({
-            email: user.email,
-            favorites: [],
-            shared_favorites: [],
-            liked: [],
-            disliked: [],
-            profiles: []
-          });
+          // If the user document doesn't exist, go to sign up
+          firebase.auth().signOut().then(function() {
+            user = null;
+            window.location.href = webflowAuth.signupPath;
+          })
         }
       })
       .catch(function(error) {
@@ -94,17 +93,21 @@ firebase.analytics && firebase.analytics();
       .then(function(authUser) {
         user = authUser;
         window.location.href = webflowAuth.signupRedirectPath;
+
+        firebase.firestore().collection("users").doc(user.uid).set({
+          email: user.email,
+          favorites: [],
+          shared_favorites: [],
+          liked: [],
+          disliked: [],
+          profiles: []
+        });
       })
       .catch(function(error) {
         signupErrors.forEach(function(el) {
           el.innerText = error.message;
           el.style.display = 'block';
         });
-
-        setTimeout(function() {
-          signupLoading.forEach(function(el) { el.style.display = 'none'; });
-          signupIdle.forEach(function(el) { el.style.display = null; });
-        }, 1000);
       });
     });
   });
@@ -136,11 +139,6 @@ firebase.analytics && firebase.analytics();
           el.innerText = error.message;
           el.style.display = 'block';
         });
-
-        setTimeout(function() {
-          loginIdle.forEach(function(el) { el.style.display = null; });
-          loginLoading.forEach(function(el) { el.style.display = 'none'; });
-        }, 1000);
       });
     });
   });
