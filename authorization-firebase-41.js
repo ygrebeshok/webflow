@@ -57,14 +57,14 @@ firebase.analytics && firebase.analytics();
           user.shared_favorites = doc.data().shared_favorites
         } else {
           // If the user document doesn't exist, create it
-            firebase.firestore().collection("stores").doc(user.uid).set({
-              email: user.email,
-              store_name: "",
-              store_bio: "",
-              store_address: "",
-              store_phone: "",
-              products: []
-            });
+          firebase.firestore().collection("users").doc(user.uid).set({
+            email: user.email,
+            favorites: [],
+            liked: [],
+            disliked: [],
+            profiles: [],
+            shared_favorites: []
+          });
         }
       })
       .catch(function(error) {
