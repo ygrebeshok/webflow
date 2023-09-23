@@ -53,7 +53,7 @@ firebase.analytics && firebase.analytics();
           // If the user document doesn't exist, create it
             firebase.firestore().collection("stores").doc(user.uid).set({
               email: user.email,
-              catalog_link: ""
+              products: []
             });
         }
       })
