@@ -51,7 +51,7 @@ firebase.analytics && firebase.analytics();
           user.liked = doc.data().liked;
           user.disliked = doc.data().disliked;
           user.profiles = doc.data().profiles;
-          user.shared_favorites: doc.data().shared_favorites;
+          user.shared_favorites = doc.data().shared_favorites;
         } else {
           // If the user document doesn't exist, go to sign up
           firebase.auth().signOut().then(function() {
