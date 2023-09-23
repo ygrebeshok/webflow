@@ -47,8 +47,13 @@ firebase.analytics && firebase.analytics();
       firebase.firestore().collection("stores").doc(user.uid).get()
       .then(function(doc) {
         if (doc.exists) {
-          // Update the user object with the catalog link
-          user.catalog_link = doc.data().catalog_link;
+          // Update the user object
+          user.email = doc.data().email;
+          user.store_name = doc.data().store_name;
+          user.store_bio = doc.data().store_bio;
+          user.store_address = doc.data().store_address;
+          user.store_phone = doc.data().store_phone;
+          user.products = doc.data().products
         } else {
           // If the user document doesn't exist, create it
             firebase.firestore().collection("stores").doc(user.uid).set({
@@ -100,11 +105,6 @@ firebase.analytics && firebase.analytics();
           el.innerText = error.message;
           el.style.display = 'block';
         });
-
-        setTimeout(function() {
-          signupLoading.forEach(function(el) { el.style.display = 'none'; });
-          signupIdle.forEach(function(el) { el.style.display = null; });
-        }, 1000);
       });
     });
   });
@@ -136,27 +136,6 @@ firebase.analytics && firebase.analytics();
           el.innerText = error.message;
           el.style.display = 'block';
         });
-
-        setTimeout(function() {
-          loginIdle.forEach(function(el) { el.style.display = null; });
-          loginLoading.forEach(function(el) { el.style.display = 'none'; });
-        }, 1000);
       });
     });
   });
-
-  var authLogout = document.querySelectorAll('[store-logout]');
-
-  authLogout.forEach(function(el) {
-    el.addEventListener('click', function(e) {
-      e.preventDefault();
-      e.stopPropagation();
-
-      firebase.auth().signOut().then(function() {
-        user = null;
-        window.location.href = webflowAuth.logoutRedirectPath;
-      })
-      .catch(function() {});
-    });
-  })
-}
