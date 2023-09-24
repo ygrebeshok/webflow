@@ -1,4 +1,8 @@
+firebase.initializeApp(webflowAuth.firebaseConfig);
 
+firebase.analytics && firebase.analytics();
+
+{
 const popupImage = document.getElementById('popup_image');
 const popupTitle = document.getElementById('popup_title');
 const popupBrand = document.getElementById('popup_brand');
@@ -316,7 +320,6 @@ firebase.auth().onAuthStateChanged(function(authUser) {
           console.error('Error retrieving user document:', error);
         });
      });
-
   }
 });
-
+}
