@@ -139,3 +139,4 @@ firebase.analytics && firebase.analytics();
       });
     });
   });
+}
