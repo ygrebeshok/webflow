@@ -180,7 +180,6 @@ firebase.auth().onAuthStateChanged(function(authUser) {
             shared_favorites: []
           });
 	}
-     });
 
      firebase.firestore().collection("users").doc(userId).get()
       .then(function(doc) {
@@ -338,6 +337,7 @@ firebase.auth().onAuthStateChanged(function(authUser) {
      });
      // End of shareFavoritesButton clause  
     });
+   });
   }
 });
 	
