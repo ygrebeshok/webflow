@@ -27,6 +27,16 @@ firebase.analytics && firebase.analytics();
     });
   }
 
+  firebase.auth().onAuthStateChanged(function(authUser) {
+    user = authUser;
+    
+    if (user && bodyUnauth) {
+      window.location.href = webflowAuth.loginRedirectPath;
+    } else if (!user && bodyAuth) {
+      window.location.href = webflowAuth.loginPath;
+    }
+  }
+
   var signupForms = document.querySelectorAll('[data-signup-form]');
   var signupErrors = document.querySelectorAll('[data-signup-error]');
   var signupLoading = document.querySelectorAll('[data-signup-loading]');
