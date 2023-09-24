@@ -29,11 +29,20 @@ firebase.analytics && firebase.analytics();
 
   firebase.auth().onAuthStateChanged(function(authUser) {
     user = authUser;
+    updateContent();
     
     if (user && bodyUnauth) {
       window.location.href = webflowAuth.loginRedirectPath;
     } else if (!user && bodyAuth) {
       window.location.href = webflowAuth.loginPath;
+    }
+
+    if (!user) {
+      userAuth.forEach(function(el) { el.style.display = 'none'; });
+      userUnauth.forEach(function(el) { el.style.display = null; });
+
+      userEmail.forEach(function(el) { el.innerText = ''; });
+      userDisplayName.forEach(function(el) { el.innerText = ''; });
     }
   });
 
