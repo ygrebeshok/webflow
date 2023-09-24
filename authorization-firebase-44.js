@@ -129,13 +129,12 @@ firebase.analytics && firebase.analytics();
 
       firebase.auth().signInWithEmailAndPassword(loginEmail.value, loginPassword.value)
       .then(function(authUser) {
-        
+        user = authUser;
         if (user) {
-          user = authUser;
           const usersRef = firebase.firestore().collection('users');
           usersRef.doc(user.uid).get().then((doc) => {
             if (!doc.exists) {
-			        firebase.auth().signOut().then(function() {
+	      firebase.auth().signOut().then(function() {
                 user = null;
                 window.location.href = webflowAuth.signupPath;
               })
@@ -163,7 +162,7 @@ firebase.analytics && firebase.analytics();
 
       firebase.auth().signOut().then(function() {
         user = null;
-        window.location.href = '/log-in';
+        window.location.href = webflowAuth.loginPath;
       })
       .catch(function() {});
     });
