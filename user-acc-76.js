@@ -142,12 +142,25 @@ const shareFavoritesButton = document.getElementById('shareFavoritesButton');
 
 firebase.auth().onAuthStateChanged(function(authUser) {
   user = authUser;
+	
+  if (user && bodyUnauth) {
+    window.location.href = webflowAuth.loginRedirectPath;
+  } else if (!user && bodyAuth) {
+    window.location.href = webflowAuth.loginPath;
+  }
 
   if (user) {
     const userId = user.uid;
     
     firebase.firestore().collection("users").doc(userId).get()
       .then(function(doc) {
+	// Update the user doc
+        user.email = doc.data().email;
+        user.favorites = doc.data().favorites;
+        user.liked = doc.data().liked;
+        user.disliked = doc.data().disliked;
+        user.profiles = doc.data().profiles;
+        user.shared_favorites = doc.data().shared_favorites;
 	      
 	const profiles = doc.data().profiles;
         loadProfileData(profiles);
