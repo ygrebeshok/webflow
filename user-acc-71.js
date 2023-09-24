@@ -148,10 +148,13 @@ firebase.auth().onAuthStateChanged(user => {
       .then(doc => {
 
 	const profiles = doc.data().profiles;
+	console.log(profiles);
         loadProfileData(profiles);
 	      
         const favorites = doc.data().favorites;
+	console.log(favorites);
 	const shared_fav = doc.data().shared_favorites;
+	console.log(shared_fav);
         
         favorites.forEach(favorite => {
           giftsRef.where("name", "==", favorite).get()
