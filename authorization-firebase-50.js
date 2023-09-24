@@ -37,46 +37,6 @@ firebase.analytics && firebase.analytics();
     } else if (!user && bodyAuth) {
       window.location.href = webflowAuth.loginPath;
     }
-    
-    if (user) {
-      userAuth.forEach(function(el) { el.style.display = null; });
-      userUnauth.forEach(function(el) { el.style.display = 'none'; });
-      
-      userEmail.forEach(function(el) { el.innerText = user.email; });
-      userDisplayName.forEach(function(el) { el.innerText = user.displayName; });
-      
-      firebase.firestore().collection("users").doc(user.uid).get()
-      .then(function(doc) {
-        if (doc.exists) {
-          // Update the user doc
-          user.email = doc.data().email;
-          user.favorites = doc.data().favorites;
-          user.liked = doc.data().liked;
-          user.disliked = doc.data().disliked;
-          user.profiles = doc.data().profiles;
-          user.shared_favorites = doc.data().shared_favorites;
-        } else {
-          // If the user document doesn't exist, create it
-          firebase.firestore().collection("users").doc(user.uid).set({
-            email: user.email,
-            favorites: [],
-            liked: [],
-            disliked: [],
-            profiles: [],
-            shared_favorites: []
-          });
-        }
-      })
-      .catch(function(error) {
-        console.error("Error retrieving user's info:", error);
-      });
-    } else {
-      userAuth.forEach(function(el) { el.style.display = 'none'; });
-      userUnauth.forEach(function(el) { el.style.display = null; });
-
-      userEmail.forEach(function(el) { el.innerText = ''; });
-      userDisplayName.forEach(function(el) { el.innerText = ''; });
-    }
   });
 
   var signupForms = document.querySelectorAll('[data-signup-form]');
