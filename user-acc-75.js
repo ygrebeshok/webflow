@@ -140,7 +140,8 @@ favoritesGrid.removeChild(defaultCard);
 
 const shareFavoritesButton = document.getElementById('shareFavoritesButton');
 
-firebase.auth().onAuthStateChanged(user => {
+firebase.auth().onAuthStateChanged(function(authUser) {
+  user = authUser;
 
   if (user) {
     const userId = user.uid;
