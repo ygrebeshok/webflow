@@ -46,7 +46,7 @@ firebase.analytics && firebase.analytics();
       userDisplayName.forEach(function(el) { el.innerText = user.displayName; });
       
       firebase.firestore().collection("users").doc(user.uid).get()
-      .then(function(doc) {
+      .then(doc => {
         if (doc.exists) {
           // Update the user doc
           user.email = doc.data().email;
@@ -128,30 +128,30 @@ firebase.analytics && firebase.analytics();
       loginLoading.forEach(function(el) { el.style.display = 'block'; });
 
       firebase.auth().signInWithEmailAndPassword(loginEmail.value, loginPassword.value)
-  	.then(function(authUser) {
-    	user = authUser;
-    	if (user) {
-      	const usersRef = firebase.firestore().collection('users');
-      	usersRef.doc(user.uid).get().then((doc) => {
-          if (!doc.exists) {
-            firebase.auth().signOut().then(function() {
-              user = null;
-              window.location.href = webflowAuth.signupPath;
-            });
-            console.log("No such user in users");
-          } else if (doc.data().email !== loginEmail.value) {
-            console.log("Email mismatch");
-            firebase.auth().signOut().then(function() {
-              user = null;
-              window.location.href = webflowAuth.signupPath;
-            });
-          } else {
-            window.location.href = webflowAuth.loginRedirectPath;
-            console.log("User exists");
-          }
-        });
-      }
-    })
+  	  .then(function(authUser) {
+    	  user = authUser;
+    	  if (user) {
+      	  const usersRef = firebase.firestore().collection('users');
+      	  usersRef.doc(user.uid).get().then((doc) => {
+            if (!doc.exists) {
+              firebase.auth().signOut().then(function() {
+                user = null;
+                window.location.href = webflowAuth.signupPath;
+              });
+              console.log("No such user in users");
+            } else if (doc.data().email !== loginEmail.value) {
+              console.log("Email mismatch");
+              firebase.auth().signOut().then(function() {
+                user = null;
+                window.location.href = webflowAuth.signupPath;
+              });
+            } else {
+              window.location.href = webflowAuth.loginRedirectPath;
+              console.log("User exists");
+            }
+          });
+        }
+      })
       .catch(function(error) {
         loginErrors.forEach(function(el) {
           el.innerText = error.message;
