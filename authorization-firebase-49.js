@@ -51,6 +51,10 @@ firebase.analytics && firebase.analytics();
           // Update the user doc
           user.email = doc.data().email;
           user.favorites = doc.data().favorites;
+          user.liked = doc.data().liked;
+          user.disliked = doc.data().disliked;
+          user.profiles = doc.data().profiles;
+          user.shared_favorites = doc.data().shared_favorites;
         } else {
           // If the user document doesn't exist, create it
           firebase.firestore().collection("users").doc(user.uid).set({
