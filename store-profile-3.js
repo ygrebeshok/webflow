@@ -20,8 +20,8 @@ firebase.auth().onAuthStateChanged(function(authUser) {
     
     firebase.firestore().collection("stores").doc(userId).get()
       .then(function(doc) {
-	      if (doc.exists) {
-	        // Update the store doc
+	if (doc.exists) {
+	  // Update the store doc
           user.email = doc.data().email;
           user.store_name = doc.data().store_name;
           user.store_bio = doc.data().store_bio;
@@ -29,8 +29,8 @@ firebase.auth().onAuthStateChanged(function(authUser) {
           user.store_phone = doc.data().store_phone;
           user.products = doc.data().products;
         } else {
-	        // If the user document doesn't exist, create it
-          firebase.firestore().collection("users").doc(user.uid).set({
+	  // If the user document doesn't exist, create it
+          firebase.firestore().collection("stores").doc(user.uid).set({
             email: user.email,
             store_name: "",
             store_bio: "",
@@ -38,7 +38,7 @@ firebase.auth().onAuthStateChanged(function(authUser) {
             store_phone: "",
             products: []
           });
-	      }
+	}
      });
    }
 });
