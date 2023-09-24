@@ -73,9 +73,14 @@ firebase.analytics && firebase.analytics();
           disliked: [],
           profiles: [],
           shared_favorites: []
+        })
+        .then(function() {
+          console.log("Document successfully written!");
+          window.location.href = webflowAuth.signupRedirectPath;
+        })
+        .catch(function(error) {
+          console.error("Error writing document: ", error);
         });
-        
-        window.location.href = webflowAuth.signupRedirectPath;
       })
       .catch(function(error) {
         signupErrors.forEach(function(el) {
