@@ -25,51 +25,18 @@ firebase.analytics && firebase.analytics();
       });
     });
   }
-  
+
   firebase.auth().onAuthStateChanged(function(authUser) {
     user = authUser;
-
     updateContent();
-
+    
     if (user && bodyUnauth) {
       window.location.href = webflowAuth.loginRedirectPath;
     } else if (!user && bodyAuth) {
       window.location.href = webflowAuth.loginPath;
     }
-    
-    if (user) {
-      userAuth.forEach(function(el) { el.style.display = null; });
-      userUnauth.forEach(function(el) { el.style.display = 'none'; });
-      
-      userEmail.forEach(function(el) { el.innerText = user.email; });
-      userDisplayName.forEach(function(el) { el.innerText = user.displayName; });
-      
-      firebase.firestore().collection("stores").doc(user.uid).get()
-      .then(function(doc) {
-        if (doc.exists) {
-          // Update the user object
-          user.email = doc.data().email;
-          user.store_name = doc.data().store_name;
-          user.store_bio = doc.data().store_bio;
-          user.store_address = doc.data().store_address;
-          user.store_phone = doc.data().store_phone;
-          user.products = doc.data().products
-        } else {
-          // If the user document doesn't exist, create it
-            firebase.firestore().collection("stores").doc(user.uid).set({
-              email: user.email,
-              store_name: "",
-              store_bio: "",
-              store_address: "",
-              store_phone: "",
-              products: []
-            });
-        }
-      })
-      .catch(function(error) {
-        console.error("Error retrieving store's info:", error);
-      });
-    } else {
+
+    if (!user) {
       userAuth.forEach(function(el) { el.style.display = 'none'; });
       userUnauth.forEach(function(el) { el.style.display = null; });
 
@@ -115,55 +82,46 @@ firebase.analytics && firebase.analytics();
   var loginIdle = document.querySelectorAll('[store-login-idle]');
 
   loginForms.forEach(function(el) {
-    var loginEmail = el.querySelector('[store-login-email]');
-    var loginPassword = el.querySelector('[store-login-password]');
+  var loginEmail = el.querySelector('[store-login-email]');
+  var loginPassword = el.querySelector('[store-login-password]');
 
-    el.addEventListener('submit', function(e) {
-      e.preventDefault();
-      e.stopPropagation();
+  el.addEventListener('submit', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
 
-      loginErrors.forEach(function(el) { el.style.display = 'none'; });
-      loginIdle.forEach(function(el) { el.style.display = 'none'; });
-      loginLoading.forEach(function(el) { el.style.display = 'block'; });
+    loginErrors.forEach(function(el) { el.style.display = 'none'; });
+    loginIdle.forEach(function(el) { el.style.display = 'none'; });
+    loginLoading.forEach(function(el) { el.style.display = 'block'; });
 
-      firebase.auth().signInWithEmailAndPassword(loginEmail.value, loginPassword.value)
-      .then(function(authUser) {
-        user = authUser;
-        if (user) {
-          const storesRef = firebase.firestore().collection('stores');
-          storesRef.doc(user.uid).get().then((doc) => {
-            if (!doc.exists) {
-	            firebase.auth().signOut().then(function() {
-                user = null;
-                window.location.href = webflowAuth.signupPath;
-              })
-            } else {
+    const email = loginEmail.value;
+
+    // Check if email exists in 'users' collection
+    firebase.firestore().collection('stores').where('email', '==', email).get()
+      .then(function(querySnapshot) {
+        if (querySnapshot.docs.length > 0) {
+          // Email exists, proceed with sign in
+          firebase.auth().signInWithEmailAndPassword(email, loginPassword.value)
+            .then(function(authUser) {
+              user = authUser;
               window.location.href = webflowAuth.loginRedirectPath;
-            }
+            })
+            .catch(function(error) {
+              loginErrors.forEach(function(el) {
+                el.innerText = error.message;
+                el.style.display = 'block';
+              });
+            });
+        } else {
+          // Email not found in 'stores' collection
+          loginErrors.forEach(function(el) {
+            el.innerText = "This store doesn't exist. Check if you chose the right user type";
+            el.style.display = 'block';
           });
         }
       })
       .catch(function(error) {
-        loginErrors.forEach(function(el) {
-          el.innerText = error.message;
-          el.style.display = 'block';
-        });
+        console.error('Error checking credentials:', error);
       });
     });
   });
-
-  
-var authLogout = document.querySelectorAll('[store-logout]');
-
-authLogout.forEach(function(el) {
-  el.addEventListener('click', function(e) {
-    e.preventDefault();
-    e.stopPropagation();
-
-    firebase.auth().signOut().then(function() {
-      user = null;
-      window.location.href = webflowAuth.logoutRedirectPath;
-    });
-  });
-});
 }
