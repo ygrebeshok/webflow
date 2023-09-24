@@ -146,6 +146,7 @@ favoritesGrid.removeChild(defaultCard);
 
 const shareFavoritesButton = document.getElementById('shareFavoritesButton');
 
+	
 firebase.auth().onAuthStateChanged(function(authUser) {
   user = authUser;
 	
@@ -160,14 +161,29 @@ firebase.auth().onAuthStateChanged(function(authUser) {
     
     firebase.firestore().collection("users").doc(userId).get()
       .then(function(doc) {
-	// Update the user doc
-        user.email = doc.data().email;
-        user.favorites = doc.data().favorites;
-        user.liked = doc.data().liked;
-        user.disliked = doc.data().disliked;
-        user.profiles = doc.data().profiles;
-        user.shared_favorites = doc.data().shared_favorites;
-	      
+	if (doc.exists) {
+	  // Update the user doc
+          user.email = doc.data().email;
+          user.favorites = doc.data().favorites;
+          user.liked = doc.data().liked;
+          user.disliked = doc.data().disliked;
+          user.profiles = doc.data().profiles;
+          user.shared_favorites = doc.data().shared_favorites;
+        } else {
+	  // If the user document doesn't exist, create it
+          firebase.firestore().collection("users").doc(user.uid).set({
+            email: user.email,
+            favorites: [],
+            liked: [],
+            disliked: [],
+            profiles: [],
+            shared_favorites: []
+          });
+	}
+     });
+
+     firebase.firestore().collection("users").doc(userId).get()
+      .then(function(doc) {
 	const profiles = doc.data().profiles;
         loadProfileData(profiles);
 	      
@@ -274,11 +290,9 @@ firebase.auth().onAuthStateChanged(function(authUser) {
             .catch(error => {
               console.log("Error getting product data:", error);
             });
-        });
-      })
-      .catch(error => {
-        console.log("Error getting favorites:", error);
-      });
+         });
+	  
+	// End of favorites clause
       
       // Retrieve the user's document from the "users" collection
       const userDocRef = firebase.firestore().collection('users').doc(userId);
@@ -304,7 +318,7 @@ firebase.auth().onAuthStateChanged(function(authUser) {
 
               // Open a new pop-up window with the formatted content
               popUp.style.visibility = "visible";
-    					const giftList = document.getElementById("gift-list");
+    	      const giftList = document.getElementById("gift-list");
               giftList.innerHTML = formattedContentArray.join('');
               
               closeBtn.addEventListener('click', () => {
@@ -322,6 +336,9 @@ firebase.auth().onAuthStateChanged(function(authUser) {
           console.error('Error retrieving user document:', error);
         });
      });
+     // End of shareFavoritesButton clause  
+    });
   }
 });
+	
 }
