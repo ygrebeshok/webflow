@@ -147,26 +147,6 @@ firebase.auth().onAuthStateChanged(user => {
     
     firebase.firestore().collection("users").doc(userId).get()
       .then(function(doc) {
-
-	if (doc.exists) {
-          // Update the user doc
-          user.email = doc.data().email;
-          user.favorites = doc.data().favorites;
-          user.liked = doc.data().liked;
-          user.disliked = doc.data().disliked;
-          user.profiles = doc.data().profiles;
-          user.shared_favorites = doc.data().shared_favorites;
-        } else {
-          // If the user document doesn't exist, create it
-          firebase.firestore().collection("users").doc(user.uid).set({
-            email: user.email,
-            favorites: [],
-            liked: [],
-            disliked: [],
-            profiles: [],
-            shared_favorites: []
-          });
-        }
 	      
 	const profiles = doc.data().profiles;
         loadProfileData(profiles);
