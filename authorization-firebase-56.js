@@ -35,7 +35,7 @@ firebase.analytics && firebase.analytics();
     } else if (!user && bodyAuth) {
       window.location.href = webflowAuth.loginPath;
     }
-  }
+  });
 
   var signupForms = document.querySelectorAll('[data-signup-form]');
   var signupErrors = document.querySelectorAll('[data-signup-error]');
