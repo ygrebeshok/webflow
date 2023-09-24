@@ -127,3 +127,4 @@ firebase.analytics && firebase.analytics();
       });
     });
   });
+}
