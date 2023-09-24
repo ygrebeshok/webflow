@@ -152,10 +152,6 @@ firebase.analytics && firebase.analytics();
         });
       }
     })
-    .catch(function(error) {
-      console.error(error);
-    });
-
       .catch(function(error) {
         loginErrors.forEach(function(el) {
           el.innerText = error.message;
