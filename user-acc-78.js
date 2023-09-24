@@ -3,6 +3,8 @@ firebase.initializeApp(webflowAuth.firebaseConfig);
 firebase.analytics && firebase.analytics();
 
 {
+var bodyAuth = document.body.getAttribute('data-user-auth');
+var bodyUnauth = document.body.getAttribute('data-user-unauth');
 const popupImage = document.getElementById('popup_image');
 const popupTitle = document.getElementById('popup_title');
 const popupBrand = document.getElementById('popup_brand');
