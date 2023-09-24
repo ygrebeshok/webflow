@@ -129,7 +129,19 @@ firebase.analytics && firebase.analytics();
       firebase.auth().signInWithEmailAndPassword(loginEmail.value, loginPassword.value)
       .then(function(authUser) {
         user = authUser;
-        window.location.href = webflowAuth.loginRedirectPath;
+        if (user) {
+          const storesRef = firebase.firestore().collection('stores');
+          storesRef.doc(user.uid).get().then((doc) => {
+            if (!doc.exists) {
+	            firebase.auth().signOut().then(function() {
+                user = null;
+                window.location.href = webflowAuth.signupPath;
+              })
+            } else {
+              window.location.href = webflowAuth.loginRedirectPath;
+            }
+          });
+        }
       })
       .catch(function(error) {
         loginErrors.forEach(function(el) {
@@ -139,4 +151,19 @@ firebase.analytics && firebase.analytics();
       });
     });
   });
+
+  
+var authLogout = document.querySelectorAll('[store-logout]');
+
+authLogout.forEach(function(el) {
+  el.addEventListener('click', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    firebase.auth().signOut().then(function() {
+      user = null;
+      window.location.href = webflowAuth.logoutRedirectPath;
+    });
+  });
+});
 }
