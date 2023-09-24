@@ -162,7 +162,7 @@ firebase.analytics && firebase.analytics();
 
       firebase.auth().signOut().then(function() {
         user = null;
-        window.location.href = webflowAuth.loginPath;
+        window.location.href = webflowAuth.logoutRedirectPath;
       })
       .catch(function() {});
     });
