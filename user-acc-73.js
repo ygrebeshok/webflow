@@ -141,15 +141,33 @@ favoritesGrid.removeChild(defaultCard);
 const shareFavoritesButton = document.getElementById('shareFavoritesButton');
 
 firebase.auth().onAuthStateChanged(user => {
+
   if (user) {
     const userId = user.uid;
     
     firebase.firestore().collection("users").doc(userId).get()
-      .then(doc => {
+      .then(function(doc) {
 
-	console.log(doc.data().profiles);
-	console.log(doc.data().favorites);
-	console.log(doc.data().shared_favorites);
+	if (doc.exists) {
+          // Update the user doc
+          user.email = doc.data().email;
+          user.favorites = doc.data().favorites;
+          user.liked = doc.data().liked;
+          user.disliked = doc.data().disliked;
+          user.profiles = doc.data().profiles;
+          user.shared_favorites = doc.data().shared_favorites;
+        } else {
+          // If the user document doesn't exist, create it
+          firebase.firestore().collection("users").doc(user.uid).set({
+            email: user.email,
+            favorites: [],
+            liked: [],
+            disliked: [],
+            profiles: [],
+            shared_favorites: []
+          });
+        }
+	      
 	const profiles = doc.data().profiles;
         loadProfileData(profiles);
 	      
