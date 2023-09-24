@@ -83,41 +83,45 @@ firebase.analytics && firebase.analytics();
   var loginIdle = document.querySelectorAll('[data-login-idle]');
 
   loginForms.forEach(function(el) {
-    var loginEmail = el.querySelector('[data-login-email]');
-    var loginPassword = el.querySelector('[data-login-password]');
+  var loginEmail = el.querySelector('[data-login-email]');
+  var loginPassword = el.querySelector('[data-login-password]');
 
-    el.addEventListener('submit', function(e) {
-      e.preventDefault();
-      e.stopPropagation();
+  el.addEventListener('submit', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
 
-      loginErrors.forEach(function(el) { el.style.display = 'none'; });
-      loginIdle.forEach(function(el) { el.style.display = 'none'; });
-      loginLoading.forEach(function(el) { el.style.display = 'block'; });
+    loginErrors.forEach(function(el) { el.style.display = 'none'; });
+    loginIdle.forEach(function(el) { el.style.display = 'none'; });
+    loginLoading.forEach(function(el) { el.style.display = 'block'; });
 
-      firebase.auth().signInWithEmailAndPassword(loginEmail.value, loginPassword.value)
-      .then(function(authUser) {
-        user = authUser;
-        if (user) {
-          const usersRef = firebase.firestore().collection('users');
-          usersRef.doc(user.uid).get().then((doc) => {
-            if (doc.data().email !== loginEmail.value) {
-              console.log("Email mismatch");
-              firebase.auth().signOut().then(function() {
-                user = null;
-                window.location.href = webflowAuth.signupPath;
-              });
-            } else if (doc.data().email == loginEmail.value) {
+    const email = loginEmail.value;
+
+    // Check if email exists in 'users' collection
+    firebase.firestore().collection('users').where('email', '==', email).get()
+      .then(function(querySnapshot) {
+        if (querySnapshot.docs.length > 0) {
+          // Email exists, proceed with sign in
+          firebase.auth().signInWithEmailAndPassword(email, loginPassword.value)
+            .then(function(authUser) {
+              user = authUser;
               window.location.href = webflowAuth.loginRedirectPath;
-              console.log("User exists");
-            }
+            })
+            .catch(function(error) {
+              loginErrors.forEach(function(el) {
+                el.innerText = error.message;
+                el.style.display = 'block';
+              });
+            });
+        } else {
+          // Email not found in 'users' collection
+          loginErrors.forEach(function(el) {
+            el.innerText = "This user doesn't exist. Check if you chose the right user type";
+            el.style.display = 'block';
           });
-         }
-       })
+        }
+      })
       .catch(function(error) {
-        loginErrors.forEach(function(el) {
-          el.innerText = error.message;
-          el.style.display = 'block';
-        });
+        console.error('Error checking credentials:', error);
       });
     });
   });
