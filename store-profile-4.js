@@ -1,4 +1,5 @@
 firebase.initializeApp(webflowAuth.firebaseConfig);
+const storage = getStorage(app);
 
 firebase.analytics && firebase.analytics();
 
