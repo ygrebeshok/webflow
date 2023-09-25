@@ -171,8 +171,6 @@ document.getElementById('add-product-btn').addEventListener('click', function() 
           document.getElementById('product-link').value = '';
           document.getElementById('product-price').value = '';
           document.getElementById('imagePreviewContainer').innerHTML = '';
-
-	  loadProducts(storeNameValue);
         })
         .catch((error) => {
           console.error('Error adding product: ', error);
