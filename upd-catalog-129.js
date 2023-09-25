@@ -322,6 +322,7 @@ document.addEventListener('DOMContentLoaded', function() {
         showSlide(index);
       });
     });
+
     showSlide(currentSlide);
  });
 
@@ -456,7 +457,7 @@ function updateCatalog() {
       const quickLookBtn = card.querySelector("#quick_look");
       quickLookBtn.addEventListener("click", () => {
 	const productData = {
-	  //image_url: card.querySelector("#product_image").src,
+	  images: data.images,
 	  name: card.querySelector("#name").textContent,
 	  brand: card.querySelector("#brand").textContent,
 	  description: card.querySelector("#description").textContent,
@@ -534,8 +535,6 @@ function updateCatalog() {
 
       var brands = Array.from(brandsSet); // add this line
       populateBrandFilter(brands);
-
-      showSlide(currentSlide);
 
       priceRange = document.getElementById("price-range");
     
