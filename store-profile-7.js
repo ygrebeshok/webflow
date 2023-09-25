@@ -30,6 +30,11 @@ firebase.auth().onAuthStateChanged(function(authUser) {
           user.store_address = doc.data().store_address;
           user.store_phone = doc.data().store_phone;
           user.products = doc.data().products;
+
+          name.textContent = doc.data().store_name;
+          bio.textContent = doc.data().store_bio;
+          address.textContent = doc.data().store_address;
+          phone.textContent = doc.data().store_phone;
         } else {
 	  // If the user document doesn't exist, create it
           firebase.firestore().collection("stores").doc(user.uid).set({
@@ -42,9 +47,43 @@ firebase.auth().onAuthStateChanged(function(authUser) {
           });
 	}
      });
+
+     const updateButton = document.getElementById('update-btn');
+   
+     updateButton.addEventListener('click', function() {
+       
+       storesRef.doc(userId).update({
+         store_name: storeName.value,
+         store_bio: storeBio.value,
+         store_address: storeAddress.value,
+         store_phone: storePhone.value
+       })
+       .then(() => {
+         message.style.display = "block";
+         message.textContent = "Profile successfully updated";
+         
+         storesRef.doc(userId).get()
+    	 .then(doc => {
+      	   if (doc.exists) {
+             const store_Name = doc.data().store_name;
+             const store_Bio = doc.data().store_bio;
+       	     const store_Address = doc.data().store_address;
+       	     const store_Phone = doc.data().store_phone;
+
+             name.textContent = store_Name;
+             bio.textContent = store_Bio;
+             address.textContent = store_Address;
+             phone.textContent = store_Phone;
+      	   }
+   	});
+       })
+       .catch((error) => {
+         message.style.display = "block";
+         message.textContent = "Error updating profile: " + error;
+       });
+     });
    }
 });
-
 
 var authLogout = document.querySelectorAll('[store-logout]');
 
