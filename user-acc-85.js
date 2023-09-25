@@ -6,7 +6,7 @@ firebase.analytics && firebase.analytics();
 var bodyAuth = document.body.getAttribute('data-user-auth');
 var bodyUnauth = document.body.getAttribute('data-user-unauth');
 const popupImage = document.getElementById('popup_image');
-const popupTitle = document.getElementById('popup_title');
+const popTitle = document.getElementById('popup_title');
 const popupBrand = document.getElementById('popup_brand');
 const popupDesc = document.getElementById('popup_desc');
 const popupLink = document.getElementById('popup_link');
@@ -87,7 +87,7 @@ function showPopupUser(productData, card) {
   slideContainer.innerHTML = ''; // Clear existing slides
   thumbnailContainer.innerHTML = ''; // Clear existing thumbnails
 	
-  popupTitle.textContent = productData.name;
+  popTitle.textContent = productData.name;
   popupBrand.textContent = productData.brand;
   popupBrand.href = productData.product_link;
   popupDesc.textContent = productData.description;
