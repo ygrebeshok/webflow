@@ -10,19 +10,19 @@ var bodyAuth = document.body.getAttribute('data-user-auth');
 var bodyUnauth = document.body.getAttribute('data-user-unauth');
 let storeNameValue;
 
-const popupTitle = document.getElementById("popup_title");
-const popupBrand = document.getElementById("popup_brand");
-const popupDesc = document.getElementById("popup_desc");
-const popupLink = document.getElementById("popup_link");
-const popupPrice = document.getElementById("popup_price");
-const popupClose = document.getElementById("popup-close");
-
 function showPopupStore (productData, card) {
 
   const slideContainer = document.querySelector('.slides');
   const thumbnailContainer = document.querySelector('.thumbnails');
   slideContainer.innerHTML = ''; // Clear existing slides
   thumbnailContainer.innerHTML = ''; // Clear existing thumbnails
+
+  const popupTitle = document.getElementById("popup_title");
+  const popupBrand = document.getElementById("popup_brand");
+  const popupDesc = document.getElementById("popup_desc");
+  const popupLink = document.getElementById("popup_link");
+  const popupPrice = document.getElementById("popup_price");
+  const popupClose = document.getElementById("popup-close");
 	
   popupTitle.textContent = productData.name;
   popupBrand.textContent = productData.brand;
