@@ -79,7 +79,7 @@ function showPopupStore (productData, card) {
     });
 
     document.getElementById("remove-btn").addEventListener("click", () => {
-      removeProduct(productCard);
+      removeProduct(card);
     });
 }
 
