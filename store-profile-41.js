@@ -191,6 +191,8 @@ addProductBtn.addEventListener('click', function() {
     });
 });
 
+const removeBtn = document.querySelectorAll('[remove-btn]');
+
 function loadProducts(storeNameValue) {
 
   firebase.firestore().collection("gifts")
@@ -210,7 +212,7 @@ function loadProducts(storeNameValue) {
       productCard.querySelector("#product-image").src = data.images[0];
       productCard.querySelector("#product-price").textContent = "$" + data.price;
 
-      productCard.querySelectorAll("#remove-btn").forEach((button) => {
+      removeBtn.forEach((button) => {
         button.addEventListener("click", function() {
           removeProduct(productCard);
         });
