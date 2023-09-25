@@ -79,7 +79,7 @@ function showPopupStore (productData, card) {
     });
 
     document.getElementById("remove-btn").addEventListener("click", () => {
-      removeProduct(card);
+      removeProduct(card, popupTitle.textContent, popupDesc.textContent, popupPrice.textContent.replace("$", ""));
     });
 }
 
@@ -327,11 +327,7 @@ function loadProducts(storeNameValue) {
 }
 
 
-function removeProduct(productCard) {
-
-  const name = popupTitle.textContent;
-  const description = popupDesc.textContent;
-  const price = popupPrice.textContent;
+function removeProduct(productCard, name, description, price) {
 
   const giftsRef = firebase.firestore().collection('gifts');
 
