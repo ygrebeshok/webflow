@@ -156,5 +156,51 @@ document.getElementById('add-product-btn').addEventListener('click', function() 
       console.error('Error uploading images: ', error);
     });
 });
+
+function loadProducts() {
+
+  firebase.firestore().collection("gifts")
+    .where("brand", "==", storeNameValue)
+    .get()
+    .then((querySnapshot) => {
+    const productsContainer = document.getElementById("product-cards");
+    const productTemplate = document.querySelector(".product-card");
+    productsContainer.innerHTML = "";
+
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+      const productCard = productTemplate.cloneNode(true);
+
+      productCard.querySelector("#product-name").textContent = data.name;
+      productCard.querySelector("#product-desc").textContent = data.description;
+      productCard.querySelector("#product-image").src = data.images[0];
+      productCard.querySelector("#product-price").textContent = "$" + data.price;
+
+      productsContainer.appendChild(productCard);
+
+      productCard.addEventListener("mouseenter", () => {
+        productCard.animate([
+	{ transform: "translateY(0px)" },
+	{ transform: "translateY(-90px)" }
+	], {
+	duration: 200,
+	fill: "forwards"
+	});
+      });
+	
+      productCard.addEventListener("mouseleave", () => {
+	productCard.animate([
+	{ transform: "translateY(-90px)" },
+	{ transform: "translateY(0px)" }
+	], {
+	duration: 200,
+	fill: "forwards"
+	});
+      });
+    });
+   }).catch((error) => {
+     console.log("Error getting products: ", error);
+  });
+}
 	
 }
