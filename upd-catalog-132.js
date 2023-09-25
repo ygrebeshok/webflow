@@ -185,67 +185,67 @@ function toggleFavorite(element, userId, productId) {
 
 function loadHolidayData() {
 
-    holidayRef.get().then((querySnapshot) => {
-	holidayContainer.innerHTML = "";
+  holidayRef.get().then((querySnapshot) => {
+    holidayContainer.innerHTML = "";
 
-        querySnapshot.forEach((doc) => {
-          const data = doc.data();
-          const holiday = holidayCardTemplate.cloneNode(true);
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+      const holiday = holidayCardTemplate.cloneNode(true);
 
-            holiday.querySelector("#holiday-title").textContent = data.name;
-            holiday.querySelector("#holiday-desc").textContent = data.description;
-            holiday.querySelector("#holiday-image").src = data.image_url;
-            holiday.querySelector("#holiday-image").alt = data.name;
-            holiday.querySelector("#holiday-link").href = data.product_link;
-            holiday.querySelector("#holiday-price").textContent = "$" + data.price;
+      holiday.querySelector("#holiday-title").textContent = data.name;
+      holiday.querySelector("#holiday-desc").textContent = data.description;
+      holiday.querySelector("#holiday-image").src = data.image_url;
+      holiday.querySelector("#holiday-image").alt = data.name;
+      holiday.querySelector("#holiday-link").href = data.product_link;
+      holiday.querySelector("#holiday-price").textContent = "$" + data.price;
 
-            holidayContainer.appendChild(holiday);
+      holidayContainer.appendChild(holiday);
 
-	    const holidayFavorite = holiday.querySelector("#holiday-favorite");
-            const productId = holiday.querySelector("#holiday-title").textContent;
-            const user = firebase.auth().currentUser;
-            const userId = user.uid;
+      const holidayFavorite = holiday.querySelector("#holiday-favorite");
+      const productId = holiday.querySelector("#holiday-title").textContent;
+      const user = firebase.auth().currentUser;
+      const userId = user.uid;
 
-            firebase.firestore().collection("users").doc(userId).get()
-              .then(doc => {
-                const favorites = doc.data().favorites;
-                if (favorites.includes(productId)) {
-                  holidayFavorite.textContent = "Remove from Favorites";
-                }
-              })
-              .catch(error => {
-                console.log("Error getting favorites:", error);
-              });
+      firebase.firestore().collection("users").doc(userId).get()
+      .then(doc => {
+        const favorites = doc.data().favorites;
+          if (favorites.includes(productId)) {
+            holidayFavorite.textContent = "Remove from Favorites";
+          }
+        })
+      .catch(error => {
+        console.log("Error getting favorites:", error);
+      });
 
-              holidayFavorite.addEventListener('click', () => {
-	        toggleFavorite(holidayFavorite, userId, productId);
-	      });
+      holidayFavorite.addEventListener('click', () => {
+        toggleFavorite(holidayFavorite, userId, productId);
+      });
 
-	    holiday.addEventListener("mouseenter", () => {
-	      holiday.animate([
-	        { transform: "translateY(0px)" },
-	        { transform: "translateY(-90px)" }
-	      ], {
-	        duration: 200,
-	        fill: "forwards"
-	      });
-	      holidayBack.style.filter = "blur(2px)";
-	   });
+      holiday.addEventListener("mouseenter", () => {
+        holiday.animate([
+	{ transform: "translateY(0px)" },
+	{ transform: "translateY(-90px)" }
+	], {
+	duration: 200,
+	fill: "forwards"
+	});
+	holidayBack.style.filter = "blur(2px)";
+      });
 	
-	holiday.addEventListener("mouseleave", () => {
-	    holiday.animate([
-	        { transform: "translateY(-90px)" },
-	        { transform: "translateY(0px)" }
-	    ], {
-	        duration: 200,
-	        fill: "forwards"
-	    });
-	    holidayBack.style.filter = "blur(0px)";
-	  });
-        });
-    }).catch((error) => {
-        console.log("Error getting documents: ", error);
+      holiday.addEventListener("mouseleave", () => {
+	holiday.animate([
+	{ transform: "translateY(-90px)" },
+	{ transform: "translateY(0px)" }
+	], {
+	duration: 200,
+	fill: "forwards"
+	});
+	holidayBack.style.filter = "blur(0px)";
+      });
     });
+   }).catch((error) => {
+     console.log("Error getting documents: ", error);
+  });
 }
 
 function showPopup(productData) {
@@ -294,7 +294,6 @@ function showPopup(productData) {
   });
 	
   popupContainer.style.display = "flex";
-}
 
   const slides = document.querySelector('.slides');
   const thumbnails = document.querySelectorAll('.thumbnail');
@@ -325,15 +324,16 @@ function showPopup(productData) {
 
     showSlide(currentSlide);
 
-popupClose.addEventListener("click", () => {
-  popupContainer.style.display = "none";
-});
-
-function populateBrandFilter(brands) {
-  // Clear existing brand filters
-  while (brandFilterContainer.firstChild) {
-    brandFilterContainer.removeChild(brandFilterContainer.firstChild);
+    popupClose.addEventListener("click", () => {
+      popupContainer.style.display = "none";
+    });
   }
+
+  function populateBrandFilter(brands) {
+    // Clear existing brand filters
+    while (brandFilterContainer.firstChild) {
+      brandFilterContainer.removeChild(brandFilterContainer.firstChild);
+    }
 
   brands.forEach((brand) => {
     var label = document.createElement('label');
