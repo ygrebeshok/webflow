@@ -10,6 +10,83 @@ var bodyAuth = document.body.getAttribute('data-user-auth');
 var bodyUnauth = document.body.getAttribute('data-user-unauth');
 let storeNameValue;
 
+const popupTitle = document.getElementById("popup_title");
+const popupBrand = document.getElementById("popup_brand");
+const popupDesc = document.getElementById("popup_desc");
+const popupLink = document.getElementById("popup_link");
+const popupPrice = document.getElementById("popup_price");
+const popupClose = document.getElementById("popup-close");
+
+function showPopupUser(productData, card) {
+
+  const slideContainer = document.querySelector('.slides');
+  const thumbnailContainer = document.querySelector('.thumbnails');
+  slideContainer.innerHTML = ''; // Clear existing slides
+  thumbnailContainer.innerHTML = ''; // Clear existing thumbnails
+	
+  popupTitle.textContent = productData.name;
+  popupBrand.textContent = productData.brand;
+  popupBrand.href = productData.product_link;
+  popupDesc.textContent = productData.description;
+  popupPrice.textContent = `$${productData.price}`;
+
+  const user = firebase.auth().currentUser;
+  const userId = user.uid;
+  const productId = productData.name;
+
+    productData.images.forEach(imageUrl => {
+      const thumbnail = document.createElement('div');
+      thumbnail.classList.add('thumbnail');
+      thumbnail.innerHTML = `<img src="${imageUrl}" alt="Thumbnail">`;
+      thumbnailContainer.appendChild(thumbnail);
+
+      const slide = document.createElement('div');
+      slide.classList.add('slide');
+      slide.innerHTML = `<img src="${imageUrl}" alt="Product Image">`;
+      slideContainer.appendChild(slide);
+    })
+	
+    popupContainer.style.display = "flex";
+
+    const slides = document.querySelector('.slides');
+    const thumbnails = document.querySelectorAll('.thumbnail');
+    let currentSlide = 0;
+
+    function updateThumbnails() {
+      thumbnails.forEach((thumbnail, index) => {
+        if (index === currentSlide) {
+          thumbnail.classList.add('active');
+        } else {
+          thumbnail.classList.remove('active');
+        }
+      });
+     }
+
+    function showSlide(slideIndex) {
+      slides.style.transform = `translateX(-${slideIndex * 100}%)`;
+      currentSlide = slideIndex;
+      updateThumbnails();
+    }
+
+    thumbnails.forEach((thumbnail, index) => {
+      thumbnail.addEventListener('click', function() {
+        showSlide(index);
+	console.log("thumbnail clicked");
+      });
+    });
+
+    showSlide(currentSlide);
+
+    popupClose.addEventListener("click", () => {
+      popupContainer.style.display = "none";
+    });
+
+    document.getElementById("remove-btn").addEventListener("click", () => {
+      removeProduct(productCard);
+    }):
+}
+
+	
 firebase.auth().onAuthStateChanged(function(authUser) {
   user = authUser;
 	
@@ -200,7 +277,6 @@ function loadProducts(storeNameValue) {
     .then((querySnapshot) => {
     const productsContainer = document.getElementById("product-cards");
     const productTemplate = document.querySelector(".product-card");
-    const removeBtn = document.querySelectorAll('[remove-btn]');
     productsContainer.innerHTML = "";
 
     querySnapshot.forEach((doc) => {
@@ -212,10 +288,18 @@ function loadProducts(storeNameValue) {
       productCard.querySelector("#product-image").src = data.images[0];
       productCard.querySelector("#product-price").textContent = "$" + data.price;
 
-      removeBtn.forEach((button) => {
-        button.addEventListener("click", function() {
-          removeProduct(productCard);
-        });
+      const lookBtn = productCard.querySelector("#look-product");
+      lookBtn.addEventListener("click", () => {
+        const productData = {
+          images: data.images,
+          name: data.name,
+          brand: data.brand,
+          description: data.description,
+          product_link: data.product_link,
+          price:  data.price
+        };
+
+        showPopupUser(productData, productCard);
       });
 	    
       productsContainer.appendChild(productCard);
@@ -228,9 +312,10 @@ function loadProducts(storeNameValue) {
 
 
 function removeProduct(productCard) {
-  const name = productCard.querySelector("#product-name").textContent;
-  const description = productCard.querySelector("#product-desc").textContent;
-  const price = productCard.querySelector("#product-price").textContent;
+
+  const name = popupTitle.textContent;
+  const description = popupDesc.textContent;
+  const price = popupPrice.textContent;
 
   const giftsRef = firebase.firestore().collection('gifts');
 
