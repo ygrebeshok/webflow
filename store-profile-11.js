@@ -50,6 +50,8 @@ firebase.auth().onAuthStateChanged(function(authUser) {
 	}
      });
 
+     loadProducts();
+	  
      const updateButton = document.getElementById('update-btn');
    
      updateButton.addEventListener('click', function() {
@@ -78,6 +80,7 @@ firebase.auth().onAuthStateChanged(function(authUser) {
              phone.textContent = store_Phone;
 
 	     storeNameValue = doc.data().store_name;
+	     loadProducts();
       	   }
    	});
        })
