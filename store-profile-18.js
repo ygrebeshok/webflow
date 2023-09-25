@@ -39,6 +39,7 @@ firebase.auth().onAuthStateChanged(function(authUser) {
           phone.textContent = doc.data().store_phone;
 
 	  storeNameValue = doc.data().store_name;
+	  loadProducts(doc.data().store_name);
         } else {
 	  // If the user document doesn't exist, create it
 	  storeNameValue = "";
@@ -50,6 +51,7 @@ firebase.auth().onAuthStateChanged(function(authUser) {
             store_phone: "",
             products: []
           });
+	  loadProducts(doc.data().store_name);
 	}
      });
 	  
