@@ -212,8 +212,7 @@ function loadProducts(storeNameValue) {
 
       const removeButton = productCard.querySelector("#remove-btn");
       removeButton.addEventListener("click", function() {
-        const productId = removeButton.dataset.productId;
-        removeProduct(productId);
+        removeProduct(productCard);
       });
 	    
       productsContainer.appendChild(productCard);
@@ -225,15 +224,32 @@ function loadProducts(storeNameValue) {
 }
 
 
-function removeProduct(productId) {
+function removeProduct(productCard) {
+  const name = productCard.querySelector("#product-name").textContent;
+  const description = productCard.querySelector("#product-desc").textContent;
+  const price = productCard.querySelector("#product-price").textContent;
+
   const giftsRef = firebase.firestore().collection('gifts');
 
-  giftsRef.doc(productId).delete()
-    .then(() => {
-      console.log('Product removed:', productId);
+  giftsRef
+    .where("name", "==", name)
+    .where("description", "==", description)
+    .where("price", "==", price)
+    .get()
+    .then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        doc.ref.delete()
+          .then(() => {
+            console.log('Product removed:', doc.id);
+	    productCard.style.display = "none";
+          })
+          .catch((error) => {
+            console.error('Error removing product:', error);
+          });
+      });
     })
     .catch((error) => {
-      console.error('Error removing product:', error);
+      console.error('Error finding product:', error);
     });
 }
 	
