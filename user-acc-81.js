@@ -83,7 +83,11 @@ function loadProfileData(profiles) {
 }
 
 function showPopupUser(productData, card) {
-  popupImage.src = productData.image_url;
+  const slideContainer = document.querySelector('.slides');
+  const thumbnailContainer = document.querySelector('.thumbnails');
+  slideContainer.innerHTML = ''; // Clear existing slides
+  thumbnailContainer.innerHTML = ''; // Clear existing thumbnails
+	
   popupTitle.textContent = productData.name;
   popupBrand.textContent = productData.brand;
   popupBrand.href = productData.product_link;
@@ -130,13 +134,55 @@ function showPopupUser(productData, card) {
     .catch(error => {
       console.log("Error getting favorites:", error);
     });
+
+    productData.images.forEach(imageUrl => {
+      const thumbnail = document.createElement('div');
+      thumbnail.classList.add('thumbnail');
+      thumbnail.innerHTML = `<img src="${imageUrl}" alt="Thumbnail">`;
+      thumbnailContainer.appendChild(thumbnail);
+
+      const slide = document.createElement('div');
+      slide.classList.add('slide');
+      slide.innerHTML = `<img src="${imageUrl}" alt="Product Image">`;
+      slideContainer.appendChild(slide);
+    })
 	
-  popupContainer.style.display = "flex";
+    popupContainer.style.display = "flex";
+
+    const slides = document.querySelector('.slides');
+    const thumbnails = document.querySelectorAll('.thumbnail');
+    let currentSlide = 0;
+
+    function updateThumbnails() {
+      thumbnails.forEach((thumbnail, index) => {
+        if (index === currentSlide) {
+          thumbnail.classList.add('active');
+        } else {
+          thumbnail.classList.remove('active');
+        }
+      });
+     }
+
+    function showSlide(slideIndex) {
+      slides.style.transform = `translateX(-${slideIndex * 100}%)`;
+      currentSlide = slideIndex;
+      updateThumbnails();
+    }
+
+    thumbnails.forEach((thumbnail, index) => {
+      thumbnail.addEventListener('click', function() {
+        showSlide(index);
+	console.log("thumbnail clicked");
+      });
+    });
+
+    showSlide(currentSlide);
+
+    popupClose.addEventListener("click", () => {
+      popupContainer.style.display = "none";
+    });
 }
 
-popupClose.addEventListener("click", () => {
-  popupContainer.style.display = "none";
-});
 
 popupContainer.style.display = "none";
 popUp.style.visibility = "hidden";
@@ -200,7 +246,7 @@ firebase.auth().onAuthStateChanged(function(authUser) {
 		favCard.querySelector("#brand").textContent = data.brand;
 		favCard.querySelector("#brand").href = data.product_link;
                 favCard.querySelector("#description").textContent = data.description;
-                favCard.querySelector("#product_image").src = data.image_url;
+                favCard.querySelector("#product_image").src = data.images[0];
                 favCard.querySelector("#price").textContent = `$${data.price}`;
 
                 favoritesGrid.appendChild(favCard);
@@ -232,7 +278,7 @@ firebase.auth().onAuthStateChanged(function(authUser) {
 		      
                 quickLookBtn.addEventListener("click", () => {
                   const productData = {
-                    image_url: favCard.querySelector("#product_image").src,
+                    images: data.images,,
                     name: favCard.querySelector("#name").textContent,
                     brand: favCard.querySelector("#brand").textContent,
                     description: favCard.querySelector("#description").textContent,
