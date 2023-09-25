@@ -17,6 +17,7 @@ function showPopupStore (productData, card) {
   slideContainer.innerHTML = ''; // Clear existing slides
   thumbnailContainer.innerHTML = ''; // Clear existing thumbnails
 
+  const popupContainer = document.getElementById("popup-fade");
   const popupTitle = document.getElementById("popup_title");
   const popupBrand = document.getElementById("popup_brand");
   const popupDesc = document.getElementById("popup_desc");
