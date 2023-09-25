@@ -52,8 +52,6 @@ firebase.auth().onAuthStateChanged(function(authUser) {
           });
 	}
      });
-
-     loadProducts(storeNameValue);
 	  
      const updateButton = document.getElementById('update-btn');
    
