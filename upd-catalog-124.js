@@ -249,7 +249,7 @@ function loadHolidayData() {
 }
 
 function showPopup(productData) {
-  popupImage.src = productData.image_url;
+  //popupImage.src = productData.image_url;
   popupTitle.textContent = productData.name;
   popupBrand.textContent = productData.brand;
   popupBrand.href = productData.product_link;
@@ -410,7 +410,7 @@ function updateCatalog() {
 	const quickLookBtn = card.querySelector("#quick_look");
 	quickLookBtn.addEventListener("click", () => {
 	  const productData = {
-	    image_url: card.querySelector("#product_image").src,
+	    //image_url: card.querySelector("#product_image").src,
 	    name: card.querySelector("#name").textContent,
 	    brand: card.querySelector("#brand").textContent,
 	    description: card.querySelector("#description").textContent,
