@@ -130,6 +130,7 @@ authLogout.forEach(function(el) {
 document.getElementById('add-product-btn').addEventListener('click', function() {
   const brand = storeName.value;
   const name = document.getElementById('product-name').value;
+  console.log(name);
   const description = document.getElementById('product-description').value;
   const productLink = document.getElementById('product-link').value;
   const price = document.getElementById('product-price').value;
