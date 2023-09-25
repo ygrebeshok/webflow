@@ -191,16 +191,16 @@ addProductBtn.addEventListener('click', function() {
     });
 });
 
-const removeBtn = document.querySelectorAll('[remove-btn]');
 
 function loadProducts(storeNameValue) {
-
+  
   firebase.firestore().collection("gifts")
     .where("brand", "==", storeNameValue)
     .get()
     .then((querySnapshot) => {
     const productsContainer = document.getElementById("product-cards");
     const productTemplate = document.querySelector(".product-card");
+    const removeBtn = document.querySelectorAll('[remove-btn]');
     productsContainer.innerHTML = "";
 
     querySnapshot.forEach((doc) => {
