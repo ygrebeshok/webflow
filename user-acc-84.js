@@ -16,7 +16,6 @@ const popupContainer = document.getElementById('popup-fade');
 const favoritesGrid = document.getElementById("favoritesGrid");
 const favCardTemplate = document.querySelector("#card");
 const profileCardTemplate = document.querySelector("#profile-card");
-const profilesContainer = document.querySelector("#profiles-grid");
 const giftsRef = firebase.firestore().collection("gifts");
 const popUp = document.getElementById("pop-up");
 const closeBtn = document.getElementById("close-button");
@@ -24,8 +23,8 @@ const favoritesLabel = document.getElementById("favorites-label");
 const favoriteBtn = document.querySelector("#favorite-btn");
 
 function loadProfileData(profiles) {
-
-  profilesContainer.innerHTML = "";
+  const profilesContain = document.getElementById('profiles-grid');
+  profilesContain.innerHTML = "";
   profiles.sort((a, b) => new Date(a.date) - new Date(b.date));
 
   profiles.forEach(data => {
@@ -39,7 +38,7 @@ function loadProfileData(profiles) {
      profile.querySelector(".pr-date").textContent = data.date;
      profile.querySelector(".profile-desc").textContent = data.gift_desc;
 
-     profilesContainer.appendChild(profile);
+     profilesContain.appendChild(profile);
                 
      profile.addEventListener('mouseenter', () => {
        profile.animate([
@@ -62,7 +61,7 @@ function loadProfileData(profiles) {
      });
   });
 
-  profilesContainer.addEventListener('click', (event) => {
+  profilesContain.addEventListener('click', (event) => {
     try {
       if (event.target.closest('.profile-card')) {
         const profileCard = event.target.closest('.profile-card');
