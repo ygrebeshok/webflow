@@ -429,9 +429,36 @@ function updateCatalog() {
 	    product_link: data.product_link,
 	    price: card.querySelector("#price").textContent.replace("$", "")
 	  };
-	
 	  showPopup(productData);
 	});
+
+	const slides = document.querySelector('.slides');
+  	const thumbnails = document.querySelectorAll('.thumbnail');
+  	let currentSlide = 0;
+
+  	function showSlide(slideIndex) {
+    	  slides.style.transform = `translateX(-${slideIndex * 100}%)`;
+    	  currentSlide = slideIndex;
+    	  updateThumbnails();
+  	}
+
+  	function updateThumbnails() {
+    	  thumbnails.forEach((thumbnail, index) => {
+      	    if (index === currentSlide) {
+              thumbnail.classList.add('active');
+      	    } else {
+              thumbnail.classList.remove('active');
+      	    }
+    	  });
+        }
+
+        thumbnails.forEach((thumbnail, index) => {
+          thumbnail.addEventListener('click', function() {
+            showSlide(index);
+          });
+        });
+
+	showSlide(currentSlide);
 
 	const likeBtn = card.querySelector("#like-button");
 	const dislikeBtn = card.querySelector("#dislike-button");
