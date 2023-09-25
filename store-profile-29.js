@@ -167,10 +167,10 @@ document.getElementById('add-product-btn').addEventListener('click', function() 
           console.log('Product added with ID: ', docRef.id);
           // Reset form fields and image previews after successful submission
           document.getElementById('store-name-text').value = '';
-          document.getElementById('product-name').value = '';
-          document.getElementById('product-description').value = '';
-          document.getElementById('product-link').value = '';
-          document.getElementById('product-price').value = '';
+          document.getElementById('product-name-update').value = '';
+          document.getElementById('product-description-update').value = '';
+          document.getElementById('product-link-update').value = '';
+          document.getElementById('product-price-update').value = '';
           document.getElementById('imagePreviewContainer').innerHTML = '';
 
 	  loadProducts(storeName.value);
