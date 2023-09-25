@@ -127,7 +127,11 @@ authLogout.forEach(function(el) {
   });
 });
 
-document.getElementById('add-product-btn').addEventListener('click', function() {
+const addProductBtn = document.getElementById('add-product-btn');
+	
+addProductBtn.addEventListener('click', function() {
+  success.style.display = 'none';
+  addProductBtn.textContent = "Adding...";
   const brand = storeNameValue;
   const name = document.getElementById('product-name-update').value;
   const description = document.getElementById('product-description-update').value;
@@ -172,7 +176,11 @@ document.getElementById('add-product-btn').addEventListener('click', function() 
           document.getElementById('product-price-update').value = '';
           document.getElementById('imagePreviewContainer').innerHTML = '';
 
-	  loadProducts(storeName.value);
+	  loadProducts(brand);
+	  const success = document.getElementById("success");
+	  success.textContent = "Product added successfully";
+	  success.style.display = 'block';
+	  addProductBtn.textContent = "Add this Product";
         })
         .catch((error) => {
           console.error('Error adding product: ', error);
