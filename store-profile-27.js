@@ -132,7 +132,7 @@ document.getElementById('add-product-btn').addEventListener('click', function() 
   const name = document.querySelector('#product-name').value;
   console.log(name);
   const description = document.querySelector('#product-description').value;
-  const productLink = document.querySelector'#product-link').value;
+  const productLink = document.querySelector('#product-link').value;
   const price = document.querySelector('#product-price').value;
   const images = [];
 
