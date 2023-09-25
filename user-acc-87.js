@@ -8,6 +8,7 @@ var bodyUnauth = document.body.getAttribute('data-user-unauth');
 const favoritesGrid = document.getElementById("favoritesGrid");
 const favCardTemplate = document.querySelector("#card");
 const profileCardTemplate = document.querySelector("#profile-card");
+const popupContainer = document.getElementById('popup-fade');
 const giftsRef = firebase.firestore().collection("gifts");
 const popUp = document.getElementById("pop-up");
 const closeBtn = document.getElementById("close-button");
@@ -81,7 +82,6 @@ function showPopupUser(productData, card) {
   const popupLink = document.getElementById('popup_link');
   const popupPrice = document.getElementById('popup_price');
   const popupClose = document.getElementById('popup-close');
-  const popupContainer = document.getElementById('popup-fade');
 
   const slideContainer = document.querySelector('.slides');
   const thumbnailContainer = document.querySelector('.thumbnails');
