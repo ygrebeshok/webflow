@@ -41,6 +41,7 @@ firebase.auth().onAuthStateChanged(function(authUser) {
 	  storeNameValue = doc.data().store_name;
         } else {
 	  // If the user document doesn't exist, create it
+	  storeNameValue = "";
           firebase.firestore().collection("stores").doc(user.uid).set({
             email: user.email,
             store_name: "",
@@ -51,6 +52,8 @@ firebase.auth().onAuthStateChanged(function(authUser) {
           });
 	}
      });
+
+     loadProducts(storeNameValue);
 	  
      const updateButton = document.getElementById('update-btn');
    
@@ -88,6 +91,7 @@ firebase.auth().onAuthStateChanged(function(authUser) {
          message.style.display = "block";
          message.textContent = "Error updating profile: " + error;
        });
+       loadProducts(storeNameValue);
      });
    }
 });
