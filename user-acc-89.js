@@ -1,3 +1,21 @@
+const popupImage = document.getElementById("popup_image");
+const popupTitle = document.getElementById("popup_title");
+const popupBrand = document.getElementById("popup_brand");
+const popupDesc = document.getElementById("popup_desc");
+const popupLink = document.getElementById("popup_link");
+const popupPrice = document.getElementById("popup_price");
+const popupClose = document.getElementById("popup-close");
+const favoritesGrid = document.getElementById("favoritesGrid");
+const favCardTemplate = document.querySelector("#card");
+const profileCardTemplate = document.querySelector("#profile-card");
+const popupContainer = document.getElementById("popup-fade");
+const giftsRef = firebase.firestore().collection("gifts");
+const popUp = document.getElementById("pop-up");
+const closeBtn = document.getElementById("close-button");
+const favoritesLabel = document.getElementById("favorites-label");
+const favoriteBtn = document.querySelector("#favorite-btn");
+const profilesContain = document.getElementById("profiles-grid");
+
 firebase.initializeApp(webflowAuth.firebaseConfig);
 
 firebase.analytics && firebase.analytics();
