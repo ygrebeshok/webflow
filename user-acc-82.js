@@ -278,7 +278,7 @@ firebase.auth().onAuthStateChanged(function(authUser) {
 		      
                 quickLookBtn.addEventListener("click", () => {
                   const productData = {
-                    images: data.images,,
+                    images: data.images,
                     name: favCard.querySelector("#name").textContent,
                     brand: favCard.querySelector("#brand").textContent,
                     description: favCard.querySelector("#description").textContent,
