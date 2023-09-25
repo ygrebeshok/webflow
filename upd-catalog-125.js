@@ -409,6 +409,16 @@ function updateCatalog() {
         const user = firebase.auth().currentUser;
         const userId = user.uid;
 
+	var thumbnail = document.createElement('div');
+        thumbnail.classList.add('thumbnail');
+        thumbnail.innerHTML = `<img src="${data.images[0]}" alt="Thumbnail">`;
+        thumbnailContainer.appendChild(thumbnail);
+
+        var slide = document.createElement('div');
+        slide.classList.add('slide');
+        slide.innerHTML = `<img src="${data.images[0]}" alt="Product Image">`;
+        slideContainer.appendChild(slide);
+
 	const quickLookBtn = card.querySelector("#quick_look");
 	quickLookBtn.addEventListener("click", () => {
 	  const productData = {
@@ -492,15 +502,7 @@ function updateCatalog() {
           var brands = Array.from(brandsSet); // add this line
           populateBrandFilter(brands);
 
-	  var thumbnail = document.createElement('div');
-          thumbnail.classList.add('thumbnail');
-          thumbnail.innerHTML = `<img src="${data.images[0]}" alt="Thumbnail">`;
-          thumbnailContainer.appendChild(thumbnail);
-
-          var slide = document.createElement('div');
-          slide.classList.add('slide');
-          slide.innerHTML = `<img src="${data.images[0]}" alt="Product Image">`;
-          slideContainer.appendChild(slide);
+	  showSlide(currentSlide);
 
           priceRange = document.getElementById("price-range");
     
@@ -509,7 +511,6 @@ function updateCatalog() {
               priceRange.addEventListener("input", filterCatalog);
               priceRangeInitialized = true;
           }
-	showSlide(currentSlide);
       });
     }
 
