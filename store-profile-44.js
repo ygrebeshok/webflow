@@ -17,7 +17,7 @@ const popupLink = document.getElementById("popup_link");
 const popupPrice = document.getElementById("popup_price");
 const popupClose = document.getElementById("popup-close");
 
-function showPopupUser(productData, card) {
+function showPopupStore (productData, card) {
 
   const slideContainer = document.querySelector('.slides');
   const thumbnailContainer = document.querySelector('.thumbnails');
@@ -30,37 +30,33 @@ function showPopupUser(productData, card) {
   popupDesc.textContent = productData.description;
   popupPrice.textContent = `$${productData.price}`;
 
-  const user = firebase.auth().currentUser;
-  const userId = user.uid;
-  const productId = productData.name;
+  productData.images.forEach(imageUrl => {
+    const thumbnail = document.createElement('div');
+    thumbnail.classList.add('thumbnail');
+    thumbnail.innerHTML = `<img src="${imageUrl}" alt="Thumbnail">`;
+    thumbnailContainer.appendChild(thumbnail);
 
-    productData.images.forEach(imageUrl => {
-      const thumbnail = document.createElement('div');
-      thumbnail.classList.add('thumbnail');
-      thumbnail.innerHTML = `<img src="${imageUrl}" alt="Thumbnail">`;
-      thumbnailContainer.appendChild(thumbnail);
-
-      const slide = document.createElement('div');
-      slide.classList.add('slide');
-      slide.innerHTML = `<img src="${imageUrl}" alt="Product Image">`;
-      slideContainer.appendChild(slide);
-    })
+    const slide = document.createElement('div');
+    slide.classList.add('slide');
+    slide.innerHTML = `<img src="${imageUrl}" alt="Product Image">`;
+    slideContainer.appendChild(slide);
+  })
 	
-    popupContainer.style.display = "flex";
+  popupContainer.style.display = "flex";
 
-    const slides = document.querySelector('.slides');
-    const thumbnails = document.querySelectorAll('.thumbnail');
-    let currentSlide = 0;
+  const slides = document.querySelector('.slides');
+  const thumbnails = document.querySelectorAll('.thumbnail');
+  let currentSlide = 0;
 
-    function updateThumbnails() {
-      thumbnails.forEach((thumbnail, index) => {
-        if (index === currentSlide) {
-          thumbnail.classList.add('active');
-        } else {
-          thumbnail.classList.remove('active');
-        }
-      });
-     }
+  function updateThumbnails() {
+    thumbnails.forEach((thumbnail, index) => {
+      if (index === currentSlide) {
+        thumbnail.classList.add('active');
+      } else {
+        thumbnail.classList.remove('active');
+      }
+    });
+   }
 
     function showSlide(slideIndex) {
       slides.style.transform = `translateX(-${slideIndex * 100}%)`;
@@ -287,7 +283,29 @@ function loadProducts(storeNameValue) {
       productCard.querySelector("#product-desc").textContent = data.description;
       productCard.querySelector("#product-image").src = data.images[0];
       productCard.querySelector("#product-price").textContent = "$" + data.price;
+	    
+      productsContainer.appendChild(productCard);
 
+      productCard.addEventListener('mouseenter', () => {
+        productCard.animate([
+        { transform: 'scale(1)' },
+        { transform: 'scale(1.05)' }
+        ], {
+        duration: 200,
+        fill: 'forwards'
+        });
+        });
+
+      productCard.addEventListener('mouseleave', () => {
+        productCard.animate([
+        { transform: 'scale(1.05)' },
+        { transform: 'scale(1)' }
+        ], {
+        duration: 200,
+        fill: 'forwards'
+        });
+        });
+	    
       const lookBtn = productCard.querySelector("#look-product");
       lookBtn.addEventListener("click", () => {
         const productData = {
@@ -300,10 +318,7 @@ function loadProducts(storeNameValue) {
         };
 
         showPopupUser(productData, productCard);
-      });
-	    
-      productsContainer.appendChild(productCard);
-	    
+      });    
     });
    }).catch((error) => {
      console.log("Error getting products: ", error);
