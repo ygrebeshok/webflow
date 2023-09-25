@@ -6,6 +6,7 @@ firebase.analytics && firebase.analytics();
 {
 var bodyAuth = document.body.getAttribute('data-user-auth');
 var bodyUnauth = document.body.getAttribute('data-user-unauth');
+let storeNameValue;
 
 firebase.auth().onAuthStateChanged(function(authUser) {
   user = authUser;
@@ -34,6 +35,8 @@ firebase.auth().onAuthStateChanged(function(authUser) {
           bio.textContent = doc.data().store_bio;
           address.textContent = doc.data().store_address;
           phone.textContent = doc.data().store_phone;
+
+	  storeNameValue = doc.data().store_name;
         } else {
 	  // If the user document doesn't exist, create it
           firebase.firestore().collection("stores").doc(user.uid).set({
@@ -73,6 +76,8 @@ firebase.auth().onAuthStateChanged(function(authUser) {
              bio.textContent = store_Bio;
              address.textContent = store_Address;
              phone.textContent = store_Phone;
+
+	     storeNameValue = doc.data().store_name;
       	   }
    	});
        })
@@ -99,7 +104,7 @@ authLogout.forEach(function(el) {
 });
 
 document.getElementById('add-product-btn').addEventListener('click', function() {
-  const brand = document.getElementById('store-name-text').value;
+  const brand = storeNameValue;
   const name = document.getElementById('product-name').value;
   const description = document.getElementById('product-description').value;
   const productLink = document.getElementById('product-link').value;
