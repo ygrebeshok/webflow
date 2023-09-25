@@ -58,7 +58,7 @@ firebase.auth().onAuthStateChanged(function(authUser) {
    
      updateButton.addEventListener('click', function() {
        
-       storesRef.doc(userId).update({
+       firebase.firestore().collection("stores").doc(userId).update({
          store_name: storeName.value,
          store_bio: storeBio.value,
          store_address: storeAddress.value,
