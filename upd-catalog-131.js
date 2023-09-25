@@ -300,12 +300,6 @@ function showPopup(productData) {
   const thumbnails = document.querySelectorAll('.thumbnail');
   let currentSlide = 0;
 
-  function showSlide(slideIndex) {
-    slides.style.transform = `translateX(-${slideIndex * 100}%)`;
-    currentSlide = slideIndex;
-    updateThumbnails();
-  }
-
   function updateThumbnails() {
     thumbnails.forEach((thumbnail, index) => {
       if (index === currentSlide) {
@@ -316,9 +310,16 @@ function showPopup(productData) {
     });
    }
 
+  function showSlide(slideIndex) {
+    slides.style.transform = `translateX(-${slideIndex * 100}%)`;
+    currentSlide = slideIndex;
+    updateThumbnails();
+  }
+
    thumbnails.forEach((thumbnail, index) => {
       thumbnail.addEventListener('click', function() {
         showSlide(index);
+	console.log("thumbnail clicked");
       });
     });
 
