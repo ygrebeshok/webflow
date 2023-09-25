@@ -59,40 +59,54 @@ firebase.auth().onAuthStateChanged(function(authUser) {
    
      updateButton.addEventListener('click', function() {
        const storesRef = firebase.firestore().collection("stores");
-	     
+  
+       // Get the new store name
+       const newStoreName = storeName.value;
+
        storesRef.doc(userId).update({
-         store_name: storeName.value,
+         store_name: newStoreName, // Update store name in "stores" collection
          store_bio: storeBio.value,
          store_address: storeAddress.value,
          store_phone: storePhone.value
        })
        .then(() => {
-         message.style.display = "block";
-         message.textContent = "Profile successfully updated";
-         
-         storesRef.doc(userId).get()
-    	 .then(doc => {
-      	   if (doc.exists) {
-             const store_Name = doc.data().store_name;
-             const store_Bio = doc.data().store_bio;
-       	     const store_Address = doc.data().store_address;
-       	     const store_Phone = doc.data().store_phone;
+       message.style.display = "block";
+       message.textContent = "Profile successfully updated";
 
-             name.textContent = store_Name;
-             bio.textContent = store_Bio;
-             address.textContent = store_Address;
-             phone.textContent = store_Phone;
+       storesRef.doc(userId).get()
+       .then(doc => {
+        if (doc.exists) {
+          const store_Name = doc.data().store_name;
+          const store_Bio = doc.data().store_bio;
+          const store_Address = doc.data().store_address;
+          const store_Phone = doc.data().store_phone;
 
-	     storeNameValue = doc.data().store_name;
-      	   }
-   	});
-       })
-       .catch((error) => {
-         message.style.display = "block";
-         message.textContent = "Error updating profile: " + error;
-       });
-       loadProducts(storeNameValue);
-     });
+          name.textContent = store_Name;
+          bio.textContent = store_Bio;
+          address.textContent = store_Address;
+          phone.textContent = store_Phone;
+
+          storeNameValue = doc.data().store_name;
+
+          // Update brand in "gifts" collection
+          const giftsRef = firebase.firestore().collection('gifts');
+          giftsRef.where("brand", "==", storeNameValue).get()
+            .then((querySnapshot) => {
+              querySnapshot.forEach((doc) => {
+                giftsRef.doc(doc.id).update({ brand: newStoreName });
+              });
+            })
+            .catch((error) => {
+              console.error('Error updating brands in gifts collection: ', error);
+            });
+           }
+        });
+      })
+      .catch((error) => {
+        message.style.display = "block";
+        message.textContent = "Error updating profile: " + error;
+      });
+    });
    }
 });
 
@@ -184,26 +198,7 @@ function loadProducts(storeNameValue) {
       productCard.querySelector("#product-price").textContent = "$" + data.price;
 
       productsContainer.appendChild(productCard);
-
-      productCard.addEventListener("mouseenter", () => {
-        productCard.animate([
-	{ transform: "translateY(0px)" },
-	{ transform: "translateY(-90px)" }
-	], {
-	duration: 200,
-	fill: "forwards"
-	});
-      });
-	
-      productCard.addEventListener("mouseleave", () => {
-	productCard.animate([
-	{ transform: "translateY(-90px)" },
-	{ transform: "translateY(0px)" }
-	], {
-	duration: 200,
-	fill: "forwards"
-	});
-      });
+	    
     });
    }).catch((error) => {
      console.log("Error getting products: ", error);
