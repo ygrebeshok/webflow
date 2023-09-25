@@ -60,6 +60,9 @@ firebase.auth().onAuthStateChanged(function(authUser) {
      updateButton.addEventListener('click', function() {
        const storesRef = firebase.firestore().collection("stores");
   
+       // Get the original store name
+       const originalStoreName = storeNameValue;
+
        // Get the new store name
        const newStoreName = storeName.value;
 
@@ -70,42 +73,42 @@ firebase.auth().onAuthStateChanged(function(authUser) {
          store_phone: storePhone.value
        })
        .then(() => {
-       message.style.display = "block";
-       message.textContent = "Profile successfully updated";
+         message.style.display = "block";
+         message.textContent = "Profile successfully updated";
 
-       storesRef.doc(userId).get()
-       .then(doc => {
-        if (doc.exists) {
-          const store_Name = doc.data().store_name;
-          const store_Bio = doc.data().store_bio;
-          const store_Address = doc.data().store_address;
-          const store_Phone = doc.data().store_phone;
+         storesRef.doc(userId).get()
+         .then(doc => {
+           if (doc.exists) {
+             const store_Name = doc.data().store_name;
+             const store_Bio = doc.data().store_bio;
+             const store_Address = doc.data().store_address;
+             const store_Phone = doc.data().store_phone;
 
-          name.textContent = store_Name;
-          bio.textContent = store_Bio;
-          address.textContent = store_Address;
-          phone.textContent = store_Phone;
+             name.textContent = store_Name;
+             bio.textContent = store_Bio;
+             address.textContent = store_Address;
+             phone.textContent = store_Phone;
 
-          storeNameValue = doc.data().store_name;
+             storeNameValue = doc.data().store_name;
 
-          // Update brand in "gifts" collection
-          const giftsRef = firebase.firestore().collection('gifts');
-          giftsRef.where("brand", "==", storeNameValue).get()
-            .then((querySnapshot) => {
-              querySnapshot.forEach((doc) => {
-                giftsRef.doc(doc.id).update({ brand: newStoreName });
-              });
-            })
-            .catch((error) => {
-              console.error('Error updating brands in gifts collection: ', error);
-            });
-           }
-        });
+             // Update brand in "gifts" collection
+             const giftsRef = firebase.firestore().collection('gifts');
+             giftsRef.where("brand", "==", originalStoreName).get()
+             .then((querySnapshot) => {
+               querySnapshot.forEach((doc) => {
+                 giftsRef.doc(doc.id).update({ brand: newStoreName });
+               });
+             })
+             .catch((error) => {
+               console.error('Error updating brands in gifts collection: ', error);
+             });
+            }
+         });
       })
       .catch((error) => {
-        message.style.display = "block";
-        message.textContent = "Error updating profile: " + error;
-      });
+       message.style.display = "block";
+       message.textContent = "Error updating profile: " + error;
+     });
     });
    }
 });
