@@ -210,9 +210,10 @@ function loadProducts(storeNameValue) {
       productCard.querySelector("#product-image").src = data.images[0];
       productCard.querySelector("#product-price").textContent = "$" + data.price;
 
-      const removeButton = productCard.querySelector(".remove-btn");
-      removeButton.addEventListener("click", function() {
-        removeProduct(productCard);
+      productCard.querySelectorAll("#remove-btn").forEach((button) => {
+        button.addEventListener("click", function() {
+          removeProduct(productCard);
+        });
       });
 	    
       productsContainer.appendChild(productCard);
