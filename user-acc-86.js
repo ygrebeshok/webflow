@@ -5,14 +5,6 @@ firebase.analytics && firebase.analytics();
 {
 var bodyAuth = document.body.getAttribute('data-user-auth');
 var bodyUnauth = document.body.getAttribute('data-user-unauth');
-const popupImage = document.getElementById('popup_image');
-const popTitle = document.getElementById('popup_title');
-const popupBrand = document.getElementById('popup_brand');
-const popupDesc = document.getElementById('popup_desc');
-const popupLink = document.getElementById('popup_link');
-const popupPrice = document.getElementById('popup_price');
-const popupClose = document.getElementById('popup-close');
-const popupContainer = document.getElementById('popup-fade');
 const favoritesGrid = document.getElementById("favoritesGrid");
 const favCardTemplate = document.querySelector("#card");
 const profileCardTemplate = document.querySelector("#profile-card");
@@ -82,12 +74,21 @@ function loadProfileData(profiles) {
 }
 
 function showPopupUser(productData, card) {
+  const popupImage = document.getElementById('popup_image');
+  const popupTitle = document.getElementById('popup_title');
+  const popupBrand = document.getElementById('popup_brand');
+  const popupDesc = document.getElementById('popup_desc');
+  const popupLink = document.getElementById('popup_link');
+  const popupPrice = document.getElementById('popup_price');
+  const popupClose = document.getElementById('popup-close');
+  const popupContainer = document.getElementById('popup-fade');
+
   const slideContainer = document.querySelector('.slides');
   const thumbnailContainer = document.querySelector('.thumbnails');
   slideContainer.innerHTML = ''; // Clear existing slides
   thumbnailContainer.innerHTML = ''; // Clear existing thumbnails
 	
-  popTitle.textContent = productData.name;
+  popupTitle.textContent = productData.name;
   popupBrand.textContent = productData.brand;
   popupBrand.href = productData.product_link;
   popupDesc.textContent = productData.description;
