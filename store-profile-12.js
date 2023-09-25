@@ -1,3 +1,5 @@
+
+
 firebase.initializeApp(webflowAuth.firebaseConfig);
 const storageRef = firebase.storage().ref();
 
@@ -50,7 +52,7 @@ firebase.auth().onAuthStateChanged(function(authUser) {
 	}
      });
 
-     loadProducts();
+     loadProducts(storeName.value);
 	  
      const updateButton = document.getElementById('update-btn');
    
@@ -80,7 +82,7 @@ firebase.auth().onAuthStateChanged(function(authUser) {
              phone.textContent = store_Phone;
 
 	     storeNameValue = doc.data().store_name;
-	     loadProducts();
+	     loadProducts(storeNameValue);
       	   }
    	});
        })
@@ -160,7 +162,7 @@ document.getElementById('add-product-btn').addEventListener('click', function() 
     });
 });
 
-function loadProducts() {
+function loadProducts(storeNameValue) {
 
   firebase.firestore().collection("gifts")
     .where("brand", "==", storeNameValue)
