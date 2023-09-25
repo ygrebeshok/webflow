@@ -128,7 +128,7 @@ authLogout.forEach(function(el) {
 });
 
 document.getElementById('add-product-btn').addEventListener('click', function() {
-  const brand = storeNameValue;
+  const brand = storeName.value;
   const name = document.getElementById('product-name').value;
   const description = document.getElementById('product-description').value;
   const productLink = document.getElementById('product-link').value;
@@ -171,6 +171,8 @@ document.getElementById('add-product-btn').addEventListener('click', function() 
           document.getElementById('product-link').value = '';
           document.getElementById('product-price').value = '';
           document.getElementById('imagePreviewContainer').innerHTML = '';
+
+	  loadProducts(storeName.value);
         })
         .catch((error) => {
           console.error('Error adding product: ', error);
