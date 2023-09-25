@@ -210,7 +210,7 @@ function loadProducts(storeNameValue) {
       productCard.querySelector("#product-image").src = data.images[0];
       productCard.querySelector("#product-price").textContent = "$" + data.price;
 
-      const removeButton = productCard.getElementById("remove-btn");
+      const removeButton = productCard.querySelector("#remove-btn");
       removeButton.addEventListener("click", function() {
         const productId = removeButton.dataset.productId;
         removeProduct(productId);
