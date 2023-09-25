@@ -296,7 +296,6 @@ function showPopup(productData) {
   popupContainer.style.display = "flex";
 }
 
-document.addEventListener('DOMContentLoaded', function() {
   const slides = document.querySelector('.slides');
   const thumbnails = document.querySelectorAll('.thumbnail');
   let currentSlide = 0;
@@ -324,7 +323,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     showSlide(currentSlide);
- });
 
 popupClose.addEventListener("click", () => {
   popupContainer.style.display = "none";
