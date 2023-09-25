@@ -394,7 +394,7 @@ function updateCatalog() {
             
         const card = cardTemplate.cloneNode(true);
 
-        card.querySelector("#product_image").src = data.image_url,
+  	card.querySelector("#product_image").src = data.images[0],
         card.querySelector("#name").textContent = data.name,
         card.querySelector("#price").textContent = `$${data.price}`,
         card.querySelector("#description").textContent = data.description,
@@ -500,6 +500,7 @@ function updateCatalog() {
           }
       });
     }
+
 const filledLike = "https://uploads-ssl.webflow.com/63754b30fc1fcb22c75e7cb3/64fd42aa4c01d1a2dce1f72d_like.png";
 const emptyLike = "https://uploads-ssl.webflow.com/63754b30fc1fcb22c75e7cb3/64fd1f04f9318a593c1544e8_like%20unfilled.png";
 
