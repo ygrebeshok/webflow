@@ -129,11 +129,11 @@ authLogout.forEach(function(el) {
 
 document.getElementById('add-product-btn').addEventListener('click', function() {
   const brand = storeName.value;
-  const name = document.getElementById('product-name').value;
+  const name = document.querySelector('#product-name').value;
   console.log(name);
-  const description = document.getElementById('product-description').value;
-  const productLink = document.getElementById('product-link').value;
-  const price = document.getElementById('product-price').value;
+  const description = document.querySelector('#product-description').value;
+  const productLink = document.querySelector'#product-link').value;
+  const price = document.querySelector('#product-price').value;
   const images = [];
 
   // Iterate through the images and upload them
