@@ -317,7 +317,7 @@ function loadProducts(storeNameValue) {
           price:  data.price
         };
 
-        showPopupUser(productData, productCard);
+        showPopupStore(productData, productCard);
       });    
     });
    }).catch((error) => {
