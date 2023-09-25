@@ -249,7 +249,11 @@ function loadHolidayData() {
 }
 
 function showPopup(productData) {
-  //popupImage.src = productData.image_url;
+  const slideContainer = document.querySelector('.slides');
+  const thumbnailContainer = document.querySelector('.thumbnails');
+  slideContainer.innerHTML = ''; // Clear existing slides
+  thumbnailContainer.innerHTML = ''; // Clear existing thumbnails
+	
   popupTitle.textContent = productData.name;
   popupBrand.textContent = productData.brand;
   popupBrand.href = productData.product_link;
@@ -276,9 +280,50 @@ function showPopup(productData) {
   popupFavoriteBtn.addEventListener('click', () => {
     toggleFavorite(favoritesLabel, userId, productId);
   });
+
+  productData.images.forEach(imageUrl => {
+    const thumbnail = document.createElement('div');
+    thumbnail.classList.add('thumbnail');
+    thumbnail.innerHTML = `<img src="${imageUrl}" alt="Thumbnail">`;
+    thumbnailContainer.appendChild(thumbnail);
+
+    const slide = document.createElement('div');
+    slide.classList.add('slide');
+    slide.innerHTML = `<img src="${imageUrl}" alt="Product Image">`;
+    slideContainer.appendChild(slide);
+  });
 	
   popupContainer.style.display = "flex";
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+  const slides = document.querySelector('.slides');
+  const thumbnails = document.querySelectorAll('.thumbnail');
+  let currentSlide = 0;
+
+  function showSlide(slideIndex) {
+    slides.style.transform = `translateX(-${slideIndex * 100}%)`;
+    currentSlide = slideIndex;
+    updateThumbnails();
+  }
+
+  function updateThumbnails() {
+    thumbnails.forEach((thumbnail, index) => {
+      if (index === currentSlide) {
+        thumbnail.classList.add('active');
+      } else {
+        thumbnail.classList.remove('active');
+      }
+    });
+   }
+
+   thumbnails.forEach((thumbnail, index) => {
+      thumbnail.addEventListener('click', function() {
+        showSlide(index);
+      });
+    });
+    showSlide(currentSlide);
+ });
 
 popupClose.addEventListener("click", () => {
   popupContainer.style.display = "none";
@@ -380,166 +425,127 @@ function filterCatalog() {
 let allCards = [];
 
 function updateCatalog() {
-      var brandsSet = new Set();
+  var brandsSet = new Set();
 
-      giftsRef.get().then((querySnapshot) => {
-      catalogGrid.innerHTML = "";
-      allCards = [];
-      var slideContainer = document.querySelector('.slides');
-      var thumbnailContainer = document.querySelector('.thumbnails');
+  giftsRef.get().then((querySnapshot) => {
+    catalogGrid.innerHTML = "";
+    allCards = [];
       
-      querySnapshot.forEach((doc) => {
-        const data = doc.data();
-        if (data.brand) {
-          brandsSet.add(data.brand);
-        }
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+
+      if (data.brand) {
+        brandsSet.add(data.brand);
+      }
             
-        const card = cardTemplate.cloneNode(true);
+      const card = cardTemplate.cloneNode(true);
 
-  	card.querySelector("#product_image").src = data.images[0],
-        card.querySelector("#name").textContent = data.name,
-        card.querySelector("#price").textContent = `$${data.price}`,
-        card.querySelector("#description").textContent = data.description,
-        card.querySelector("#keywords").textContent = data.openai_keywords + ',' + data.image_labels,
-        card.querySelector("#brand").textContent = data.brand
+      card.querySelector("#product_image").src = data.images[0],
+      card.querySelector("#name").textContent = data.name,
+      card.querySelector("#price").textContent = `$${data.price}`,
+      card.querySelector("#description").textContent = data.description,
+      card.querySelector("#keywords").textContent = data.openai_keywords + ',' + data.image_labels,
+      card.querySelector("#brand").textContent = data.brand
 
-        allCards.push(card);
+      allCards.push(card);
         
-        const productId = card.querySelector("#name").textContent;
-        const user = firebase.auth().currentUser;
-        const userId = user.uid;
+      const productId = card.querySelector("#name").textContent;
+      const user = firebase.auth().currentUser;
+      const userId = user.uid;
 
-	var thumbnail = document.createElement('div');
-        thumbnail.classList.add('thumbnail');
-        thumbnail.innerHTML = `<img src="${data.images[0]}" alt="Thumbnail">`;
-        thumbnailContainer.appendChild(thumbnail);
-
-        var slide = document.createElement('div');
-        slide.classList.add('slide');
-        slide.innerHTML = `<img src="${data.images[0]}" alt="Product Image">`;
-        slideContainer.appendChild(slide);
-
-	const quickLookBtn = card.querySelector("#quick_look");
-	quickLookBtn.addEventListener("click", () => {
-	  const productData = {
-	    //image_url: card.querySelector("#product_image").src,
-	    name: card.querySelector("#name").textContent,
-	    brand: card.querySelector("#brand").textContent,
-	    description: card.querySelector("#description").textContent,
-	    product_link: data.product_link,
-	    price: card.querySelector("#price").textContent.replace("$", "")
-	  };
-	  showPopup(productData);
-	});
-
-	const slides = document.querySelector('.slides');
-  	const thumbnails = document.querySelectorAll('.thumbnail');
-  	let currentSlide = 0;
-
-  	function showSlide(slideIndex) {
-    	  slides.style.transform = `translateX(-${slideIndex * 100}%)`;
-    	  currentSlide = slideIndex;
-    	  updateThumbnails();
-  	}
-
-  	function updateThumbnails() {
-    	  thumbnails.forEach((thumbnail, index) => {
-      	    if (index === currentSlide) {
-              thumbnail.classList.add('active');
-      	    } else {
-              thumbnail.classList.remove('active');
-      	    }
-    	  });
-        }
-
-        thumbnails.forEach((thumbnail, index) => {
-          thumbnail.addEventListener('click', function() {
-            showSlide(index);
-          });
-        });
-
-	showSlide(currentSlide);
-
-	const likeBtn = card.querySelector("#like-button");
-	const dislikeBtn = card.querySelector("#dislike-button");
-	const likeImage = card.querySelector("#image-like");
-	const dislikeImage = card.querySelector("#image-dislike");
-	      
-	firebase.firestore().collection("users").doc(userId).get()
-  	.then(doc => {
-    	  const liked = doc.data().liked;
-    	  const isLiked = liked.some(product => product.productId === productId);
-
-    	  if (isLiked) {
-      	    likeImage.src = "https://uploads-ssl.webflow.com/63754b30fc1fcb22c75e7cb3/64fd42aa4c01d1a2dce1f72d_like.png";
-    	  } else {
-      	    likeImage.src = "https://uploads-ssl.webflow.com/63754b30fc1fcb22c75e7cb3/64fd1f04f9318a593c1544e8_like%20unfilled.png";
-    	  }
-  	})
-  	.catch(error => {
-    	  console.log("Error getting liked:", error);
-  	});
-
-	firebase.firestore().collection("users").doc(userId).get()
-    	.then(doc => {
-      	  const disliked = doc.data().disliked;
-	  const isDisliked = disliked.some(product => product.productId === productId);
-
-	  if (isDisliked) {
-      	    dislikeImage.src = "https://uploads-ssl.webflow.com/63754b30fc1fcb22c75e7cb3/64fd42a725f96a17e1984d22_dislike.png";
-    	  } else {
-      	    dislikeImage.src = "https://uploads-ssl.webflow.com/63754b30fc1fcb22c75e7cb3/64fd21004c01d1a2dccce5dc_dislike%20unfilled.png";
-    	  }
-        })
-        .catch(error => {
-          console.log("Error getting disliked:", error);
-        });
-
-	likeBtn.addEventListener("click", () => {
-	  toggleLike(likeImage, dislikeImage, userId, productId, selected_who, selected_holiday)	
-	});
-
-	dislikeBtn.addEventListener("click", () => {
-	  toggleDislike(dislikeImage, likeImage, userId, productId, selected_who, selected_holiday)	
-	});
-
-        catalogGrid.appendChild(card);
-
-        card.addEventListener('mouseenter', () => {
-            card.animate([
-             { transform: 'scale(1)' },
-             { transform: 'scale(1.05)' }
-             ], {
-            duration: 200,
-            fill: 'forwards'
-            });
-        });
-
-        card.addEventListener('mouseleave', () => {
-            card.animate([
-            { transform: 'scale(1.05)' },
-            { transform: 'scale(1)' }
-            ], {
-            duration: 200,
-            fill: 'forwards'
-            });
-          });
-         });
-
-          var brands = Array.from(brandsSet); // add this line
-          populateBrandFilter(brands);
-
-	  showSlide(currentSlide);
-
-          priceRange = document.getElementById("price-range");
-    
-          // This ensures that the filterCatalog function is only attached once.
-          if (!priceRangeInitialized) {
-              priceRange.addEventListener("input", filterCatalog);
-              priceRangeInitialized = true;
-          }
+      const quickLookBtn = card.querySelector("#quick_look");
+      quickLookBtn.addEventListener("click", () => {
+	const productData = {
+	  //image_url: card.querySelector("#product_image").src,
+	  name: card.querySelector("#name").textContent,
+	  brand: card.querySelector("#brand").textContent,
+	  description: card.querySelector("#description").textContent,
+	  product_link: data.product_link,
+	  price: card.querySelector("#price").textContent.replace("$", "")
+	};
+	showPopup(productData);
       });
-    }
+
+      const likeBtn = card.querySelector("#like-button");
+      const dislikeBtn = card.querySelector("#dislike-button");
+      const likeImage = card.querySelector("#image-like");
+      const dislikeImage = card.querySelector("#image-dislike");
+	      
+      firebase.firestore().collection("users").doc(userId).get()
+      .then(doc => {
+    	const liked = doc.data().liked;
+    	const isLiked = liked.some(product => product.productId === productId);
+
+    	if (isLiked) {
+      	  likeImage.src = "https://uploads-ssl.webflow.com/63754b30fc1fcb22c75e7cb3/64fd42aa4c01d1a2dce1f72d_like.png";
+    	} else {
+      	  likeImage.src = "https://uploads-ssl.webflow.com/63754b30fc1fcb22c75e7cb3/64fd1f04f9318a593c1544e8_like%20unfilled.png";
+    	}
+      })
+      .catch(error => {
+    	console.log("Error getting liked:", error);
+      });
+
+      firebase.firestore().collection("users").doc(userId).get()
+      .then(doc => {
+      	const disliked = doc.data().disliked;
+	const isDisliked = disliked.some(product => product.productId === productId);
+
+	if (isDisliked) {
+      	  dislikeImage.src = "https://uploads-ssl.webflow.com/63754b30fc1fcb22c75e7cb3/64fd42a725f96a17e1984d22_dislike.png";
+    	} else {
+          dislikeImage.src = "https://uploads-ssl.webflow.com/63754b30fc1fcb22c75e7cb3/64fd21004c01d1a2dccce5dc_dislike%20unfilled.png";
+    	}
+      })
+      .catch(error => {
+        console.log("Error getting disliked:", error);
+      });
+
+      likeBtn.addEventListener("click", () => {
+	toggleLike(likeImage, dislikeImage, userId, productId, selected_who, selected_holiday)	
+      });
+
+      dislikeBtn.addEventListener("click", () => {
+	toggleDislike(dislikeImage, likeImage, userId, productId, selected_who, selected_holiday)	
+      });
+
+      catalogGrid.appendChild(card);
+
+      card.addEventListener('mouseenter', () => {
+        card.animate([
+        { transform: 'scale(1)' },
+        { transform: 'scale(1.05)' }
+        ], {
+        duration: 200,
+        fill: 'forwards'
+        });
+      });
+
+      card.addEventListener('mouseleave', () => {
+        card.animate([
+        { transform: 'scale(1.05)' },
+        { transform: 'scale(1)' }
+        ], {
+        duration: 200,
+        fill: 'forwards'
+        });
+        });
+      });
+
+      var brands = Array.from(brandsSet); // add this line
+      populateBrandFilter(brands);
+
+      showSlide(currentSlide);
+
+      priceRange = document.getElementById("price-range");
+    
+      // This ensures that the filterCatalog function is only attached once.
+      if (!priceRangeInitialized) {
+        priceRange.addEventListener("input", filterCatalog);
+        priceRangeInitialized = true;
+      }
+    });
+  }
 
 const filledLike = "https://uploads-ssl.webflow.com/63754b30fc1fcb22c75e7cb3/64fd42aa4c01d1a2dce1f72d_like.png";
 const emptyLike = "https://uploads-ssl.webflow.com/63754b30fc1fcb22c75e7cb3/64fd1f04f9318a593c1544e8_like%20unfilled.png";
