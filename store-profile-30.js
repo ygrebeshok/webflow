@@ -128,9 +128,8 @@ authLogout.forEach(function(el) {
 });
 
 document.getElementById('add-product-btn').addEventListener('click', function() {
-  const brand = storeName.value;
+  const brand = storeNameValue;
   const name = document.getElementById('product-name-update').value;
-  console.log(name);
   const description = document.getElementById('product-description-update').value;
   const productLink = document.getElementById('product-link-update').value;
   const price = document.getElementById('product-price-update').value;
