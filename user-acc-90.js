@@ -16,11 +16,6 @@ const favoritesLabel = document.getElementById("favorites-label");
 const favoriteBtn = document.querySelector("#favorite-btn");
 const profilesContain = document.getElementById("profiles-grid");
 
-firebase.initializeApp(webflowAuth.firebaseConfig);
-
-firebase.analytics && firebase.analytics();
-
-{
 var bodyAuth = document.body.getAttribute('data-user-auth');
 var bodyUnauth = document.body.getAttribute('data-user-unauth');
 
@@ -387,5 +382,3 @@ firebase.auth().onAuthStateChanged(function(authUser) {
    });
   }
 });
-	
-}
