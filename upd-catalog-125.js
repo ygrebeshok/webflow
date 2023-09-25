@@ -385,6 +385,8 @@ function updateCatalog() {
       giftsRef.get().then((querySnapshot) => {
       catalogGrid.innerHTML = "";
       allCards = [];
+      var slideContainer = document.querySelector('.slides');
+      var thumbnailContainer = document.querySelector('.thumbnails');
       
       querySnapshot.forEach((doc) => {
         const data = doc.data();
@@ -464,7 +466,6 @@ function updateCatalog() {
 	  toggleDislike(dislikeImage, likeImage, userId, productId, selected_who, selected_holiday)	
 	});
 
-
         catalogGrid.appendChild(card);
 
         card.addEventListener('mouseenter', () => {
@@ -491,6 +492,16 @@ function updateCatalog() {
           var brands = Array.from(brandsSet); // add this line
           populateBrandFilter(brands);
 
+	  var thumbnail = document.createElement('div');
+          thumbnail.classList.add('thumbnail');
+          thumbnail.innerHTML = `<img src="${data.images[0]}" alt="Thumbnail">`;
+          thumbnailContainer.appendChild(thumbnail);
+
+          var slide = document.createElement('div');
+          slide.classList.add('slide');
+          slide.innerHTML = `<img src="${data.images[0]}" alt="Product Image">`;
+          slideContainer.appendChild(slide);
+
           priceRange = document.getElementById("price-range");
     
           // This ensures that the filterCatalog function is only attached once.
@@ -498,6 +509,7 @@ function updateCatalog() {
               priceRange.addEventListener("input", filterCatalog);
               priceRangeInitialized = true;
           }
+	showSlide(currentSlide);
       });
     }
 
