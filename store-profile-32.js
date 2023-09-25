@@ -210,12 +210,31 @@ function loadProducts(storeNameValue) {
       productCard.querySelector("#product-image").src = data.images[0];
       productCard.querySelector("#product-price").textContent = "$" + data.price;
 
+      const removeButton = productCard.getElementById("remove-btn");
+      removeButton.addEventListener("click", function() {
+        const productId = removeButton.dataset.productId;
+        removeProduct(productId);
+      });
+	    
       productsContainer.appendChild(productCard);
 	    
     });
    }).catch((error) => {
      console.log("Error getting products: ", error);
   });
+}
+
+
+function removeProduct(productId) {
+  const giftsRef = firebase.firestore().collection('gifts');
+
+  giftsRef.doc(productId).delete()
+    .then(() => {
+      console.log('Product removed:', productId);
+    })
+    .catch((error) => {
+      console.error('Error removing product:', error);
+    });
 }
 	
 }
