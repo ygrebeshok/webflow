@@ -292,7 +292,7 @@ function editing(button, brand, name, description, productLink, price) {
   button.textContent = "Updating...";
 
   // Iterate through the images and upload them
-  const previewImages = document.querySelectorAll('.previewImage');
+  const previewImages = document.querySelectorAll('.previewImageEdit');
   const uploadPromises = Array.from(previewImages).map((image, index) => {
     const file = image.src; // Assuming image.src contains the base64 data
     const imageRef = storageRef.child(`images/${name}_${index}.jpg`);
@@ -324,13 +324,7 @@ function editing(button, brand, name, description, productLink, price) {
               product_link: productLink
             };
 
-            doc.ref.update({
-              name: document.getElementById('product-name-edit').value,
-              description: document.getElementById('product-description-edit').value,
-              product_link: document.getElementById('product-link-edit').value,
-              price: document.getElementById('product-price-edit').value.replace("$", ""),
-              images: newImages // Update with new images
-            })
+            doc.ref.update(productData)
             .then(() => {
               // Reset form fields and image previews after successful submission
               document.getElementById('product-name-edit').value = '';
