@@ -379,15 +379,18 @@ function editing(button, brand, name, description, productLink, price) {
             })
             .catch((error) => {
               successEdit.textContent = 'Error editing product: ' + error;
+	      successEdit.style.display = 'block';
             });
           });
         })
         .catch((error) => {
           successEdit.textContent = 'Error finding product: ' + error;
+	  successEdit.style.display = 'block';
         });
     })
     .catch(error => {
       successEdit.textContent = 'Error uploading images: ' + error;
+      successEdit.style.display = 'block';
     });
 }
 	
