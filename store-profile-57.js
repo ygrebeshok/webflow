@@ -84,6 +84,34 @@ function showPopupStore (productData, card) {
 
     const editProductBtn = document.getElementById("edit-product-btn");
     editProductBtn.addEventListener('click', function() {
+      const currentImages = Array.from(document.querySelectorAll('.slide img')).map(img => img.src);
+
+      // Clear the existing image previews
+      const imagePreviewContainerEdit = document.getElementById('imagePreviewContainerEdit');
+      imagePreviewContainerEdit.innerHTML = '';
+
+      // Populate the image preview with the current product's images
+      currentImages.forEach(imageUrl => {
+        const img = document.createElement('img');
+        img.src = imageUrl;
+        img.classList.add('previewImage');
+
+        const container = document.createElement('div');
+        container.classList.add('previewImageContainer');
+
+        const removeButton = document.createElement('button');
+        removeButton.classList.add('removeButton');
+        removeButton.innerHTML = '&#120;'; // X symbol
+
+        removeButton.addEventListener('click', function() {
+          container.remove(); // Remove the image container
+        });
+
+        container.appendChild(img);
+        container.appendChild(removeButton);
+        imagePreviewContainerEdit.appendChild(container);
+      });
+	    
       editProductWindow.style.display = "flex";
       document.getElementById('product-name-edit').value = popupTitle.textContent;
       document.getElementById('product-description-edit').value = popupDesc.textContent;
