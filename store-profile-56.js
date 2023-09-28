@@ -82,8 +82,16 @@ function showPopupStore (productData, card) {
       removeProduct(card, popupTitle.textContent, popupBrand.textContent, popupDesc.textContent, popupPrice.textContent.replace("$", ""));
     });
 
-    const updateProductBtn = document.getElementById("update-product");
+    const editProductBtn = document.getElementById("edit-product-btn");
+    editProductBtn.addEventListener('click', function() {
+      editProductWindow.style.display = "flex";
+      document.getElementById('product-name-edit').value = popupTitle.textContent;
+      document.getElementById('product-description-edit').value = popupDesc.textContent;
+      document.getElementById('product-link-edit').value = popupBrand.href;
+      document.getElementById('product-price-edit').value = popupPrice.textContent.replace("$", "");
+    });
 
+    const updateProductBtn = document.getElementById("update-product");
     updateProductBtn.addEventListener('click', function() {
       editing(updateProductBtn, popupBrand.textContent, popupTitle.textContent, popupDesc.textContent, popupBrand.href, popupPrice.textContent.replace("$", ""));
     });
@@ -271,13 +279,8 @@ addProductBtn.addEventListener('click', function() {
 });
 
 const editProductWindow = document.getElementById("edit-product-window");
-const editProductBtn = document.getElementById("edit-product-btn");
 const closeEditBtn = document.getElementById("close-edit-btn");
 const successEdit = document.getElementById("success-edit");
-
-editProductBtn.addEventListener('click', function() {
-  editProductWindow.style.display = "flex";
-});
 
 closeEditBtn.addEventListener('click', function() {
   editProductWindow.style.display = "none";
@@ -325,7 +328,7 @@ function editing(button, brand, name, description, productLink, price) {
               name: document.getElementById('product-name-edit').value,
               description: document.getElementById('product-description-edit').value,
               product_link: document.getElementById('product-link-edit').value,
-              price: parseFloat(document.getElementById('product-price-edit').value), // Convert to a number
+              price: document.getElementById('product-price-edit').value.replace("$", ""),
               images: newImages // Update with new images
             })
             .then(() => {
