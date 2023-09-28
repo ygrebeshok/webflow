@@ -294,44 +294,41 @@ function editing(button, brand, name, description, productLink, price) {
   // Iterate through the images and upload them
   const previewImages = document.querySelectorAll('.previewImage');
   const uploadPromises = Array.from(previewImages).map((image, index) => {
-    const file = image.src; 
+    const file = image.src; // Assuming image.src contains the base64 data
     const imageRef = storageRef.child(`images/${name}_${index}.jpg`);
 
-    return new Promise((resolve, reject) => {
-      imageRef.putString(file, 'data_url')
-        .then(snapshot => snapshot.ref.getDownloadURL())
-        .then(downloadURL => resolve(downloadURL))  // Resolve with download URL
-        .catch(error => reject(error));  // Reject if there's an error
-    });
+    return imageRef.putString(file, 'data_url')
+      .then(snapshot => snapshot.ref.getDownloadURL());
   });
 
-  // Wait for all images to upload
-  Promise.all(uploadPromises)
-    .then(downloadURLs => {
-      const newImages = downloadURLs;
+  const giftsRef = firebase.firestore().collection('gifts');
 
-      const productData = {
-        name: name,
-        description: description,
-        images: newImages, // Use the new images
-        price: price,
-        product_link: productLink
-      };
+  giftsRef
+    .where("name", "==", name)
+    .where("description", "==", description)
+    .where("price", "==", price)
+    .get()
+    .then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        const currentImages = doc.data().images;
 
-      const giftsRef = firebase.firestore().collection('gifts');
+        Promise.all(uploadPromises)
+          .then(downloadURLs => {
+            const newImages = downloadURLs.length > 0 ? downloadURLs : currentImages;
 
-      giftsRef
-        .where("name", "==", name)
-        .where("description", "==", description)
-        .where("price", "==", price)
-        .get()
-        .then((querySnapshot) => {
-          querySnapshot.forEach((doc) => {
+            const productData = {
+              name: name,
+              description: description,
+              images: newImages,
+              price: price,
+              product_link: productLink
+            };
+
             doc.ref.update({
               name: document.getElementById('product-name-edit').value,
               description: document.getElementById('product-description-edit').value,
               product_link: document.getElementById('product-link-edit').value,
-              price: parseFloat(document.getElementById('product-price-edit').value), // Convert to a number
+              price: document.getElementById('product-price-edit').value.replace("$", ""),
               images: newImages // Update with new images
             })
             .then(() => {
@@ -348,18 +345,18 @@ function editing(button, brand, name, description, productLink, price) {
               button.textContent = "Update Product";
             })
             .catch((error) => {
-	      successEdit.textContent = 'Error editing product: ' + error;
+              successEdit.textContent = 'Error editing product: ' + error;
               successEdit.style.display = 'block';
             });
+          })
+          .catch((error) => {
+            successEdit.textContent = 'Error uploading images: ' + error;
+            successEdit.style.display = 'block';
           });
-        })
-        .catch((error) => {
-	  successEdit.textContent = 'Error finding product: ' + error;
-          successEdit.style.display = 'block';
-        });
+      });
     })
-    .catch(error => {
-      successEdit.textContent = 'Error uploading images: ' + error;
+    .catch((error) => {
+      successEdit.textContent = 'Error finding product: ' + error;
       successEdit.style.display = 'block';
     });
 }
