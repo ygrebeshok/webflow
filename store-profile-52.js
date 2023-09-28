@@ -282,7 +282,7 @@ closeEditBtn.addEventListener('click', function() {
 });
 
 function editing(brand, name, description, productLink, price) {
-  const successEdit = document.getElementById('successEdit'); // Assuming you have an element with this ID
+  const successEdit = document.getElementById('success-edit');
 
   successEdit.style.display = 'none';
   editProductBtn.textContent = "Updating...";
