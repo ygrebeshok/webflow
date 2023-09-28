@@ -290,6 +290,7 @@ function editing(button, brand, name, description, productLink, price) {
 
   successEdit.style.display = 'none';
   button.textContent = "Updating...";
+  const images = [];
 
   // Iterate through the images and upload them
   const previewImages = document.querySelectorAll('.previewImageEdit');
@@ -314,8 +315,7 @@ function editing(button, brand, name, description, productLink, price) {
 
         Promise.all(uploadPromises)
           .then(downloadURLs => {
-            const newImages = downloadURLs.length > 0 ? downloadURLs : currentImages;
-	    return newImages;
+            images.push(...downloadURLs);
           })
           .catch((error) => {
             successEdit.textContent = 'Error uploading images: ' + error;
@@ -325,7 +325,7 @@ function editing(button, brand, name, description, productLink, price) {
           const productData = {
             name: name,
             description: description,
-            images: newImages,
+            images: images.length > 0 ? images : currentImages;,
             price: price,
             product_link: productLink
           };
