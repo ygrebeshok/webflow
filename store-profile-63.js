@@ -321,18 +321,17 @@ function editing(button, brand, name, description, productLink, price) {
   // Iterate through the images and upload them
   const previewImages = document.querySelectorAll('.previewImage');
   const uploadPromises = Array.from(previewImages).map((image, index) => {
-    return new Promise((resolve, reject) => {
-      const imageSrc = image.src;
-      fetch(imageSrc)
-        .then(response => response.blob())
-        .then(blob => {
-          const imageRef = storageRef.child(`images/${name}_${index}.jpg`);
-          return imageRef.put(blob, { contentType: 'image/jpeg' });
-        })
-        .then(snapshot => snapshot.ref.getDownloadURL())
-        .then(downloadURL => resolve(downloadURL))
-        .catch(error => reject(error));
-    });
+    return fetch(image.src)
+      .then(response => response.blob())
+      .then(blob => {
+        const reader = new FileReader();
+        reader.readAsDataURL(blob);
+        return new Promise(resolve => {
+          reader.onloadend = () => {
+            resolve(reader.result);
+          }
+        });
+      });
   });
 
   // Wait for all images to upload
