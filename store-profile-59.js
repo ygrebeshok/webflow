@@ -9,7 +9,6 @@ firebase.analytics && firebase.analytics();
 var bodyAuth = document.body.getAttribute('data-user-auth');
 var bodyUnauth = document.body.getAttribute('data-user-unauth');
 let storeNameValue;
-const editProductWindow = document.getElementById("edit-product-window");
 const successEdit = document.getElementById("success-edit");
 
 function showPopupStore (productData, card) {
@@ -84,6 +83,7 @@ function showPopupStore (productData, card) {
       removeProduct(card, popupTitle.textContent, popupBrand.textContent, popupDesc.textContent, popupPrice.textContent.replace("$", ""));
     });
 
+    const editProductWindow = document.getElementById("edit-product-window");
     const editProductBtn = document.getElementById("edit-product-btn");
     editProductBtn.addEventListener('click', function() {
       const currentImages = Array.from(document.querySelectorAll('.slide img')).map(img => img.src);
@@ -310,6 +310,7 @@ addProductBtn.addEventListener('click', function() {
 
 const closeEditBtn = document.getElementById("close-edit-btn");
 closeEditBtn.addEventListener('click', function() {
+  const editProductWindow = document.getElementById("edit-product-window");
   editProductWindow.style.display = "none";
 });
 
