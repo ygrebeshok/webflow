@@ -321,24 +321,19 @@ function editing(button, brand, name, description, productLink, price) {
   // Iterate through the images and upload them
   const previewImages = document.querySelectorAll('.previewImage');
   const uploadPromises = Array.from(previewImages).map((image, index) => {
-    const file = image.src; // Assuming image.src contains the base64 data
-    
     return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-
-    reader.onload = function() {
-      const dataUrl = reader.result;
-      const imageRef = storageRef.child(`images/${name}_${index}.jpg`);
-
-      imageRef.putString(dataUrl, 'data_url')
+      const imageSrc = image.src;
+      fetch(imageSrc)
+        .then(response => response.blob())
+        .then(blob => {
+          const imageRef = storageRef.child(`images/${name}_${index}.jpg`);
+          return imageRef.put(blob, { contentType: 'image/jpeg' });
+        })
         .then(snapshot => snapshot.ref.getDownloadURL())
         .then(downloadURL => resolve(downloadURL))
         .catch(error => reject(error));
-    }
-
-    reader.readAsDataURL(file);
+    });
   });
-});
 
   // Wait for all images to upload
   Promise.all(uploadPromises)
@@ -383,16 +378,16 @@ function editing(button, brand, name, description, productLink, price) {
               button.textContent = "Update Product";
             })
             .catch((error) => {
-              successEdit.textContent = 'Error editing product: ', error;
+              successEdit.textContent = 'Error editing product: ' + error;
             });
           });
         })
         .catch((error) => {
-          successEdit.textContent = 'Error finding product: ', error;
+          successEdit.textContent = 'Error finding product: ' + error;
         });
     })
     .catch(error => {
-      successEdit.textContent = 'Error uploading images: ', error;
+      successEdit.textContent = 'Error uploading images: ' + error;
     });
 }
 	
