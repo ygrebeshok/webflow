@@ -82,7 +82,9 @@ function showPopupStore (productData, card) {
       removeProduct(card, popupTitle.textContent, popupDesc.textContent, popupPrice.textContent.replace("$", ""));
     });
 
-    editProductBtn.addEventListener('click', function() {
+    const updateProductBtn = document.getElementById("update-product");
+
+    updateProductBtn.addEventListener('click', function() {
       editing(popupBrand.textContent, popupTitle.textContent, popupDesc.textContent, popupBrand.href, popupPrice.textContent.replace("$", ""));
     });
 }
