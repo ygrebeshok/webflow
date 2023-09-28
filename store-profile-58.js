@@ -9,6 +9,8 @@ firebase.analytics && firebase.analytics();
 var bodyAuth = document.body.getAttribute('data-user-auth');
 var bodyUnauth = document.body.getAttribute('data-user-unauth');
 let storeNameValue;
+const editProductWindow = document.getElementById("edit-product-window");
+const successEdit = document.getElementById("success-edit");
 
 function showPopupStore (productData, card) {
 
@@ -306,10 +308,7 @@ addProductBtn.addEventListener('click', function() {
     });
 });
 
-const editProductWindow = document.getElementById("edit-product-window");
 const closeEditBtn = document.getElementById("close-edit-btn");
-const successEdit = document.getElementById("success-edit");
-
 closeEditBtn.addEventListener('click', function() {
   editProductWindow.style.display = "none";
 });
@@ -324,11 +323,23 @@ function editing(button, brand, name, description, productLink, price) {
   const previewImages = document.querySelectorAll('.previewImage');
   const uploadPromises = Array.from(previewImages).map((image, index) => {
     const file = image.src; // Assuming image.src contains the base64 data
-    const imageRef = storageRef.child(`images/${name}_${index}.jpg`);
+    
+    return new Promise((resolve, reject) => {
+    const reader = new FileReader();
 
-    return imageRef.putString(file, 'data_url')
-      .then(snapshot => snapshot.ref.getDownloadURL());
+    reader.onload = function() {
+      const dataUrl = reader.result;
+      const imageRef = storageRef.child(`images/${name}_${index}.jpg`);
+
+      imageRef.putString(dataUrl, 'data_url')
+        .then(snapshot => snapshot.ref.getDownloadURL())
+        .then(downloadURL => resolve(downloadURL))
+        .catch(error => reject(error));
+    }
+
+    reader.readAsDataURL(file);
   });
+});
 
   // Wait for all images to upload
   Promise.all(uploadPromises)
