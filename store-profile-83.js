@@ -187,10 +187,6 @@ firebase.auth().onAuthStateChanged(function(authUser) {
                  giftsRef.doc(doc.id).update({ brand: newStoreName });
                });
              })
-	     .then(() => {
-    	       // Load products after updating the brand
-    	       loadProducts(storeName.value);
-  	     })
              .catch((error) => {
                console.error('Error updating brands in gifts collection: ', error);
              });
