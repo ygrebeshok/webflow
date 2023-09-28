@@ -325,7 +325,7 @@ function editing(button, brand, name, description, productLink, price) {
           const productData = {
             name: name,
             description: description,
-            images: images.length > 0 ? images : currentImages;
+            images: images.length > 0 ? images : currentImages,
             price: price,
             product_link: productLink
           };
