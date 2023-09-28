@@ -216,7 +216,7 @@ authLogout.forEach(function(el) {
 });
 
 const addProductBtn = document.getElementById('add-product-btn');
-	
+
 addProductBtn.addEventListener('click', function() {
   success.style.display = 'none';
   addProductBtn.textContent = "Adding...";
@@ -242,40 +242,42 @@ addProductBtn.addEventListener('click', function() {
     .then(downloadURLs => {
       images.push(...downloadURLs);
     
-  const productData = {
-    brand: brand,
-    name: name,
-    description: description,
-    images: images,
-    price: price,
-    product_link: productLink
-  };
+      const productData = {
+        brand: brand,
+        name: name,
+        description: description,
+        images: images,
+        price: price,
+        product_link: productLink
+      };
 
-  const giftsRef = firebase.firestore().collection('gifts');
+      const giftsRef = firebase.firestore().collection('gifts');
 
-  giftsRef.add(productData)
-  .then((docRef) => {
-    // Reset form fields and image previews after successful submission
-    document.getElementById('store-name-text').value = '';
-    document.getElementById('product-name-update').value = '';
-    document.getElementById('product-description-update').value = '';
-    document.getElementById('product-link-update').value = '';
-    document.getElementById('product-price-update').value = '';
-    document.getElementById('imagePreviewContainer').innerHTML = '';
+      giftsRef.add(productData)
+        .then((docRef) => {
+          // Reset form fields and image previews after successful submission
+          document.getElementById('store-name-text').value = '';
+          document.getElementById('product-name-update').value = '';
+          document.getElementById('product-description-update').value = '';
+          document.getElementById('product-link-update').value = '';
+          document.getElementById('product-price-update').value = '';
+          document.getElementById('imagePreviewContainer').innerHTML = '';
 
-    loadProducts(brand);
-    const success = document.getElementById("success");
-    success.textContent = "Product added successfully";
-    success.style.display = 'block';
-    addProductBtn.textContent = "Add this Product";
-  })
-  .catch((error) => {
-    console.error('Error adding product: ', error);
-  });
-  .catch(error => {
-    console.error('Error uploading images: ', error);
-  });
+          loadProducts(brand);
+          const success = document.getElementById("success");
+          success.textContent = "Product added successfully";
+          success.style.display = 'block';
+          addProductBtn.textContent = "Add this Product";
+        })
+        .catch((error) => {
+          console.error('Error adding product: ', error);
+        });
+    })
+    .catch(error => {
+      console.error('Error uploading images: ', error);
+    });
 });
+
 
 const closeEditBtn = document.getElementById("close-edit-btn");
 closeEditBtn.addEventListener('click', function() {
@@ -283,6 +285,7 @@ closeEditBtn.addEventListener('click', function() {
   editProductWindow.style.display = "none";
 });
 
+	
 function editing(button, brand, name, description, price) {
   const successEdit = document.getElementById('success-edit');
 
@@ -314,37 +317,37 @@ function editing(button, brand, name, description, price) {
         Promise.all(uploadPromises)
           .then(downloadURLs => {
             imagesArray.push(...downloadURLs);
-	
-          const productData = {
-            name: document.getElementById('product-name-edit').value,
-            description: document.getElementById('product-description-edit').value,
-            images: imagesArray.length > 0 ? imagesArray : currentImages,
-            price: document.getElementById('product-price-edit').value.replace("$", ""),
-            product_link: document.getElementById('product-link-edit').value
-          };
 
-          doc.ref.update(productData)
-          .then(() => {
-            successEdit.textContent = "Product updated successfully";
-            successEdit.style.display = 'block';
-            button.textContent = "Update Product";
-	    loadProducts(brand);
+            const productData = {
+              name: document.getElementById('product-name-edit').value,
+              description: document.getElementById('product-description-edit').value,
+              images: imagesArray.length > 0 ? imagesArray : currentImages,
+              price: document.getElementById('product-price-edit').value.replace("$", ""),
+              product_link: document.getElementById('product-link-edit').value
+            };
+
+            doc.ref.update(productData)
+              .then(() => {
+                successEdit.textContent = "Product updated successfully";
+                successEdit.style.display = 'block';
+                button.textContent = "Update Product";
+                loadProducts(brand);
+              })
+              .catch((error) => {
+                successEdit.textContent = 'Error editing product: ' + error;
+                successEdit.style.display = 'block';
+              });
           })
           .catch((error) => {
-            successEdit.textContent = 'Error editing product: ' + error;
+            successEdit.textContent = 'Error uploading images: ' + error;
             successEdit.style.display = 'block';
           });
-       });
+      });
     })
     .catch((error) => {
       successEdit.textContent = 'Error finding product: ' + error;
       successEdit.style.display = 'block';
     });
-  }
-  .catch((error) => {
-    successEdit.textContent = 'Error uploading images: ' + error;
-    successEdit.style.display = 'block';
-  });
 }
 	
 
