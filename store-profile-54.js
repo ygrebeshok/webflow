@@ -85,7 +85,7 @@ function showPopupStore (productData, card) {
     const updateProductBtn = document.getElementById("update-product");
 
     updateProductBtn.addEventListener('click', function() {
-      editing(popupBrand.textContent, popupTitle.textContent, popupDesc.textContent, popupBrand.href, popupPrice.textContent.replace("$", ""));
+      editing(updateProductBtn, popupBrand.textContent, popupTitle.textContent, popupDesc.textContent, popupBrand.href, popupPrice.textContent.replace("$", ""));
     });
 }
 
@@ -283,11 +283,11 @@ closeEditBtn.addEventListener('click', function() {
   editProductWindow.style.display = "none";
 });
 
-function editing(brand, name, description, productLink, price) {
+function editing(button, brand, name, description, productLink, price) {
   const successEdit = document.getElementById('success-edit');
 
   successEdit.style.display = 'none';
-  editProductBtn.textContent = "Updating...";
+  button.textContent = "Updating...";
 
   // Iterate through the images and upload them
   const previewImages = document.querySelectorAll('.previewImage');
@@ -339,7 +339,7 @@ function editing(brand, name, description, productLink, price) {
               loadProducts(brand);
               successEdit.textContent = "Product updated successfully";
               successEdit.style.display = 'block';
-              editProductBtn.textContent = "Update Product";
+              button.textContent = "Update Product";
             })
             .catch((error) => {
               console.error('Error editing product: ', error);
