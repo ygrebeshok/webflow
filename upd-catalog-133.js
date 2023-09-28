@@ -34,7 +34,6 @@ const popupFavoriteBtn = document.getElementById("look-fav-btn");
 let selWho = document.getElementById("sel-who");
 let selHoliday = document.getElementById("sel-holiday");
 const favoritesLabel = document.getElementById("favorites-label");
-const heart = document.getElementById("heart");
 const likeBtn = document.getElementById("like-button");
 const likeImage = document.getElementById("image-like");
 const dislikeBtn = document.getElementById("dislike-button");
@@ -162,8 +161,6 @@ function toggleFavorite(element, userId, productId) {
     })
     .then(() => {
       element.textContent = "Add to Favorites";
-      heart.classList.remove("full-opacity");
-      heart.classList.add("half-opacity");
     })
     .catch(error => {
       console.log("Error removing product from favorites:", error);
@@ -174,8 +171,6 @@ function toggleFavorite(element, userId, productId) {
     })
     .then(() => {
       element.textContent = "Remove from Favorites";
-      heart.classList.remove("half-opacity");
-      heart.classList.add("full-opacity");
     })
     .catch(error => {
       console.log("Error adding product to favorites:", error);
