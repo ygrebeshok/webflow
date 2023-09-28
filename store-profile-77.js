@@ -218,6 +218,7 @@ authLogout.forEach(function(el) {
 const addProductBtn = document.getElementById('add-product-btn');
 
 addProductBtn.addEventListener('click', function() {
+  const success = document.getElementById("success");
   success.style.display = 'none';
   addProductBtn.textContent = "Adding...";
   const brand = storeNameValue;
@@ -264,7 +265,6 @@ addProductBtn.addEventListener('click', function() {
           document.getElementById('imagePreviewContainer').innerHTML = '';
 
           loadProducts(brand);
-          const success = document.getElementById("success");
           success.textContent = "Product added successfully";
           success.style.display = 'block';
           addProductBtn.textContent = "Add this Product";
@@ -283,6 +283,10 @@ const closeEditBtn = document.getElementById("close-edit-btn");
 closeEditBtn.addEventListener('click', function() {
   const editProductWindow = document.getElementById("edit-product-window");
   editProductWindow.style.display = "none";
+
+  const successEdit = document.getElementById('success-edit');
+  successEdit.textContent = "";
+  successEdit.style.display = "none";
 });
 
 	
