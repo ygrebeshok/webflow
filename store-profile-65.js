@@ -287,23 +287,18 @@ closeEditBtn.addEventListener('click', function() {
 
 function editing(button, brand, name, description, productLink, price) {
   const successEdit = document.getElementById('success-edit');
+
   successEdit.style.display = 'none';
   button.textContent = "Updating...";
 
   // Iterate through the images and upload them
   const previewImages = document.querySelectorAll('.previewImage');
   const uploadPromises = Array.from(previewImages).map((image, index) => {
-    return fetch(image.src)
-      .then(response => response.blob())
-      .then(blob => {
-        const reader = new FileReader();
-        reader.readAsDataURL(blob);
-        return new Promise(resolve => {
-          reader.onloadend = () => {
-            resolve(reader.result);
-          }
-        });
-      });
+    const file = image.src; // Assuming image.src contains the base64 data
+    const imageRef = storageRef.child(`images/${name}_${index}.jpg`);
+
+    return imageRef.putString(file, 'data_url')
+      .then(snapshot => snapshot.ref.getDownloadURL());
   });
 
   // Wait for all images to upload
@@ -332,7 +327,7 @@ function editing(button, brand, name, description, productLink, price) {
               name: document.getElementById('product-name-edit').value,
               description: document.getElementById('product-description-edit').value,
               product_link: document.getElementById('product-link-edit').value,
-              price: document.getElementById('product-price-edit').value.replace("$", ""),
+              price: parseFloat(document.getElementById('product-price-edit').value), // Convert to a number
               images: newImages // Update with new images
             })
             .then(() => {
@@ -349,14 +344,14 @@ function editing(button, brand, name, description, productLink, price) {
               button.textContent = "Update Product";
             })
             .catch((error) => {
-              successEdit.textContent = 'Error editing product: ' + error;
-	      successEdit.style.display = 'block';
+	      successEdit.textContent = 'Error editing product: ' + error;
+              successEdit.style.display = 'block';
             });
           });
         })
         .catch((error) => {
-          successEdit.textContent = 'Error finding product: ' + error;
-	  successEdit.style.display = 'block';
+	  successEdit.textContent = 'Error finding product: ' + error;
+          successEdit.style.display = 'block';
         });
     })
     .catch(error => {
