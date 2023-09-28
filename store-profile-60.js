@@ -9,7 +9,6 @@ firebase.analytics && firebase.analytics();
 var bodyAuth = document.body.getAttribute('data-user-auth');
 var bodyUnauth = document.body.getAttribute('data-user-unauth');
 let storeNameValue;
-const successEdit = document.getElementById("success-edit");
 
 function showPopupStore (productData, card) {
 
@@ -316,7 +315,6 @@ closeEditBtn.addEventListener('click', function() {
 
 function editing(button, brand, name, description, productLink, price) {
   const successEdit = document.getElementById('success-edit');
-
   successEdit.style.display = 'none';
   button.textContent = "Updating...";
 
@@ -385,16 +383,16 @@ function editing(button, brand, name, description, productLink, price) {
               button.textContent = "Update Product";
             })
             .catch((error) => {
-              console.error('Error editing product: ', error);
+              successEdit.textContent = 'Error editing product: ', error;
             });
           });
         })
         .catch((error) => {
-          console.error('Error finding product: ', error);
+          successEdit.textContent = 'Error finding product: ', error;
         });
     })
     .catch(error => {
-      console.error('Error uploading images: ', error);
+      successEdit.textContent = 'Error uploading images: ', error;
     });
 }
 	
