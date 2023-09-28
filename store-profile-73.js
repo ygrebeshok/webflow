@@ -41,7 +41,7 @@ function showPopupStore (productData, card) {
     slide.classList.add('slide');
     slide.innerHTML = `<img src="${imageUrl}" alt="Product Image">`;
     slideContainer.appendChild(slide);
-  })
+  });
 	
   popupContainer.style.display = "flex";
 
@@ -94,7 +94,7 @@ function showPopupStore (productData, card) {
 
     const updateProductBtn = document.getElementById("update-product");
     updateProductBtn.addEventListener('click', function() {
-      editing(updateProductBtn, popupBrand.textContent, popupTitle.textContent, popupDesc.textContent, popupBrand.href, popupPrice.textContent.replace("$", ""));
+      editing(updateProductBtn, popupBrand.textContent, popupTitle.textContent, popupDesc.textContent, popupPrice.textContent.replace("$", ""));
     });
 }
 
@@ -285,7 +285,7 @@ closeEditBtn.addEventListener('click', function() {
   editProductWindow.style.display = "none";
 });
 
-function editing(button, brand, name, description, productLink, price) {
+function editing(button, brand, name, description, price) {
   const successEdit = document.getElementById('success-edit');
 
   successEdit.style.display = 'none';
@@ -323,22 +323,15 @@ function editing(button, brand, name, description, productLink, price) {
           });
 	
           const productData = {
-            name: name,
-            description: description,
+            name: document.getElementById('product-name-edit').value,
+            description: document.getElementById('product-description-edit').value,
             images: images.length > 0 ? images : currentImages,
-            price: price,
-            product_link: productLink
+            price: document.getElementById('product-price-edit').value.replace("$", ""),
+            product_link: document.getElementById('product-link-edit').value
           };
 
           doc.ref.update(productData)
           .then(() => {
-            // Reset form fields and image previews after successful submission
-            document.getElementById('product-name-edit').value = '';
-            document.getElementById('product-description-edit').value = '';
-            document.getElementById('product-link-edit').value = '';
-            document.getElementById('product-price-edit').value = '';
-            document.getElementById('imagePreviewContainerEdit').innerHTML = '';
-
             loadProducts(brand);
             successEdit.textContent = "Product updated successfully";
             successEdit.style.display = 'block';
