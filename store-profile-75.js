@@ -68,7 +68,6 @@ function showPopupStore (productData, card) {
     thumbnails.forEach((thumbnail, index) => {
       thumbnail.addEventListener('click', function() {
         showSlide(index);
-	console.log("thumbnail clicked");
       });
     });
 
@@ -242,10 +241,6 @@ addProductBtn.addEventListener('click', function() {
   Promise.all(uploadPromises)
     .then(downloadURLs => {
       images.push(...downloadURLs);
-  })
-  .catch(error => {
-    console.error('Error uploading images: ', error);
-  });
     
   const productData = {
     brand: brand,
@@ -276,7 +271,10 @@ addProductBtn.addEventListener('click', function() {
   })
   .catch((error) => {
     console.error('Error adding product: ', error);
-  });   
+  });
+  .catch(error => {
+    console.error('Error uploading images: ', error);
+  });
 });
 
 const closeEditBtn = document.getElementById("close-edit-btn");
@@ -316,11 +314,6 @@ function editing(button, brand, name, description, price) {
         Promise.all(uploadPromises)
           .then(downloadURLs => {
             imagesArray.push(...downloadURLs);
-          })
-          .catch((error) => {
-            successEdit.textContent = 'Error uploading images: ' + error;
-            successEdit.style.display = 'block';
-          });
 	
           const productData = {
             name: document.getElementById('product-name-edit').value,
@@ -347,6 +340,11 @@ function editing(button, brand, name, description, price) {
       successEdit.textContent = 'Error finding product: ' + error;
       successEdit.style.display = 'block';
     });
+  }
+  .catch((error) => {
+    successEdit.textContent = 'Error uploading images: ' + error;
+    successEdit.style.display = 'block';
+  });
 }
 	
 
