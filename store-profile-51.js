@@ -81,6 +81,10 @@ function showPopupStore (productData, card) {
     document.getElementById("remove-btn").addEventListener("click", () => {
       removeProduct(card, popupTitle.textContent, popupDesc.textContent, popupPrice.textContent.replace("$", ""));
     });
+
+    editProductBtn.addEventListener('click', function() {
+      editing(popupBrand.textContent, popupTitle.textContent, popupDesc.textContent, popupBrand.href, popupPrice.textContent.replace("$", ""));
+    });
 }
 
 	
@@ -241,7 +245,6 @@ addProductBtn.addEventListener('click', function() {
 
       giftsRef.add(productData)
         .then((docRef) => {
-          console.log('Product added with ID: ', docRef.id);
           // Reset form fields and image previews after successful submission
           document.getElementById('store-name-text').value = '';
           document.getElementById('product-name-update').value = '';
@@ -265,6 +268,91 @@ addProductBtn.addEventListener('click', function() {
     });
 });
 
+const editProductWindow = document.getElementById("edit-product-window");
+const editProductBtn = document.getElementById("edit-product-btn");
+const closeEditBtn = document.getElementById("close-edit-btn");
+const successEdit = document.getElementById("success-edit");
+
+editProductBtn.addEventListener('click', function() {
+  editProductWindow.style.display = "flex";
+});
+
+closeEditBtn.addEventListener('click', function() {
+  editProductWindow.style.display = "none";
+});
+
+function editing(brand, name, description, productLink, price) {
+  const successEdit = document.getElementById('successEdit'); // Assuming you have an element with this ID
+
+  successEdit.style.display = 'none';
+  editProductBtn.textContent = "Updating...";
+
+  // Iterate through the images and upload them
+  const previewImages = document.querySelectorAll('.previewImage');
+  const uploadPromises = Array.from(previewImages).map((image, index) => {
+    const file = image.src; // Assuming image.src contains the base64 data
+    const imageRef = storageRef.child(`images/${name}_${index}.jpg`);
+
+    return imageRef.putString(file, 'data_url')
+      .then(snapshot => snapshot.ref.getDownloadURL());
+  });
+
+  // Wait for all images to upload
+  Promise.all(uploadPromises)
+    .then(downloadURLs => {
+      const newImages = downloadURLs;
+
+      const productData = {
+        name: name,
+        description: description,
+        images: newImages, // Use the new images
+        price: price,
+        product_link: productLink
+      };
+
+      const giftsRef = firebase.firestore().collection('gifts');
+
+      giftsRef
+        .where("name", "==", name)
+        .where("description", "==", description)
+        .where("price", "==", price)
+        .get()
+        .then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            doc.ref.update({
+              name: document.getElementById('product-name-edit').value,
+              description: document.getElementById('product-description-edit').value,
+              product_link: document.getElementById('product-link-edit').value,
+              price: parseFloat(document.getElementById('product-price-edit').value), // Convert to a number
+              images: newImages // Update with new images
+            })
+            .then(() => {
+              // Reset form fields and image previews after successful submission
+              document.getElementById('product-name-edit').value = '';
+              document.getElementById('product-description-edit').value = '';
+              document.getElementById('product-link-edit').value = '';
+              document.getElementById('product-price-edit').value = '';
+              document.getElementById('imagePreviewContainerEdit').innerHTML = '';
+
+              loadProducts(brand);
+              successEdit.textContent = "Product updated successfully";
+              successEdit.style.display = 'block';
+              editProductBtn.textContent = "Update Product";
+            })
+            .catch((error) => {
+              console.error('Error editing product: ', error);
+            });
+          });
+        })
+        .catch((error) => {
+          console.error('Error finding product: ', error);
+        });
+    })
+    .catch(error => {
+      console.error('Error uploading images: ', error);
+    });
+}
+	
 
 function loadProducts(storeNameValue) {
   
