@@ -79,7 +79,7 @@ function showPopupStore (productData, card) {
     });
 
     document.getElementById("remove-btn").addEventListener("click", () => {
-      removeProduct(card, popupTitle.textContent, popupDesc.textContent, popupPrice.textContent.replace("$", ""));
+      removeProduct(card, popupTitle.textContent, popupBrand.textContent, popupDesc.textContent, popupPrice.textContent.replace("$", ""));
     });
 
     const updateProductBtn = document.getElementById("update-product");
@@ -417,7 +417,7 @@ function loadProducts(storeNameValue) {
 }
 
 
-function removeProduct(productCard, name, description, price) {
+function removeProduct(productCard, name, brand, description, price) {
 
   const giftsRef = firebase.firestore().collection('gifts');
 
@@ -430,8 +430,7 @@ function removeProduct(productCard, name, description, price) {
       querySnapshot.forEach((doc) => {
         doc.ref.delete()
           .then(() => {
-            console.log('Product removed:', doc.id);
-	    productCard.style.display = "none";
+	    loadProducts(brand);
           })
           .catch((error) => {
             console.error('Error removing product:', error);
