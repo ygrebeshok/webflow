@@ -315,39 +315,40 @@ function editing(button, brand, name, description, productLink, price) {
         Promise.all(uploadPromises)
           .then(downloadURLs => {
             const newImages = downloadURLs.length > 0 ? downloadURLs : currentImages;
-
-            const productData = {
-              name: name,
-              description: description,
-              images: newImages,
-              price: price,
-              product_link: productLink
-            };
-
-            doc.ref.update(productData)
-            .then(() => {
-              // Reset form fields and image previews after successful submission
-              document.getElementById('product-name-edit').value = '';
-              document.getElementById('product-description-edit').value = '';
-              document.getElementById('product-link-edit').value = '';
-              document.getElementById('product-price-edit').value = '';
-              document.getElementById('imagePreviewContainerEdit').innerHTML = '';
-
-              loadProducts(brand);
-              successEdit.textContent = "Product updated successfully";
-              successEdit.style.display = 'block';
-              button.textContent = "Update Product";
-            })
-            .catch((error) => {
-              successEdit.textContent = 'Error editing product: ' + error;
-              successEdit.style.display = 'block';
-            });
+	    return newImages;
           })
           .catch((error) => {
             successEdit.textContent = 'Error uploading images: ' + error;
             successEdit.style.display = 'block';
           });
-      });
+	
+          const productData = {
+            name: name,
+            description: description,
+            images: newImages,
+            price: price,
+            product_link: productLink
+          };
+
+          doc.ref.update(productData)
+          .then(() => {
+            // Reset form fields and image previews after successful submission
+            document.getElementById('product-name-edit').value = '';
+            document.getElementById('product-description-edit').value = '';
+            document.getElementById('product-link-edit').value = '';
+            document.getElementById('product-price-edit').value = '';
+            document.getElementById('imagePreviewContainerEdit').innerHTML = '';
+
+            loadProducts(brand);
+            successEdit.textContent = "Product updated successfully";
+            successEdit.style.display = 'block';
+            button.textContent = "Update Product";
+          })
+          .catch((error) => {
+            successEdit.textContent = 'Error editing product: ' + error;
+            successEdit.style.display = 'block';
+          });
+       });
     })
     .catch((error) => {
       successEdit.textContent = 'Error finding product: ' + error;
