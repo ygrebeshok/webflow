@@ -186,8 +186,11 @@ firebase.auth().onAuthStateChanged(function(authUser) {
                querySnapshot.forEach((doc) => {
                  giftsRef.doc(doc.id).update({ brand: newStoreName });
                });
-	       loadProducts(newStoreName);
              })
+	     .then(() => {
+    	       // Load products after updating the brand
+    	       loadProducts(newStoreName);
+  	     })
              .catch((error) => {
                console.error('Error updating brands in gifts collection: ', error);
              });
