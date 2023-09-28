@@ -181,7 +181,7 @@ function showPopupUser(productData, card) {
 
 
 popupContainer.style.display = "none";
-popUp.style.visibility = "hidden";
+popUp.style.display = "none";
 
 const defaultCard = document.querySelector(".default-card");
 favoritesGrid.removeChild(defaultCard);
@@ -358,7 +358,7 @@ firebase.auth().onAuthStateChanged(function(authUser) {
               });
 
               // Open a new pop-up window with the formatted content
-              popUp.style.visibility = "visible";
+              popUp.style.display = "flex";
     	      const giftList = document.getElementById("gift-list");
               giftList.innerHTML = formattedContentArray.join('');
               
