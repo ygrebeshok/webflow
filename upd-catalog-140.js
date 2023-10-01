@@ -507,24 +507,49 @@ function updateCatalog() {
 
       catalogGrid.appendChild(card);
 
+      let draggedElement = null;
+
       interact(card)
       .draggable({
-        inertia: true,
-        restrict: {
-          restriction: "parent",
-          endOnly: true,
-          elementRect: { top: 0, left: 0, bottom: 1, right: 1 }
+        onstart: function (event) {
+          draggedElement = event.target;
+        },
+        onmove: function (event) {
+          var target = event.target,
+            x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx,
+            y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+
+          target.style.transform = 'translate(' + x + 'px, ' + y + 'px)';
+
+          target.setAttribute('data-x', x);
+          target.setAttribute('data-y', y);
+        },
+        onend: function () {
+          draggedElement = null;
         }
-      })
-      .on('dragmove', function (event) {
-        var target = event.target;
-        var x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
-        var y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+      });
 
-        target.style.transform = 'translate(' + x + 'px, ' + y + 'px)';
+      interact(catalogGrid)
+      .dropzone({
+        accept: card,
+        ondragenter: function (event) {
+          var target = event.target;
 
-        target.setAttribute('data-x', x);
-        target.setAttribute('data-y', y);
+          if (draggedElement) {
+            var rect = target.getBoundingClientRect(),
+              half = (rect.right - rect.left) / 2,
+              isRightHalf = event.clientX > (rect.left + half);
+
+            if (isRightHalf) {
+              target.parentElement.insertBefore(draggedElement, target.nextSibling);
+            } else {
+              target.parentElement.insertBefore(draggedElement, target);
+            }
+          }
+        },
+        ondragleave: function (event) {
+        // Reset any styles or animations applied during drag if needed
+        }
       });
 
       card.addEventListener('mouseenter', () => {
