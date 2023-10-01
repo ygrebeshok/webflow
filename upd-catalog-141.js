@@ -509,7 +509,7 @@ function updateCatalog() {
 
       let draggedElement = null;
 
-      interact(card)
+      interact('.draggable-card')
       .draggable({
         onstart: function (event) {
           draggedElement = event.target;
@@ -529,9 +529,9 @@ function updateCatalog() {
         }
       });
 
-      interact(catalogGrid)
+      interact('.catalog')
       .dropzone({
-        accept: card,
+        accept: '.draggable-card',
         ondragenter: function (event) {
           var target = event.target;
 
