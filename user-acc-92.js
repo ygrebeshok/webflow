@@ -339,12 +339,23 @@ firebase.auth().onAuthStateChanged(function(authUser) {
       const userDocRef = firebase.firestore().collection('users').doc(userId);
 
       shareFavoritesButton.addEventListener('click', () => {
-      
+	      
         userDocRef.get()
         .then((doc) => {
           if (doc.exists) {
             const userData = doc.data();
             const sharedFavorites = userData.shared_favorites || [];
+
+	    if (sharedFavorites.length === 0) {
+              // Handle case when there are no items in sharedFavorites
+              const warning = document.getElementById("warning");
+	      warning.textContent = "Please, add something to the Gift List first";
+	      warning.style.display = "block";
+	      setTimeout(() => {
+    		warning.style.display = "none";
+  	      }, 5000);
+              return;
+            }
 
             const giftsQuery = firebase.firestore().collection('gifts').where('name', 'in', sharedFavorites);
             giftsQuery.get()
@@ -363,7 +374,7 @@ firebase.auth().onAuthStateChanged(function(authUser) {
               giftList.innerHTML = formattedContentArray.join('');
               
               closeBtn.addEventListener('click', () => {
-              	popUp.style.visibility = "hidden";
+              	popUp.style.display = "none";
               });
             })
             .catch((error) => {
