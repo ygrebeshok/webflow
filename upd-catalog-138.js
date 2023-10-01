@@ -507,6 +507,17 @@ function updateCatalog() {
 
       catalogGrid.appendChild(card);
 
+      var grid = new Muuri(catalogGrid, {
+        items: card,
+        layout: {
+          fillGaps: true,
+          horizontal: false,
+          alignRight: false,
+          alignBottom: false,
+          rounding: true
+        }
+      });
+
       card.addEventListener('mouseenter', () => {
         card.animate([
         { transform: 'scale(1)' },
