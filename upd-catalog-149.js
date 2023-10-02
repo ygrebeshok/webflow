@@ -434,7 +434,6 @@ function updateCatalog() {
       }
             
       const card = cardTemplate.cloneNode(true);
-      card.classList.add('draggable-card');
 
       card.querySelector("#product_image").src = data.images[0],
       card.querySelector("#name").textContent = data.name,
@@ -527,8 +526,6 @@ function updateCatalog() {
         });
         });
       });
-
-      initializeMuuri();
 	  
       var brands = Array.from(brandsSet); // add this line
       populateBrandFilter(brands);
