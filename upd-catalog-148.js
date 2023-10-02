@@ -380,26 +380,6 @@ function handleBrandCheckboxChange(checkbox) {
   filterCatalog();
 }
 
-function initializeMuuri() {
-  grid = new Muuri('.catalog', {
-    items: '.draggable-card',
-    layout: {
-      dragContainer: $(".catalog")[0],
-      dragEnabled: true,
-      fillGaps: true,
-      alignRight: false,
-      alignBottom: false,
-      itemPlaceholderClass: "foo-item-placeholder",
-        dragPlaceholder: {
-          enabled: true,
-          createElement(item) {
-          return item.getElement().cloneNode(true);
-        }
-       }
-     }
-  });
-}
-
 function filterCatalog() {
   // Obtain the currently set price range
   const minPrice = 0;
