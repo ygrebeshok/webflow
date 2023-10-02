@@ -388,8 +388,15 @@ function initializeMuuri() {
       dragEnabled: true,
       fillGaps: true,
       alignRight: false,
-      alignBottom: false
-    }
+      alignBottom: false,
+      itemPlaceholderClass: "foo-item-placeholder",
+        dragPlaceholder: {
+          enabled: true,
+          createElement(item) {
+          return item.getElement().cloneNode(true);
+        }
+       }
+     }
   });
 }
 
