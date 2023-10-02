@@ -108,22 +108,22 @@
   
     const price_categories = ["Under $10", "Under $20", "Under $30", "Under $50"];
     price_categories.forEach((price_category) => {
-    	const price_button = document.createElement('button');
-      price_button.textContent = price_category;
-      price_button.className = 'price-button';
-      price_button.addEventListener('mouseenter', () => {
-      	price_button.classList.add('hover');
+    	const button = document.createElement('button');
+      button.textContent = price_category;
+      button.className = 'price-button';
+      button.addEventListener('mouseenter', () => {
+      	button.classList.add('hover');
       });
-  	  price_button.addEventListener('mouseleave', () => {
-        price_button.classList.remove('hover');
+  	  button.addEventListener('mouseleave', () => {
+        button.classList.remove('hover');
       });
-      price_button.addEventListener('click', function() {
+      button.addEventListener('click', function() {
         if (selected_price !== price_category) {
           selected_price = price_category;
         }
       });
 
-      price_categoryGrid.appendChild(price_button);
+      price_categoryGrid.appendChild(button);
     });
 
     for (let i = price_categories.length; i < 8; i++) {
