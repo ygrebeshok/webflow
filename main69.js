@@ -282,12 +282,21 @@ async function recommend() {
            errorAlert.style.visibility = "visible";
            lottieLoader.style.visibility = "hidden";
            searchAgain.style.visibility = "visible";
-         })      
-       .catch(error => console.error('Error:', error));
-     })
-    .catch(error => console.error('Error:', error));
-    }
-  }
+         });      
+       })
+      .catch(error => {
+        console.error('Error:', error);
+        errorAlert.style.visibility = "visible";
+        lottieLoader.style.visibility = "hidden";
+        searchAgain.style.visibility = "visible";
+      });  
+     } catch (error) {
+       console.error(error);
+       errorAlert.style.visibility = "visible";
+       lottieLoader.style.visibility = "hidden";
+       searchAgain.style.visibility = "visible";
+     }
+  } 
 
 
   function setupUI() {
