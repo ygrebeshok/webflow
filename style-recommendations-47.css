@@ -114,22 +114,21 @@
     color: white;
     background: linear-gradient(30deg, #9D6CFF, #5C8BFF, #FF73FA);
     font-family: Montserrat;
-    font-size: 0.85em;
-    font-weight: 400;
+    font-size: 0.8em;
+    font-weight: 300;
     justify-content: center;
     align-items: center;
     border-radius: 6px;
-    box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
   }
 
   .category-button:hover {
     color: #ffffff;
-    background: linear-gradient(30deg, #293AD9, #58AFFF, #A736FF);
+    background: linear-gradient(30deg, #742eff, #2461fb, #ff1cf7);
    }
 
    .category-button:focus {
      color: #ffffff;
-     background: linear-gradient(30deg, #293AD9, #58AFFF, #A736FF);
+     background: linear-gradient(30deg, #742eff, #2461fb, #ff1cf7);
    }
 
   .holiday-card {
