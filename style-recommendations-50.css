@@ -81,6 +81,8 @@
     justify-content: center;
     align-items: center;
     border-radius: 6px;
+    width: auto;
+    padding: 0 10px;
   }
 
   .category-button:hover {
@@ -92,7 +94,6 @@
      color: #ffffff;
      background: linear-gradient(30deg, #742eff, #2461fb, #ff1cf7);
    }
-
 
   .disablegrid {
     pointer-events: none;
