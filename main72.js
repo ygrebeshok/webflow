@@ -74,7 +74,6 @@
 
   function categories() {
     const categoryGrid = document.getElementById("category-grid");
-    const categoryTemplate = document.querySelector(".category");
   
     const categories = ["Electronics and Gadgets", "Books and Stationery", "Clothing and Accessories", "Home Decor and Furnishings", "Beauty and Grooming Products", "Jewelry and Watches", "Fitness and Wellness Items", "Kitchen Appliances", "Outdoor Gear", "Toys and Games", "Anime", "Food and Beverage", "Plants and Gardening", "Travel Accessories", "Home Decor"];
     categories.forEach((category) => {
@@ -95,16 +94,10 @@
 
       categoryGrid.appendChild(button);
     });
-
-    for (let i = categories.length; i < 8; i++) {
-  	  const button = categoryTemplate.cloneNode(true);
-      categoryGrid.appendChild(button);
-    }
   }
 
   function price_categories() {
     const price_categoryGrid = document.getElementById("price-categories");
-    const priceTemplate = document.querySelector(".price-category");
   
     const price_categories = ["Under $10", "Under $20", "Under $30", "Under $50"];
     price_categories.forEach((price_category) => {
@@ -125,11 +118,6 @@
 
       price_categoryGrid.appendChild(button);
     });
-
-    for (let i = price_categories.length; i < 8; i++) {
-  	  const button = priceTemplate.cloneNode(true);
-      price_categoryGrid.appendChild(button);
-    }
   }
 
 async function recommend() {
