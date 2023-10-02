@@ -384,11 +384,11 @@ function initializeMuuri() {
   grid = new Muuri('.catalog', {
     items: '.draggable-card',
     layout: {
+      dragContainer: $(".catalog")[0],
+      dragEnabled: true,
       fillGaps: true,
-      horizontal: true,
       alignRight: false,
-      alignBottom: false,
-      rounding: true
+      alignBottom: false
     }
   });
 }
