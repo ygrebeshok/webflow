@@ -277,16 +277,15 @@ async function recommend() {
            }, 6000);
           
          }) 
-         .catch (error) {
-           console.error(error);
+         .catch(error => {
+           console.error('Error:', error);
            errorAlert.style.visibility = "visible";
            lottieLoader.style.visibility = "hidden";
            searchAgain.style.visibility = "visible";
-         
-         }        
-        })
-        .catch(error => console.error('Error:', error));
-      }
+         })      
+       })
+       .catch(error => console.error('Error:', error));
+     }
     .catch(error => console.error('Error:', error));
   }
 
