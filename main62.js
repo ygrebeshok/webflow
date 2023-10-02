@@ -105,21 +105,19 @@
         keywordsToExclude.push("man", "men", "boy");
       }
       
-      const response = await fetch("https://api.openai.com/v1/completions", {
-        method: "POST",
-        headers: {
-      	  "Content-Type": "application/json",
-       	  "Authorization": `Bearer ${openaiApiKey}`
-        },
-        body: JSON.stringify({
-          prompt: prompt,
-          max_tokens: 1024,
-          temperature: 0.5,
-          top_p: 1,
-          frequency_penalty: 0,
-          presence_penalty: 0
-        })
+      const openai = new OpenAI({
+        apiKey: process.env.openaiApiKey,
       });
+
+      const response = await openai.completions.create({
+        model: "gpt-3.5-turbo-instruct",
+        prompt: prompt,
+        temperature: 1,
+        max_tokens: 1024,
+        top_p: 1,
+        frequency_penalty: 0,
+        presence_penalty: 0,
+    });
 
     const data = await response.json();
     // responseText is the OpenAI's response
