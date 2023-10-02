@@ -72,6 +72,66 @@
       }
   }
 
+  function categories() {
+    const categoryGrid = document.getElementById("category-grid");
+    const categoryTemplate = document.querySelector(".category");
+  
+    const categories = ["Electronics and Gadgets", "Books and Stationery", "Clothing and Accessories", "Home Decor and Furnishings", "Beauty and Grooming Products", "Jewelry and Watches", "Fitness and Wellness Items", "Kitchen Appliances", "Outdoor Gear", "Toys and Games", "Anime", "Food and Beverage", "Plants and Gardening", "Travel Accessories", "Home Decor"];
+    categories.forEach((category) => {
+    	const button = document.createElement('button');
+      button.textContent = category;
+      button.className = 'category-button';
+      button.addEventListener('mouseenter', () => {
+      	button.classList.add('hover');
+      });
+  	  button.addEventListener('mouseleave', () => {
+        button.classList.remove('hover');
+      });
+      button.addEventListener('click', function() {
+        if (selected_category !== category) {
+          selected_category = category;
+        }
+      });
+
+      categoryGrid.appendChild(button);
+    });
+
+    for (let i = categories.length; i < 8; i++) {
+  	  const button = categoryTemplate.cloneNode(true);
+      categoryGrid.appendChild(button);
+    }
+  }
+
+  function price_categories() {
+    const price_categoryGrid = document.getElementById("price-categories");
+    const priceTemplate = document.querySelector(".price-category");
+  
+    const price_categories = ["Under $10", "Under $20", "Under $30", "Under $50"];
+    price_categories.forEach((price_category) => {
+    	const price_button = document.createElement('button');
+      price_button.textContent = price_category;
+      price_button.className = 'price-button';
+      price_button.addEventListener('mouseenter', () => {
+      	price_button.classList.add('hover');
+      });
+  	  price_button.addEventListener('mouseleave', () => {
+        price_button.classList.remove('hover');
+      });
+      price_button.addEventListener('click', function() {
+        if (selected_price !== price_category) {
+          selected_price = price_category;
+        }
+      });
+
+      price_categoryGrid.appendChild(price_button);
+    });
+
+    for (let i = price_categories.length; i < 8; i++) {
+  	  const button = priceTemplate.cloneNode(true);
+      price_categoryGrid.appendChild(button);
+    }
+  }
+
 async function recommend() {
   event.preventDefault();
   // Resets price filter, if was initialized
