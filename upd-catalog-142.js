@@ -532,10 +532,9 @@ function updateCatalog() {
       interact('.catalog')
       .dropzone({
         accept: '.draggable-card',
-        ondragenter: function (event) {
-          var target = event.target;
-
+        ondrop: function (event) {
           if (draggedElement) {
+            var target = event.relatedTarget;
             var rect = target.getBoundingClientRect(),
               half = (rect.right - rect.left) / 2,
               isRightHalf = event.clientX > (rect.left + half);
@@ -546,9 +545,6 @@ function updateCatalog() {
               target.parentElement.insertBefore(draggedElement, target);
             }
           }
-        },
-        ondragleave: function (event) {
-        // Reset any styles or animations applied during drag if needed
         }
       });
 
