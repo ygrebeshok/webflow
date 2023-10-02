@@ -380,6 +380,19 @@ function handleBrandCheckboxChange(checkbox) {
   filterCatalog();
 }
 
+function initializeMuuri() {
+  grid = new Muuri('.catalog', {
+    items: '.draggable-card',
+    layout: {
+      fillGaps: true,
+      horizontal: true,
+      alignRight: false,
+      alignBottom: false,
+      rounding: true
+    }
+  });
+}
+
 function filterCatalog() {
   // Obtain the currently set price range
   const minPrice = 0;
@@ -507,17 +520,6 @@ function updateCatalog() {
 
       catalogGrid.appendChild(card);
 
-      var grid = new Muuri('.catalog', {
-        items: '.draggable-card',
-        layout: {
-          fillGaps: true,
-          horizontal: true,
-          alignRight: false,
-          alignBottom: false,
-          rounding: true
-        }
-      });
-
       card.addEventListener('mouseenter', () => {
         card.animate([
         { transform: 'scale(1)' },
@@ -539,6 +541,8 @@ function updateCatalog() {
         });
       });
 
+      initializeMuuri();
+	  
       var brands = Array.from(brandsSet); // add this line
       populateBrandFilter(brands);
 
