@@ -507,47 +507,6 @@ function updateCatalog() {
 
       catalogGrid.appendChild(card);
 
-      let draggedElement = null;
-
-      interact('.draggable-card')
-      .draggable({
-        onstart: function (event) {
-          draggedElement = event.target;
-        },
-        onmove: function (event) {
-          var target = event.target,
-            x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx,
-            y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
-
-          target.style.transform = 'translate(' + x + 'px, ' + y + 'px)';
-
-          target.setAttribute('data-x', x);
-          target.setAttribute('data-y', y);
-        },
-        onend: function () {
-          draggedElement = null;
-        }
-      });
-
-      interact('.catalog')
-      .dropzone({
-        accept: '.draggable-card',
-        ondrop: function (event) {
-          if (draggedElement) {
-            var target = event.relatedTarget;
-            var rect = target.getBoundingClientRect(),
-              half = (rect.right - rect.left) / 2,
-              isRightHalf = event.clientX > (rect.left + half);
-
-            if (isRightHalf) {
-              target.parentElement.insertBefore(draggedElement, target.nextSibling);
-            } else {
-              target.parentElement.insertBefore(draggedElement, target);
-            }
-          }
-        }
-      });
-
       card.addEventListener('mouseenter', () => {
         card.animate([
         { transform: 'scale(1)' },
