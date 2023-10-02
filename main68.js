@@ -284,8 +284,9 @@ async function recommend() {
            searchAgain.style.visibility = "visible";
          })      
        .catch(error => console.error('Error:', error));
-     }
+     })
     .catch(error => console.error('Error:', error));
+    }
   }
 
 
