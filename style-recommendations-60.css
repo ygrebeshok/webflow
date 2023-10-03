@@ -94,6 +94,16 @@
      background: linear-gradient(30deg, #742eff, #2461fb, #ff1cf7);
    }
 
+   .price-cat:hover {
+    color: #ffffff;
+    background: linear-gradient(137deg, #39ACFF, #4176FF, #7848FF);
+   }
+
+   .price-cat:focus {
+     color: #ffffff;
+     background: linear-gradient(137deg, #39ACFF, #4176FF, #7848FF);
+   }
+
   .disablegrid {
     pointer-events: none;
     opacity: 0.5;
