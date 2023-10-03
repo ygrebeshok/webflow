@@ -96,30 +96,6 @@
     });
   }
 
-  function price_categories() {
-    const price_categoryGrid = document.getElementById("price-categories");
-  
-    const price_categories = ["Under $10", "Under $20", "Under $30", "Under $50"];
-    price_categories.forEach((price_category) => {
-    	const button = document.createElement('button');
-      button.textContent = price_category;
-      button.className = 'price-button';
-      button.addEventListener('mouseenter', () => {
-      	button.classList.add('hover');
-      });
-  	  button.addEventListener('mouseleave', () => {
-        button.classList.remove('hover');
-      });
-      button.addEventListener('click', function() {
-        if (selected_price !== price_category) {
-          selected_price = price_category;
-        }
-      });
-
-      price_categoryGrid.appendChild(button);
-    });
-  }
-
 async function recommend() {
   event.preventDefault();
   // Resets price filter, if was initialized
