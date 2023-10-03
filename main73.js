@@ -14,7 +14,7 @@
       holidays.forEach((holiday) => {
     	const button = document.createElement('button');
         button.textContent = holiday;
-        button.className = 'button';
+        button.className = 'holiday-button';
         button.addEventListener('mouseenter', () => {
       	  button.classList.add('hover');
         });
