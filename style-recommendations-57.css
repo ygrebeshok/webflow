@@ -25,7 +25,7 @@
     border-color: #7977ff;
   }
 
-  .button {
+  .holiday-button {
    display: flex;
    color: black;
    background-color: #f0f0f0;
@@ -51,12 +51,12 @@
    box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
   }
   
-  .button:hover {
+  .holiday-button:hover {
     color: white;
     background-color: #8348FF;
    }
 
-  .button:focus {
+  .holiday-button:focus {
     color: white;
     background-color: #8348FF;
    }
