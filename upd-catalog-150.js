@@ -45,6 +45,7 @@ const created = document.getElementById("created-text");
 const resetSelections = document.getElementById("reset-selections");
 let selected_holiday = null;
 let selected_who = null;
+let selected_category = null;
 
 document.addEventListener('DOMContentLoaded', function() {
   const urlParams = new URLSearchParams(window.location.search);
@@ -399,6 +400,15 @@ function filterCatalog() {
     });
   }
 
+  if (selected_category === null) {
+    visibleCards = allCards;
+  } else {
+    visibleCards = allCards.filter(card => {
+      const category = card.querySelector("#category").textContent;
+      return selected_category == category;
+    });
+  }
+
   // Further filter the visibleCards by the price range
   visibleCards = visibleCards.filter(card => {
     const price = parseFloat(card.querySelector("#price").textContent.replace("$", ""));
@@ -440,7 +450,8 @@ function updateCatalog() {
       card.querySelector("#price").textContent = `$${data.price}`,
       card.querySelector("#description").textContent = data.description,
       card.querySelector("#keywords").textContent = data.openai_keywords + ',' + data.image_labels,
-      card.querySelector("#brand").textContent = data.brand
+      card.querySelector("#brand").textContent = data.brand,
+      card.querySelector("#category").textContent = data.category
 
       allCards.push(card);
         
