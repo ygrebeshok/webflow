@@ -85,6 +85,7 @@
         if (selected_category !== category) {
           selected_category = category;
         }
+        resetCategories.classList.remove('disablegrid');
         filterCatalogByCategory(selected_category);
       });
 
@@ -93,7 +94,6 @@
         categoryGrid.querySelectorAll('button').forEach(btn => {
           btn.classList.remove('focus');
         });
-        let visibleCards;
         visibleCards = allCards;
       });
 
