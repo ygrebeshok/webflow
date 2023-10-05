@@ -99,7 +99,7 @@
         categoryGrid.querySelectorAll('button').forEach(btn => {
           btn.classList.remove('focus');
         });
-      }
+      });
 
       categoryGrid.appendChild(button);
     });
