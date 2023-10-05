@@ -92,15 +92,6 @@
     });
   }
 
-resetCategories.addEventListener('click', function() {
-  selected_category = null;
-  categoryGrid.querySelectorAll('button').forEach(btn => {
-    btn.classList.remove('focus');
-  });
-  resetCategories.classList.add('disablegrid');
-  updateCatalog();
-});
-
 async function recommend() {
   event.preventDefault();
   // Resets price filter, if was initialized
