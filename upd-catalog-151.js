@@ -400,20 +400,35 @@ function filterCatalog() {
     });
   }
 
-  if (selected_category === null) {
-    visibleCards = allCards;
-  } else {
-    visibleCards = allCards.filter(card => {
-      const category = card.querySelector("#category").textContent;
-      return selected_category == category;
-    });
-  }
-
   // Further filter the visibleCards by the price range
   visibleCards = visibleCards.filter(card => {
     const price = parseFloat(card.querySelector("#price").textContent.replace("$", ""));
     return price >= minPrice && price <= maxPrice;
   });
+
+  catalogGrid.innerHTML = "";
+  visibleCards.forEach(card => {
+    card.style.opacity = 0;
+    catalogGrid.appendChild(card);
+
+    setTimeout(() => {
+      card.style.transition = "opacity 0.5s";
+      card.style.opacity = 1;
+    }, 0);
+  });
+}
+
+function filterCatalogByCategory(category) {
+  let visibleCards;
+
+  if (category === null) {
+    visibleCards = allCards;
+  } else {
+    visibleCards = allCards.filter(card => {
+      const cardCategory = card.querySelector("#category").textContent;
+      return cardCategory === category;
+    });
+  }
 
   catalogGrid.innerHTML = "";
   visibleCards.forEach(card => {
