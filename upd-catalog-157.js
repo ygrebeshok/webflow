@@ -358,40 +358,6 @@ function showPopup(productData) {
   });
 }
 
-  async function updateCategoryForBrands() {
-  const brandCategoryList = [
-    { brand: 'Boston Barkery', category: 'Pets' },
-    { brand: 'KRÉYOL', category: 'Clothing and Accessories' },
-    { brand: "VIBES CANDLES", category: "Home Decor" },
-    { brand: "Filomena Demarco Jewelry", category: "Jewelry and Watches" },
-    { brand: "Sarah Bertochi Handmade", category: "Clothing and Accessories" },
-    { brand: "banai", category: "Clothing and Accessories" },
-    { brand: "Element Oasis", category: "Beauty and Hair Products" },
-    { brand: "Studio Argila", category: "Jewelry and Watches" },
-    { brand: "Pottery With a Purpose", category: "Toys and Games" },
-    { brand: "Alison Cordero", category: "Home Decor" },
-    { brand: "Studio Feron", category: "Home Decor" },
-    { brand: "Rococo Floral", category: "Home Decor" },
-    { brand: "Crane and Turtle", category: "Home Decor" },
-    { brand: "Rose & Clay", category: "Jewelry and Watches" },
-    { brand: "Petrova Chocolates", category: "Food and Beverage" },
-    { brand: "Zooguu Handmade", category: "Toys and Games" }
-  ];
-
-  for (const pair of brandCategoryList) {
-    const snapshot = await firebase.firestore().collection('gifts').where('brand', '==', pair.brand).get();
-
-    if (!snapshot.empty) {
-      snapshot.forEach(doc => {
-        doc.ref.update({ category: pair.category });
-        console.log(`Updated category for product ${doc.id}`);
-      });
-    } else {
-      console.log(`No products found for brand ${pair.brand}`);
-    }
-  }
-}
-
 function resetBrandFilters() {
   // Reset brand filter
   brandFilters = [];
