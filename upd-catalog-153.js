@@ -76,7 +76,7 @@ resetSelections.addEventListener('click', () => {
   selected_holiday = null;
   selWho.textContent = "";
   selHoliday.textContent = "";
-  holidayGridGrid.querySelectorAll('button').forEach(btn => {
+  holidayGrid.querySelectorAll('button').forEach(btn => {
     btn.classList.remove('focus');
   });
   whoGrid.querySelectorAll('button').forEach(btn => {
