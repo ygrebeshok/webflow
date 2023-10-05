@@ -89,8 +89,8 @@
       button.addEventListener('click', function() {
         if (selected_category !== category) {
           selected_category = category;
-          console.log(selected_category);
         }
+        filterCatalogByCategory(selected_category);
       });
 
       categoryGrid.appendChild(button);
