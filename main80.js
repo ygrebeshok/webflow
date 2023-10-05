@@ -73,6 +73,7 @@
   }
 
   function categories() {
+    const resetCategories = document.getElementById("reset-categories");
     const categoryGrid = document.getElementById("category-grid");
   
     const categories = ["Electronics and Gadgets", "Books and Stationery", "Clothing and Accessories", "Art", "Beauty and Hair Products", "Jewelry and Watches", "Fitness and Wellness Items", "Kitchen Appliances", "Outdoor Gear", "Toys and Games", "Anime", "Food and Beverage", "Plants and Gardening", "Travel Accessories", "Home Decor", "Pets"];
@@ -92,6 +93,13 @@
         }
         filterCatalogByCategory(selected_category);
       });
+
+      resetCategories.addEventListener('click', function() {
+        selected_category = null;
+        categoryGrid.querySelectorAll('button').forEach(btn => {
+          btn.classList.remove('focus');
+        });
+      }
 
       categoryGrid.appendChild(button);
     });
