@@ -94,6 +94,7 @@
         categoryGrid.querySelectorAll('button').forEach(btn => {
           btn.classList.remove('focus');
         });
+        resetCategories.classList.add('disablegrid');
         visibleCards = allCards;
       });
 
@@ -336,6 +337,8 @@ async function recommend() {
     textarea.addEventListener('input', checkInputs);
     holidayGrid.addEventListener('click', checkInputs);
     whoGrid.addEventListener('click', checkInputs);
+
+    resetCategories.classList.add('disablegrid');
 
     catalogGrid.removeChild(defaultCard);
     holidayContainer.removeChild(defaultHoliday);
