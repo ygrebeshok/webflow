@@ -1,10 +1,4 @@
 
-  // Function to initialize the app
-  function initializeApp() {
-    setupUI();
-    mainButton.addEventListener("click", recommend);
-  }
-
   function escapeRegExp(string) {
     return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
   }
@@ -99,6 +93,8 @@
         categoryGrid.querySelectorAll('button').forEach(btn => {
           btn.classList.remove('focus');
         });
+        let visibleCards;
+        visibleCards = allCards;
       });
 
       categoryGrid.appendChild(button);
