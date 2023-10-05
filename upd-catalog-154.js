@@ -46,6 +46,7 @@ const resetSelections = document.getElementById("reset-selections");
 let selected_holiday = null;
 let selected_who = null;
 let selected_category = null;
+const resetCategories = document.getElementById("reset-categories");
 
 document.addEventListener('DOMContentLoaded', function() {
   const urlParams = new URLSearchParams(window.location.search);
