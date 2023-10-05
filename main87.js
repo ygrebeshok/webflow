@@ -88,18 +88,18 @@
         filterCatalogByCategory(selected_category);
       });
 
-      resetCategories.addEventListener('click', function() {
-        selected_category = null;
-        categoryGrid.querySelectorAll('button').forEach(btn => {
-          btn.classList.remove('focus');
-        });
-        resetCategories.classList.add('disablegrid');
-        visibleCards = allCards;
-      });
-
       categoryGrid.appendChild(button);
     });
   }
+
+resetCategories.addEventListener('click', function() {
+  selected_category = null;
+  categoryGrid.querySelectorAll('button').forEach(btn => {
+    btn.classList.remove('focus');
+  });
+  resetCategories.classList.add('disablegrid');
+  updateCatalog();
+});
 
 async function recommend() {
   event.preventDefault();
