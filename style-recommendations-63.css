@@ -141,6 +141,7 @@
   .category-grid {
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
+    scroll-behavior: smooth;
   }
 
   .holiday-card {
