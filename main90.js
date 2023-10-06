@@ -282,8 +282,7 @@ async function recommend() {
            lottieLoader.style.visibility = "hidden";
            results.scrollIntoView({ behavior: 'smooth' });
            searchAgain.style.visibility = "visible";
-           profileArea.style.opacity = '1';
-           profileArea.classList.remove("disablegrid");
+           profileDiv.classList.remove("disablegrid");
           
          }) 
          .catch(error => {
