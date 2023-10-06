@@ -122,7 +122,6 @@ createProfile.addEventListener('click', () => {
     customHoliday.textContent = "Tap on Holiday Panel";
     profileDate.value = "";
     profileArea.classList.remove('move-right');
-    arrowImage.src = rightArrow;
   })
     .catch(error => {
       created.textContent = "Error Occurred on Profile Creation"
