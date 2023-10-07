@@ -357,15 +357,6 @@ function showPopup(productData) {
   });
 }
 
-function resetBrandFilters() {
-  // Reset brand filter
-  brandFilters = [];
-  const brandCheckboxes = document.querySelectorAll('.brand-checkbox');
-  brandCheckboxes.forEach(checkbox => {
-    checkbox.checked = false;
-  });
-}
-
 let brandFilters = [];
 let priceRange;
 let priceRangeInitialized = false;
