@@ -3,6 +3,23 @@
     return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
   }
 
+  resetFilters() {
+    brandFilters = [];
+    const priceDisplay = document.getElementById("price-display");
+    priceRange.value = 2000;
+    priceDisplay.textContent = '$0 - $2000';
+    priceRangeInitialized = false;
+    categoryFilter = null;
+
+    const brandCheckboxes = document.querySelectorAll('.brand-checkbox');
+    brandCheckboxes.forEach(checkbox => {
+      checkbox.checked = false;
+    });
+
+    filterCatalog();
+    resetCategories.classList.add('disablegrid');
+  }
+
   function holidays() {
       const holidays = ["Birthday", "Christmas", "Thanksgiving", "Valentine's", "Mother's Day", "Easter", "Graduation", "Wedding", "Anniversary"];
       holidays.forEach((holiday) => {
@@ -100,7 +117,7 @@ async function recommend() {
   priceRange.value = priceRange.max;
   priceDisplay.textContent = `$0 - $${priceRange.max}`;
   // Resets brand filter, if was initialized
-  resetBrandFilters();
+  resetFilters();
   
   document.getElementById("textarea").disabled = true;
   errorAlert.style.visibility = "hidden";
