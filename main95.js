@@ -85,7 +85,7 @@
           selected_category = category;
         }
         resetCategories.classList.remove('disablegrid');
-        filterCatalogByCategory(selected_category);
+        handleCategoryChange(selected_category);
       });
 
       categoryGrid.appendChild(button);
