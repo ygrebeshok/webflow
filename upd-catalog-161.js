@@ -377,6 +377,7 @@ function handleBrandCheckboxChange(checkbox) {
 
   // Filter the catalog whenever a brand checkbox changes
   filterCatalog();
+  resetCategories.classList.remove('disablegrid');
 }
 
 function handleCategoryChange(category) {
@@ -391,6 +392,8 @@ function filterCatalog() {
   priceDisplay.textContent = `$${minPrice} - $${maxPrice}`;
 
   let visibleCards;
+
+  resetCategories.classList.remove('disablegrid');
 
   if (brandFilters.length === 0) {
     visibleCards = allCards;
