@@ -55,25 +55,21 @@ function loadProfileData(profiles) {
          fill: 'forwards'
        });
      });
-  });
 
-  profilesContain.addEventListener('click', (event) => {
-    try {
-      if (event.target.closest('.profile-card')) {
-        const profileCard = event.target.closest('.profile-card');
-        const profileName = profileCard.querySelector('.profile-names').textContent;
-        const occasion = profileCard.querySelector('.occasion-mark').textContent;
-        const receiver = profileCard.querySelector('.reference').textContent;
-        const giftDesc = profileCard.querySelector('.profile-desc').textContent;
+     profile.querySelector(".new-search").addEventListener('click', (event) => {
+       try {
+	 const occasion = profile.querySelector('.occasion-mark').textContent;
+         const receiver = profile.querySelector('.reference').textContent;
+         const giftDesc = profile.querySelector('.profile-desc').textContent;
+	 
+	 const queryParams = `?selected_who=${receiver}&selected_holiday=${occasion}&gift_desc=${giftDesc}`;
 
-        const queryParams = `?selected_who=${receiver}&selected_holiday=${occasion}&gift_desc=${giftDesc}`;
-
-        const slug = "recommendations";
-        window.location.href = `/${slug}${queryParams}`;
-      }
-    } catch (error) {
-      console.error('Error handling profile click event:', error);
-    }
+         const slug = "recommendations";
+         window.location.href = `/${slug}${queryParams}`;
+       } catch (error) {
+	 console.error('Error handling profile click event:', error);       
+       }	     
+     });
   });
 }
 
