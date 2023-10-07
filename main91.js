@@ -283,7 +283,7 @@ async function recommend() {
            results.scrollIntoView({ behavior: 'smooth' });
            searchAgain.style.visibility = "visible";
            profileDiv.classList.remove("disablegrid");
-          
+           profilesBtn.classList.remove("disablegrid");
          }) 
          .catch(error => {
            console.error('Error:', error);
