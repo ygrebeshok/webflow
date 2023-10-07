@@ -300,7 +300,7 @@ async function recommend() {
       });  
      } catch (error) {
        console.error(error);
-       errorAlert.style.visibility = "visible";
+       errorAlert.style.display = "block";
        lottieLoader.style.visibility = "hidden";
        searchAgain.style.visibility = "visible";
      }
