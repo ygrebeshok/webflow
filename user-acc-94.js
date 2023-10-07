@@ -35,26 +35,6 @@ function loadProfileData(profiles) {
      profile.querySelector(".profile-desc").textContent = data.gift_desc;
 
      profilesContain.appendChild(profile);
-                
-     profile.addEventListener('mouseenter', () => {
-       profile.animate([
-         { transform: 'scale(1)' },
-         { transform: 'scale(1.05)' }
-       ], {
-          duration: 200,
-          fill: 'forwards'
-        });
-     });
-
-     profile.addEventListener('mouseleave', () => {
-       profile.animate([
-         { transform: 'scale(1.05)' },
-         { transform: 'scale(1)' }
-       ], {
-         duration: 200,
-         fill: 'forwards'
-       });
-     });
 
      profile.querySelector(".new-search").addEventListener('click', (event) => {
        try {
