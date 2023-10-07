@@ -39,7 +39,7 @@
   }
 
   function who() {
-      const who = ["Mom", "Dad", "Sister", "Brother", "Grandma", "Grandpa", "Family", "Friend", "Colleague", "Acquaintance", "Dog", "Cat"];
+      const who = ["Mom", "Dad", "Son", "Daughter", "Sister", "Brother", "Grandma", "Grandpa", "Family", "Boyfriend", "Girlfriend", "Friend", "Colleague", "Acquaintance", "Dog", "Cat"];
       who.forEach((who) => {
     	  const button = document.createElement('button');
           button.textContent = who;
