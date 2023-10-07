@@ -3,7 +3,7 @@
     return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
   }
 
-  resetFilters() {
+  function resetFilters() {
     brandFilters = [];
     const priceDisplay = document.getElementById("price-display");
     priceRange.value = 2000;
