@@ -369,6 +369,8 @@ function resetBrandFilters() {
 let brandFilters = [];
 let priceRange;
 let priceRangeInitialized = false;
+let categoryFilter = null;
+let allCards = [];
 
 function handleBrandCheckboxChange(checkbox) {
   if (checkbox.checked) {
@@ -386,11 +388,14 @@ function handleBrandCheckboxChange(checkbox) {
   filterCatalog();
 }
 
+function handleCategoryChange(category) {
+  categoryFilter = category; // Update category filter
+  filterCatalog();
+}
+
 function filterCatalog() {
-  // Obtain the currently set price range
   const minPrice = 0;
   const maxPrice = parseInt(priceRange.value);
-
   const priceDisplay = document.getElementById("price-display");
   priceDisplay.textContent = `$${minPrice} - $${maxPrice}`;
 
@@ -405,7 +410,13 @@ function filterCatalog() {
     });
   }
 
-  // Further filter the visibleCards by the price range
+  if (categoryFilter !== null) {
+    visibleCards = visibleCards.filter(card => {
+      const cardCategory = card.querySelector("#category").textContent;
+      return cardCategory === categoryFilter;
+    });
+  }
+
   visibleCards = visibleCards.filter(card => {
     const price = parseFloat(card.querySelector("#price").textContent.replace("$", ""));
     return price >= minPrice && price <= maxPrice;
@@ -422,32 +433,6 @@ function filterCatalog() {
     }, 0);
   });
 }
-
-function filterCatalogByCategory(category) {
-  let visibleCards;
-
-  if (category === null) {
-    visibleCards = allCards;
-  } else {
-    visibleCards = allCards.filter(card => {
-      const cardCategory = card.querySelector("#category").textContent;
-      return cardCategory === category;
-    });
-  }
-
-  catalogGrid.innerHTML = "";
-  visibleCards.forEach(card => {
-    card.style.opacity = 0;
-    catalogGrid.appendChild(card);
-
-    setTimeout(() => {
-      card.style.transition = "opacity 0.5s";
-      card.style.opacity = 1;
-    }, 0);
-  });
-}
-
-let allCards = [];
 
 function updateCatalog() {
   var brandsSet = new Set();
