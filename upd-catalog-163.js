@@ -85,6 +85,8 @@ resetSelections.addEventListener('click', () => {
 });
 
 createProfile.addEventListener('click', () => {
+  
+  let visibleCards;
 	
   if (checkboxHoliday.checked === true) {
     selected_holiday = customHoliday.value;
