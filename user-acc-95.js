@@ -34,6 +34,31 @@ function loadProfileData(profiles) {
      profile.querySelector(".pr-date").textContent = data.date;
      profile.querySelector(".profile-desc").textContent = data.gift_desc;
 
+     const recommendedGiftsGrid = profile.querySelector('.recommended-gifts-grid');
+     const recommendedProducts = data.recommended_products;
+
+     for (const productName of recommendedProducts) {
+      // Query the "gifts" collection for the product with the matching name
+      const productSnapshot = await firebase.firestore()
+        .collection('gifts')
+        .where('name', '==', productName)
+        .limit(1)
+        .get();
+
+      if (!productSnapshot.empty) {
+        const productData = productSnapshot.docs[0].data();
+        const productImage = productData.images[0];
+
+        // Create a new element to display the product image
+        const productImageElement = document.createElement('product-img-div');
+        productImageElement.src = productImage;
+        productImageElement.alt = productName;
+
+        // Append the image element to the grid
+        recommendedGiftsGrid.appendChild(productImageElement);
+      }
+    }
+
      profilesContain.appendChild(profile);
 
      profile.querySelector(".new-search").addEventListener('click', (event) => {
