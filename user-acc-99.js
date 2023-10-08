@@ -49,7 +49,7 @@ function loadProfileData(profiles, recommendedProducts) {
         const productImage = productData.images[0];
 
         // Create a new element to display the product image
-        const productImageElement = document.createElement('product-img-div');
+        const productImageElement = document.querySelector('product-img-div');
         productImageElement.src = productImage;
         productImageElement.alt = productName;
 
