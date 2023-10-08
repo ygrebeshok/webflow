@@ -46,6 +46,7 @@ const resetSelections = document.getElementById("reset-selections");
 let selected_holiday = null;
 let selected_who = null;
 let selected_category = null;
+let visibleCards = [];
 
 document.addEventListener('DOMContentLoaded', function() {
   const urlParams = new URLSearchParams(window.location.search);
@@ -101,7 +102,7 @@ createProfile.addEventListener('click', () => {
     recommended_products: []
   };
 
-  allCards.forEach(card => {
+  visibleCards.forEach(card => {
     const productName = card.querySelector("#name").textContent;
     profileData.recommended_products.push(productName);
   });
