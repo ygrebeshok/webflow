@@ -202,7 +202,6 @@ async function recommend() {
          }
          // Correctly formatted keywords at this point
          const openaiKeywords = new Set(keywords);
-         let visibleCards = [];
          const stringSimilarityThreshold = 0.6;
 
          // Now catalog grid's card keywords are retrieved and formatted correctly
