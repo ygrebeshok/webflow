@@ -38,8 +38,8 @@ function loadProfileData(profiles, recommendedProducts) {
 
      for (const productName of recommendedProducts) {
       
-      if (recommendedGiftsGrid.childElementCount >= 5) {
-        break; // Break out of the loop after adding 5 images
+      if (recommendedGiftsGrid.childElementCount >= 6) {
+        break; // Break out of the loop after adding 6 images
       }
 	     
       // Query the "gifts" collection for the product with the matching name
