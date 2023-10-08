@@ -37,6 +37,11 @@ function loadProfileData(profiles, recommendedProducts) {
      const recommendedGiftsGrid = profile.querySelector('.recommended-gifts-grid');
 
      for (const productName of recommendedProducts) {
+      
+      if (recommendedGiftsGrid.childElementCount >= 5) {
+        break; // Break out of the loop after adding 5 images
+      }
+	     
       // Query the "gifts" collection for the product with the matching name
       const productSnapshot = await firebase.firestore()
         .collection('gifts')
