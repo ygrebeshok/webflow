@@ -38,7 +38,7 @@ function loadProfileData(profiles, recommendedProducts) {
 
      for (const productName of recommendedProducts) {
       
-      if (recommendedGiftsGrid.childElementCount >= 6) {
+      if (recommendedGiftsGrid.childElementCount >= 7) {
         break; // Break out of the loop after adding 6 images
       }
 	     
