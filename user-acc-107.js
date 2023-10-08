@@ -19,7 +19,7 @@ const profilesContain = document.getElementById("profiles-grid");
 var bodyAuth = document.body.getAttribute('data-user-auth');
 var bodyUnauth = document.body.getAttribute('data-user-unauth');
 
-function loadProfileData(profiles, recommendedProducts) {
+function loadProfileData(profiles) {
   profilesContain.innerHTML = "";
   profiles.sort((a, b) => new Date(a.date) - new Date(b.date));
 
@@ -41,7 +41,7 @@ function loadProfileData(profiles, recommendedProducts) {
 
      const recommendedGiftsGrid = profile.querySelector('.recommended-gifts-grid');
 
-     for (const productName of recommendedProducts) {
+     for (const productName of data.recommended_products) {
       console.log(productName);
       
       if (recommendedGiftsGrid.childElementCount >= 7) {
@@ -237,8 +237,7 @@ firebase.auth().onAuthStateChanged(function(authUser) {
      firebase.firestore().collection("users").doc(userId).get()
       .then(function(doc) {
 	const profiles = doc.data().profiles;
-	const recommendedProducts = doc.data().profiles.map(profile => profile.recommended_products).flat();
-        loadProfileData(profiles, recommendedProducts);
+        loadProfileData(profiles);
 	      
         const favorites = doc.data().favorites;
 	const shared_fav = doc.data().shared_favorites;
