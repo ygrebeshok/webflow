@@ -49,12 +49,12 @@ function loadProfileData(profiles, recommendedProducts) {
         const productImage = productData.images[0];
 
         // Create a new element to display the product image
-        const productImageElement = document.querySelectorAll('product-img-div');
-        productImageElement.src = productImage;
-        productImageElement.alt = productName;
+        const productImageElement = document.createElement('img'); // Create an image element
+	productImageElement.src = productImage;
+	productImageElement.alt = productName;
 
-        // Append the image element to the grid
-        recommendedGiftsGrid.appendChild(productImageElement);
+	// Append the image element to the grid
+	recommendedGiftsGrid.appendChild(productImageElement);
       }
     }
 
