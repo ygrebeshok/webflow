@@ -19,7 +19,7 @@ const profilesContain = document.getElementById("profiles-grid");
 var bodyAuth = document.body.getAttribute('data-user-auth');
 var bodyUnauth = document.body.getAttribute('data-user-unauth');
 
-function loadProfileData(profiles) {
+function loadProfileData(profiles, recommendedProducts) {
   profilesContain.innerHTML = "";
   profiles.sort((a, b) => new Date(a.date) - new Date(b.date));
 
@@ -35,7 +35,6 @@ function loadProfileData(profiles) {
      profile.querySelector(".profile-desc").textContent = data.gift_desc;
 
      const recommendedGiftsGrid = profile.querySelector('.recommended-gifts-grid');
-     const recommendedProducts = data.recommended_products;
 
      for (const productName of recommendedProducts) {
       // Query the "gifts" collection for the product with the matching name
@@ -227,7 +226,8 @@ firebase.auth().onAuthStateChanged(function(authUser) {
      firebase.firestore().collection("users").doc(userId).get()
       .then(function(doc) {
 	const profiles = doc.data().profiles;
-        loadProfileData(profiles);
+	const recommendedProducts = doc.data().recommended_products;
+        loadProfileData(profiles, recommendedProducts);
 	      
         const favorites = doc.data().favorites;
 	const shared_fav = doc.data().shared_favorites;
