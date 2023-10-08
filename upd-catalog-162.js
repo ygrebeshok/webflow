@@ -97,8 +97,14 @@ createProfile.addEventListener('click', () => {
     receiver: selected_who || "",
     occasion: selected_holiday,
     gift_desc: document.getElementById("textarea").value,
-    date: profileDate.value || ""
+    date: profileDate.value || "",
+    recommended_products: []
   };
+
+  visibleCards.forEach(card => {
+    const productName = card.querySelector("#name").textContent;
+    profileData.recommended_products.push(productName);
+  });
 
   const user = firebase.auth().currentUser;
   const userId = user.uid;
