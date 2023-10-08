@@ -42,6 +42,7 @@ function loadProfileData(profiles, recommendedProducts) {
      const recommendedGiftsGrid = profile.querySelector('.recommended-gifts-grid');
 
      for (const productName of recommendedProducts) {
+      console.log(productName);
       
       if (recommendedGiftsGrid.childElementCount >= 7) {
         break; // Break out of the loop after adding 6 images
