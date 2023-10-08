@@ -226,7 +226,7 @@ firebase.auth().onAuthStateChanged(function(authUser) {
      firebase.firestore().collection("users").doc(userId).get()
       .then(function(doc) {
 	const profiles = doc.data().profiles;
-	const recommendedProducts = doc.data().recommended_products;
+	const recommendedProducts = doc.data().profiles.map(profile => profile.recommended_products).flat();
         loadProfileData(profiles, recommendedProducts);
 	      
         const favorites = doc.data().favorites;
