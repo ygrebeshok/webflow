@@ -23,7 +23,7 @@ function loadProfileData(profiles) {
   profilesContain.innerHTML = "";
   profiles.sort((a, b) => new Date(a.date) - new Date(b.date));
 
-  profiles.forEach(data => {
+  profiles.forEach(async (data) => {
 	  
     const profile = profileCardTemplate.cloneNode(true);
      // populate the card with profile data
