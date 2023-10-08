@@ -85,8 +85,6 @@ resetSelections.addEventListener('click', () => {
 });
 
 createProfile.addEventListener('click', () => {
-  
-  let visibleCards;
 	
   if (checkboxHoliday.checked === true) {
     selected_holiday = customHoliday.value;
@@ -103,7 +101,7 @@ createProfile.addEventListener('click', () => {
     recommended_products: []
   };
 
-  visibleCards.forEach(card => {
+  allCards.forEach(card => {
     const productName = card.querySelector("#name").textContent;
     profileData.recommended_products.push(productName);
   });
