@@ -31,7 +31,12 @@ function loadProfileData(profiles, recommendedProducts) {
      profile.querySelector(".profile-names").textContent = data.profile_name;
      profile.querySelector(".occasion-mark").textContent = data.occasion;
      profile.querySelector(".reference").textContent = data.receiver;
-     profile.querySelector(".pr-date").textContent = data.date;
+
+     const dateString = data.date;
+     const dateObject = new Date(dateString);
+     const formattedDate = `${dateObject.getMonth() + 1}/${dateObject.getDate()}/${dateObject.getFullYear()}`;
+
+     profile.querySelector(".pr-date").textContent = formattedDate;
      profile.querySelector(".profile-desc").textContent = data.gift_desc;
 
      const recommendedGiftsGrid = profile.querySelector('.recommended-gifts-grid');
