@@ -15,9 +15,12 @@ const closeBtn = document.getElementById("close-button");
 const favoritesLabel = document.getElementById("favorites-label");
 const favoriteBtn = document.querySelector("#favorite-btn");
 const profilesContain = document.getElementById("profiles-grid");
+const showProductsContainer = document.getElementById("show-products-container");
 
 var bodyAuth = document.body.getAttribute('data-user-auth');
 var bodyUnauth = document.body.getAttribute('data-user-unauth');
+
+showProductsContainer.style.display = "none";
 
 function loadProfileData(profiles) {
   profilesContain.innerHTML = "";
@@ -112,11 +115,15 @@ function loadProfileData(profiles) {
            });
         });
       }
-      const showProductsContainer = document.getElementById("show-products-container");
       showProductsContainer.style.display = "flex";
-    });	  
+    });
   });
 }
+
+const closeShowProducts = document.getElementById("show-product-cross");
+closeShowProduct.addEventListener('click', (event) => {
+  showProductsContainer.style.display = "none";
+});
 
 function showPopupUser(productData, card) {
 
