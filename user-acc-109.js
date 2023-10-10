@@ -84,6 +84,35 @@ function loadProfileData(profiles) {
 	 console.error('Error handling profile click event:', error);       
        }	     
      });
+     profile.querySelector(".show-products").addEventListener('click', (event) => {
+       document.getElementById(".show-products-title").textContent = "Recommended gifts for " + data.profile_name;
+       const showProductsGrid = document.getElementById('.show-products-grid');
+
+       for (const productName of data.recommended_products) {
+	     
+       // Query the "gifts" collection for the product with the matching name
+       const productSnapshot = await firebase.firestore()
+         .collection('gifts')
+         .where('name', '==', productName)
+         .limit(1)
+         .get();
+
+       if (!productSnapshot.empty) {
+         const productData = productSnapshot.docs[0].data();
+         const productImage = productData.images[0];
+
+         // Create a new element to display the product image
+         const productImageElement = document.createElement('img'); // Create an image element
+	 productImageElement.src = productImage;
+	 productImageElement.alt = productName;
+
+	 // Append the image element to the grid
+	 showProductsGrid.appendChild(productImageElement);
+       }
+     }
+     const showProductsContainer = document.getElementById("show-products-container");
+     showProductsContainer.style.display = "flex";
+    }); 
   });
 }
 
