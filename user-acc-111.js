@@ -263,7 +263,7 @@ firebase.auth().onAuthStateChanged(function(authUser) {
 	}
 
      firebase.firestore().collection("users").doc(userId).get()
-      .then(function(doc) {
+      .then(async function(doc) {
 	const profiles = doc.data().profiles;
         loadProfileData(profiles);
 	      
