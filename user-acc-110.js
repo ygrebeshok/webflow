@@ -19,7 +19,7 @@ const profilesContain = document.getElementById("profiles-grid");
 var bodyAuth = document.body.getAttribute('data-user-auth');
 var bodyUnauth = document.body.getAttribute('data-user-unauth');
 
-function loadProfileData(profiles) {
+async function loadProfileData(profiles) {
   profilesContain.innerHTML = "";
   profiles.sort((a, b) => new Date(a.date) - new Date(b.date));
 
