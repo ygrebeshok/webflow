@@ -19,7 +19,7 @@ const profilesContain = document.getElementById("profiles-grid");
 var bodyAuth = document.body.getAttribute('data-user-auth');
 var bodyUnauth = document.body.getAttribute('data-user-unauth');
 
-async function loadProfileData(profiles) {
+function loadProfileData(profiles) {
   profilesContain.innerHTML = "";
   profiles.sort((a, b) => new Date(a.date) - new Date(b.date));
 
@@ -84,35 +84,37 @@ async function loadProfileData(profiles) {
 	 console.error('Error handling profile click event:', error);       
        }	     
      });
+	  
      profile.querySelector(".show-products").addEventListener('click', (event) => {
-       document.getElementById(".show-products-title").textContent = "Recommended gifts for " + data.profile_name;
-       const showProductsGrid = document.getElementById('.show-products-grid');
+       document.querySelector(".show-products-title").textContent = "Recommended gifts for " + data.profile_name;
+       const showProductsGrid = document.querySelector('.show-products-grid');
 
        for (const productName of data.recommended_products) {
-	     
+
        // Query the "gifts" collection for the product with the matching name
-       const productSnapshot = await firebase.firestore()
-         .collection('gifts')
+       const giftsRef = firebase.firestore().collection('gifts');
+
+       giftsRef
          .where('name', '==', productName)
-         .limit(1)
-         .get();
+         .get()
+         .then((querySnapshot) => {
+           querySnapshot.forEach((doc) => {
+             const productData = doc.data();
+             const productImage = productData.images[0];
 
-       if (!productSnapshot.empty) {
-         const productData = productSnapshot.docs[0].data();
-         const productImage = productData.images[0];
+             // Create a new element to display the product image
+             const productImageElement = document.createElement('img');
+             productImageElement.src = productImage;
+             productImageElement.alt = productName;
 
-         // Create a new element to display the product image
-         const productImageElement = document.createElement('img'); // Create an image element
-	 productImageElement.src = productImage;
-	 productImageElement.alt = productName;
-
-	 // Append the image element to the grid
-	 showProductsGrid.appendChild(productImageElement);
-       }
-     }
-     const showProductsContainer = document.getElementById("show-products-container");
-     showProductsContainer.style.display = "flex";
-    }); 
+             // Append the image element to the grid
+             showProductsGrid.appendChild(productImageElement);
+           });
+        });
+      }
+      const showProductsContainer = document.getElementById("show-products-container");
+      showProductsContainer.style.display = "flex";
+    });	  
   });
 }
 
@@ -263,7 +265,7 @@ firebase.auth().onAuthStateChanged(function(authUser) {
 	}
 
      firebase.firestore().collection("users").doc(userId).get()
-      .then(async function(doc) {
+      .then(function(doc) {
 	const profiles = doc.data().profiles;
         loadProfileData(profiles);
 	      
