@@ -121,7 +121,7 @@ function loadProfileData(profiles) {
 }
 
 const closeShowProducts = document.getElementById("show-product-cross");
-closeShowProduct.addEventListener('click', (event) => {
+closeShowProducts.addEventListener('click', (event) => {
   showProductsContainer.style.display = "none";
 });
 
