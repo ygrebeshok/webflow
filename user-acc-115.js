@@ -107,6 +107,7 @@ function loadProfileData(profiles) {
 
              // Create a new element to display the product image
              const productImageElement = document.createElement('img');
+	     productImageElement.classList.add('show-products-img');
              productImageElement.src = productImage;
              productImageElement.alt = productName;
 
