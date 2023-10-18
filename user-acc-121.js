@@ -94,6 +94,7 @@ function loadProfileData(profiles) {
 	  
      profile.querySelector(".show-products").addEventListener('click', (event) => {
        document.querySelector(".show-products-title").textContent = "Recommended gifts for " + data.profile_name;
+       profileProductGrid.innerHTML = "";
 
        for (const productName of data.recommended_products) {
 
