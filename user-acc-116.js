@@ -16,6 +16,8 @@ const favoritesLabel = document.getElementById("favorites-label");
 const favoriteBtn = document.querySelector("#favorite-btn");
 const profilesContain = document.getElementById("profiles-grid");
 const showProductsContainer = document.getElementById("show-products-container");
+const profileProductGrid = document.getElementById("show-products-grid");
+const profileProductTemplate = document.querySelector(".profile-product-template");
 
 var bodyAuth = document.body.getAttribute('data-user-auth');
 var bodyUnauth = document.body.getAttribute('data-user-unauth');
@@ -90,7 +92,6 @@ function loadProfileData(profiles) {
 	  
      profile.querySelector(".show-products").addEventListener('click', (event) => {
        document.querySelector(".show-products-title").textContent = "Recommended gifts for " + data.profile_name;
-       const showProductsGrid = document.querySelector('.show-products-grid');
 
        for (const productName of data.recommended_products) {
 
@@ -103,16 +104,11 @@ function loadProfileData(profiles) {
          .then((querySnapshot) => {
            querySnapshot.forEach((doc) => {
              const productData = doc.data();
-             const productImage = productData.images[0];
+	     const profileProductCard = profileProductTemplate.cloneNode(true);
+             profileProductCard.querySelector("#profile-product-image").src = productData.images[0];
 
-             // Create a new element to display the product image
-             const productImageElement = document.createElement('img');
-	     productImageElement.classList.add('show-products-img');
-             productImageElement.src = productImage;
-             productImageElement.alt = productName;
-
-             // Append the image element to the grid
-             showProductsGrid.appendChild(productImageElement);
+             // Append to the grid
+             profileProductGrid.appendChild(profileProductCard);
            });
         });
       }
