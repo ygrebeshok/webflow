@@ -262,7 +262,6 @@ function showPopupForProfileProducts(productData) {
 }
 
 function showPopupUser(productData, card) {
-  popupArea.innerHTML = '';
 	
   const slideContainer = document.querySelector('.slides');
   const thumbnailContainer = document.querySelector('.thumbnails');
