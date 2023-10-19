@@ -116,7 +116,7 @@ function loadProfileData(profiles) {
              profileProductGrid.appendChild(profileProductCard);
 
 	     profileProductCard.addEventListener('click', (event) => {
-	       showPopupUser(productData, profileProductCard);    
+	       showPopupForProfileProducts(productData);    
 	     });
 
 	     profileProductCard.addEventListener('mouseenter', () => {
@@ -151,6 +151,109 @@ closeShowProducts.addEventListener('click', (event) => {
   showProductsContainer.style.display = "none";
 });
 
+function showPopupForProfileProducts(productData) {
+
+  const slideContainer = document.querySelector('.slides');
+  const thumbnailContainer = document.querySelector('.thumbnails');
+  slideContainer.innerHTML = ''; // Clear existing slides
+  thumbnailContainer.innerHTML = ''; // Clear existing thumbnails
+	
+  popupTitle.textContent = productData.name;
+  popupBrand.textContent = productData.brand;
+  popupBrand.href = productData.product_link;
+  popupDesc.textContent = productData.description;
+  popupPrice.textContent = `$${productData.price}`;
+
+  const user = firebase.auth().currentUser;
+  const userId = user.uid;
+  const productId = productData.name;
+
+  firebase.firestore().collection("users").doc(userId).get()
+    .then(doc => {
+      const favorites = doc.data().favorites;
+      if (favorites.includes(productId)) {
+        favoritesLabel.textContent = "Remove from Favorites";
+      } else {
+        favoritesLabel.textContent = "Add to Favorites";
+      }
+	    
+      favoriteBtn.addEventListener('click', () => {
+        const isFavorite = favoritesLabel.textContent === "Remove from Favorites";
+
+        if (isFavorite) {
+          firebase.firestore().collection("users").doc(userId).update({
+            favorites: firebase.firestore.FieldValue.arrayRemove(productId)
+          })
+          .then(() => {
+            favoritesLabel.textContent = "Add to Favorites";
+          })
+          .catch(error => {
+            console.log("Error removing product from favorites:", error);
+          });
+          } else {
+            firebase.firestore().collection("users").doc(userId).update({
+              favorites: firebase.firestore.FieldValue.arrayUnion(productId)
+            })
+            .then(() => {
+              favoritesLabel.textContent = "Remove from Favorites";
+            })
+            .catch(error => {
+              console.log("Error adding product to favorites:", error);
+            });
+          }
+       });
+    })
+    .catch(error => {
+      console.log("Error getting favorites:", error);
+    });
+
+  productData.images.forEach(imageUrl => {
+    const thumbnail = document.createElement('div');
+    thumbnail.classList.add('thumbnail');
+    thumbnail.innerHTML = `<img src="${imageUrl}" alt="Thumbnail">`;
+    thumbnailContainer.appendChild(thumbnail);
+
+    const slide = document.createElement('div');
+    slide.classList.add('slide');
+    slide.innerHTML = `<img src="${imageUrl}" alt="Product Image">`;
+    slideContainer.appendChild(slide);
+  })
+
+  popupContainer.style.display = "flex";
+
+  const slides = document.querySelector('.slides');
+  const thumbnails = document.querySelectorAll('.thumbnail');
+  let currentSlide = 0;
+
+  function updateThumbnails() {
+    thumbnails.forEach((thumbnail, index) => {
+      if (index === currentSlide) {
+        thumbnail.classList.add('active');
+      } else {
+        thumbnail.classList.remove('active');
+      }
+    });
+   }
+
+   function showSlide(slideIndex) {
+     slides.style.transform = `translateX(-${slideIndex * 100}%)`;
+     currentSlide = slideIndex;
+     updateThumbnails();
+   }
+	
+   thumbnails.forEach((thumbnail, index) => {
+      thumbnail.addEventListener('click', function() {
+        showSlide(index);
+      });
+    });
+
+    showSlide(currentSlide);
+
+    popupClose.addEventListener("click", () => {
+      popupContainer.style.display = "none";
+    });	
+}
+
 function showPopupUser(productData, card) {
 
   const slideContainer = document.querySelector('.slides');
@@ -173,7 +276,10 @@ function showPopupUser(productData, card) {
       const favorites = doc.data().favorites;
       if (favorites.includes(productId)) {
         favoritesLabel.textContent = "Remove from Favorites";
+      } else {
+        favoritesLabel.textContent = "Add to Favorites";
       }
+	    
       favoriteBtn.addEventListener('click', () => {
         const isFavorite = favoritesLabel.textContent === "Remove from Favorites";
 
@@ -242,7 +348,6 @@ function showPopupUser(productData, card) {
     thumbnails.forEach((thumbnail, index) => {
       thumbnail.addEventListener('click', function() {
         showSlide(index);
-	console.log("thumbnail clicked");
       });
     });
 
