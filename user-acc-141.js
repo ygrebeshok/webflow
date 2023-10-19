@@ -20,6 +20,7 @@ const profileProductGrid = document.getElementById("show-products-grid");
 const profileProductTemplate = document.querySelector(".profile-product-template");
 const profileProductDefault = document.querySelector(".default-profile-product-card");
 const profileProductName = document.getElementById("profile-product-name");
+const profileProductPopup = document.getElementById("profile-product-popup");
 
 var bodyAuth = document.body.getAttribute('data-user-auth');
 var bodyUnauth = document.body.getAttribute('data-user-unauth');
@@ -153,10 +154,18 @@ closeShowProducts.addEventListener('click', (event) => {
 
 function showPopupForProfileProducts(productData) {
 
-  const slideContainer = document.querySelector('.slides');
-  const thumbnailContainer = document.querySelector('.thumbnails');
+  const slideContainer = profileProductPopup.querySelector('.slides');
+  const thumbnailContainer = profileProductPopup.querySelector('.thumbnails');
   slideContainer.innerHTML = ''; // Clear existing slides
   thumbnailContainer.innerHTML = ''; // Clear existing thumbnails
+
+  const popupTitle = profileProductPopup.getElementById("popup_title");
+  const popupBrand = profileProductPopup.getElementById("popup_brand");
+  const popupDesc = profileProductPopup.getElementById("popup_desc");
+  const popupLink = dprofileProductPopup.getElementById("popup_link");
+  const popupPrice = profileProductPopup.getElementById("popup_price");
+  const popupClose = profileProductPopup.getElementById("popup-close");
+	
   popupTitle.innerHTML = '';
   popupBrand.innerHTML = '';
   popupBrand.innerHTML = '';
@@ -215,21 +224,21 @@ function showPopupForProfileProducts(productData) {
     });
 
   productData.images.forEach(imageUrl => {
-    const thumbnail = document.createElement('div');
+    const thumbnail = profileProductPopup.createElement('div');
     thumbnail.classList.add('thumbnail');
     thumbnail.innerHTML = `<img src="${imageUrl}" alt="Thumbnail">`;
     thumbnailContainer.appendChild(thumbnail);
 
-    const slide = document.createElement('div');
+    const slide = profileProductPopup.createElement('div');
     slide.classList.add('slide');
     slide.innerHTML = `<img src="${imageUrl}" alt="Product Image">`;
     slideContainer.appendChild(slide);
   })
 
-  popupContainer.style.display = "flex";
+  profileProductPopup.style.display = "flex";
 
-  const slides = document.querySelector('.slides');
-  const thumbnails = document.querySelectorAll('.thumbnail');
+  const slides = profileProductPopup.querySelector('.slides');
+  const thumbnails = profileProductPopup.querySelectorAll('.thumbnail');
   let currentSlide = 0;
 
   function updateThumbnails() {
@@ -257,7 +266,7 @@ function showPopupForProfileProducts(productData) {
     showSlide(currentSlide);
 
     popupClose.addEventListener("click", () => {
-      popupContainer.style.display = "none";
+      profileProductPopup.style.display = "none";
     });	
 }
 
