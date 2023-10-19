@@ -19,6 +19,7 @@ const showProductsContainer = document.getElementById("show-products-container")
 const profileProductGrid = document.getElementById("show-products-grid");
 const profileProductTemplate = document.querySelector(".profile-product-template");
 const profileProductDefault = document.querySelector(".default-profile-product-card");
+const profileProductName = document.getElementById("profile-product-name");
 
 var bodyAuth = document.body.getAttribute('data-user-auth');
 var bodyUnauth = document.body.getAttribute('data-user-unauth');
@@ -93,7 +94,7 @@ function loadProfileData(profiles) {
      });
 	  
      profile.querySelector(".show-products").addEventListener('click', (event) => {
-       document.querySelector(".show-products-title").textContent = "Recommended gifts for " + data.profile_name;
+       profileProductName.textContent = data.profile_name;
        profileProductGrid.innerHTML = "";
 
        for (const productName of data.recommended_products) {
