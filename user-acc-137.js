@@ -25,10 +25,10 @@ var bodyAuth = document.body.getAttribute('data-user-auth');
 var bodyUnauth = document.body.getAttribute('data-user-unauth');
 
 showProductsContainer.style.display = "none";
+profileProductGrid.removeChild(profileProductDefault);
 
 function loadProfileData(profiles) {
   profilesContain.innerHTML = "";
-  profileProductGrid.removeChild(profileProductDefault);
   profiles.sort((a, b) => new Date(a.date) - new Date(b.date));
 
   profiles.forEach(async (data) => {
