@@ -173,6 +173,7 @@ function showPopupForProfileProducts(productData) {
   const user = firebase.auth().currentUser;
   const userId = user.uid;
   const productId = productData.name;
+  console.log(productId);
 
   firebase.firestore().collection("users").doc(userId).get()
     .then(doc => {
@@ -283,6 +284,8 @@ function showPopupUser(productData, card) {
   const user = firebase.auth().currentUser;
   const userId = user.uid;
   const productId = productData.name;
+
+  console.log(productId);
 
   firebase.firestore().collection("users").doc(userId).get()
     .then(doc => {
