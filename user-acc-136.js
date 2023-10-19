@@ -172,7 +172,7 @@ function showPopupForProfileProducts(productData) {
 
   const user = firebase.auth().currentUser;
   const userId = user.uid;
-  const productId = popupTitle.textContent;
+  const productId = productData.name;
 
   firebase.firestore().collection("users").doc(userId).get()
     .then(doc => {
@@ -371,6 +371,8 @@ function showPopupUser(productData, card) {
     });
 }
 
+
+function setupUser() {
 
 popupContainer.style.display = "none";
 popUp.style.display = "none";
@@ -585,3 +587,4 @@ firebase.auth().onAuthStateChanged(function(authUser) {
    });
   }
 });
+}
