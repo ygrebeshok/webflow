@@ -163,7 +163,6 @@ function showPopupForProfileProducts(productData) {
   popupDesc.innerHTML = '';
   popupPrice.innerHTML = '';
   favoritesLabel.innerHTML = '';
-  favoriteBtn.innerHTML = '';
 	
   popupTitle.textContent = productData.name;
   popupBrand.textContent = productData.brand;
@@ -274,7 +273,6 @@ function showPopupUser(productData, card) {
   popupDesc.innerHTML = '';
   popupPrice.innerHTML = '';
   favoritesLabel.innerHTML = '';
-  favoriteBtn.innerHTML = '';
 	
   popupTitle.textContent = productData.name;
   popupBrand.textContent = productData.brand;
