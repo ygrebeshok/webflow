@@ -11,6 +11,7 @@ const profileCardTemplate = document.querySelector("#profile-card");
 const popupContainer = document.getElementById("popup-fade");
 const giftsRef = firebase.firestore().collection("gifts");
 const popUp = document.getElementById("pop-up");
+const popupArea = document.getElementById("popup");
 const closeBtn = document.getElementById("close-button");
 const favoritesLabel = document.getElementById("favorites-label");
 const favoriteBtn = document.querySelector("#favorite-btn");
@@ -152,7 +153,7 @@ closeShowProducts.addEventListener('click', (event) => {
 });
 
 function showPopupForProfileProducts(productData) {
-  popup.innerHTML = '';
+  popupArea.innerHTML = '';
 
   const slideContainer = document.querySelector('.slides');
   const thumbnailContainer = document.querySelector('.thumbnails');
@@ -256,7 +257,7 @@ function showPopupForProfileProducts(productData) {
 }
 
 function showPopupUser(productData, card) {
-  popup.innerHTML = '';
+  popupArea.innerHTML = '';
 	
   const slideContainer = document.querySelector('.slides');
   const thumbnailContainer = document.querySelector('.thumbnails');
