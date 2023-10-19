@@ -140,12 +140,11 @@ function loadProfileData(profiles) {
              });
              });
            });
+          }
         });
-      }
-      showProductsContainer.style.display = "flex";
-    });
-  });
-}
+	showProductsContainer.style.display = "flex";
+      });
+    }
 
 const closeShowProducts = document.getElementById("show-product-cross");
 closeShowProducts.addEventListener('click', (event) => {
