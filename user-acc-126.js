@@ -141,8 +141,8 @@ function loadProfileData(profiles) {
              });
            });
           }
+	  showProductsContainer.style.display = "flex";
         });
-	showProductsContainer.style.display = "flex";
       });
     }
 
