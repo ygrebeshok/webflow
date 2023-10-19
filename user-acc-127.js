@@ -116,7 +116,7 @@ function loadProfileData(profiles) {
              profileProductGrid.appendChild(profileProductCard);
 
 	     profileProductCard.addEventListener('click', (event) => {
-	       showPopupUser(productData);    
+	       showPopupUser(productData, profileProductCard);    
 	     });
 
 	     profileProductCard.addEventListener('mouseenter', () => {
@@ -151,7 +151,7 @@ closeShowProducts.addEventListener('click', (event) => {
   showProductsContainer.style.display = "none";
 });
 
-function showPopupUser(productData) {
+function showPopupUser(productData, card) {
 
   const slideContainer = document.querySelector('.slides');
   const thumbnailContainer = document.querySelector('.thumbnails');
@@ -183,9 +183,7 @@ function showPopupUser(productData) {
           })
           .then(() => {
             favoritesLabel.textContent = "Add to Favorites";
-	    if (favCard) {
-	      favCard.style.display = "none";
-	    }
+	      card.style.display = "none";
           })
           .catch(error => {
             console.log("Error removing product from favorites:", error);
@@ -358,7 +356,7 @@ firebase.auth().onAuthStateChanged(function(authUser) {
                     price: favCard.querySelector("#price").textContent.replace("$", "")
                   };
 
-                showPopupUser(productData);
+                showPopupUser(productData, favCard);
                 });
                 
                 const formattedContentSet = new Set()
