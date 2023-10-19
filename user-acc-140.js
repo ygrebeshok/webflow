@@ -177,8 +177,8 @@ function showPopupForProfileProducts(productData) {
 
   firebase.firestore().collection("users").doc(userId).get()
     .then(doc => {
-      const favorites = doc.data().favorites;
-      if (favorites.includes(productId)) {
+      const favorite = doc.data().favorites;
+      if (favorite.includes(productId)) {
         favoritesLabel.textContent = "Remove from Favorites";
       } else {
         favoritesLabel.textContent = "Add to Favorites";
@@ -289,8 +289,8 @@ function showPopupUser(productData, card) {
 
   firebase.firestore().collection("users").doc(userId).get()
     .then(doc => {
-      const favorites = doc.data().favorites;
-      if (favorites.includes(productId)) {
+      const favorite = doc.data().favorites;
+      if (favorite.includes(productId)) {
         favoritesLabel.textContent = "Remove from Favorites";
       } else {
         favoritesLabel.textContent = "Add to Favorites";
