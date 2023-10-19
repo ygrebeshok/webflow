@@ -371,17 +371,17 @@ function showPopupUser(productData, card) {
     });
 }
 
-
-function setupUser() {
-
-popupContainer.style.display = "none";
-popUp.style.display = "none";
-
 const defaultCard = document.querySelector(".default-card");
 favoritesGrid.removeChild(defaultCard);
 
 const shareFavoritesButton = document.getElementById('shareFavoritesButton');
 
+popupContainer.style.display = "none";
+popUp.style.display = "none";
+
+
+function setupUser() {
+favoritesGrid.innerHTML = "";
 	
 firebase.auth().onAuthStateChanged(function(authUser) {
   user = authUser;
