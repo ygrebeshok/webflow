@@ -11,7 +11,6 @@ const profileCardTemplate = document.querySelector("#profile-card");
 const popupContainer = document.getElementById("popup-fade");
 const giftsRef = firebase.firestore().collection("gifts");
 const popUp = document.getElementById("pop-up");
-const popupArea = document.getElementById("popup");
 const closeBtn = document.getElementById("close-button");
 const favoritesLabel = document.getElementById("favorites-label");
 const favoriteBtn = document.querySelector("#favorite-btn");
@@ -153,12 +152,18 @@ closeShowProducts.addEventListener('click', (event) => {
 });
 
 function showPopupForProfileProducts(productData) {
-  popupArea.innerHTML = '';
 
   const slideContainer = document.querySelector('.slides');
   const thumbnailContainer = document.querySelector('.thumbnails');
   slideContainer.innerHTML = ''; // Clear existing slides
   thumbnailContainer.innerHTML = ''; // Clear existing thumbnails
+  popupTitle.innerHTML = '';
+  popupBrand.innerHTML = '';
+  popupBrand.innerHTML = '';
+  popupDesc.innerHTML = '';
+  popupPrice.innerHTML = '';
+  favoritesLabel.innerHTML = '';
+  favoriteBtn.innerHTML = '';
 	
   popupTitle.textContent = productData.name;
   popupBrand.textContent = productData.brand;
@@ -263,6 +268,14 @@ function showPopupUser(productData, card) {
   const thumbnailContainer = document.querySelector('.thumbnails');
   slideContainer.innerHTML = ''; // Clear existing slides
   thumbnailContainer.innerHTML = ''; // Clear existing thumbnails
+
+  popupTitle.innerHTML = '';
+  popupBrand.innerHTML = '';
+  popupBrand.innerHTML = '';
+  popupDesc.innerHTML = '';
+  popupPrice.innerHTML = '';
+  favoritesLabel.innerHTML = '';
+  favoriteBtn.innerHTML = '';
 	
   popupTitle.textContent = productData.name;
   popupBrand.textContent = productData.brand;
