@@ -1,10 +1,15 @@
-const popupImage = document.getElementById("popup_image");
 const popupTitle = document.getElementById("popup_title");
 const popupBrand = document.getElementById("popup_brand");
 const popupDesc = document.getElementById("popup_desc");
-const popupLink = document.getElementById("popup_link");
 const popupPrice = document.getElementById("popup_price");
 const popupClose = document.getElementById("popup-close");
+
+const profilePopupTitle = document.getElementById("profile-popup-title");
+const profilePopupBrand = document.getElementById("profile-popup-brand");
+const profilePopupDesc = document.getElementById("profile-popup-desc");
+const profilePopupPrice = document.getElementById("profile-popup-price");
+const profilePopupClose = document.getElementById("profile-popup-close");
+
 const favoritesGrid = document.getElementById("favoritesGrid");
 const favCardTemplate = document.querySelector("#card");
 const profileCardTemplate = document.querySelector("#profile-card");
@@ -154,54 +159,49 @@ closeShowProducts.addEventListener('click', (event) => {
 
 function showPopupForProfileProducts(productData) {
 
-  const slideContainer = profileProductPopup.querySelector('.slides');
-  const thumbnailContainer = profileProductPopup.querySelector('.thumbnails');
-  slideContainer.innerHTML = ''; // Clear existing slides
-  thumbnailContainer.innerHTML = ''; // Clear existing thumbnails
+  const profileSlideContainer = document.querySelector('.profile-popup-slides');
+  const profileThumbnailContainer = document.querySelector('.profile-popup-thumbnails');
+  profileSlideContainer.innerHTML = ''; // Clear existing slides
+  profileThumbnailContainer.innerHTML = ''; // Clear existing thumbnails
+	
+  profilePopupTitle.innerHTML = '';
+  profilePopupBrand.innerHTML = '';
+  profilePopupBrand.innerHTML = '';
+  profilePopupDesc.innerHTML = '';
+  profilePopupPrice.innerHTML = '';
 
-  const popupTitle = profileProductPopup.getElementById("popup_title");
-  const popupBrand = profileProductPopup.getElementById("popup_brand");
-  const popupDesc = profileProductPopup.getElementById("popup_desc");
-  const popupLink = dprofileProductPopup.getElementById("popup_link");
-  const popupPrice = profileProductPopup.getElementById("popup_price");
-  const popupClose = profileProductPopup.getElementById("popup-close");
+  const profileFavoritesBtn = document.getElementById("profile-popup-favorite");
+  const profileFavoritesLabel = document.getElementById("profile-popup-favorite-label");
+  profileFavoritesLabel.innerHTML = '';
 	
-  popupTitle.innerHTML = '';
-  popupBrand.innerHTML = '';
-  popupBrand.innerHTML = '';
-  popupDesc.innerHTML = '';
-  popupPrice.innerHTML = '';
-  favoritesLabel.innerHTML = '';
-	
-  popupTitle.textContent = productData.name;
-  popupBrand.textContent = productData.brand;
-  popupBrand.href = productData.product_link;
-  popupDesc.textContent = productData.description;
-  popupPrice.textContent = `$${productData.price}`;
+  profilePopupTitle.textContent = productData.name;
+  profilePopupBrand.textContent = productData.brand;
+  profilePopupBrand.href = productData.product_link;
+  profilePopupDesc.textContent = productData.description;
+  profilePopupPrice.textContent = `$${productData.price}`;
 
   const user = firebase.auth().currentUser;
   const userId = user.uid;
   const productId = productData.name;
-  console.log(productId);
 
   firebase.firestore().collection("users").doc(userId).get()
     .then(doc => {
       const favorite = doc.data().favorites;
       if (favorite.includes(productId)) {
-        favoritesLabel.textContent = "Remove from Favorites";
+        profileFavoritesLabel.textContent = "Remove from Favorites";
       } else {
-        favoritesLabel.textContent = "Add to Favorites";
+        profileFavoritesLabel.textContent = "Add to Favorites";
       }
 	    
-      favoriteBtn.addEventListener('click', () => {
-        const isFavorite = favoritesLabel.textContent === "Remove from Favorites";
+      profileFavoritesBtn.addEventListener('click', () => {
+        const isFavorite = profileFavoritesLabel.textContent === "Remove from Favorites";
 
         if (isFavorite) {
           firebase.firestore().collection("users").doc(userId).update({
             favorites: firebase.firestore.FieldValue.arrayRemove(productId)
           })
           .then(() => {
-            favoritesLabel.textContent = "Add to Favorites";
+            profileFavoritesLabel.textContent = "Add to Favorites";
           })
           .catch(error => {
             console.log("Error removing product from favorites:", error);
@@ -211,7 +211,7 @@ function showPopupForProfileProducts(productData) {
               favorites: firebase.firestore.FieldValue.arrayUnion(productId)
             })
             .then(() => {
-              favoritesLabel.textContent = "Remove from Favorites";
+              profileFavoritesLabel.textContent = "Remove from Favorites";
             })
             .catch(error => {
               console.log("Error adding product to favorites:", error);
@@ -224,12 +224,12 @@ function showPopupForProfileProducts(productData) {
     });
 
   productData.images.forEach(imageUrl => {
-    const thumbnail = profileProductPopup.createElement('div');
+    const thumbnail = document.createElement('div');
     thumbnail.classList.add('thumbnail');
     thumbnail.innerHTML = `<img src="${imageUrl}" alt="Thumbnail">`;
     thumbnailContainer.appendChild(thumbnail);
 
-    const slide = profileProductPopup.createElement('div');
+    const slide = document.createElement('div');
     slide.classList.add('slide');
     slide.innerHTML = `<img src="${imageUrl}" alt="Product Image">`;
     slideContainer.appendChild(slide);
@@ -237,12 +237,12 @@ function showPopupForProfileProducts(productData) {
 
   profileProductPopup.style.display = "flex";
 
-  const slides = profileProductPopup.querySelector('.slides');
-  const thumbnails = profileProductPopup.querySelectorAll('.thumbnail');
+  const profileSlides = document.querySelector('.profile-popup-slides');
+  const profileThumbnails = document.querySelectorAll('.profile-popup-thumbnail');
   let currentSlide = 0;
 
   function updateThumbnails() {
-    thumbnails.forEach((thumbnail, index) => {
+    profileThumbnails.forEach((thumbnail, index) => {
       if (index === currentSlide) {
         thumbnail.classList.add('active');
       } else {
@@ -252,12 +252,12 @@ function showPopupForProfileProducts(productData) {
    }
 
    function showSlide(slideIndex) {
-     slides.style.transform = `translateX(-${slideIndex * 100}%)`;
+     profileSlides.style.transform = `translateX(-${slideIndex * 100}%)`;
      currentSlide = slideIndex;
      updateThumbnails();
    }
 	
-   thumbnails.forEach((thumbnail, index) => {
+   profileThumbnails.forEach((thumbnail, index) => {
       thumbnail.addEventListener('click', function() {
         showSlide(index);
       });
@@ -265,7 +265,7 @@ function showPopupForProfileProducts(productData) {
 
     showSlide(currentSlide);
 
-    popupClose.addEventListener("click", () => {
+    profilePopupClose.addEventListener("click", () => {
       profileProductPopup.style.display = "none";
     });	
 }
