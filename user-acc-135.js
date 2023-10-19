@@ -172,7 +172,7 @@ function showPopupForProfileProducts(productData) {
 
   const user = firebase.auth().currentUser;
   const userId = user.uid;
-  const productId = productData.name;
+  const productId = popupTitle.textContent;
 
   firebase.firestore().collection("users").doc(userId).get()
     .then(doc => {
