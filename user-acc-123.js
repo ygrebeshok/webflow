@@ -110,6 +110,7 @@ function loadProfileData(profiles) {
              const productData = doc.data();
 	     const profileProductCard = profileProductTemplate.cloneNode(true);
              profileProductCard.querySelector("#profile-product-image").src = productData.images[0];
+	     profileProductCard.querySelector("#profile-product-grid-name").textContent = productData.name;
 
              // Append to the grid
              profileProductGrid.appendChild(profileProductCard);
