@@ -114,6 +114,31 @@ function loadProfileData(profiles) {
 
              // Append to the grid
              profileProductGrid.appendChild(profileProductCard);
+
+	     profileProductCard.addEventListener('click', (event) => {
+	       showPopupUser(productData);    
+	     });
+
+	     profileProductCard.addEventListener('mouseenter', () => {
+               profileProductCard.animate([
+               { transform: 'scale(1)' },
+               { transform: 'scale(1.05)' }
+               ], {
+               duration: 200,
+               fill: 'forwards'
+               });
+             });
+
+             profileProductCard.addEventListener('mouseleave', () => {
+               profileProductCard.animate([
+               { transform: 'scale(1.05)' },
+               { transform: 'scale(1)' }
+               ], {
+               duration: 200,
+               fill: 'forwards'
+               });
+             });
+             });
            });
         });
       }
@@ -127,7 +152,7 @@ closeShowProducts.addEventListener('click', (event) => {
   showProductsContainer.style.display = "none";
 });
 
-function showPopupUser(productData, card) {
+function showPopupUser(productData) {
 
   const slideContainer = document.querySelector('.slides');
   const thumbnailContainer = document.querySelector('.thumbnails');
@@ -159,7 +184,9 @@ function showPopupUser(productData, card) {
           })
           .then(() => {
             favoritesLabel.textContent = "Add to Favorites";
-	    card.style.display = "none";
+	    if (favCard) {
+	      favCard.style.display = "none";
+	    }
           })
           .catch(error => {
             console.log("Error removing product from favorites:", error);
@@ -332,7 +359,7 @@ firebase.auth().onAuthStateChanged(function(authUser) {
                     price: favCard.querySelector("#price").textContent.replace("$", "")
                   };
 
-                showPopupUser(productData, favCard);
+                showPopupUser(productData);
                 });
                 
                 const formattedContentSet = new Set()
