@@ -152,7 +152,7 @@ closeShowProducts.addEventListener('click', (event) => {
 });
 
 function showPopupForProfileProducts(productData) {
-  popupContainer.innerHTML = '';
+  popup.innerHTML = '';
 
   const slideContainer = document.querySelector('.slides');
   const thumbnailContainer = document.querySelector('.thumbnails');
@@ -256,7 +256,7 @@ function showPopupForProfileProducts(productData) {
 }
 
 function showPopupUser(productData, card) {
-  popupContainer.innerHTML = '';
+  popup.innerHTML = '';
 	
   const slideContainer = document.querySelector('.slides');
   const thumbnailContainer = document.querySelector('.thumbnails');
