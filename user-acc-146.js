@@ -248,26 +248,26 @@ function showPopupForProfileProducts(productData) {
       } else {
         thumbnail.classList.remove('active');
       }
+   });
+  }
+
+  function showSlide(slideIndex) {
+    slides.style.transform = `translateX(-${slideIndex * 100}%)`;
+    currentSlide = slideIndex;
+    updateThumbnails();
+  }
+
+  thumbnails.forEach((thumbnail, index) => {
+    thumbnail.addEventListener('click', function() {
+      showSlide(index);
     });
-   }
+  });
 
-   function showSlide(slideIndex) {
-     slides.style.transform = `translateX(-${slideIndex * 100}%)`;
-     currentSlide = slideIndex;
-     updateThumbnails();
-   }
-	
-   thumbnails.forEach((thumbnail, index) => {
-      thumbnail.addEventListener('click', function() {
-        showSlide(index);
-      });
-    });
+  showSlide(currentSlide);
 
-    showSlide(currentSlide);
-
-    profilePopupClose.addEventListener("click", () => {
-      profileProductPopup.style.display = "none";
-    });	
+  profilePopupClose.addEventListener("click", () => {
+    profileProductPopup.style.display = "none";
+  });	
 }
 
 function showPopupUser(productData, card) {
@@ -293,8 +293,6 @@ function showPopupUser(productData, card) {
   const user = firebase.auth().currentUser;
   const userId = user.uid;
   const productId = productData.name;
-
-  console.log(productId);
 
   firebase.firestore().collection("users").doc(userId).get()
     .then(doc => {
