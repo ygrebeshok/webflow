@@ -42,12 +42,44 @@ const profileAge = document.getElementById("profile-age");
 const createProfile = document.getElementById("create-profile");
 const created = document.getElementById("created-text");
 const resetSelections = document.getElementById("reset-selections");
+const holidayBack = document.getElementById("holiday-back");
+const giftsRef = firebase.firestore().collection("gifts");
+const holidayRef = firebase.firestore().collection("current-holiday");
+const catalogGrid = document.getElementById("catalog");
+const cardTemplate = document.querySelector(".card");
+const holidayCardTemplate = document.querySelector(".holiday-card");
+const defaultCard = document.querySelector(".default-card");
+const defaultHoliday = document.querySelector(".holiday-default-card");
+const logoutBtn = document.getElementById("log-out-btn");
 let selected_holiday = null;
 let selected_who = null;
 let selected_category = null;
 let visibleCards = [];
 
 document.addEventListener('DOMContentLoaded', function() {
+  let currentPage = 1;
+  const itemsPerPage = 30; // Change this to the number of items per page
+  const loadMoreButton = document.getElementById('load-more');
+
+  function showPage(page) {
+    const gridItems = Array.from(catalogGrid.querySelectorAll('card'));
+    gridItems.forEach(function(item, index) {
+      if (index >= (page - 1) * itemsPerPage && index < page * itemsPerPage) {
+        item.style.display = 'block';
+      } else {
+        item.style.display = 'none';
+      }
+    });
+  }
+
+  loadMoreButton.addEventListener('click', function() {
+    currentPage++;
+    showPage(currentPage);
+  });
+
+  // Initially show the first page
+  showPage(currentPage);
+	
   const urlParams = new URLSearchParams(window.location.search);
   const sel_who = urlParams.get('selected_who');
   const sel_holiday = urlParams.get('selected_holiday');
@@ -69,29 +101,6 @@ document.addEventListener('DOMContentLoaded', function() {
   selHoliday.textContent = selected_holiday;
 
   return { selected_who, selected_holiday };
-
-  let currentPage = 1;
-  const itemsPerPage = 30; // Change this to the number of items per page
-  const loadMoreButton = document.getElementById('load-more');
-
-  function showPage(page) {
-    const gridItems = Array.from(catalogGrid.getElementsByClassName('card'));
-    gridItems.forEach(function(item, index) {
-      if (index >= (page - 1) * itemsPerPage && index < page * itemsPerPage) {
-        item.style.display = 'block';
-      } else {
-        item.style.display = 'none';
-      }
-    });
-  }
-
-  loadMoreButton.addEventListener('click', function() {
-    currentPage++;
-    showPage(currentPage);
-  });
-
-  // Initially show the first page
-  showPage(currentPage);
 });
 	
 resetSelections.addEventListener('click', () => {
