@@ -58,7 +58,7 @@ function showPage(page) {
   const gridItems = Array.from(catalogGrid.children);
   gridItems.forEach(function(item, index) {
     if (index >= (page - 1) * itemsPerPage && index < page * itemsPerPage) {
-      item.style.display = 'block';
+      item.style.display = 'flex';
     } else {
       item.style.display = 'none';
     }
