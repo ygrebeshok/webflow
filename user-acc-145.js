@@ -159,10 +159,10 @@ closeShowProducts.addEventListener('click', (event) => {
 
 function showPopupForProfileProducts(productData) {
 
-  const profileSlideContainer = document.querySelector('.profile-popup-slides');
-  const profileThumbnailContainer = document.querySelector('.profile-popup-thumbnails');
-  profileSlideContainer.innerHTML = ''; // Clear existing slides
-  profileThumbnailContainer.innerHTML = ''; // Clear existing thumbnails
+  const slideContainer = document.querySelector('.slides');
+  const thumbnailContainer = document.querySelector('.thumbnails');
+  slideContainer.innerHTML = ''; // Clear existing slides
+  thumbnailContainer.innerHTML = ''; // Clear existing thumbnails
 	
   profilePopupTitle.innerHTML = '';
   profilePopupBrand.innerHTML = '';
@@ -227,22 +227,22 @@ function showPopupForProfileProducts(productData) {
     const thumbnail = document.createElement('div');
     thumbnail.classList.add('thumbnail');
     thumbnail.innerHTML = `<img src="${imageUrl}" alt="Thumbnail">`;
-    profileThumbnailContainer.appendChild(thumbnail);
+    thumbnailContainer.appendChild(thumbnail);
 
     const slide = document.createElement('div');
     slide.classList.add('slide');
     slide.innerHTML = `<img src="${imageUrl}" alt="Product Image">`;
-    profileSlideContainer.appendChild(slide);
+    slideContainer.appendChild(slide);
   })
 
   profileProductPopup.style.display = "flex";
 
-  const profileSlides = document.querySelector('.profile-popup-slides');
-  const profileThumbnails = document.querySelectorAll('.profile-popup-thumbnail');
+  const slides = document.querySelector('.slides');
+  const thumbnails = document.querySelectorAll('.thumbnail');
   let currentSlide = 0;
 
   function updateThumbnails() {
-    profileThumbnails.forEach((thumbnail, index) => {
+    thumbnails.forEach((thumbnail, index) => {
       if (index === currentSlide) {
         thumbnail.classList.add('active');
       } else {
@@ -252,12 +252,12 @@ function showPopupForProfileProducts(productData) {
    }
 
    function showSlide(slideIndex) {
-     profileSlides.style.transform = `translateX(-${slideIndex * 100}%)`;
+     slides.style.transform = `translateX(-${slideIndex * 100}%)`;
      currentSlide = slideIndex;
      updateThumbnails();
    }
 	
-   profileThumbnails.forEach((thumbnail, index) => {
+   thumbnails.forEach((thumbnail, index) => {
       thumbnail.addEventListener('click', function() {
         showSlide(index);
       });
