@@ -434,14 +434,22 @@ function filterCatalog() {
   });
 }
 
-function updateCatalog() {
+const showMoreButton = document.getElementById("show-more-button");
+showMoreButton.addEventListener("click", () => {
+  updateCatalog(true); // Call updateCatalog to show all cards
+});
+
+function updateCatalog(showAll = false) {
   var brandsSet = new Set();
 
   giftsRef.get().then((querySnapshot) => {
     catalogGrid.innerHTML = "";
     allCards = [];
+
+    let cardLimit = showAll ? querySnapshot.size : 50;
       
     querySnapshot.forEach((doc) => {
+      if (index >= cardLimit) return;
       const data = doc.data();
 
       if (data.brand) {
