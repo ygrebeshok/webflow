@@ -447,10 +447,13 @@ function updateCatalog(showAll) {
     catalogGrid.innerHTML = "";
     allCards = [];
 
-    let cardLimit = showAll === true ? querySnapshot.size : 40;
+    if (showAll === false) {
+      querySnapshot.size = 40;
+    } else if (showAll === true) {
+      querySnapshot.size = querySnapshot.size;
+    }
       
-    querySnapshot.forEach((doc, index) => {
-      if (index >= cardLimit) return;
+    querySnapshot.forEach((doc) => {
       const data = doc.data();
 
       if (data.brand) {
