@@ -53,7 +53,7 @@ const itemsPerPage = 30; // Change this to the number of items per page
 const loadMoreButton = document.getElementById('load-more');
 
 function showPage(page) {
-  const gridItems = Array.from(document.querySelectorAll('.card'));
+  const gridItems = Array.from(document.querySelectorAll('.item'));
   gridItems.forEach(function(item, index) {
     if (index >= (page - 1) * itemsPerPage && index < page * itemsPerPage) {
       item.style.display = 'block';
