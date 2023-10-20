@@ -227,12 +227,12 @@ function showPopupForProfileProducts(productData) {
     const thumbnail = document.createElement('div');
     thumbnail.classList.add('thumbnail');
     thumbnail.innerHTML = `<img src="${imageUrl}" alt="Thumbnail">`;
-    thumbnailContainer.appendChild(thumbnail);
+    profileThumbnailContainer.appendChild(thumbnail);
 
     const slide = document.createElement('div');
     slide.classList.add('slide');
     slide.innerHTML = `<img src="${imageUrl}" alt="Product Image">`;
-    slideContainer.appendChild(slide);
+    profileSlideContainer.appendChild(slide);
   })
 
   profileProductPopup.style.display = "flex";
