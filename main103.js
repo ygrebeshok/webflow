@@ -308,20 +308,20 @@ async function recommend() {
            errorAlert.style.display = "block";
            lottieLoader.style.visibility = "hidden";
            searchAgain.style.visibility = "visible";
-           console.error('Error:', error);
+           console.log('Error:', error);
          });      
        })
       .catch(error => {
         errorAlert.style.display = "block";
         lottieLoader.style.visibility = "hidden";
         searchAgain.style.visibility = "visible";
-        console.error('Error:', error);
+        console.log('Error:', error);
       });  
      } catch (error) {
        errorAlert.style.display = "block";
        lottieLoader.style.visibility = "hidden";
        searchAgain.style.visibility = "visible";
-       console.error(error);
+       console.log(error);
      }
   } 
 
