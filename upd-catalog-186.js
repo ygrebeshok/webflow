@@ -52,17 +52,21 @@ const cardTemplate = document.querySelector(".card");
 
 let currentPage = 1;
 const itemsPerPage = 30; // Change this to the number of items per page
+const itemsToAdd = 30; // How many items to add, Load More
 const loadMoreButton = document.getElementById('load-more');
 
 function showPage(page) {
   const gridItems = Array.from(catalogGrid.children);
-  gridItems.forEach(function(item, index) {
-    if (index >= (page - 1) * itemsPerPage && index < page * itemsPerPage) {
-      item.style.display = 'flex';
+  const startIndex = (page - 1) * itemsPerPage;
+  const endIndex = page * itemsPerPage;
+
+  for (let i = 0; i < gridItems.length; i++) {
+    if (i >= startIndex && i < endIndex) {
+      gridItems[i].style.display = 'flex';
     } else {
-      item.style.display = 'none';
+      gridItems[i].style.display = 'none';
     }
-  });
+  }
 }
 
 loadMoreButton.addEventListener('click', function() {
