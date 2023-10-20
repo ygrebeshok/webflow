@@ -46,6 +46,7 @@ let selected_holiday = null;
 let selected_who = null;
 let selected_category = null;
 let visibleCards = [];
+let showAll = false;
 
 document.addEventListener('DOMContentLoaded', function() {
   const urlParams = new URLSearchParams(window.location.search);
@@ -437,21 +438,22 @@ function filterCatalog() {
 const showMoreButton = document.getElementById("show-more-button");
 showMoreButton.addEventListener("click", () => {
   showAll = true;
-  updateCatalog(showAll); // Call updateCatalog to show all cards
+  updateCatalog(showAll);
+  showMoreButton.style.display = "none";
 });
 
 function updateCatalog(showAll) {
   var brandsSet = new Set();
 
+  let query = giftsRef;
+
+  if (showAll === false) {
+    query = query.limit(40);
+  }
+
   giftsRef.get().then((querySnapshot) => {
     catalogGrid.innerHTML = "";
     allCards = [];
-
-    if (showAll === false) {
-      querySnapshot.size = 40;
-    } else if (showAll === true) {
-      querySnapshot.size = querySnapshot.size;
-    }
       
     querySnapshot.forEach((doc) => {
       const data = doc.data();
@@ -554,10 +556,6 @@ function updateCatalog(showAll) {
         });
         });
       });
-
-      if (!showAll) {
-        showMoreButton.style.display = "block";
-      }
 	  
       var brands = Array.from(brandsSet); // add this line
       populateBrandFilter(brands);
