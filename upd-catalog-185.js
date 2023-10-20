@@ -566,6 +566,9 @@ function updateCatalog() {
         });
         });
       });
+
+      // Initially show the first page
+      showPage(currentPage);
 	  
       var brands = Array.from(brandsSet); // add this line
       populateBrandFilter(brands);
