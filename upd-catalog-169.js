@@ -446,7 +446,7 @@ function updateCatalog(showAll = false) {
     catalogGrid.innerHTML = "";
     allCards = [];
 
-    let cardLimit = showAll ? querySnapshot.size : 50;
+    let cardLimit = showAll ? querySnapshot.size : 40;
       
     querySnapshot.forEach((doc, index) => {
       if (index >= cardLimit) return;
@@ -550,6 +550,10 @@ function updateCatalog(showAll = false) {
         });
         });
       });
+
+      if (!showAll) {
+        showMoreButton.style.display = "block";
+      }
 	  
       var brands = Array.from(brandsSet); // add this line
       populateBrandFilter(brands);
