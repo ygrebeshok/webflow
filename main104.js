@@ -130,6 +130,7 @@ async function recommend() {
   document.getElementById("textarea").style.color = "black";
   lottieLoader.style.visibility = "visible";
   const text = document.getElementById("textarea").value;
+  loadMoreButton.style.display = "none";
 
   // Prompt to Open AI
   try {
