@@ -51,27 +51,28 @@ const catalogGrid = document.getElementById("catalog");
 const cardTemplate = document.querySelector(".card");
 
 let currentPage = 1;
-const itemsPerPage = 30; // Change this to the number of items per page
-const itemsToAdd = 30; // How many items to add, Load More
+let totalDisplayedItems = 0;
+const itemsPerPage = 30;
+const itemsToAdd = 30;
 const loadMoreButton = document.getElementById('load-more');
 
-function showPage(page) {
+function showPage() {
   const gridItems = Array.from(catalogGrid.children);
-  const startIndex = (page - 1) * itemsPerPage;
-  const endIndex = page * itemsPerPage;
 
   for (let i = 0; i < gridItems.length; i++) {
-    if (i >= startIndex && i < endIndex) {
+    if (i < totalDisplayedItems + itemsToAdd) {
       gridItems[i].style.display = 'flex';
     } else {
       gridItems[i].style.display = 'none';
     }
   }
+
+  totalDisplayedItems += itemsToAdd; // Update the total displayed items
 }
 
 loadMoreButton.addEventListener('click', function() {
   currentPage++;
-  showPage(currentPage);
+  showPage();
 });
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -572,7 +573,7 @@ function updateCatalog() {
       });
 
       // Initially show the first page
-      showPage(currentPage);
+      showPage();
 	  
       var brands = Array.from(brandsSet); // add this line
       populateBrandFilter(brands);
