@@ -48,29 +48,30 @@ let selected_who = null;
 let selected_category = null;
 let visibleCards = [];
 
-document.addEventListener('DOMContentLoaded', function() {
-  let currentPage = 1;
-  const itemsPerPage = 30; // Change this to the number of items per page
-  const loadMoreButton = document.getElementById('load-more');
+let currentPage = 1;
+const itemsPerPage = 30; // Change this to the number of items per page
+const loadMoreButton = document.getElementById('load-more');
 
-  function showPage(page) {
-    const gridItems = Array.from(catalogGrid.querySelectorAll('card'));
-    gridItems.forEach(function(item, index) {
-      if (index >= (page - 1) * itemsPerPage && index < page * itemsPerPage) {
-        item.style.display = 'block';
-      } else {
-        item.style.display = 'none';
-      }
-    });
-  }
-
-  loadMoreButton.addEventListener('click', function() {
-    currentPage++;
-    showPage(currentPage);
+function showPage(page) {
+  const gridItems = Array.from(catalogGrid.querySelectorAll('card'));
+  gridItems.forEach(function(item, index) {
+    if (index >= (page - 1) * itemsPerPage && index < page * itemsPerPage) {
+      item.style.display = 'block';
+    } else {
+      item.style.display = 'none';
+    }
   });
+}
 
-  // Initially show the first page
+loadMoreButton.addEventListener('click', function() {
+  currentPage++;
   showPage(currentPage);
+});
+
+// Initially show the first page
+showPage(currentPage);
+
+document.addEventListener('DOMContentLoaded', function() {
 	
   const urlParams = new URLSearchParams(window.location.search);
   const sel_who = urlParams.get('selected_who');
