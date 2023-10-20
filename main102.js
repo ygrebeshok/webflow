@@ -305,23 +305,23 @@ async function recommend() {
            profilesBtn.classList.remove("disablegrid");
          }) 
          .catch(error => {
-           console.error('Error:', error);
            errorAlert.style.display = "block";
            lottieLoader.style.visibility = "hidden";
            searchAgain.style.visibility = "visible";
+           console.error('Error:', error);
          });      
        })
       .catch(error => {
-        console.error('Error:', error);
         errorAlert.style.display = "block";
         lottieLoader.style.visibility = "hidden";
         searchAgain.style.visibility = "visible";
+        console.error('Error:', error);
       });  
      } catch (error) {
-       console.error(error);
        errorAlert.style.display = "block";
        lottieLoader.style.visibility = "hidden";
        searchAgain.style.visibility = "visible";
+       console.error(error);
      }
   } 
 
