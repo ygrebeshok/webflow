@@ -47,6 +47,8 @@ let selected_holiday = null;
 let selected_who = null;
 let selected_category = null;
 let visibleCards = [];
+const catalogGrid = document.getElementById("catalog");
+const cardTemplate = document.querySelector(".card");
 
 let currentPage = 1;
 const itemsPerPage = 30; // Change this to the number of items per page
