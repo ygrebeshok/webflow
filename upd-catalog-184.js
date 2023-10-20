@@ -70,9 +70,6 @@ loadMoreButton.addEventListener('click', function() {
   showPage(currentPage);
 });
 
-// Initially show the first page
-showPage(currentPage);
-
 document.addEventListener('DOMContentLoaded', function() {
 	
   const urlParams = new URLSearchParams(window.location.search);
