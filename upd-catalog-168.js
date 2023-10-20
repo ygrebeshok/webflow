@@ -448,7 +448,7 @@ function updateCatalog(showAll = false) {
 
     let cardLimit = showAll ? querySnapshot.size : 50;
       
-    querySnapshot.forEach((doc) => {
+    querySnapshot.forEach((doc, index) => {
       if (index >= cardLimit) return;
       const data = doc.data();
 
