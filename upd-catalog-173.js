@@ -46,7 +46,6 @@ let selected_holiday = null;
 let selected_who = null;
 let selected_category = null;
 let visibleCards = [];
-let showAll = false;
 
 document.addEventListener('DOMContentLoaded', function() {
   const urlParams = new URLSearchParams(window.location.search);
@@ -70,6 +69,29 @@ document.addEventListener('DOMContentLoaded', function() {
   selHoliday.textContent = selected_holiday;
 
   return { selected_who, selected_holiday };
+
+  let currentPage = 1;
+  const itemsPerPage = 30; // Change this to the number of items per page
+  const loadMoreButton = document.getElementById('load-more');
+
+  function showPage(page) {
+    const gridItems = Array.from(catalogGrid.getElementsByClassName('card'));
+    gridItems.forEach(function(item, index) {
+      if (index >= (page - 1) * itemsPerPage && index < page * itemsPerPage) {
+        item.style.display = 'block';
+      } else {
+        item.style.display = 'none';
+      }
+    });
+  }
+
+  loadMoreButton.addEventListener('click', function() {
+    currentPage++;
+    showPage(currentPage);
+  });
+
+  // Initially show the first page
+  showPage(currentPage);
 });
 	
 resetSelections.addEventListener('click', () => {
@@ -435,21 +457,8 @@ function filterCatalog() {
   });
 }
 
-const showMoreButton = document.getElementById("show-more-button");
-showMoreButton.addEventListener("click", () => {
-  showAll = true;
-  updateCatalog(showAll);
-  showMoreButton.style.display = "none";
-});
-
-function updateCatalog(showAll) {
+function updateCatalog() {
   var brandsSet = new Set();
-
-  let query = giftsRef;
-
-  if (showAll === false) {
-    query = query.limit(40);
-  }
 
   giftsRef.get().then((querySnapshot) => {
     catalogGrid.innerHTML = "";
