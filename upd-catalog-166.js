@@ -13,7 +13,6 @@ const holidayGrid = document.getElementById("holiday-grid");
 const holidayTemplate = document.querySelector(".birthday");
 const whoGrid = document.getElementById("who-grid");
 const whoTemplate = document.querySelector(".who");
-const errorAlert = document.getElementById("error-alert");
 const brandFilterContainer = document.getElementById("brand-filter");
 const lowestPriceButton = document.getElementById('lowestPrice');
 const highestPriceButton = document.getElementById('highestPrice');
