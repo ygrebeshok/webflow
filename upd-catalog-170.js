@@ -436,17 +436,18 @@ function filterCatalog() {
 
 const showMoreButton = document.getElementById("show-more-button");
 showMoreButton.addEventListener("click", () => {
-  updateCatalog(true); // Call updateCatalog to show all cards
+  showAll = true;
+  updateCatalog(showAll); // Call updateCatalog to show all cards
 });
 
-function updateCatalog(showAll = false) {
+function updateCatalog(showAll) {
   var brandsSet = new Set();
 
   giftsRef.get().then((querySnapshot) => {
     catalogGrid.innerHTML = "";
     allCards = [];
 
-    let cardLimit = showAll ? querySnapshot.size : 40;
+    let cardLimit = showAll === true ? querySnapshot.size : 40;
       
     querySnapshot.forEach((doc, index) => {
       if (index >= cardLimit) return;
