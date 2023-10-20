@@ -109,6 +109,8 @@
     });
   }
 
+const errorAlert = document.getElementById("error-alert");
+
 async function recommend() {
   event.preventDefault();
   // Resets price filter, if was initialized
