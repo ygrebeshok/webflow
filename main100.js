@@ -304,14 +304,14 @@ async function recommend() {
          }) 
          .catch(error => {
            console.error('Error:', error);
-           errorAlert.style.visibility = "visible";
+           errorAlert.style.display = "block";
            lottieLoader.style.visibility = "hidden";
            searchAgain.style.visibility = "visible";
          });      
        })
       .catch(error => {
         console.error('Error:', error);
-        errorAlert.style.visibility = "visible";
+        errorAlert.style.display = "block";
         lottieLoader.style.visibility = "hidden";
         searchAgain.style.visibility = "visible";
       });  
@@ -365,5 +365,15 @@ async function recommend() {
     whoGrid.classList.remove("disablegrid");
     profileArea.classList.add("disablegrid");
     profileArea.style.opacity = '0.5';
+    selected_who = null;
+    selected_holiday = null;
+    selWho.textContent = "";
+    selHoliday.textContent = "";
+    holidayGrid.querySelectorAll('button').forEach(btn => {
+      btn.classList.remove('focus');
+    });
+    whoGrid.querySelectorAll('button').forEach(btn => {
+      btn.classList.remove('focus');
+    });
   }
 
