@@ -25,7 +25,7 @@ const profileProductGrid = document.getElementById("show-products-grid");
 const profileProductTemplate = document.querySelector(".profile-product-template");
 const profileProductDefault = document.querySelector(".default-profile-product-card");
 const profileProductName = document.getElementById("profile-product-name");
-const profileProductPopup = document.getElementById("profile-product-popup");
+const profileProductPopup = document.getElementById("profile-products-popup-container");
 
 var bodyAuth = document.body.getAttribute('data-user-auth');
 var bodyUnauth = document.body.getAttribute('data-user-unauth');
