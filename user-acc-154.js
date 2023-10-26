@@ -139,8 +139,8 @@ closeShowProducts.addEventListener('click', (event) => {
 
 function showPopupForProfileProducts(productName) {
 
-  const slideContainer = document.querySelector('.slides');
-  const thumbnailContainer = document.querySelector('.thumbnails');
+  const slideContainer = document.querySelector('.profile-slides');
+  const thumbnailContainer = document.querySelector('.profile-thumbnails');
   slideContainer.innerHTML = ''; // Clear existing slides
   thumbnailContainer.innerHTML = ''; // Clear existing thumbnails
 	
@@ -227,6 +227,34 @@ function showPopupForProfileProducts(productName) {
   });
 
   profileProductPopup.style.display = "flex";
+
+  const slides = document.querySelector('.profile-slides');
+  const thumbnails = document.querySelectorAll('.profile-thumbnail');
+  let currentSlide = 0;
+
+  function updateThumbnails() {
+    thumbnails.forEach((thumbnail, index) => {
+      if (index === currentSlide) {
+        thumbnail.classList.add('active');
+      } else {
+        thumbnail.classList.remove('active');
+      }
+    });
+  }
+
+  function showSlide(slideIndex) {
+    slides.style.transform = `translateX(-${slideIndex * 100}%)`;
+    currentSlide = slideIndex;
+    updateThumbnails();
+  }
+
+  thumbnails.forEach((thumbnail, index) => {
+    thumbnail.addEventListener('click', function() {
+      showSlide(index);
+    });
+  });
+
+  showSlide(currentSlide);
 
   profilePopupClose.addEventListener("click", () => {
     profileProductPopup.style.display = "none";
