@@ -209,49 +209,50 @@ function showPopupForProfileProducts(productName) {
 
       showSlide(currentSlide);
     });
+  });
 	
-    const user = firebase.auth().currentUser;
-    const userId = user.uid;
-    const productId = profilePopupTitle.textContent;
+  const user = firebase.auth().currentUser;
+  const userId = user.uid;
+  const productId = profilePopupTitle.textContent;
 
-    firebase.firestore().collection("users").doc(userId).get()
-    .then(doc => {
-      const favorite = doc.data().favorites;
-      if (favorite.includes(productId)) {
-        profileFavoritesLabel.textContent = "Remove from Favorites";
-      } else {
-        profileFavoritesLabel.textContent = "Add to Favorites";
-      }
+  firebase.firestore().collection("users").doc(userId).get()
+  .then(doc => {
+    const favorite = doc.data().favorites;
+    if (favorite.includes(productId)) {
+      profileFavoritesLabel.textContent = "Remove from Favorites";
+    } else {
+      profileFavoritesLabel.textContent = "Add to Favorites";
+    }
 	    
-      profileFavoritesBtn.addEventListener('click', () => {
-        const isFavorite = profileFavoritesLabel.textContent === "Remove from Favorites";
+    profileFavoritesBtn.addEventListener('click', () => {
+      const isFavorite = profileFavoritesLabel.textContent === "Remove from Favorites";
 
-        if (isFavorite) {
-          firebase.firestore().collection("users").doc(userId).update({
-            favorites: firebase.firestore.FieldValue.arrayRemove(productId)
-          })
-          .then(() => {
-            profileFavoritesLabel.textContent = "Add to Favorites";
-          })
-          .catch(error => {
-            console.log("Error removing product from favorites:", error);
-          });
-          } else {
-            firebase.firestore().collection("users").doc(userId).update({
-              favorites: firebase.firestore.FieldValue.arrayUnion(productId)
-            })
-            .then(() => {
-              profileFavoritesLabel.textContent = "Remove from Favorites";
-            })
-            .catch(error => {
-              console.log("Error adding product to favorites:", error);
-            });
-          }
-       });
-    })
-    .catch(error => {
-      console.log("Error getting favorites:", error);
+      if (isFavorite) {
+        firebase.firestore().collection("users").doc(userId).update({
+          favorites: firebase.firestore.FieldValue.arrayRemove(productId)
+        })
+        .then(() => {
+          profileFavoritesLabel.textContent = "Add to Favorites";
+        })
+        .catch(error => {
+          console.log("Error removing product from favorites:", error);
+        });
+      } else {
+        firebase.firestore().collection("users").doc(userId).update({
+          favorites: firebase.firestore.FieldValue.arrayUnion(productId)
+        })
+        .then(() => {
+          profileFavoritesLabel.textContent = "Remove from Favorites";
+        })
+        .catch(error => {
+          console.log("Error adding product to favorites:", error);
+        });
+      }
     });
+  })
+  .catch(error => {
+    console.log("Error getting favorites:", error);
+  });
 
   profileProductPopup.style.display = "flex";
 
