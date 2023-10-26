@@ -160,7 +160,8 @@ createProfile.addEventListener('click', () => {
     profileArea.classList.remove('move-right');
   })
     .catch(error => {
-      created.textContent = "Error Occurred on Profile Creation"
+      created.textContent = "Error Occurred on Profile Creation";
+      console.log(error);
     });
   });
 
