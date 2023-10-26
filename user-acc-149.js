@@ -104,7 +104,7 @@ function loadProfileData(profiles) {
          profileProductGrid.appendChild(profileProductCard);
 
          profileProductCard.addEventListener('click', (event) => {
-           showPopupForProfileProducts(productData);
+           console.log(profileProductCard.querySelector("#profile-product-grid-name").textContent);
          });
 
          profileProductCard.addEventListener('mouseenter', () => {
