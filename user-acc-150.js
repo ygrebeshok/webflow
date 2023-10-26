@@ -137,7 +137,7 @@ closeShowProducts.addEventListener('click', (event) => {
   showProductsContainer.style.display = "none";
 });
 
-function showPopupForProfileProducts(productData) {
+function showPopupForProfileProducts(productName) {
 
   const slideContainer = document.querySelector('.slides');
   const thumbnailContainer = document.querySelector('.thumbnails');
@@ -153,18 +153,68 @@ function showPopupForProfileProducts(productData) {
   const profileFavoritesBtn = document.getElementById("profile-popup-favorite");
   const profileFavoritesLabel = document.getElementById("profile-popup-favorite-label");
   profileFavoritesLabel.innerHTML = '';
+
+  const giftsRef = firebase.firestore().collection('gifts');
+
+  giftsRef
+  .where('name', '==', productName)
+  .get()
+  .then((querySnapshot) => {
+    querySnapshot.forEach((doc) => {
+      const productData = doc.data();
+
+      profilePopupTitle.textContent = productData.name;
+      profilePopupBrand.textContent = productData.brand;
+      profilePopupBrand.href = productData.product_link;
+      profilePopupDesc.textContent = productData.description;
+      profilePopupPrice.textContent = `$${productData.price}`;
+
+      productData.images.forEach(imageUrl => {
+        const thumbnail = document.createElement('div');
+        thumbnail.classList.add('thumbnail');
+        thumbnail.innerHTML = `<img src="${imageUrl}" alt="Thumbnail">`;
+        thumbnailContainer.appendChild(thumbnail);
+
+        const slide = document.createElement('div');
+        slide.classList.add('slide');
+        slide.innerHTML = `<img src="${imageUrl}" alt="Product Image">`;
+        slideContainer.appendChild(slide);
+      })
+
+      const slides = document.querySelector('.slides');
+      const thumbnails = document.querySelectorAll('.thumbnail');
+      let currentSlide = 0;
+
+      function updateThumbnails() {
+        thumbnails.forEach((thumbnail, index) => {
+          if (index === currentSlide) {
+            thumbnail.classList.add('active');
+          } else {
+            thumbnail.classList.remove('active');
+          }
+        });
+      }
+
+      function showSlide(slideIndex) {
+        slides.style.transform = `translateX(-${slideIndex * 100}%)`;
+        currentSlide = slideIndex;
+        updateThumbnails();
+      }
+
+      thumbnails.forEach((thumbnail, index) => {
+        thumbnail.addEventListener('click', function() {
+          showSlide(index);
+        });
+      });
+
+      showSlide(currentSlide);
+    });
 	
-  profilePopupTitle.textContent = productData.name;
-  profilePopupBrand.textContent = productData.brand;
-  profilePopupBrand.href = productData.product_link;
-  profilePopupDesc.textContent = productData.description;
-  profilePopupPrice.textContent = `$${productData.price}`;
+    const user = firebase.auth().currentUser;
+    const userId = user.uid;
+    const productId = profilePopupTitle.textContent;
 
-  const user = firebase.auth().currentUser;
-  const userId = user.uid;
-  const productId = productData.name;
-
-  firebase.firestore().collection("users").doc(userId).get()
+    firebase.firestore().collection("users").doc(userId).get()
     .then(doc => {
       const favorite = doc.data().favorites;
       if (favorite.includes(productId)) {
@@ -203,47 +253,7 @@ function showPopupForProfileProducts(productData) {
       console.log("Error getting favorites:", error);
     });
 
-  productData.images.forEach(imageUrl => {
-    const thumbnail = document.createElement('div');
-    thumbnail.classList.add('thumbnail');
-    thumbnail.innerHTML = `<img src="${imageUrl}" alt="Thumbnail">`;
-    thumbnailContainer.appendChild(thumbnail);
-
-    const slide = document.createElement('div');
-    slide.classList.add('slide');
-    slide.innerHTML = `<img src="${imageUrl}" alt="Product Image">`;
-    slideContainer.appendChild(slide);
-  })
-
   profileProductPopup.style.display = "flex";
-
-  const slides = document.querySelector('.slides');
-  const thumbnails = document.querySelectorAll('.thumbnail');
-  let currentSlide = 0;
-
-  function updateThumbnails() {
-    thumbnails.forEach((thumbnail, index) => {
-      if (index === currentSlide) {
-        thumbnail.classList.add('active');
-      } else {
-        thumbnail.classList.remove('active');
-      }
-   });
-  }
-
-  function showSlide(slideIndex) {
-    slides.style.transform = `translateX(-${slideIndex * 100}%)`;
-    currentSlide = slideIndex;
-    updateThumbnails();
-  }
-
-  thumbnails.forEach((thumbnail, index) => {
-    thumbnail.addEventListener('click', function() {
-      showSlide(index);
-    });
-  });
-
-  showSlide(currentSlide);
 
   profilePopupClose.addEventListener("click", () => {
     profileProductPopup.style.display = "none";
