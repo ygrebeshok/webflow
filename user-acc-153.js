@@ -180,34 +180,6 @@ function showPopupForProfileProducts(productName) {
         slide.innerHTML = `<img src="${imageUrl}" alt="Product Image">`;
         slideContainer.appendChild(slide);
       })
-
-      const slides = document.querySelector('.slides');
-      const thumbnails = document.querySelectorAll('.thumbnail');
-      let currentSlide = 0;
-
-      function updateThumbnails() {
-        thumbnails.forEach((thumbnail, index) => {
-          if (index === currentSlide) {
-            thumbnail.classList.add('active');
-          } else {
-            thumbnail.classList.remove('active');
-          }
-        });
-      }
-
-      function showSlide(slideIndex) {
-        slides.style.transform = `translateX(-${slideIndex * 100}%)`;
-        currentSlide = slideIndex;
-        updateThumbnails();
-      }
-
-      thumbnails.forEach((thumbnail, index) => {
-        thumbnail.addEventListener('click', function() {
-          showSlide(index);
-        });
-      });
-
-      showSlide(currentSlide);
     });
   });
 	
