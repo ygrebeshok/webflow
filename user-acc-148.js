@@ -55,32 +55,21 @@ function loadProfileData(profiles) {
 
      const recommendedGiftsGrid = profile.querySelector('.recommended-gifts-grid');
 
-     for (const productName of data.recommended_products) {
+     for (let i = 0; i < data.recommended_products.length; i++) {
+       const [productName, productImage] = JSON.parse(data.recommended_products[i]);
       
-      if (recommendedGiftsGrid.childElementCount >= 7) {
-        break; // Break out of the loop after adding 6 images
-      }
-	     
-      // Query the "gifts" collection for the product with the matching name
-      const productSnapshot = await firebase.firestore()
-        .collection('gifts')
-        .where('name', '==', productName)
-        .limit(1)
-        .get();
+       if (recommendedGiftsGrid.childElementCount >= 7) {
+         break;
+       }
 
-      if (!productSnapshot.empty) {
-        const productData = productSnapshot.docs[0].data();
-        const productImage = productData.images[0];
+       // Create a new element to display the product image
+       const productImageElement = document.createElement('img'); // Create an image element
+       productImageElement.src = productImage;
+       productImageElement.alt = productName;
 
-        // Create a new element to display the product image
-        const productImageElement = document.createElement('img'); // Create an image element
-	productImageElement.src = productImage;
-	productImageElement.alt = productName;
-
-	// Append the image element to the grid
-	recommendedGiftsGrid.appendChild(productImageElement);
-      }
-    }
+       // Append the image element to the grid
+       recommendedGiftsGrid.appendChild(productImageElement);
+     }
 
      profilesContain.appendChild(profile);
 
