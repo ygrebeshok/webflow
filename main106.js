@@ -366,10 +366,14 @@ async function recommend() {
     document.getElementById("textarea").style.color = "white";
     searchAgain.style.visibility = "hidden";
     resetSelections.classList.remove('disablegrid');
+    profilesBtn.classList.add("disablegrid");
     holidayGrid.classList.remove("disablegrid");
     whoGrid.classList.remove("disablegrid");
-    profileArea.classList.add("disablegrid");
-    profileArea.style.opacity = '0.5';
+    
+    if (profileArea.classList.contains('move-right')) {
+      profileArea.classList.remove('move-right');
+    }
+    
     selected_who = null;
     selected_holiday = null;
     selWho.textContent = "";
