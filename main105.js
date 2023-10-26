@@ -127,6 +127,7 @@ async function recommend() {
   whoGrid.classList.add('disablegrid');
   mainButton.classList.add('disablegrid');
   searchAgain.style.visibility = "hidden";
+  resetSelections.classList.add('disablegrid');
   document.getElementById("textarea").style.color = "black";
   lottieLoader.style.visibility = "visible";
   const text = document.getElementById("textarea").value;
@@ -364,6 +365,7 @@ async function recommend() {
     errorAlert.style.visibility = "hidden";
     document.getElementById("textarea").style.color = "white";
     searchAgain.style.visibility = "hidden";
+    resetSelections.classList.remove('disablegrid');
     holidayGrid.classList.remove("disablegrid");
     whoGrid.classList.remove("disablegrid");
     profileArea.classList.add("disablegrid");
