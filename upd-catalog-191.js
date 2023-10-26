@@ -133,7 +133,8 @@ createProfile.addEventListener('click', () => {
   visibleCards.forEach(card => {
     const productName = card.querySelector("#name").textContent;
     const productImage = card.querySelector("#product_image").src;
-    profileData.recommended_products.push([productName, productImage]);
+    const nameImage = [productName, productImage];
+    profileData.recommended_products.push(JSON.stringify(nameImage));
   });
 
   const user = firebase.auth().currentUser;
