@@ -103,54 +103,45 @@ function loadProfileData(profiles) {
        profileProductName.textContent = data.profile_name;
        profileProductGrid.innerHTML = "";
 
-       for (const productName of data.recommended_products) {
+       for (let i = 0; i < data.recommended_products.length; i++) {
+         const [productName, productImage] = JSON.parse(data.recommended_products[i]);
 
-       // Query the "gifts" collection for the product with the matching name
-       const giftsRef = firebase.firestore().collection('gifts');
+         const profileProductCard = profileProductTemplate.cloneNode(true);
 
-       giftsRef
-         .where('name', '==', productName)
-         .get()
-         .then((querySnapshot) => {
-           querySnapshot.forEach((doc) => {
-             const productData = doc.data();
-	     const profileProductCard = profileProductTemplate.cloneNode(true);
-             profileProductCard.querySelector("#profile-product-image").src = productData.images[0];
-	     profileProductCard.querySelector("#profile-product-grid-name").textContent = productData.name;
+         profileProductCard.querySelector("#profile-product-image").src = productImage;
+         profileProductCard.querySelector("#profile-product-grid-name").textContent = productName;
 
-             // Append to the grid
-             profileProductGrid.appendChild(profileProductCard);
+         // Append to the grid
+         profileProductGrid.appendChild(profileProductCard);
 
-	     profileProductCard.addEventListener('click', (event) => {
-	       showPopupForProfileProducts(productData);    
-	     });
+         profileProductCard.addEventListener('click', (event) => {
+           showPopupForProfileProducts(productData);
+         });
 
-	     profileProductCard.addEventListener('mouseenter', () => {
-               profileProductCard.animate([
-               { transform: 'scale(1)' },
-               { transform: 'scale(1.05)' }
-               ], {
-               duration: 200,
-               fill: 'forwards'
-               });
-             });
-
-             profileProductCard.addEventListener('mouseleave', () => {
-               profileProductCard.animate([
-               { transform: 'scale(1.05)' },
-               { transform: 'scale(1)' }
-               ], {
-               duration: 200,
-               fill: 'forwards'
-               });
-             });
-             });
+         profileProductCard.addEventListener('mouseenter', () => {
+           profileProductCard.animate([
+             { transform: 'scale(1)' },
+             { transform: 'scale(1.05)' }
+           ], {
+             duration: 200,
+             fill: 'forwards'
            });
-          }
-	  showProductsContainer.style.display = "flex";
-        });
-      });
-    }
+         });
+
+         profileProductCard.addEventListener('mouseleave', () => {
+           profileProductCard.animate([
+             { transform: 'scale(1.05)' },
+             { transform: 'scale(1)' }
+           ], {
+             duration: 200,
+             fill: 'forwards'
+           });
+         });
+        }
+        showProductsContainer.style.display = "flex";
+      });  
+   });
+}
 
 const closeShowProducts = document.getElementById("show-product-cross");
 closeShowProducts.addEventListener('click', (event) => {
