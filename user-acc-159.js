@@ -183,23 +183,24 @@ function showPopupForProfileProducts(productName) {
 
       const user = firebase.auth().currentUser;
       const userId = user.uid;
-      const productId = profilePopupTitle.textContent;
+      let productId = profilePopupTitle.textContent;
+      let isFavorite
 
       firebase.firestore().collection("users").doc(userId).get()
       .then(doc => {
         const favorite = doc.data().favorites;
         if (favorite.includes(productId)) {
           profileFavoritesLabel.textContent = "Remove from Favorites";
+	  isFavorite = true;
         } else {
           profileFavoritesLabel.textContent = "Add to Favorites";
+	  isFavorite = false;
         }
 	    
         profileFavoritesBtn.addEventListener('click', () => {
-          const isFavorite = profileFavoritesLabel.textContent === "Remove from Favorites";
 
           if (isFavorite) {
             firebase.firestore().collection("users").doc(userId).update({
-	      console.log(productId);
               favorites: firebase.firestore.FieldValue.arrayRemove(productId)
             })
             .then(() => {
@@ -210,7 +211,6 @@ function showPopupForProfileProducts(productName) {
             });
           } else {
             firebase.firestore().collection("users").doc(userId).update({
-	      console.log(productId);
               favorites: firebase.firestore.FieldValue.arrayUnion(productId)
             })
             .then(() => {
