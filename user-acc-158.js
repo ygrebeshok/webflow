@@ -199,6 +199,7 @@ function showPopupForProfileProducts(productName) {
 
           if (isFavorite) {
             firebase.firestore().collection("users").doc(userId).update({
+	      console.log(productId);
               favorites: firebase.firestore.FieldValue.arrayRemove(productId)
             })
             .then(() => {
@@ -209,6 +210,7 @@ function showPopupForProfileProducts(productName) {
             });
           } else {
             firebase.firestore().collection("users").doc(userId).update({
+	      console.log(productId);
               favorites: firebase.firestore.FieldValue.arrayUnion(productId)
             })
             .then(() => {
