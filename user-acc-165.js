@@ -36,7 +36,7 @@ profileProductGrid.removeChild(profileProductDefault);
 let currentProductId = null;
 let isFavorite
 
-function loadProfileData(profiles) {
+function loadProfileData(profiles, userId) {
   profilesContain.innerHTML = "";
   profiles.sort((a, b) => new Date(a.date) - new Date(b.date));
 
@@ -109,7 +109,7 @@ function loadProfileData(profiles) {
          profileProductGrid.appendChild(profileProductCard);
 
          profileProductCard.addEventListener('click', (event) => {
-	   showPopupForProfileProducts(profileProductCard.querySelector("#profile-product-grid-name").textContent);
+	   showPopupForProfileProducts(profileProductCard.querySelector("#profile-product-grid-name").textContent, userId);
          });
 
 	 profileFavoritesBtn.addEventListener('click', () => {
@@ -168,7 +168,7 @@ closeShowProducts.addEventListener('click', (event) => {
   showProductsContainer.style.display = "none";
 });
 
-function showPopupForProfileProducts(productName) {
+function showPopupForProfileProducts(productName, userId) {
   currentProductId = productName;
 
   const slideContainer = document.querySelector('.profile-slides');
@@ -210,9 +210,6 @@ function showPopupForProfileProducts(productName) {
         slide.innerHTML = `<img src="${imageUrl}" alt="Product Image">`;
         slideContainer.appendChild(slide);
       })
-
-      const user = firebase.auth().currentUser;
-      const userId = user.uid;
 
       firebase.firestore().collection("users").doc(userId).get()
       .then(doc => {
@@ -426,7 +423,7 @@ firebase.auth().onAuthStateChanged(function(authUser) {
      firebase.firestore().collection("users").doc(userId).get()
       .then(function(doc) {
 	const profiles = doc.data().profiles;
-        loadProfileData(profiles);
+        loadProfileData(profiles, userId);
 	      
         const favorites = doc.data().favorites;
 	const shared_fav = doc.data().shared_favorites;
