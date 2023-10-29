@@ -116,7 +116,7 @@ function loadProfileData(profiles, userId) {
 	   if (currentProductId) {
              if (isFavorite) {
                firebase.firestore().collection("users").doc(userId).update({
-                 favorites: firebase.firestore.FieldValue.arrayRemove(productId)
+                 favorites: firebase.firestore.FieldValue.arrayRemove(currentProductId)
                })
                .then(() => {
                  profileFavoritesLabel.textContent = "Add to Favorites";
@@ -126,7 +126,7 @@ function loadProfileData(profiles, userId) {
                });
              } else {
                firebase.firestore().collection("users").doc(userId).update({
-                 favorites: firebase.firestore.FieldValue.arrayUnion(productId)
+                 favorites: firebase.firestore.FieldValue.arrayUnion(currentProductId)
                })
                .then(() => {
                  profileFavoritesLabel.textContent = "Remove from Favorites";
