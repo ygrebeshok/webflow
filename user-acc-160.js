@@ -32,6 +32,7 @@ var bodyUnauth = document.body.getAttribute('data-user-unauth');
 
 showProductsContainer.style.display = "none";
 profileProductGrid.removeChild(profileProductDefault);
+let currentProductId = null;
 
 function loadProfileData(profiles) {
   profilesContain.innerHTML = "";
@@ -107,6 +108,32 @@ function loadProfileData(profiles) {
 	   showPopupForProfileProducts(profileProductCard.querySelector("#profile-product-grid-name").textContent);
          });
 
+	 profileFavoritesBtn.addEventListener('click', () => {
+	   if (currentProductId) {
+             if (isFavorite) {
+               firebase.firestore().collection("users").doc(userId).update({
+                 favorites: firebase.firestore.FieldValue.arrayRemove(productId)
+               })
+               .then(() => {
+                 profileFavoritesLabel.textContent = "Add to Favorites";
+               })
+               .catch(error => {
+                 console.log("Error removing product from favorites:", error);
+               });
+             } else {
+               firebase.firestore().collection("users").doc(userId).update({
+                 favorites: firebase.firestore.FieldValue.arrayUnion(productId)
+               })
+               .then(() => {
+                 profileFavoritesLabel.textContent = "Remove from Favorites";
+               })
+               .catch(error => {
+                 console.log("Error adding product to favorites:", error);
+               });
+             }
+	   }
+         });
+
          profileProductCard.addEventListener('mouseenter', () => {
            profileProductCard.animate([
              { transform: 'scale(1)' },
@@ -138,6 +165,7 @@ closeShowProducts.addEventListener('click', (event) => {
 });
 
 function showPopupForProfileProducts(productName) {
+  currentProductId = productName;
 
   const slideContainer = document.querySelector('.profile-slides');
   const thumbnailContainer = document.querySelector('.profile-thumbnails');
@@ -157,7 +185,7 @@ function showPopupForProfileProducts(productName) {
   const giftsRef = firebase.firestore().collection('gifts');
 
   giftsRef
-  .where('name', '==', productName)
+  .where('name', '==', currentProductId)
   .get()
   .then((querySnapshot) => {
     querySnapshot.forEach((doc) => {
@@ -183,44 +211,18 @@ function showPopupForProfileProducts(productName) {
 
       const user = firebase.auth().currentUser;
       const userId = user.uid;
-      let productId = profilePopupTitle.textContent;
       let isFavorite
 
       firebase.firestore().collection("users").doc(userId).get()
       .then(doc => {
         const favorite = doc.data().favorites;
-        if (favorite.includes(productId)) {
+        if (favorite.includes(currentProductId)) {
           profileFavoritesLabel.textContent = "Remove from Favorites";
 	  isFavorite = true;
         } else {
           profileFavoritesLabel.textContent = "Add to Favorites";
 	  isFavorite = false;
         }
-	    
-        profileFavoritesBtn.addEventListener('click', () => {
-
-          if (isFavorite) {
-            firebase.firestore().collection("users").doc(userId).update({
-              favorites: firebase.firestore.FieldValue.arrayRemove(productId)
-            })
-            .then(() => {
-              profileFavoritesLabel.textContent = "Add to Favorites";
-            })
-            .catch(error => {
-              console.log("Error removing product from favorites:", error);
-            });
-          } else {
-            firebase.firestore().collection("users").doc(userId).update({
-              favorites: firebase.firestore.FieldValue.arrayUnion(productId)
-            })
-            .then(() => {
-              profileFavoritesLabel.textContent = "Remove from Favorites";
-            })
-            .catch(error => {
-              console.log("Error adding product to favorites:", error);
-            });
-          }
-        });
       })
       .catch(error => {
         console.log("Error getting favorites:", error);
