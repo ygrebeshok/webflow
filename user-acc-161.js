@@ -88,6 +88,9 @@ function loadProfileData(profiles) {
 	 console.error('Error handling profile click event:', error);       
        }	     
      });
+
+     const profileFavoritesBtn = document.getElementById("profile-popup-favorite");
+     const profileFavoritesLabel = document.getElementById("profile-popup-favorite-label");
 	  
      profile.querySelector(".show-products").addEventListener('click', (event) => {
        profileProductName.textContent = data.profile_name;
@@ -178,8 +181,6 @@ function showPopupForProfileProducts(productName) {
   profilePopupDesc.innerHTML = '';
   profilePopupPrice.innerHTML = '';
 
-  const profileFavoritesBtn = document.getElementById("profile-popup-favorite");
-  const profileFavoritesLabel = document.getElementById("profile-popup-favorite-label");
   profileFavoritesLabel.innerHTML = '';
 
   const giftsRef = firebase.firestore().collection('gifts');
