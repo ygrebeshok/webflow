@@ -34,6 +34,7 @@ var bodyUnauth = document.body.getAttribute('data-user-unauth');
 showProductsContainer.style.display = "none";
 profileProductGrid.removeChild(profileProductDefault);
 let currentProductId = null;
+let isFavorite
 
 function loadProfileData(profiles) {
   profilesContain.innerHTML = "";
@@ -110,25 +111,6 @@ function loadProfileData(profiles) {
          profileProductCard.addEventListener('click', (event) => {
 	   showPopupForProfileProducts(profileProductCard.querySelector("#profile-product-grid-name").textContent);
          });
-
-	const user = firebase.auth().currentUser;
-        const userId = user.uid;
-        let isFavorite
-
-        firebase.firestore().collection("users").doc(userId).get()
-        .then(doc => {
-          const favorite = doc.data().favorites;
-          if (favorite.includes(currentProductId)) {
-            profileFavoritesLabel.textContent = "Remove from Favorites";
-	    isFavorite = true;
-          } else {
-            profileFavoritesLabel.textContent = "Add to Favorites";
-	    isFavorite = false;
-          }
-        })
-        .catch(error => {
-          console.log("Error getting favorites:", error);
-        });
 
 	 profileFavoritesBtn.addEventListener('click', () => {
 	   if (currentProductId) {
@@ -228,6 +210,24 @@ function showPopupForProfileProducts(productName) {
         slide.innerHTML = `<img src="${imageUrl}" alt="Product Image">`;
         slideContainer.appendChild(slide);
       })
+
+      const user = firebase.auth().currentUser;
+      const userId = user.uid;
+
+      firebase.firestore().collection("users").doc(userId).get()
+      .then(doc => {
+        const favorite = doc.data().favorites;
+        if (favorite.includes(currentProductId)) {
+          profileFavoritesLabel.textContent = "Remove from Favorites";
+	  isFavorite = true;
+        } else {
+          profileFavoritesLabel.textContent = "Add to Favorites";
+	  isFavorite = false;
+        }
+      })
+      .catch(error => {
+        console.log("Error getting favorites:", error);
+      });
 
       const slides = document.querySelector('.profile-slides');
       const thumbnails = document.querySelectorAll('.profile-thumbnail');
