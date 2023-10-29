@@ -26,6 +26,7 @@ const profileProductTemplate = document.querySelector(".profile-product-template
 const profileProductDefault = document.querySelector(".default-profile-product-card");
 const profileProductName = document.getElementById("profile-product-name");
 const profileProductPopup = document.getElementById("profile-products-popup-container");
+const profileFavoritesLabel = document.getElementById("profile-popup-favorite-label");
 
 var bodyAuth = document.body.getAttribute('data-user-auth');
 var bodyUnauth = document.body.getAttribute('data-user-unauth');
@@ -90,7 +91,6 @@ function loadProfileData(profiles) {
      });
 
      const profileFavoritesBtn = document.getElementById("profile-popup-favorite");
-     const profileFavoritesLabel = document.getElementById("profile-popup-favorite-label");
 	  
      profile.querySelector(".show-products").addEventListener('click', (event) => {
        profileProductName.textContent = data.profile_name;
