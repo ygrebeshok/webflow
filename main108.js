@@ -55,11 +55,11 @@
     }
   }
 
-  function who() {
-      const who = ["Mom", "Dad", "Son", "Daughter", "Sister", "Brother", "Grandma", "Grandpa", "Family", "Boyfriend", "Girlfriend", "Friend", "Colleague", "Acquaintance", "Dog", "Cat"];
-      who.forEach((who) => {
+  function family() {
+      const family = ["Mom", "Dad", "Son", "Daughter", "Sister", "Brother", "Grandma", "Grandpa", "Niece", "Nephew", "Uncle", "Aunt"];
+      family.forEach((family) => {
     	  const button = document.createElement('button');
-          button.textContent = who;
+          button.textContent = family;
           button.className = 'who-button';
           button.addEventListener('mouseenter', () => {
       	    button.classList.add('hover');
@@ -68,19 +68,83 @@
       	    button.classList.remove('hover');
           });
           button.addEventListener('click', function() {
-            if (selected_who !== who) {
-              selected_who = who;
+            if (selected_who !== family) {
+              selected_who = family;
             }
             selWho.textContent = selected_who;
           });
 
       whoGrid.appendChild(button);
       });
+  }
 
-      for (let i = who.length; i < 8; i++) {
-  	    const button = whoTemplate.cloneNode(true);
-        whoGrid.appendChild(button);
-      }
+  function secondHalf() {
+      const halves = ["Boyfriend", "Girlfriend", "Husband", "Wife"];
+      halves.forEach((half) => {
+    	  const button = document.createElement('button');
+          button.textContent = half;
+          button.className = 'who-button';
+          button.addEventListener('mouseenter', () => {
+      	    button.classList.add('hover');
+          });
+    	    button.addEventListener('mouseleave', () => {
+      	    button.classList.remove('hover');
+          });
+          button.addEventListener('click', function() {
+            if (selected_who !== half) {
+              selected_who = half;
+            }
+            selWho.textContent = selected_who;
+          });
+
+      secondHalfGrid.appendChild(button);
+      });
+  }
+
+  function closeOnes() {
+      const friends = ["Friend", "Colleague", "Acquaintance"];
+      friends.forEach((friend) => {
+    	  const button = document.createElement('button');
+          button.textContent = friend;
+          button.className = 'who-button';
+          button.addEventListener('mouseenter', () => {
+      	    button.classList.add('hover');
+          });
+    	    button.addEventListener('mouseleave', () => {
+      	    button.classList.remove('hover');
+          });
+          button.addEventListener('click', function() {
+            if (selected_who !== friend) {
+              selected_who = friend;
+            }
+            selWho.textContent = selected_who;
+          });
+
+      closeOnesGrid.appendChild(button);
+      });
+  }
+
+  function pets() {
+      const pets = ["Dog", "Cat"];
+      pets.forEach((pet) => {
+    	  const button = document.createElement('button');
+          button.textContent = pet;
+          button.className = 'who-button';
+          button.addEventListener('mouseenter', () => {
+      	    button.classList.add('hover');
+          });
+    	    button.addEventListener('mouseleave', () => {
+      	    button.classList.remove('hover');
+          });
+          button.addEventListener('click', function() {
+            if (selected_who !== pet) {
+              selected_who = pet;
+            }
+            selWho.textContent = selected_who;
+          });
+
+      petsGrid.appendChild(button);
+      });
   }
 
   function categories() {
