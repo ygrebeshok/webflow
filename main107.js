@@ -340,7 +340,6 @@ async function recommend() {
     resetCategories.classList.add('disablegrid');
 
     catalogGrid.removeChild(defaultCard);
-    holidayContainer.removeChild(defaultHoliday);
 
     const brandCheckboxes = document.querySelectorAll(".brand-checkbox");
     brandCheckboxes.forEach((checkbox) => {
