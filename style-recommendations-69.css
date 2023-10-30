@@ -40,14 +40,14 @@
 
   .who-button {
    display: flex;
-   color: #535353;
+   color: rgba(0, 0, 0, 0.5);
    background-image: linear-gradient(40deg, rgba(214, 225, 255, 0.8), rgba(248, 220, 255, 0.8));
    font-family: Montserrat;
    font-size: 0.85em;
    font-weight: 400;
    justify-content: center;
    align-items: center;
-   border-radius: 6px;
+   border-radius: 5px;
    box-shadow: 2px 2px 8px 0px rgba(0, 0, 0, 0.1);
    box-shadow: inset -3px -3px 10px rgba(0, 0, 0, 0.03);
   }
@@ -63,13 +63,13 @@
    }
 
   .who-button:hover {
-    color: black;
-    background-image: linear-gradient(40deg, rgba(185, 205, 254, 1), rgba(242, 186, 255, 1));
+    color: white;
+    background-image: linear-gradient(40deg, rgba(152, 181, 255, 1), rgba(238, 169, 255, 1));
    }
 
   .who-button:focus {
-    color: black;
-    background-image: linear-gradient(40deg, rgba(185, 205, 254, 1), rgba(242, 186, 255, 1));
+    color: white;
+    background-image: linear-gradient(40deg, rgba(152, 181, 255, 1), rgba(238, 169, 255, 1));
    }
 
   .category-button {
