@@ -235,10 +235,11 @@ function showPopup(productData) {
   popupPrice.textContent = `$${productData.price}`;
 
   const user = firebase.auth().currentUser;
-  const userId = user.uid;
   const productId = productData.name;
 
-  firebase.firestore().collection("users").doc(userId).get()
+  if (user) {
+    const userId = user.uid;
+    firebase.firestore().collection("users").doc(userId).get()
     .then(doc => {
       const favorites = doc.data().favorites;
       if (favorites.includes(productId)) {
@@ -250,6 +251,7 @@ function showPopup(productData) {
     .catch(error => {
       console.log("Error getting favorites:", error);
     });
+  }
 
   popupFavoriteBtn.addEventListener('click', () => {
     moveUnauthorizedToLogIn();
