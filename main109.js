@@ -399,7 +399,10 @@ async function recommend() {
     document.getElementById("button-container").classList.add('disablegrid');
     textarea.addEventListener('input', checkInputs);
     holidayGrid.addEventListener('click', checkInputs);
-    whoGrid.addEventListener('click', checkInputs);
+    familyGrid.addEventListener('click', checkInputs);
+    secondHalfGrid.addEventListener('click', checkInputs);
+    closeOnesGrid.addEventListener('click', checkInputs);
+    petsGrid.addEventListener('click', checkInputs);
 
     resetCategories.classList.add('disablegrid');
 
@@ -431,7 +434,10 @@ async function recommend() {
     resetSelections.classList.remove('disablegrid');
     profilesBtn.classList.add("disablegrid");
     holidayGrid.classList.remove("disablegrid");
-    whoGrid.classList.remove("disablegrid");
+    familyGrid.classList.remove("disablegrid");
+    secondHalfGrid.classList.remove("disablegrid");
+    closeOnesGrid.classList.remove("disablegrid");
+    petsGrid.classList.remove("disablegrid");
     
     if (profileArea.classList.contains('move-right')) {
       profileArea.classList.remove('move-right');
@@ -444,7 +450,16 @@ async function recommend() {
     holidayGrid.querySelectorAll('button').forEach(btn => {
       btn.classList.remove('focus');
     });
-    whoGrid.querySelectorAll('button').forEach(btn => {
+    familyGrid.querySelectorAll('button').forEach(btn => {
+      btn.classList.remove('focus');
+    });
+    secondHalfGrid.querySelectorAll('button').forEach(btn => {
+      btn.classList.remove('focus');
+    });
+    closeOnesGrid.querySelectorAll('button').forEach(btn => {
+      btn.classList.remove('focus');
+    });
+    petsGrid.querySelectorAll('button').forEach(btn => {
       btn.classList.remove('focus');
     });
   }
