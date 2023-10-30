@@ -41,7 +41,7 @@
   .who-button {
    display: flex;
    color: #515151;
-   background-image: linear-gradient(40deg, #FFFFFF, #EEEEEE);
+   background-image: linear-gradient(40deg, #FFFFFF, #F1F1F1, #FFFFFF);
    font-family: Montserrat;
    font-size: 0.9em;
    font-weight: 400;
@@ -49,7 +49,7 @@
    align-items: center;
    border-radius: 5px;
    box-shadow: 2px 2px 8px 0px rgba(0, 0, 0, 0.1);
-   box-shadow: inset -3px -3px 10px rgba(0, 0, 0, 0.03);
+   box-shadow: inset -3px -3px 10px rgba(0, 0, 0, 0.02);
   }
   
   .holiday-button:hover {
