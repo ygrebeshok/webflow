@@ -114,6 +114,7 @@ resetSelections.addEventListener('click', () => {
 });
 
 createProfile.addEventListener('click', () => {
+  moveUnauthorizedToLogIn();
 	
   if (checkboxHoliday.checked === true) {
     selected_holiday = customHoliday.value;
@@ -317,6 +318,7 @@ function showPopup(productData) {
     });
 
   popupFavoriteBtn.addEventListener('click', () => {
+    moveUnauthorizedToLogIn();
     toggleFavorite(favoritesLabel, userId, productId);
   });
 
@@ -545,10 +547,12 @@ function updateCatalog() {
       });
 
       likeBtn.addEventListener("click", () => {
+	moveUnauthorizedToLogIn();
 	toggleLike(likeImage, dislikeImage, userId, productId, selected_who, selected_holiday)	
       });
 
       dislikeBtn.addEventListener("click", () => {
+	moveUnauthorizedToLogIn();
 	toggleDislike(dislikeImage, likeImage, userId, productId, selected_who, selected_holiday)	
       });
 
@@ -590,6 +594,32 @@ function updateCatalog() {
       }
     });
   }
+
+function moveUnauthorizedToLogIn() {
+  firebase.auth().onAuthStateChanged(function(authUser) {
+  user = authUser;
+
+  if (user && bodyUnauth) {
+    window.location.href = '/user';
+  } else if (!user && bodyAuth) {
+    window.location.href = '/log-in';
+  }
+
+    if (user) {
+      const email = user.email;
+
+      firebase.firestore().collection('users').where('email', '==', email).get()
+      .then(function(querySnapshot) {
+         if (querySnapshot.docs.length == 0) {
+          firebase.auth().signOut().then(function() {
+      	    user = null;
+      	    window.location.href = 'sign-up';
+   	  });
+        }
+      });
+    }
+  });
+}
 
 const filledLike = "https://uploads-ssl.webflow.com/63754b30fc1fcb22c75e7cb3/64fd42aa4c01d1a2dce1f72d_like.png";
 const emptyLike = "https://uploads-ssl.webflow.com/63754b30fc1fcb22c75e7cb3/64fd1f04f9318a593c1544e8_like%20unfilled.png";
