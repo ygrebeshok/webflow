@@ -430,7 +430,6 @@ function updateCatalog() {
         
       const productId = card.querySelector("#name").textContent;
       const user = firebase.auth().currentUser;
-      const userId = user.uid;
 
       const quickLookBtn = card.querySelector("#quick_look");
       quickLookBtn.addEventListener("click", () => {
@@ -449,45 +448,54 @@ function updateCatalog() {
       const dislikeBtn = card.querySelector("#dislike-button");
       const likeImage = card.querySelector("#image-like");
       const dislikeImage = card.querySelector("#image-dislike");
-	      
-      firebase.firestore().collection("users").doc(userId).get()
-      .then(doc => {
-    	const liked = doc.data().liked;
-    	const isLiked = liked.some(product => product.productId === productId);
 
-    	if (isLiked) {
-      	  likeImage.src = "https://uploads-ssl.webflow.com/63754b30fc1fcb22c75e7cb3/64fd42aa4c01d1a2dce1f72d_like.png";
-    	} else {
-      	  likeImage.src = "https://uploads-ssl.webflow.com/63754b30fc1fcb22c75e7cb3/64fd1f04f9318a593c1544e8_like%20unfilled.png";
-    	}
-      })
-      .catch(error => {
-    	console.log("Error getting liked:", error);
-      });
+      if (user) {
+        const userId = user.uid;      
+        firebase.firestore().collection("users").doc(userId).get()
+        .then(doc => {
+    	  const liked = doc.data().liked;
+    	  const isLiked = liked.some(product => product.productId === productId);
 
-      firebase.firestore().collection("users").doc(userId).get()
-      .then(doc => {
-      	const disliked = doc.data().disliked;
-	const isDisliked = disliked.some(product => product.productId === productId);
+    	  if (isLiked) {
+      	    likeImage.src = "https://uploads-ssl.webflow.com/63754b30fc1fcb22c75e7cb3/64fd42aa4c01d1a2dce1f72d_like.png";
+    	  } else {
+      	    likeImage.src = "https://uploads-ssl.webflow.com/63754b30fc1fcb22c75e7cb3/64fd1f04f9318a593c1544e8_like%20unfilled.png";
+    	  }
+        })
+        .catch(error => {
+    	  console.log("Error getting liked:", error);
+        });
 
-	if (isDisliked) {
-      	  dislikeImage.src = "https://uploads-ssl.webflow.com/63754b30fc1fcb22c75e7cb3/64fd42a725f96a17e1984d22_dislike.png";
-    	} else {
-          dislikeImage.src = "https://uploads-ssl.webflow.com/63754b30fc1fcb22c75e7cb3/64fd21004c01d1a2dccce5dc_dislike%20unfilled.png";
-    	}
-      })
-      .catch(error => {
-        console.log("Error getting disliked:", error);
-      });
+        firebase.firestore().collection("users").doc(userId).get()
+        .then(doc => {
+      	  const disliked = doc.data().disliked;
+	  const isDisliked = disliked.some(product => product.productId === productId);
+
+	  if (isDisliked) {
+      	    dislikeImage.src = "https://uploads-ssl.webflow.com/63754b30fc1fcb22c75e7cb3/64fd42a725f96a17e1984d22_dislike.png";
+    	  } else {
+            dislikeImage.src = "https://uploads-ssl.webflow.com/63754b30fc1fcb22c75e7cb3/64fd21004c01d1a2dccce5dc_dislike%20unfilled.png";
+    	  }
+        })
+        .catch(error => {
+          console.log("Error getting disliked:", error);
+        });
+      }
 
       likeBtn.addEventListener("click", () => {
 	moveUnauthorizedToLogIn();
-	toggleLike(likeImage, dislikeImage, userId, productId, selected_who, selected_holiday)	
+	if (user) {
+	  const userId = user.uid;
+	  toggleLike(likeImage, dislikeImage, userId, productId, selected_who, selected_holiday)
+	}
       });
 
       dislikeBtn.addEventListener("click", () => {
 	moveUnauthorizedToLogIn();
-	toggleDislike(dislikeImage, likeImage, userId, productId, selected_who, selected_holiday)	
+	if (user) {
+	  const userId = user.uid;
+	  toggleDislike(dislikeImage, likeImage, userId, productId, selected_who, selected_holiday)
+	}
       });
 
       catalogGrid.appendChild(card);
