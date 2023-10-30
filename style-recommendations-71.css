@@ -40,8 +40,8 @@
 
   .who-button {
    display: flex;
-   color: white;
-   background-image: linear-gradient(40deg, #8F72F7, #6A88F7, #DF7DF4);
+   color: #515151;
+   background-image: linear-gradient(40deg, #FFFFFF, #EEEEEE);
    font-family: Montserrat;
    font-size: 0.9em;
    font-weight: 400;
