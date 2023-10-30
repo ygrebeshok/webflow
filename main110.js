@@ -48,11 +48,6 @@
 
       holidayGrid.appendChild(button);
       });
-
-    for (let i = holidays.length; i < 8; i++) {
-  	  const button = holidayTemplate.cloneNode(true);
-      holidayGrid.appendChild(button);
-    }
   }
 
   function family() {
@@ -74,7 +69,7 @@
             selWho.textContent = selected_who;
           });
 
-      whoGrid.appendChild(button);
+      familyGrid.appendChild(button);
       });
   }
 
@@ -188,7 +183,10 @@ async function recommend() {
   document.getElementById("textarea").disabled = true;
   errorAlert.style.visibility = "hidden";
   holidayGrid.classList.add('disablegrid');
-  whoGrid.classList.add('disablegrid');
+  familyGrid.classList.add('disablegrid');
+  secondHalfGrid.classList.add('disablegrid');
+  closeOnesGrid.classList.add('disablegrid');
+  petsGrid.classList.add('disablegrid');
   mainButton.classList.add('disablegrid');
   searchAgain.style.visibility = "hidden";
   resetSelections.classList.add('disablegrid');
