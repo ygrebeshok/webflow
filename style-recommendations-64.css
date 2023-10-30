@@ -40,15 +40,16 @@
 
   .who-button {
    display: flex;
-   color: white;
-   background-color: rgba(255, 255, 255, 0.1);
+   color: black;
+   background-image: linear-gradient(40deg, rgba(214, 225, 255, 0.8), rgba(248, 220, 255, 0.8));
    font-family: Montserrat;
-   font-size: 0.95em;
+   font-size: 0.85em;
    font-weight: 400;
    justify-content: center;
    align-items: center;
    border-radius: 4px;
-   box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+   box-shadow: 1px 1px 5px 0px rgba(0, 0, 0, 0.1);
+   box-shadow: inset -2px -2px 5px rgba(0, 0, 0, 0.02);
   }
   
   .holiday-button:hover {
