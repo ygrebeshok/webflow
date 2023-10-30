@@ -16,7 +16,6 @@ const whoTemplate = document.querySelector(".who");
 const brandFilterContainer = document.getElementById("brand-filter");
 const lowestPriceButton = document.getElementById('lowestPrice');
 const highestPriceButton = document.getElementById('highestPrice');
-const holidayContainer = document.getElementById('holiday-container');
 const filtersContainer = document.getElementById("filters-container");
 const closeFilters = document.getElementById("close-filters");
 const filterActivator = document.getElementById("filter-activator");
@@ -221,71 +220,6 @@ function toggleFavorite(element, userId, productId) {
       console.log("Error adding product to favorites:", error);
     });
    }
-}
-
-function loadHolidayData() {
-
-  holidayRef.get().then((querySnapshot) => {
-    holidayContainer.innerHTML = "";
-
-    querySnapshot.forEach((doc) => {
-      const data = doc.data();
-      const holiday = holidayCardTemplate.cloneNode(true);
-
-      holiday.querySelector("#holiday-title").textContent = data.name;
-      holiday.querySelector("#holiday-desc").textContent = data.description;
-      holiday.querySelector("#holiday-image").src = data.image_url;
-      holiday.querySelector("#holiday-image").alt = data.name;
-      holiday.querySelector("#holiday-link").href = data.product_link;
-      holiday.querySelector("#holiday-price").textContent = "$" + data.price;
-
-      holidayContainer.appendChild(holiday);
-
-      const holidayFavorite = holiday.querySelector("#holiday-favorite");
-      const productId = holiday.querySelector("#holiday-title").textContent;
-      const user = firebase.auth().currentUser;
-      const userId = user.uid;
-
-      firebase.firestore().collection("users").doc(userId).get()
-      .then(doc => {
-        const favorites = doc.data().favorites;
-          if (favorites.includes(productId)) {
-            holidayFavorite.textContent = "Remove from Favorites";
-          }
-        })
-      .catch(error => {
-        console.log("Error getting favorites:", error);
-      });
-
-      holidayFavorite.addEventListener('click', () => {
-        toggleFavorite(holidayFavorite, userId, productId);
-      });
-
-      holiday.addEventListener("mouseenter", () => {
-        holiday.animate([
-	{ transform: "translateY(0px)" },
-	{ transform: "translateY(-90px)" }
-	], {
-	duration: 200,
-	fill: "forwards"
-	});
-	holidayBack.style.filter = "blur(2px)";
-      });
-	
-      holiday.addEventListener("mouseleave", () => {
-	holiday.animate([
-	{ transform: "translateY(-90px)" },
-	{ transform: "translateY(0px)" }
-	], {
-	duration: 200,
-	fill: "forwards"
-	});
-	holidayBack.style.filter = "blur(0px)";
-      });
-    });
-   }).catch((error) => {
-     console.log("Error getting documents: ", error);
-  });
 }
 
 function showPopup(productData) {
