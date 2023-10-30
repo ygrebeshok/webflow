@@ -106,7 +106,16 @@ resetSelections.addEventListener('click', () => {
   holidayGrid.querySelectorAll('button').forEach(btn => {
     btn.classList.remove('focus');
   });
-  whoGrid.querySelectorAll('button').forEach(btn => {
+  familyGrid.querySelectorAll('button').forEach(btn => {
+    btn.classList.remove('focus');
+  });
+  secondHalfGrid.querySelectorAll('button').forEach(btn => {
+    btn.classList.remove('focus');
+  });
+  closeOnesGrid.querySelectorAll('button').forEach(btn => {
+    btn.classList.remove('focus');
+  });
+  petsGrid.querySelectorAll('button').forEach(btn => {
     btn.classList.remove('focus');
   });
 });
