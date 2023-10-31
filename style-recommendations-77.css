@@ -42,7 +42,7 @@
   .who-button {
    display: flex;
    color: #515151;
-   background-image: linear-gradient(40deg, rgba(255, 255, 255, 0), rgba(241, 241, 241, 0), rgba(255, 255, 255, 0));
+   background-image: linear-gradient(40deg, rgba(220, 240, 255, 0.5), rgba(220, 240, 241, 0.5), rgba(220, 240, 255, 0.5));
    font-family: Montserrat;
    font-size: 0.9em;
    font-weight: 400;
