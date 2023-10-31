@@ -67,11 +67,6 @@ function showPage() {
   }
 
   totalDisplayedItems += itemsToAdd; // Update the total displayed items
-
-  // Hide the loadMoreButton if there are no more pages to show
-  if (totalDisplayedItems >= gridItems.length) {
-    loadMoreButton.style.display = 'none';
-  }
 }
 
 loadMoreButton.addEventListener('click', function() {
