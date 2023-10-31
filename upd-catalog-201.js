@@ -60,14 +60,15 @@ function showPage() {
   for (let i = 0; i < gridItems.length; i++) {
     if (i < totalDisplayedItems + itemsToAdd) {
       gridItems[i].style.display = 'flex';
-      gridItems[i].classList.add('fade-in');
+      gridItems[i].style.opacity = '1'; // Reset opacity when displaying
     } else {
       gridItems[i].style.display = 'none';
     }
   }
 
-  totalDisplayedItems += itemsToAdd;
+  totalDisplayedItems += itemsToAdd; // Update the total displayed items
 
+  // Hide the loadMoreButton if there are no more pages to show
   if (totalDisplayedItems >= gridItems.length) {
     loadMoreButton.style.display = 'none';
   }
