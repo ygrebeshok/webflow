@@ -21,7 +21,7 @@
   }
 
   function holidays() {
-      const holidays = ["Birthday", "Christmas", "Thanksgiving", "Valentine's", "Mother's Day", "Easter", "Graduation", "Wedding", "Anniversary"];
+      const holidays = ["Birthday", "Halloween", "Christmas", "Thanksgiving", "Valentine's", "Mother's Day", "Easter", "Graduation", "Wedding", "Anniversary", "Baby Shower", "Back to School"];
       holidays.forEach((holiday) => {
     	const button = document.createElement('button');
         button.textContent = holiday;
