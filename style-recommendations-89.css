@@ -65,12 +65,12 @@
 
   .who-button:hover {
     color: white;
-    background-image: linear-gradient(40deg, #754BFF, #5A7CFF, #E956FF);
+    background-image: linear-gradient(40deg, #A157FF, #6F63FF, #E065FF);
    }
 
   .who-button:focus {
     color: white;
-    background-image: linear-gradient(40deg, #754BFF, #5A7CFF, #E956FF);
+    background-image: linear-gradient(40deg, #A157FF, #6F63FF, #E065FF);
    }
 
   .category-button {
