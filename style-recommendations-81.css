@@ -41,8 +41,8 @@
 
   .who-button {
    display: flex;
-   color: black;
-   background-color: rgba(255, 255, 255, 0.3);
+   color: #444444;
+   background-color: rgba(255, 255, 255, 0.35);
    font-family: Montserrat;
    font-size: 0.9em;
    font-weight: 400;
