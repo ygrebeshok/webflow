@@ -60,12 +60,17 @@ function showPage() {
   for (let i = 0; i < gridItems.length; i++) {
     if (i < totalDisplayedItems + itemsToAdd) {
       gridItems[i].style.display = 'flex';
+      gridItems[i].classList.add('fade-in');
     } else {
       gridItems[i].style.display = 'none';
     }
   }
 
-  totalDisplayedItems += itemsToAdd; // Update the total displayed items
+  totalDisplayedItems += itemsToAdd;
+
+  if (totalDisplayedItems >= gridItems.length) {
+    loadMoreButton.style.display = 'none';
+  }
 }
 
 loadMoreButton.addEventListener('click', function() {
