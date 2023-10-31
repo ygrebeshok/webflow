@@ -55,12 +55,12 @@
   
   .holiday-button:hover {
     color: white;
-    background-image: linear-gradient(40deg, #715AFF, #AE5CFF, #49A8FF);
+    background-image: linear-gradient(40deg, #5A75FF, #7D5CFF, #49A8FF);
    }
 
   .holiday-button:focus {
     color: white;
-    background-image: linear-gradient(40deg, #715AFF, #AE5CFF, #49A8FF);
+    background-image: linear-gradient(40deg, #5A75FF, #7D5CFF, #49A8FF);
    }
 
   .who-button:hover {
