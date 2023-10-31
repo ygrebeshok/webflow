@@ -183,7 +183,7 @@ async function recommend() {
   document.getElementById("textarea").disabled = true;
   errorAlert.style.visibility = "hidden";
   holidayGrid.classList.add('disablegrid');
-  document.getElementById('switcher-who').add('disablegrid');
+  switcher.classList.add('disablegrid');
   familyGrid.classList.add('disablegrid');
   secondHalfGrid.classList.add('disablegrid');
   closeOnesGrid.classList.add('disablegrid');
@@ -433,7 +433,7 @@ async function recommend() {
     resetSelections.classList.remove('disablegrid');
     profilesBtn.classList.add("disablegrid");
     holidayGrid.classList.remove("disablegrid");
-    document.getElementById('switcher-who').remove('disablegrid');
+    switcher.classList.remove('disablegrid');
     familyGrid.classList.remove("disablegrid");
     secondHalfGrid.classList.remove("disablegrid");
     closeOnesGrid.classList.remove("disablegrid");
