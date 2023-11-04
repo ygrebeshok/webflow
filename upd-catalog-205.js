@@ -263,8 +263,11 @@ function showPopup(productData) {
   }
 
   popupFavoriteBtn.addEventListener('click', () => {
-    moveUnauthorizedToLogIn();
-    toggleFavorite(favoritesLabel, userId, productId);
+    if (user) {
+      toggleFavorite(favoritesLabel, userId, productId);
+    } else {
+      moveUnauthorizedToLogIn();
+    }
   });
 
   productData.images.forEach(imageUrl => {
