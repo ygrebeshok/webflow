@@ -434,7 +434,7 @@ function updateCatalog() {
       card.querySelector("#description").textContent = data.description,
       card.querySelector("#keywords").textContent = data.openai_keywords + ',' + data.image_labels,
       card.querySelector("#brand").textContent = data.brand,
-      card.querySelector("#category").textContent = data.category
+      card.querySelector("#category").textContent = data.product_category
 
       allCards.push(card);
         
