@@ -304,7 +304,6 @@ function showPopup(productData) {
    thumbnails.forEach((thumbnail, index) => {
       thumbnail.addEventListener('click', function() {
         showSlide(index);
-	console.log("thumbnail clicked");
       });
     });
 
