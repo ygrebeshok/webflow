@@ -264,6 +264,7 @@ function showPopup(productData) {
 
   popupFavoriteBtn.addEventListener('click', () => {
     if (user) {
+      const userId = user.uid;
       toggleFavorite(favoritesLabel, userId, productId);
     } else {
       moveUnauthorizedToLogIn();
