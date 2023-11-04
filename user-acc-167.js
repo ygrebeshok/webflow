@@ -14,7 +14,7 @@ const favoritesGrid = document.getElementById("favoritesGrid");
 const favCardTemplate = document.querySelector("#card");
 const profileCardTemplate = document.querySelector("#profile-card");
 const popupContainer = document.getElementById("popup-fade");
-const giftsRef = firebase.firestore().collection("gifts");
+const giftsRef = firebase.firestore().collection("added-by-parsing");
 const popUp = document.getElementById("pop-up");
 const closeBtn = document.getElementById("close-button");
 const favoritesLabel = document.getElementById("favorites-label");
@@ -554,7 +554,7 @@ firebase.auth().onAuthStateChanged(function(authUser) {
               return;
             }
 
-            const giftsQuery = firebase.firestore().collection('gifts').where('name', 'in', sharedFavorites);
+            const giftsQuery = firebase.firestore().collection('added-by-parsing').where('name', 'in', sharedFavorites);
             giftsQuery.get()
             .then((querySnapshot) => {
               const formattedContentArray = [];
