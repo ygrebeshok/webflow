@@ -352,12 +352,14 @@ async function recommend() {
            cardKeywords = cardKeywords.filter(keyword => keyword !== "");
            const cardKeywordsSet = new Set(cardKeywords);
 
+           let cardDescription = card.querySelector("#description").textContent;
+           let cardBrand = card.querySelector("#brand").textContent;
+
            // Check if any of the keywords to exclude are present in the card's title, description, or brand
            const keywordsToExcludeFound = keywordsToExclude.some(keyword => {
              const lowerCaseKeyword = keyword.toLowerCase();
              const keywordRegExp = new RegExp(`\\b${escapeRegExp(lowerCaseKeyword)}\\b`, 'i');
              return (
-               keywordRegExp.test(cardTitle) ||
                keywordRegExp.test(cardDescription) ||
                keywordRegExp.test(cardBrand)
              );
