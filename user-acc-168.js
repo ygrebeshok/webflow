@@ -184,7 +184,7 @@ function showPopupForProfileProducts(productName, userId) {
 
   profileFavoritesLabel.innerHTML = '';
 
-  const giftsRef = firebase.firestore().collection('gifts');
+  const giftsRef = firebase.firestore().collection('added-by-parsing');
 
   giftsRef
   .where('name', '==', currentProductId)
