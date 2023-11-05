@@ -48,6 +48,10 @@ let visibleCards = [];
 const catalogGrid = document.getElementById("catalog");
 const cardTemplate = document.querySelector(".card");
 
+const ageField = document.getElementById("age-field");
+const personalitySelect = document.getElementById("personality-select");
+const age_personality = document.getElementById("age-personality");
+
 let currentPage = 1;
 let totalDisplayedItems = 0;
 const itemsPerPage = 30;
