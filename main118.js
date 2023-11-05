@@ -161,7 +161,7 @@
             //selPersonality.textContent = selected_personality;
           });
 
-      personalityGridGrid.appendChild(button);
+      personalityGrid.appendChild(button);
       });
   }
 
