@@ -169,6 +169,8 @@
   }
 
 const errorAlert = document.getElementById("error-alert");
+let personality = personalitySelect.value;
+let age = ageField.value;
 
 async function recommend() {
   event.preventDefault();
@@ -188,6 +190,7 @@ async function recommend() {
   secondHalfGrid.classList.add('disablegrid');
   closeOnesGrid.classList.add('disablegrid');
   petsGrid.classList.add('disablegrid');
+  age_personality.classList.add('disablegrid');
   mainButton.classList.add('disablegrid');
   searchAgain.style.visibility = "hidden";
   resetSelections.classList.add('disablegrid');
@@ -196,9 +199,68 @@ async function recommend() {
   const text = document.getElementById("textarea").value;
   loadMoreButton.style.display = "none";
 
+  let age_reference = null;
+  let subject_reference = null;
+  let personality_reference = null;
+
+  if (age <= 4) {
+    age_reference = "1.5-4 years";
+  } else if (age >= 5 && age <= 7) {
+    age_reference = "5-7 years";
+  } else if (age >= 8 && age <= 12) {
+    age_reference = "8-12 years";
+  } else if (age >= 13 && age <= 18) {
+    age_reference = "13-18 years";
+  } else if (age >= 19 && age <= 21) {
+    age_reference = "19-21 years";
+  } else if (age >= 22 && age <= 30) {
+    age_reference = "22-30 years";
+  } else if (age >= 31 && age <= 40) {
+    age_reference = "31-40 years";
+  } else if (age >= 41 && age <= 50) {
+    age_reference = "41-50 years";
+  } else if (age >= 51 && age <= 60) {
+    age_reference = "51-60 years";
+  } else if (age >= 61) {
+    age_reference = "61+ years";
+  }
+
+  if (personality === "Tech Geek") {
+    personality_reference = "Electronics and Gadgets";
+  } else if (personality === "Bookworm") {
+    personality_reference = "Books and Stationery";
+  } else if (personality === "Fashionista") {
+    personality_reference = "Clothing and Accessories";
+  } else if (personality === "Artist") {
+    personality_reference = "Art";
+  } else if (personality === "Skin Care Master") {
+    personality_reference = "Beauty and Hair Products";
+  } else if (personality === "Jewelry Admirer") {
+    personality_reference = "Jewelry and Watches";
+  } else if (personality === "Sports Star") {
+    personality_reference = "Fitness and Wellness Items";
+  } else if (personality === "Life Taster") {
+    personality_reference = "Experiences";
+  } else if (personality === "Chef") {
+    personality_reference = "Kitchen Appliances";
+  } else if (personality === "Hiker") {
+    personality_reference = "Outdoor Gear";
+  } else if (personality === "Adorable kid") {
+    personality_reference = "Toys and Games";
+  } else if (personality === "Asian Culture Follower") {
+    personality_reference = "Anime";
+  } else if (personality === "Foodie") {
+    personality_reference = "Food and Beverage";
+  } else if (personality === "Gardener") {
+    personality_reference = "Plants and Gardening";
+  } else if (personality === "Home Esthete") {
+    personality_reference = "Travel Accessories";
+  }
+    
+  
   // Prompt to Open AI
   try {
-    const prompt = "Give some gift recommendations for " + selected_who + " and for this occasion " + selected_holiday + "\n" + "Here is the gift description: " + text;
+    const prompt = "Give some gift recommendations for " + selected_who + " and for this occasion " + selected_holiday + "\n" + "Here is the gift description: " + text + ". Also, choose one of the categories that best describes the gift receiver: adult woman, adult man, girl, boy, kid, toddler, newborn, old man, old woman, unisex";
     
     const keywordsToExclude = [];
     if (!(selected_who === "Dog" || selected_who === "Cat")) {
@@ -230,7 +292,17 @@ async function recommend() {
      .then(response => response.json())
      .then(data => {
        const responseText = data.choices[0].text;
+       console.log(responseText);
 
+       const subjectCategories = ["adult woman", "adult man", "girl", "boy", "kid", "toddler", "newborn", "old man", "old woman", "unisex"];
+    
+       for (const category of subjectCategories) {
+         if (responseText.toLowerCase().includes(category)) {
+            subject_reference = category;
+            break;
+        }
+    }
+       
        const requestOptions2 = {
          method: 'POST',
          headers: {
@@ -270,45 +342,13 @@ async function recommend() {
          // Correctly formatted keywords at this point
          const openaiKeywords = new Set(keywords);
          visibleCards = [];
-         const stringSimilarityThreshold = 0.6;
 
          // Now catalog grid's card keywords are retrieved and formatted correctly
          catalogGrid.childNodes.forEach((card) => {
-           let cardKeywords = card.querySelector("#keywords").textContent.toLowerCase().split(",").flatMap(keyword => keyword.trim());
+           let cardKeywords = card.querySelector("#all_keywords").textContent.toLowerCase().split(",").flatMap(keyword => keyword.trim());
            cardKeywords = cardKeywords.map(str => str.replace(/^\s+|\s+$/g, '').replace(/[,.\'"*•-]+/g, ''));
            cardKeywords = cardKeywords.filter(keyword => keyword !== "");
            const cardKeywordsSet = new Set(cardKeywords);
-
-           // To improve search, catalog grid's card title and description are taken, formatted correctly and are splitted into array of additional card's keywords
-           let cardTitle = card.querySelector("#name").textContent.toLowerCase().replace(/[,.\'"*•-]+/g, '');
-           let cardTitleWords = cardTitle.split(" ");
-           cardTitleWords = cardTitleWords.map(str => str.replace(/[\W_]+/g, ''));
-           const cardDescription = card.querySelector("#description").textContent.toLowerCase().replace(/[,.\'"*•-]+/g, '');
-           const cardBrand = card.querySelector("#brand").textContent.toLowerCase().replace(/[,.\'"*•-]+/g, '');
-           let cardDescriptionWords = cardDescription.split(" ");
-           cardDescriptionWords = cardDescriptionWords.map(str => str.replace(/[\W_]+/g, ''));
-
-           let matchedWords = [];
-           let similarity = 0;
-
-           // Here the second check is conducted for matched products with finding similarity between card's title and description keywords and Open AI's keywords
-           for (let i = 0; i < cardTitleWords.length; i++) {
-             const word = cardTitleWords[i];
-             const match = stringSimilarity.findBestMatch(word, keywords);
-             if (match.bestMatch.rating >= stringSimilarityThreshold && !matchedWords.includes(match.bestMatch.target)) {
-               matchedWords.push(match.bestMatch.target);
-               similarity += match.bestMatch.rating;
-             }
-           }
-             
-           for (let i = 0; i < cardDescriptionWords.length; i++) {
-             const word = cardDescriptionWords[i];
-             const match = stringSimilarity.findBestMatch(word, keywords);
-             if (match.bestMatch.rating >= stringSimilarityThreshold && !matchedWords.includes(match.bestMatch.target)) {
-               matchedWords.push(match.bestMatch.target);
-               similarity += match.bestMatch.rating;
-             }
-           }
 
            // Check if any of the keywords to exclude are present in the card's title, description, or brand
            const keywordsToExcludeFound = keywordsToExclude.some(keyword => {
@@ -323,9 +363,8 @@ async function recommend() {
 
            if (!keywordsToExcludeFound) {
              const intersection = new Set([...openaiKeywords].filter(x => cardKeywordsSet.has(x)));
-             const hasSimilarity = matchedWords.length >= 2 && similarity / matchedWords.length >= stringSimilarityThreshold;
     
-             if (intersection.size === 0 || !hasSimilarity) {
+             if (intersection.size === 0) {
                const index = visibleCards.indexOf(card);
                if (index !== -1) {
                  visibleCards.splice(index, 1);
@@ -359,6 +398,34 @@ async function recommend() {
            
            function removeDuplicates(array) {
              return Array.from(new Set(array));
+           }
+
+           // Prioritize cards based on age, subject, and personality references
+           if (age_reference && subject_reference && personality_reference) {
+             visibleCards.sort((a, b) => {
+               const ageCategoryA = a.querySelector("#age-category").textContent;
+               const ageCategoryB = b.querySelector("#age-category").textContent;
+               const categoryA = a.querySelector("#category").textContent;
+               const categoryB = b.querySelector("#category").textContent;
+               const subjectCategoryA = a.querySelector("#subject-category").textContent;
+               const subjectCategoryB = b.querySelector("#subject-category").textContent;
+
+               if (
+                 ageCategoryA === age_reference &&
+                 categoryA === personality_reference &&
+                 subjectCategoryA === subject_reference
+               ) {
+                 return -1;
+               } else if (
+                 ageCategoryB === age_reference &&
+                 categoryB === personality_reference &&
+                 subjectCategoryB === subject_reference
+               ) {
+                 return 1;
+               } else {
+                 return 0;
+               }
+             });
            }
 
            output.textContent = `${visibleCards.length} gift(s) found`;
@@ -402,6 +469,7 @@ async function recommend() {
     secondHalfGrid.addEventListener('click', checkInputs);
     closeOnesGrid.addEventListener('click', checkInputs);
     petsGrid.addEventListener('click', checkInputs);
+    age_personality.addEventListener('click', checkInputs);
 
     resetCategories.classList.add('disablegrid');
 
@@ -438,6 +506,7 @@ async function recommend() {
     secondHalfGrid.classList.remove("disablegrid");
     closeOnesGrid.classList.remove("disablegrid");
     petsGrid.classList.remove("disablegrid");
+    age_personality.classList.remove('disablegrid');
     
     if (profileArea.classList.contains('move-right')) {
       profileArea.classList.remove('move-right');
