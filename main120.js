@@ -142,29 +142,6 @@
       });
   }
 
-  function personality() {
-      const personalities = ["Tech Geek", "Bookworm", "Fashionista", "Artist", "Skin Care Master", "Jewelry Admirer", "Sports Star", "Life Taster", "Chef", "Hiker", "Adorable kid", "Asian Culture Follower", "Foodie", "Gardener", "Home Esthete"];
-      personalities.forEach((personality) => {
-    	  const button = document.createElement('button');
-          button.textContent = personality;
-          button.className = 'personality-button';
-          button.addEventListener('mouseenter', () => {
-      	    button.classList.add('hover');
-          });
-    	    button.addEventListener('mouseleave', () => {
-      	    button.classList.remove('hover');
-          });
-          button.addEventListener('click', function() {
-            if (selected_personality !== personality) {
-              selected_personality = personality;
-            }
-            //selPersonality.textContent = selected_personality;
-          });
-
-      personalityGrid.appendChild(button);
-      });
-  }
-
   function categories() {
     const categoryGrid = document.getElementById("category-grid");
   
