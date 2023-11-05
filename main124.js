@@ -347,7 +347,7 @@ async function recommend() {
 
          // Now catalog grid's card keywords are retrieved and formatted correctly
          catalogGrid.childNodes.forEach((card) => {
-           let cardKeywords = card.querySelector("#all_keywords").textContent.toLowerCase().split(",").flatMap(keyword => keyword.trim());
+           let cardKeywords = card.querySelector("#keywords").textContent.toLowerCase().split(",").flatMap(keyword => keyword.trim());
            cardKeywords = cardKeywords.map(str => str.replace(/^\s+|\s+$/g, '').replace(/[,.\'"*•-]+/g, ''));
            cardKeywords = cardKeywords.filter(keyword => keyword !== "");
            const cardKeywordsSet = new Set(cardKeywords);
