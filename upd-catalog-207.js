@@ -436,9 +436,11 @@ function updateCatalog() {
       card.querySelector("#name").textContent = data.name,
       card.querySelector("#price").textContent = `$${data.price}`,
       card.querySelector("#description").textContent = data.description,
-      card.querySelector("#keywords").textContent = data.openai_keywords + ',' + data.image_labels,
+      card.querySelector("#keywords").textContent = data.all_keywords,
       card.querySelector("#brand").textContent = data.brand,
-      card.querySelector("#category").textContent = data.product_category
+      card.querySelector("#category").textContent = data.product_category,
+      card.querySelector("#age-category").textContent = data.age,
+      card.querySelector("#subject-category").textContent = data.subject_category
 
       allCards.push(card);
         
