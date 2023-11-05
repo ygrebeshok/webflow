@@ -143,11 +143,11 @@
   }
 
   function personality() {
-      const personalities = ["Tech Geek", "Bookworm", "Fashionista", "Artist", "Skin Care Master", "Jewelry Admirer", "Sports Star", "Life Taster", "Chef", "Hiker", "Adorable kid", "Asian Culture Followe", "Foodie", "Gardener", "Home Esthete"];
+      const personalities = ["Tech Geek", "Bookworm", "Fashionista", "Artist", "Skin Care Master", "Jewelry Admirer", "Sports Star", "Life Taster", "Chef", "Hiker", "Adorable kid", "Asian Culture Follower", "Foodie", "Gardener", "Home Esthete"];
       personalities.forEach((personality) => {
     	  const button = document.createElement('button');
           button.textContent = personality;
-          button.className = 'who-button';
+          button.className = 'personality-button';
           button.addEventListener('mouseenter', () => {
       	    button.classList.add('hover');
           });
