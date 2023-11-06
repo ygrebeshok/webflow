@@ -382,42 +382,42 @@ async function recommend() {
 
            if (!keywordsToExcludeFound) {
              const intersection = new Set([...openaiKeywords].filter(x => cardKeywordsSet.has(x)));
-    
-             if (intersection.size === 0) {
+
+             if (intersection.size >= 2) {
+               visibleCards.push(card);
+               card.style.display = "";
+             } else {
                const index = visibleCards.indexOf(card);
                if (index !== -1) {
                  visibleCards.splice(index, 1);
                }
                card.style.display = "none";
-             } else {
-               visibleCards.push(card);
-               card.style.display = "";
              }
            } else {
              const index = visibleCards.indexOf(card);
              if (index !== -1) {
                visibleCards.splice(index, 1);
              }
-               card.style.display = "none";
-             }
-
-             if (!(selected_who === "Dog" || selected_who === "Cat")) {
-               // Filter out cards with brands found in petStores
-               if (petStores.includes(card.querySelector("#brand").textContent)) {
-                 const index = visibleCards.indexOf(card);
-                 if (index !== -1) {
-                   visibleCards.splice(index, 1);
-                 }
-               card.style.display = "none";
-               }
-             }
-      
-             visibleCards = removeDuplicates(visibleCards);
-           });
-           
-           function removeDuplicates(array) {
-             return Array.from(new Set(array));
+             card.style.display = "none";
            }
+
+           if (!(selected_who === "Dog" || selected_who === "Cat")) {
+             // Filter out cards with brands found in petStores
+             if (petStores.includes(card.querySelector("#brand").textContent)) {
+               const index = visibleCards.indexOf(card);
+               if (index !== -1) {
+                 visibleCards.splice(index, 1);
+               }
+               card.style.display = "none";
+             }
+           }
+      
+           visibleCards = removeDuplicates(visibleCards);
+         });
+           
+         function removeDuplicates(array) {
+           return Array.from(new Set(array));
+         }
 
            // Prioritize cards based on age, subject, and personality references
            if (age_reference && subject_reference && personality_reference) {
