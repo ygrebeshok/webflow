@@ -205,6 +205,20 @@ async function recommend() {
   let subject_reference = null;
   let personality_reference = null;
 
+  if (selected_who === "Dad") {
+    subject_reference = "adult man";
+  } else if (selected_who === "Mom") {
+    subject_reference = "adult woman";
+  } else if (selected_who === "Grandma") {
+    subject_reference = "old woman";
+  } else if (selected_who === "Grandpa") {
+    subject_reference = "old man";
+  } else if (selected_who === "Uncle") {
+    subject_reference = "adult man";
+  } else if (selected_who === "Aunt") {
+    subject_reference = "adult woman";
+  }
+  
   if (age <= 4) {
     age_reference = "1.5-4 years";
   } else if (age >= 5 && age <= 7) {
@@ -262,7 +276,7 @@ async function recommend() {
   
   // Prompt to Open AI
   try {
-    const prompt = "Give some gift recommendations for " + selected_who + " and for this occasion " + selected_holiday + "\n" + "Here is the gift description: " + text + ". Also, choose a category that best describes the gift receiver in this situation: adult woman, adult man, girl, boy, kid, toddler, newborn, old man, old woman, unisex. Put the chosen category at the end of your message.";
+    const prompt = "Give some gift recommendations for " + selected_who + " and for this occasion " + selected_holiday + "\n" + "Here is the gift description: " + text;
     
     const keywordsToExclude = [];
     if (!(selected_who === "Dog" || selected_who === "Cat")) {
