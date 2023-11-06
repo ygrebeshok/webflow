@@ -233,6 +233,8 @@ function toggleFavorite(element, userId, productId) {
    }
 }
 
+const linkButton = document.getElementById('link-button');
+
 function showPopup(productData) {
   const slideContainer = document.querySelector('.slides');
   const thumbnailContainer = document.querySelector('.thumbnails');
@@ -241,7 +243,8 @@ function showPopup(productData) {
 	
   popupTitle.textContent = productData.name;
   popupBrand.textContent = productData.brand;
-  popupBrand.href = productData.product_link;
+  //popupBrand.href = productData.product_link;
+  linkButton.href = productData.product_link;
   popupDesc.textContent = productData.description;
   popupPrice.textContent = `$${productData.price}`;
 
