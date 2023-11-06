@@ -262,7 +262,7 @@ async function recommend() {
   
   // Prompt to Open AI
   try {
-    const prompt = "Give some gift recommendations for " + selected_who + " and for this occasion " + selected_holiday + "\n" + "Here is the gift description: " + text + ". Also, choose one of the categories that best describes the gift receiver: adult woman, adult man, girl, boy, kid, toddler, newborn, old man, old woman, unisex";
+    const prompt = "Give some gift recommendations for " + selected_who + " and for this occasion " + selected_holiday + "\n" + "Here is the gift description: " + text + ". Also, choose a category that best describes the gift receiver in this situation: adult woman, adult man, girl, boy, kid, toddler, newborn, old man, old woman, unisex. Put the chosen category at the end of your message.";
     
     const keywordsToExclude = [];
     if (!(selected_who === "Dog" || selected_who === "Cat")) {
