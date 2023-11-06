@@ -327,7 +327,7 @@ async function recommend() {
          },
          body: JSON.stringify({
            model: 'gpt-3.5-turbo-instruct',
-           prompt: `Extract as many keywords from this text as possible and separate them with a comma (don't include word keywords in output):\n${responseText}`,
+           prompt: `Extract keywords from this text and separate them with a comma (don't include word keywords in output):\n${responseText}`,
            max_tokens: 1024,
            temperature: 0.5,
            top_p: 1,
@@ -340,6 +340,7 @@ async function recommend() {
        .then(response => response.json())
        .then(data => {
          let keywords = data.choices[0].text;
+         console.log(keywords);
          const newKeywords = keywords.replace(/\n/g, '');
 
          keywords = keywords.toLowerCase().split(",").flatMap(keyword => keyword.trim());
