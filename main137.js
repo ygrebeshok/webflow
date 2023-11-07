@@ -168,12 +168,6 @@
     });
   }
 
-const errorAlert = document.getElementById("error-alert");
-const ageAlert = document.getElementById("age-alert");
-const personalitySelect = document.getElementById("personality-select");
-let personality = personalitySelect.value;
-let age = ageField.value;
-
 async function recommend() {
   event.preventDefault();
   // Resets price filter, if was initialized
