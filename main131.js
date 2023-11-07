@@ -203,6 +203,9 @@ async function recommend() {
   const text = document.getElementById("textarea").value;
   loadMoreButton.style.display = "none";
 
+  console.log("Value: " + age);
+  console.log("TextContent: " + ageField.textContent);
+
   if (age < 0 || age > 100) {
     ageAlert.style.display = "block";
   } else {
@@ -314,7 +317,6 @@ async function recommend() {
      .then(response => response.json())
      .then(data => {
        const responseText = data.choices[0].text;
-       console.log(responseText);
 
        const subjectCategories = ["adult woman", "adult man", "girl", "boy", "kid", "toddler", "newborn", "old man", "old woman", "unisex"];
     
@@ -346,7 +348,6 @@ async function recommend() {
        .then(response => response.json())
        .then(data => {
          let keywords = data.choices[0].text;
-         console.log(keywords);
          const newKeywords = keywords.replace(/\n/g, '');
 
          keywords = keywords.toLowerCase().split(",").flatMap(keyword => keyword.trim());
