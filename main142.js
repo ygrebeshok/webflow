@@ -428,39 +428,25 @@ async function recommend() {
          }
 
            // Prioritize cards based on age, subject, and personality references
-           if (age_reference && subject_reference && personality_reference) {
-             visibleCards.sort((a, b) => {
-               const ageCategoryA = a.querySelector("#age-category").textContent;
-               const ageCategoryB = b.querySelector("#age-category").textContent;
-               const categoryA = a.querySelector("#category").textContent;
-               const categoryB = b.querySelector("#category").textContent;
-               const subjectCategoryA = a.querySelector("#subject-category").textContent;
-               const subjectCategoryB = b.querySelector("#subject-category").textContent;
+           let topCards = [];
+           let middleCards = [];
+           let bottomCards = [];
 
-               console.log(ageCategoryA)
-               console.log(ageCategoryB)
-               console.log(categoryA)
-               console.log(categoryB)
-               console.log(subjectCategoryA)
-               console.log(subjectCategoryB)
+           visibleCards.forEach((card) => {
+             let ageCategory = card.querySelector("#age-category").textContent;
+             let category = card.querySelector("#category").textContent;
+             let subjectCategory = card.querySelector("#subject-category").textContent;
 
-               if (
-                 ageCategoryA === age_reference &&
-                 categoryA === personality_reference &&
-                 subjectCategoryA === subject_reference
-               ) {
-                 return -1;
-               } else if (
-                 ageCategoryB === age_reference &&
-                 categoryB === personality_reference &&
-                 subjectCategoryB === subject_reference
-               ) {
-                 return 1;
-               } else {
-                 return 0;
-               }
-             });
-           }
+             if (ageCategory === age_reference && category === personality_reference && subjectCategory === subject_reference) {
+               topCards.push(card);
+             } else if (ageCategory === age_reference || category === personality_reference || subjectCategory === subject_reference) {
+               middleCards.push(card);
+             } else {
+               bottomCards.push(card);
+             }
+           });
+
+           visibleCards = topCards.concat(middleCards).concat(bottomCards);
 
            output.textContent = `${visibleCards.length} gift(s) found`;
            openaiRec.textContent = newKeywords;
