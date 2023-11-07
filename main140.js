@@ -533,6 +533,9 @@ async function recommend() {
     petsGrid.classList.remove("disablegrid");
     age_personality.classList.remove('disablegrid');
     ageAlert.style.display = "none";
+
+    personalitySelect.value = "";
+    ageField.value = "";
     
     if (profileArea.classList.contains('move-right')) {
       profileArea.classList.remove('move-right');
