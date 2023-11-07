@@ -171,9 +171,8 @@
 const errorAlert = document.getElementById("error-alert");
 const ageAlert = document.getElementById("age-alert");
 const personalitySelect = document.getElementById("personality-select");
-const ageField = document.getElementById("age-field");
-let personality = personalitySelect.innerHTML;
-let age = ageField.innerHTML;
+let personality = personalitySelect.value;
+let age = ageField.value;
 
 async function recommend() {
   event.preventDefault();
