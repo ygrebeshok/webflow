@@ -171,6 +171,9 @@
 async function recommend() {
   event.preventDefault();
   // Resets price filter, if was initialized
+
+  const personality = personalitySelect.value;
+  const age = ageField.value;
   
   const priceRange = document.getElementById("price-range");
   const priceDisplay = document.getElementById("price-display");
