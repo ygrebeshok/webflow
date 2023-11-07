@@ -169,6 +169,7 @@
   }
 
 const errorAlert = document.getElementById("error-alert");
+const ageAlert = document.getElementById("age-alert");
 const personalitySelect = document.getElementById("personality-select");
 const ageField = document.getElementById("age-field");
 let personality = personalitySelect.value;
@@ -177,6 +178,7 @@ let age = ageField.value;
 async function recommend() {
   event.preventDefault();
   // Resets price filter, if was initialized
+  
   const priceRange = document.getElementById("price-range");
   const priceDisplay = document.getElementById("price-display");
   priceRange.value = priceRange.max;
@@ -200,6 +202,10 @@ async function recommend() {
   lottieLoader.style.visibility = "visible";
   const text = document.getElementById("textarea").value;
   loadMoreButton.style.display = "none";
+
+  if (age < 0 || age > 100) {
+    ageAlert.style.display = "block";
+  } else {
 
   let age_reference = null;
   let subject_reference = null;
@@ -474,7 +480,8 @@ async function recommend() {
        searchAgain.style.visibility = "visible";
        console.log(error);
      }
-  } 
+   } 
+ }
 
 
   function setupUI() {
@@ -526,6 +533,7 @@ async function recommend() {
     closeOnesGrid.classList.remove("disablegrid");
     petsGrid.classList.remove("disablegrid");
     age_personality.classList.remove('disablegrid');
+    ageAlert.style.display = "none";
     
     if (profileArea.classList.contains('move-right')) {
       profileArea.classList.remove('move-right');
