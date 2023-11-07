@@ -49,6 +49,8 @@ const catalogGrid = document.getElementById("catalog");
 const cardTemplate = document.querySelector(".card");
 
 const age_personality = document.getElementById("age-personality");
+const ageField = document.getElementById("age-field");
+const personalitySelect = document.getElementById("personality-select");
 
 let currentPage = 1;
 let totalDisplayedItems = 0;
