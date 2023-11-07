@@ -279,7 +279,10 @@ async function recommend() {
   } else if (personality === "Home Esthete") {
     personality_reference = "Travel Accessories";
   }
-    
+
+  console.log(age_reference)
+  console.log(subject_reference)
+  console.log(personality_reference)
   
   // Prompt to Open AI
   try {
@@ -433,6 +436,13 @@ async function recommend() {
                const categoryB = b.querySelector("#category").textContent;
                const subjectCategoryA = a.querySelector("#subject-category").textContent;
                const subjectCategoryB = b.querySelector("#subject-category").textContent;
+
+               console.log(ageCategoryA)
+               console.log(ageCategoryB)
+               console.log(categoryA)
+               console.log(categoryB)
+               console.log(subjectCategoryA)
+               console.log(subjectCategoryB)
 
                if (
                  ageCategoryA === age_reference &&
