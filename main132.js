@@ -203,8 +203,7 @@ async function recommend() {
   const text = document.getElementById("textarea").value;
   loadMoreButton.style.display = "none";
 
-  console.log("Value: " + age);
-  console.log("TextContent: " + ageField.textContent);
+  console.log("TextContent: " + ageField);
 
   if (age < 0 || age > 100) {
     ageAlert.style.display = "block";
