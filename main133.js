@@ -172,8 +172,8 @@ const errorAlert = document.getElementById("error-alert");
 const ageAlert = document.getElementById("age-alert");
 const personalitySelect = document.getElementById("personality-select");
 const ageField = document.getElementById("age-field");
-let personality = personalitySelect.value;
-let age = ageField.value;
+let personality = personalitySelect.innerHTML;
+let age = ageField.innerHTML;
 
 async function recommend() {
   event.preventDefault();
@@ -203,7 +203,8 @@ async function recommend() {
   const text = document.getElementById("textarea").value;
   loadMoreButton.style.display = "none";
 
-  console.log("TextContent: " + ageField);
+  console.log("Age: " + age);
+  console.log("Personality: " + personality);
 
   if (age < 0 || age > 100) {
     ageAlert.style.display = "block";
