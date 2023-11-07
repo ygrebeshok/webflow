@@ -204,6 +204,8 @@ async function recommend() {
 
   if (age < 0 || age > 100) {
     ageAlert.style.display = "block";
+    lottieLoader.style.visibility = "hidden";
+    searchAgain.style.visibility = "visible";
   } else {
 
   let age_reference = null;
