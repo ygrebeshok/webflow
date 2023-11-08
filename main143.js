@@ -421,11 +421,33 @@ async function recommend() {
            }
       
            visibleCards = removeDuplicates(visibleCards);
-         });
-           
-         function removeDuplicates(array) {
-           return Array.from(new Set(array));
-         }
+
+           const ageCategories = [
+             "1.5-4 years",
+             "5-7 years",
+             "8-12 years",
+             "13-18 years",
+             "19-21 years",
+             "22-30 years",
+             "31-40 years",
+             "41-50 years",
+             "51-60 years",
+             "61+ years"
+           ];
+
+           // Exclude cards which age is smaller then age_reference
+           visibleCards.forEach((card) => {
+             let ageCategory = card.querySelector("#age-category").textContent;
+
+             let cardAgeIndex = ageCategories.indexOf(ageCategory);
+             let referenceAgeIndex = ageCategories.indexOf(age_reference);
+
+             if (cardAgeIndex >= referenceAgeIndex) {
+               card.style.display = "block";
+             } else {
+               card.style.display = "none";
+             }
+           });
 
            // Prioritize cards based on age, subject, and personality references
            let topCards = [];
@@ -447,6 +469,12 @@ async function recommend() {
            });
 
            visibleCards = topCards.concat(middleCards).concat(bottomCards);
+           
+         });
+           
+         function removeDuplicates(array) {
+           return Array.from(new Set(array));
+         }
 
            output.textContent = `${visibleCards.length} gift(s) found`;
            openaiRec.textContent = newKeywords;
