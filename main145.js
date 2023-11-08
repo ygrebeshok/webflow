@@ -290,8 +290,6 @@ async function recommend() {
     }
   }
 
-  console.log(subject_reference);
-
   if (personality === "Tech Geek") {
     personality_reference = "Electronics and Gadgets";
   } else if (personality === "Bookworm") {
@@ -331,15 +329,6 @@ async function recommend() {
   // Prompt to Open AI
   try {
     const prompt = "Give some gift recommendations for " + selected_who + " and for this occasion " + selected_holiday + "\n" + "Here is the gift description: " + text;
-    
-    const keywordsToExclude = [];
-    if (!(selected_who === "Dog" || selected_who === "Cat")) {
-      keywordsToExclude.push("dog", "bark", "cat", "meow", "pet", "paw");
-    } else if (selected_who === "Dad" || selected_who === "Grandpa" || selected_who === "Brother") {
-      keywordsToExclude.push("woman", "women", "girl");
-    } else if (selected_who === "Mom" || selected_who === "Grandma" || selected_who === "Sister") {
-      keywordsToExclude.push("man", "men", "boy");
-    }
     
     const requestOptions = {
       method: 'POST',
@@ -412,8 +401,40 @@ async function recommend() {
          const openaiKeywords = new Set(keywords);
          visibleCards = [];
 
-         
+         // Prioritize cards based on age, subject, and personality references
+         let topCards = [];
+         let middleCards = [];
+         let bottomCards = [];
+
          catalogGrid.childNodes.forEach((card) => {
+           let ageCategory = card.querySelector("#age-category").textContent;
+           let category = card.querySelector("#category").textContent;
+           let subjectCategory = card.querySelector("#subject-category").textContent;
+
+           if (ageCategory === age_reference && category === personality_reference && subjectCategory === subject_reference) {
+             topCards.push(card);
+           } else if (ageCategory === age_reference || category === personality_reference || subjectCategory === subject_reference) {
+             middleCards.push(card);
+           } else {
+             bottomCards.push(card);
+           }
+         });
+
+         let sortedCards = topCards.concat(middleCards).concat(bottomCards);
+
+         // Remove existing cards from catalogGrid
+         while (catalogGrid.firstChild) {
+           catalogGrid.removeChild(catalogGrid.firstChild);
+         }
+
+         // Append sorted cards to catalogGrid
+         sortedCards.forEach((card) => {
+           catalogGrid.appendChild(card);
+         });
+
+         catalogGrid.childNodes.forEach((card) => {
+
+           // Formating the set of card's keywords
            let cardKeywords = card.querySelector("#keywords").textContent.toLowerCase().split(",").flatMap(keyword => keyword.trim());
            cardKeywords = cardKeywords.map(str => str.replace(/^\s+|\s+$/g, '').replace(/[,.\'"*•-]+/g, ''));
            cardKeywords = cardKeywords.filter(keyword => keyword !== "");
@@ -421,6 +442,15 @@ async function recommend() {
 
            let cardDescription = card.querySelector("#description").textContent;
            let cardBrand = card.querySelector("#brand").textContent;
+
+           const keywordsToExclude = [];
+           if (!(selected_who === "Dog" || selected_who === "Cat")) {
+             keywordsToExclude.push("dog", "bark", "cat", "meow", "pet", "paw");
+           } else if (selected_who === "Dad" || selected_who === "Grandpa" || selected_who === "Brother") {
+             keywordsToExclude.push("woman", "women", "girl", "female", "feminine", "womanly");
+           } else if (selected_who === "Mom" || selected_who === "Grandma" || selected_who === "Sister") {
+             keywordsToExclude.push("man", "men", "boy", "male", "masculine", "manly");
+           }
 
            // Check if any of the keywords to exclude are present in the card's title, description, or brand
            const keywordsToExcludeFound = keywordsToExclude.some(keyword => {
@@ -432,12 +462,14 @@ async function recommend() {
              );
            });
 
+           console.log(keywordsToExcludeFound);
+
            if (!keywordsToExcludeFound) {
              const intersection = new Set([...openaiKeywords].filter(x => cardKeywordsSet.has(x)));
 
              if (intersection.size >= 2) {
                visibleCards.push(card);
-               card.style.display = "";
+               card.style.display = "flex";
              } else {
                const index = visibleCards.indexOf(card);
                if (index !== -1) {
@@ -465,35 +497,18 @@ async function recommend() {
            }
       
            visibleCards = removeDuplicates(visibleCards);
+         
+           const subjectCategory = card.querySelector("#subject-category").textContent;
 
-           visibleCards = Array.from(visibleCards).filter(card => {
-             let subjectCategory = card.querySelector("#subject-category").textContent;
-             return subject_reference === subjectCategory;
-           });
-
-           // Prioritize cards based on age, subject, and personality references
-           let topCards = [];
-           let middleCards = [];
-           let bottomCards = [];
-
-           visibleCards.forEach((card) => {
-             let ageCategory = card.querySelector("#age-category").textContent;
-             let category = card.querySelector("#category").textContent;
-             let subjectCategory = card.querySelector("#subject-category").textContent;
-
-             if (ageCategory === age_reference && category === personality_reference && subjectCategory === subject_reference) {
-               topCards.push(card);
-             } else if (ageCategory === age_reference || category === personality_reference || subjectCategory === subject_reference) {
-               middleCards.push(card);
-             } else {
-               bottomCards.push(card);
-             }
-           });
-
-           visibleCards = topCards.concat(middleCards).concat(bottomCards);
-           
+           if (!((subjectCategory === subject_reference) || (subjectCategory === "unisex")) {
+             const index = visibleCards.indexOf(card);
+               if (index !== -1) {
+                 visibleCards.splice(index, 1);
+               }
+               card.style.display = "none";
+           }
          });
-           
+
          function removeDuplicates(array) {
            return Array.from(new Set(array));
          }
