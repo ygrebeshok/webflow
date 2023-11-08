@@ -61,7 +61,7 @@ const itemsToAdd = 30;
 const loadMoreButton = document.getElementById('load-more');
 
 if (!(ageField.value === "")) {
-  profileAge = ageField.value;
+  profileAge.value = ageField.value;
 }
 
 function showPage() {
