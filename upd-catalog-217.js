@@ -60,7 +60,7 @@ const itemsPerPage = 30;
 const itemsToAdd = 30;
 const loadMoreButton = document.getElementById('load-more');
 
-if (!(ageField.value === "")) {
+ageField.addEventListener('input', (event) => {
   profileAge.value = ageField.value;
 }
 
