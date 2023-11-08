@@ -321,10 +321,6 @@ async function recommend() {
   } else if (personality === "Home Esthete") {
     personality_reference = "Travel Accessories";
   }
-
-  console.log(age_reference)
-  console.log(subject_reference)
-  console.log(personality_reference)
   
   // Prompt to Open AI
   try {
@@ -461,8 +457,6 @@ async function recommend() {
                keywordRegExp.test(cardBrand)
              );
            });
-
-           console.log(keywordsToExcludeFound);
 
            if (!keywordsToExcludeFound) {
              const intersection = new Set([...openaiKeywords].filter(x => cardKeywordsSet.has(x)));
