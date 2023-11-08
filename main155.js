@@ -194,24 +194,14 @@ function sendReactionToFirebase(reactionValue) {
 
   const requestsRef = firebase.firestore().collection('gift-requests');
 
-  firebase.firestore().runTransaction(transaction => {
-    return transaction.get(requestsRef).then(requestDoc => {
-
-      const request = requestDoc.data().request || [];
-      const updatedRequest = [...request, requestData];
-
-      transaction.update(requestsRef, {
-        request: updatedRequest
-      });
+  requestsRef.add(requestData)
+    .then((docRef) => {
+      feedbackWindow.style.display = "none";
+    })
+    .catch((error) => {
+      console.error("Error adding document: ", error);
+      feedbackWindow.style.display = "none";
     });
-  })
-  .then(() => {
-    feedbackWindow.style.display = "none";
-  })
-  .catch(error => {
-    console.log(error);
-    feedbackWindow.style.display = "none";
-  });
 }
 
 angry.addEventListener('click', () => {
