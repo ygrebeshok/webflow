@@ -85,9 +85,11 @@ document.addEventListener('DOMContentLoaded', function() {
   const urlParams = new URLSearchParams(window.location.search);
   const sel_who = urlParams.get('selected_who');
   const sel_holiday = urlParams.get('selected_holiday');
+  const profile_age = urlParams.get('profile_age');
   const gift_desc = urlParams.get('gift_desc');
 
-  document.getElementById("textarea").value = gift_desc; 
+  document.getElementById("textarea").value = gift_desc;
+  ageField.value = profile_age;
   
   if (textarea.value.trim() !== '') {
     checkInputs();
@@ -110,6 +112,9 @@ resetSelections.addEventListener('click', () => {
   selected_holiday = null;
   selWho.textContent = "";
   selHoliday.textContent = "";
+  personalitySelect.value = "";
+  ageField.value = "";
+	
   holidayGrid.querySelectorAll('button').forEach(btn => {
     btn.classList.remove('focus');
   });
@@ -132,12 +137,11 @@ createProfile.addEventListener('click', () => {
 	
   if (checkboxHoliday.checked === true) {
     selected_holiday = customHoliday.value;
-    console.log(selected_holiday);
   }
 
   const profileData = {
     profile_name: profileName.value,
-    profile_age: profileAge.value,
+    profile_age: ageField.value || profileAge.value,
     receiver: selected_who || "",
     occasion: selected_holiday,
     gift_desc: document.getElementById("textarea").value,
@@ -175,11 +179,11 @@ createProfile.addEventListener('click', () => {
     profileDate.value = "";
     profileArea.classList.remove('move-right');
   })
-    .catch(error => {
-      created.textContent = "Error Occurred on Profile Creation";
+  .catch(error => {
+    created.textContent = "Error Occurred on Profile Creation";
       console.log(error);
-    });
   });
+});
 
 lowestPriceButton.addEventListener("click", () => {
   lowestPriceButton.classList.add('button-selected');
