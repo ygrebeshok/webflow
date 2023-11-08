@@ -383,8 +383,8 @@ async function recommend() {
   
     // Prompt to Open AI
     try {
-      const prompt = "Give some gift recommendations for " + selected_who + " and for this occasion " + selected_holiday + "\n" + "Here is the gift description: " + text;
-    
+      const prompt = "Give some gift recommendations for " + selected_who + " and for this occasion " + selected_holiday + ". The person is " personality + "\n" + "Here is the gift situation description: " + text;
+
       const requestOptions = {
         method: 'POST',
         headers: {
@@ -581,23 +581,23 @@ async function recommend() {
            }, 10000);
          }) 
          .catch(error => {
-           errorAlert.style.display = "block";
+           console.log('Error:', error);
+           errorAlert.textContent = "Too many requests at this time, please, try again later";
            lottieLoader.style.visibility = "hidden";
            searchAgain.style.visibility = "visible";
-           console.log('Error:', error);
          });      
        })
        .catch(error => {
-         errorAlert.style.display = "block";
+         console.log('Error:', error);
+         errorAlert.textContent = "Too many requests at this time, please, try again later";
          lottieLoader.style.visibility = "hidden";
          searchAgain.style.visibility = "visible";
-         console.log('Error:', error);
        });  
      } catch (error) {
-       errorAlert.style.display = "block";
+       console.log(error);
+       errorAlert.textContent = "Too many requests at this time, please, try again later";
        lottieLoader.style.visibility = "hidden";
        searchAgain.style.visibility = "visible";
-       console.log(error);
      }
     } 
   }
@@ -615,6 +615,7 @@ async function recommend() {
     closeOnesGrid.addEventListener('click', checkInputs);
     petsGrid.addEventListener('click', checkInputs);
     age_personality.addEventListener('click', checkInputs);
+    errorAlert.textContent = "";
 
     resetCategories.classList.add('disablegrid');
 
@@ -653,6 +654,7 @@ async function recommend() {
     petsGrid.classList.remove("disablegrid");
     age_personality.classList.remove('disablegrid');
     ageAlert.style.display = "none";
+    errorAlert.textContent = "";
 
     personalitySelect.value = "";
     ageField.value = "";
@@ -680,5 +682,7 @@ async function recommend() {
     petsGrid.querySelectorAll('button').forEach(btn => {
       btn.classList.remove('focus');
     });
+
+    updateCatalog();
   }
 
