@@ -191,6 +191,13 @@ function sendReactionToFirebase(reactionValue) {
     recommended_products: []
   };
 
+  visibleCards.forEach(card => {
+    const productName = card.querySelector("#name").textContent;
+    const productImage = card.querySelector("#product_image").src;
+    const nameImage = [productName, productImage];
+    requestData.recommended_products.push(JSON.stringify(nameImage));
+  });
+
   const requestsRef = firebase.firestore().collection('gift-requests');
 
   requestsRef.add(requestData)
