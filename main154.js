@@ -176,11 +176,14 @@ const amused = document.getElementById("amused");
 const feedbackWindow = document.getElementById("feedback-window");
 
 function sendReactionToFirebase(reactionValue) {
+
+  const currentUser = firebase.auth().currentUser;
+  const userEmail = currentUser ? currentUser.email : "";
   
   const requestData = {
     name: profileName.value,
     age: ageField.value || profileAge.value,
-    user: firebase.auth().currentUser.email || "",
+    user: userEmail,
     receiver: selected_who || "",
     reaction: reactionValue,
     occasion: selected_holiday,
