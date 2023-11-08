@@ -228,24 +228,69 @@ async function recommend() {
   
   if (age <= 4) {
     age_reference = "1.5-4 years";
+    subject_reference = "toddler";
   } else if (age >= 5 && age <= 7) {
     age_reference = "5-7 years";
+    subject_reference = "kid";
   } else if (age >= 8 && age <= 12) {
     age_reference = "8-12 years";
+    subject_reference = "kid";
   } else if (age >= 13 && age <= 18) {
     age_reference = "13-18 years";
+    
+    if (selected_who === "Daughter" || selected_who === "Sister" || selected_who === "Niece") {
+       subject_reference = "girl";
+    } else if (selected_who === "Son" || selected_who === "Brother" || selected_who === "Nephew") {
+       subject_reference = "boy";
+    }
   } else if (age >= 19 && age <= 21) {
     age_reference = "19-21 years";
+
+    if (selected_who === "Daughter" || selected_who === "Sister" || selected_who === "Niece") {
+       subject_reference = "adult woman";
+    } else if (selected_who === "Son" || selected_who === "Brother" || selected_who === "Nephew") {
+       subject_reference = "adult man";
+    }
   } else if (age >= 22 && age <= 30) {
     age_reference = "22-30 years";
+
+    if (selected_who === "Daughter" || selected_who === "Sister" || selected_who === "Niece") {
+       subject_reference = "adult woman";
+    } else if (selected_who === "Son" || selected_who === "Brother" || selected_who === "Nephew") {
+       subject_reference = "adult man";
+    }
   } else if (age >= 31 && age <= 40) {
     age_reference = "31-40 years";
+
+    if (selected_who === "Daughter" || selected_who === "Sister" || selected_who === "Niece") {
+       subject_reference = "adult woman";
+    } else if (selected_who === "Son" || selected_who === "Brother" || selected_who === "Nephew") {
+       subject_reference = "adult man";
+    }
   } else if (age >= 41 && age <= 50) {
     age_reference = "41-50 years";
+
+    if (selected_who === "Daughter" || selected_who === "Sister" || selected_who === "Niece") {
+       subject_reference = "adult woman";
+    } else if (selected_who === "Son" || selected_who === "Brother" || selected_who === "Nephew") {
+       subject_reference = "adult man";
+    }
   } else if (age >= 51 && age <= 60) {
     age_reference = "51-60 years";
+
+    if (selected_who === "Daughter" || selected_who === "Sister" || selected_who === "Niece") {
+       subject_reference = "old woman";
+    } else if (selected_who === "Son" || selected_who === "Brother" || selected_who === "Nephew") {
+       subject_reference = "old man";
+    }
   } else if (age >= 61) {
     age_reference = "61+ years";
+
+    if (selected_who === "Daughter" || selected_who === "Sister" || selected_who === "Niece") {
+       subject_reference = "old woman";
+    } else if (selected_who === "Son" || selected_who === "Brother" || selected_who === "Nephew") {
+       subject_reference = "old man";
+    }
   }
 
   if (personality === "Tech Geek") {
@@ -422,31 +467,9 @@ async function recommend() {
       
            visibleCards = removeDuplicates(visibleCards);
 
-           const ageCategories = [
-             "1.5-4 years",
-             "5-7 years",
-             "8-12 years",
-             "13-18 years",
-             "19-21 years",
-             "22-30 years",
-             "31-40 years",
-             "41-50 years",
-             "51-60 years",
-             "61+ years"
-           ];
-
-           // Exclude cards which age is smaller then age_reference
-           visibleCards.forEach((card) => {
-             let ageCategory = card.querySelector("#age-category").textContent;
-
-             let cardAgeIndex = ageCategories.indexOf(ageCategory);
-             let referenceAgeIndex = ageCategories.indexOf(age_reference);
-
-             if (cardAgeIndex >= referenceAgeIndex) {
-               card.style.display = "block";
-             } else {
-               card.style.display = "none";
-             }
+           visibleCards = Array.from(visibleCards).filter(card => {
+             let subjectCategory = card.querySelector("#subject-category").textContent;
+             return subject_reference === subjectCategory;
            });
 
            // Prioritize cards based on age, subject, and personality references
