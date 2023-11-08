@@ -512,6 +512,7 @@ async function recommend() {
            searchAgain.style.visibility = "visible";
            profileDiv.classList.remove("disablegrid");
            profilesBtn.classList.remove("disablegrid");
+           created.textContent = "";
          }) 
          .catch(error => {
            errorAlert.style.display = "block";
