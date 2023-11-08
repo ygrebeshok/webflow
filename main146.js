@@ -513,35 +513,35 @@ async function recommend() {
            return Array.from(new Set(array));
          }
 
-           output.textContent = `${visibleCards.length} gift(s) found`;
-           openaiRec.textContent = newKeywords;
-           lottieLoader.style.visibility = "hidden";
-           results.scrollIntoView({ behavior: 'smooth' });
-           searchAgain.style.visibility = "visible";
-           profileDiv.classList.remove("disablegrid");
-           profilesBtn.classList.remove("disablegrid");
-         }) 
-         .catch(error => {
-           errorAlert.style.display = "block";
-           lottieLoader.style.visibility = "hidden";
-           searchAgain.style.visibility = "visible";
-           console.log('Error:', error);
-         });      
-       })
-      .catch(error => {
-        errorAlert.style.display = "block";
-        lottieLoader.style.visibility = "hidden";
-        searchAgain.style.visibility = "visible";
-        console.log('Error:', error);
-      });  
-     } catch (error) {
+         output.textContent = `${visibleCards.length} gift(s) found`;
+         openaiRec.textContent = newKeywords;
+         lottieLoader.style.visibility = "hidden";
+         results.scrollIntoView({ behavior: 'smooth' });
+         searchAgain.style.visibility = "visible";
+         profileDiv.classList.remove("disablegrid");
+         profilesBtn.classList.remove("disablegrid");
+       }) 
+       .catch(error => {
+         errorAlert.style.display = "block";
+         lottieLoader.style.visibility = "hidden";
+         searchAgain.style.visibility = "visible";
+         console.log('Error:', error);
+       });      
+     })
+     .catch(error => {
        errorAlert.style.display = "block";
        lottieLoader.style.visibility = "hidden";
        searchAgain.style.visibility = "visible";
-       console.log(error);
-     }
-   } 
- }
+       console.log('Error:', error);
+     });  
+   } catch (error) {
+     errorAlert.style.display = "block";
+     lottieLoader.style.visibility = "hidden";
+     searchAgain.style.visibility = "visible";
+     console.log(error);
+   }
+  } 
+}
 
 
   function setupUI() {
