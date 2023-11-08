@@ -270,6 +270,11 @@ async function recommend() {
     ageAlert.textContent = "Please, type in the age (even approximate)";
     lottieLoader.style.visibility = "hidden";
     searchAgain.style.visibility = "visible";
+  } else if (personality === "") {
+    ageAlert.style.display = "block";
+    ageAlert.textContent = "Please, choose one of the personalities";
+    lottieLoader.style.visibility = "hidden";
+    searchAgain.style.visibility = "visible";
   } else {
 
     let age_reference = null;
