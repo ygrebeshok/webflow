@@ -27,6 +27,8 @@ const profileProductDefault = document.querySelector(".default-profile-product-c
 const profileProductName = document.getElementById("profile-product-name");
 const profileProductPopup = document.getElementById("profile-products-popup-container");
 const profileFavoritesLabel = document.getElementById("profile-popup-favorite-label");
+const showProductsPageLink = document.getElementById("show-products-page-link-btn");
+const pageLink = document.getElementById("page-link-btn");
 
 var bodyAuth = document.body.getAttribute('data-user-auth');
 var bodyUnauth = document.body.getAttribute('data-user-unauth');
@@ -183,6 +185,7 @@ function showPopupForProfileProducts(productName, userId) {
   profilePopupBrand.innerHTML = '';
   profilePopupDesc.innerHTML = '';
   profilePopupPrice.innerHTML = '';
+  showProductsPageLink.href = '';
 
   profileFavoritesLabel.innerHTML = '';
 
@@ -197,9 +200,10 @@ function showPopupForProfileProducts(productName, userId) {
 
       profilePopupTitle.textContent = productData.name;
       profilePopupBrand.textContent = productData.brand;
-      profilePopupBrand.href = productData.product_link;
+      //profilePopupBrand.href = productData.product_link;
       profilePopupDesc.textContent = productData.description;
       profilePopupPrice.textContent = `$${productData.price}`;
+      showProductsPageLink.href = productData.product_link;
 
       productData.images.forEach(imageUrl => {
         const thumbnail = document.createElement('div');
@@ -278,12 +282,14 @@ function showPopupUser(productData, card) {
   popupDesc.innerHTML = '';
   popupPrice.innerHTML = '';
   favoritesLabel.innerHTML = '';
+  pageLink.href = productData.product_link;
 	
   popupTitle.textContent = productData.name;
   popupBrand.textContent = productData.brand;
-  popupBrand.href = productData.product_link;
+  //popupBrand.href = productData.product_link;
   popupDesc.textContent = productData.description;
   popupPrice.textContent = `$${productData.price}`;
+  pageLink.href = productData.product_link;
 
   const user = firebase.auth().currentUser;
   const userId = user.uid;
