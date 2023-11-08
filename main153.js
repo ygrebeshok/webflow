@@ -168,6 +168,69 @@
     });
   }
 
+const angry = document.getElementById("angry");
+const sad = document.getElementById("sad");
+const pokerface = document.getElementById("pokerface");
+const happy = document.getElementById("happy");
+const amused = document.getElementById("amused");
+const feedbackWindow = document.getElementById("feedback-window");
+
+function sendReactionToFirebase(reactionValue) {
+  
+  const requestData = {
+    name: profileName.value,
+    age: ageField.value || profileAge.value,
+    user: firebase.auth().currentUser.email || "",
+    receiver: selected_who || "",
+    reaction: reactionValue,
+    occasion: selected_holiday,
+    gift_desc: document.getElementById("textarea").value,
+    date: profileDate.value || "",
+    recommended_products: []
+  };
+
+  const requestsRef = firebase.firestore().collection('gift-requests');
+
+  firebase.firestore().runTransaction(transaction => {
+    return transaction.get(requestsRef).then(requestDoc => {
+
+      const request = requestDoc.data().request || [];
+      const updatedRequest = [...request, requestData];
+
+      transaction.update(requestsRef, {
+        request: updatedRequest
+      });
+    });
+  })
+  .then(() => {
+    feedbackWindow.style.display = "none";
+  })
+  .catch(error => {
+    console.log(error);
+    feedbackWindow.style.display = "none";
+  });
+}
+
+angry.addEventListener('click', () => {
+  sendReactionToFirebase('angry');
+});
+
+sad.addEventListener('click', () => {
+  sendReactionToFirebase('sad');
+});
+
+pokerface.addEventListener('click', () => {
+  sendReactionToFirebase('pokerface');
+});
+
+happy.addEventListener('click', () => {
+  sendReactionToFirebase('happy');
+});
+
+amused.addEventListener('click', () => {
+  sendReactionToFirebase('amused');
+});
+
 async function recommend() {
   event.preventDefault();
 
@@ -513,6 +576,10 @@ async function recommend() {
            profileDiv.classList.remove("disablegrid");
            profilesBtn.classList.remove("disablegrid");
            created.textContent = "";
+
+           setTimeout(() => {
+             feedbackWindow.style.display = 'flex';
+           }, 10000);
          }) 
          .catch(error => {
            errorAlert.style.display = "block";
