@@ -181,7 +181,6 @@ function sendReactionToFirebase(reactionValue) {
   const userEmail = currentUser ? currentUser.email : "";
   
   const requestData = {
-    name: profileName.value,
     age: ageField.value || profileAge.value,
     user: userEmail,
     receiver: selected_who || "",
