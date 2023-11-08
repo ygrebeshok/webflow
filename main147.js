@@ -500,13 +500,14 @@ async function recommend() {
          
            const subjectCategory = card.querySelector("#subject-category").textContent;
 
-           if (!((subjectCategory === subject_reference) || (subjectCategory === "unisex")) {
+           if (!((subjectCategory === subject_reference) || (subjectCategory === "unisex"))) {
              const index = visibleCards.indexOf(card);
                if (index !== -1) {
                  visibleCards.splice(index, 1);
                }
                card.style.display = "none";
            }
+           
          });
 
          function removeDuplicates(array) {
