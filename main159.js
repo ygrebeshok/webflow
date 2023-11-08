@@ -383,7 +383,7 @@ async function recommend() {
   
     // Prompt to Open AI
     try {
-      const prompt = "Give some gift recommendations for " + selected_who + " and for this occasion " + selected_holiday + ". The person is " personality + "\n" + "Here is the gift situation description: " + text;
+      const prompt = "Give some gift recommendations for " + selected_who + " and for this occasion " + selected_holiday + ". The person is " + personality + "\n" + "Here is the gift situation description: " + text;
 
       const requestOptions = {
         method: 'POST',
