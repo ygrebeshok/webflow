@@ -62,7 +62,7 @@ const loadMoreButton = document.getElementById('load-more');
 
 ageField.addEventListener('input', (event) => {
   profileAge.value = ageField.value;
-}
+});
 
 function showPage() {
   const gridItems = Array.from(catalogGrid.children);
