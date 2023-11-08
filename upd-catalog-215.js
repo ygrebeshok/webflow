@@ -60,6 +60,10 @@ const itemsPerPage = 30;
 const itemsToAdd = 30;
 const loadMoreButton = document.getElementById('load-more');
 
+if (!(ageField.value === "")) {
+  profileAge = ageField.value;
+}
+
 function showPage() {
   const gridItems = Array.from(catalogGrid.children);
 
