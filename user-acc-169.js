@@ -48,6 +48,7 @@ function loadProfileData(profiles, userId) {
      profile.querySelector(".profile-names").textContent = data.profile_name;
      profile.querySelector(".occasion-mark").textContent = data.occasion;
      profile.querySelector(".reference").textContent = data.receiver;
+     profile.querySelector(".age-from-data").textContent = data.profile_age;
 
      const dateString = data.date;
      const dateObject = new Date(dateString);
@@ -81,8 +82,9 @@ function loadProfileData(profiles, userId) {
 	 const occasion = profile.querySelector('.occasion-mark').textContent;
          const receiver = profile.querySelector('.reference').textContent;
          const giftDesc = profile.querySelector('.profile-desc').textContent;
+	 const profile_age = profile.querySelector('.age-from-data').textContent;
 	 
-	 const queryParams = `?selected_who=${receiver}&selected_holiday=${occasion}&gift_desc=${giftDesc}`;
+	 const queryParams = `?selected_who=${receiver}&selected_holiday=${occasion}&gift_desc=${giftDesc}&gift_desc=${profile_age}`;
 
          const slug = "recommendations";
          window.location.href = `/${slug}${queryParams}`;
