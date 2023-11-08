@@ -84,7 +84,7 @@ function loadProfileData(profiles, userId) {
          const giftDesc = profile.querySelector('.profile-desc').textContent;
 	 const profile_age = profile.querySelector('.age-from-data').textContent;
 	 
-	 const queryParams = `?selected_who=${receiver}&selected_holiday=${occasion}&gift_desc=${giftDesc}&gift_desc=${profile_age}`;
+	 const queryParams = `?selected_who=${receiver}&selected_holiday=${occasion}&gift_desc=${giftDesc}&profile_age=${profile_age}`;
 
          const slug = "recommendations";
          window.location.href = `/${slug}${queryParams}`;
