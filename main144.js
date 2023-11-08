@@ -199,9 +199,6 @@ async function recommend() {
   const text = document.getElementById("textarea").value;
   loadMoreButton.style.display = "none";
 
-  console.log("Age: " + age);
-  console.log("Personality: " + personality);
-
   if (age < 0 || age > 100) {
     ageAlert.style.display = "block";
     lottieLoader.style.visibility = "hidden";
@@ -293,6 +290,8 @@ async function recommend() {
     }
   }
 
+  console.log(subject_reference);
+
   if (personality === "Tech Geek") {
     personality_reference = "Electronics and Gadgets";
   } else if (personality === "Bookworm") {
@@ -364,14 +363,14 @@ async function recommend() {
      .then(data => {
        const responseText = data.choices[0].text;
 
-       const subjectCategories = ["adult woman", "adult man", "girl", "boy", "kid", "toddler", "newborn", "old man", "old woman", "unisex"];
+       const subjectCategories = ["adult woman", "adult man", "girl", "boy", "kid", "toddler", "old man", "old woman", "unisex"];
     
        for (const category of subjectCategories) {
          if (responseText.toLowerCase().includes(category)) {
             subject_reference = category;
             break;
-        }
-    }
+         }
+       }
        
        const requestOptions2 = {
          method: 'POST',
@@ -413,7 +412,7 @@ async function recommend() {
          const openaiKeywords = new Set(keywords);
          visibleCards = [];
 
-         // Now catalog grid's card keywords are retrieved and formatted correctly
+         
          catalogGrid.childNodes.forEach((card) => {
            let cardKeywords = card.querySelector("#keywords").textContent.toLowerCase().split(",").flatMap(keyword => keyword.trim());
            cardKeywords = cardKeywords.map(str => str.replace(/^\s+|\s+$/g, '').replace(/[,.\'"*•-]+/g, ''));
