@@ -460,7 +460,9 @@ function updateCatalog() {
       card.querySelector("#subject-category").textContent = data.subject_category
 
       allCards.push(card);
-        
+
+      const productImage = card.querySelector("#product_image");
+      productImage.src = "path/to/webp-image.webp";
       const productId = card.querySelector("#name").textContent;
       const user = firebase.auth().currentUser;
 
