@@ -448,8 +448,13 @@ function updateCatalog() {
       }
             
       const card = cardTemplate.cloneNode(true);
+
+      const maxWidth = 500; // Set your desired max width
+      const maxHeight = 500; // Set your desired max height
+
+      const resizedImageURL = `${data.images[0]}?w=${maxWidth}&h=${maxHeight}`;
 	    
-      card.querySelector("#product_image").src = data.images[0],
+      card.querySelector("#product_image").src = resizedImageURL,
       card.querySelector("#name").textContent = data.name,
       card.querySelector("#price").textContent = `$${data.price}`,
       card.querySelector("#description").textContent = data.description,
