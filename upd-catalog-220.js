@@ -449,7 +449,46 @@ function updateCatalog() {
             
       const card = cardTemplate.cloneNode(true);
 
-      card.querySelector("#product_image").src = data.images[0],
+      // Resize the image before setting the 'src' attribute:
+      const img = new Image();
+
+      img.onload = function() {
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d");
+
+        // Resize the image
+        const maxWidth = 500; // Set your desired max width
+        const maxHeight = 500; // Set your desired max height
+
+        let width = img.width;
+        let height = img.height;
+
+        if (width > height) {
+          if (width > maxWidth) {
+            height *= maxWidth / width;
+            width = maxWidth;
+          }
+        } else {
+          if (height > maxHeight) {
+            width *= maxHeight / height;
+            height = maxHeight;
+          }
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+
+        ctx.drawImage(img, 0, 0, width, height);
+
+        // Convert canvas to data URL
+        const resizedImageURL = canvas.toDataURL("image/jpeg");
+
+        // Set the resized image as the src
+        card.querySelector("#product_image").src = resizedImageURL;
+      };
+
+      img.src = data.images[0];
+
       card.querySelector("#name").textContent = data.name,
       card.querySelector("#price").textContent = `$${data.price}`,
       card.querySelector("#description").textContent = data.description,
@@ -461,8 +500,6 @@ function updateCatalog() {
 
       allCards.push(card);
 
-      const productImage = card.querySelector("#product_image");
-      productImage.src = "path/to/webp-image.webp";
       const productId = card.querySelector("#name").textContent;
       const user = firebase.auth().currentUser;
 
