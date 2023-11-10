@@ -56,8 +56,8 @@ const personalitySelect = document.getElementById("personality-select");
 
 let currentPage = 1;
 let totalDisplayedItems = 0;
-const itemsPerPage = 30;
-const itemsToAdd = 30;
+const itemsPerPage = 100;
+const itemsToAdd = 100;
 const loadMoreButton = document.getElementById('load-more');	  
 
 ageField.addEventListener('input', (event) => {
@@ -83,6 +83,20 @@ loadMoreButton.addEventListener('click', function() {
   currentPage++;
   showPage();
 });
+
+const shield = document.getElementById("shield");
+
+function shieldForRecs() {
+  firebase.auth().onAuthStateChanged(function(authUser) {
+    user = authUser;
+
+    if (user) {
+      shield.style.display = "none";
+    } else {
+      shield.style.display = "flex";
+    }
+  });
+}
 
 document.addEventListener('DOMContentLoaded', function() {
 	
