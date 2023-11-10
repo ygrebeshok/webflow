@@ -60,12 +60,15 @@ const itemsPerPage = 30;
 const itemsToAdd = 30;
 const loadMoreButton = document.getElementById('load-more');
 
-const user = firebase.auth().currentUser;
+function shieldForRecs() {
+  firebase.auth().onAuthStateChanged(function(authUser) {
+  user = authUser;
 
-if (user) {
-  document.getElementById("shield").style.display = "none";
-} else {
-  document.getElementById("shield").style.display = "flex";
+  if (user) {
+    document.getElementById("shield").style.display = "none";
+  } else {
+    document.getElementById("shield").style.display = "flex";
+  }
 }
 
 ageField.addEventListener('input', (event) => {
@@ -168,6 +171,7 @@ createProfile.addEventListener('click', () => {
     profileData.recommended_products.push(JSON.stringify(nameImage));
   });
 
+  const user = firebase.auth().currentUser;
   const userId = user.uid;
   const userDocRef = firebase.firestore().collection('users').doc(userId);
 
@@ -267,6 +271,7 @@ function showPopup(productData) {
   popupDesc.textContent = productData.description;
   popupPrice.textContent = `$${productData.price}`;
 
+  const user = firebase.auth().currentUser;
   const productId = productData.name;
 
   if (user) {
@@ -473,6 +478,7 @@ function updateCatalog() {
       allCards.push(card);
 
       const productId = card.querySelector("#name").textContent;
+      const user = firebase.auth().currentUser;
 
       const quickLookBtn = card.querySelector("#quick_look");
       quickLookBtn.addEventListener("click", () => {
