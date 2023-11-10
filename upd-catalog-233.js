@@ -62,24 +62,19 @@ const itemsPerPage = 30;
 const itemsToAdd = 30;
 const loadMoreButton = document.getElementById('load-more');
 
-function shieldForRecs() {
-  firebase.auth().onAuthStateChanged(function(authUser) {
-    user = authUser;
+firebase.auth().onAuthStateChanged(function(authUser) {
+  user = authUser;
 
-    if (user) {
-      shield.style.display = "none";
+  if (user) {
+    shield.style.display = "none";
+  } else {
+    if (catalogGrid.children.length > 4) {
+      shield.style.display = "flex";
     } else {
-      const recommendations = document.getElementById("recommendations");   
-      if (recommendations.clientHeight < 1000) {
-  	shield.style.display = "none";
-      } else {
-        shield.style.display = "flex";
-      }
+      shield.style.display = "none";
     }
-  });	  
-}
-
-console.log(recommendations.clientHeight);
+  }
+});	  
 
 ageField.addEventListener('input', (event) => {
   profileAge.value = ageField.value;
