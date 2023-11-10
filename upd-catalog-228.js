@@ -70,7 +70,7 @@ function shieldForRecs() {
       shield.style.display = "none";
     } else {
       const recommendations = document.getElementById("recommendations");   
-      if (recommendations.clientHeight < 400) {
+      if (recommendations.clientHeight < 600) {
   	shield.style.display = "none";
       } else {
         shield.style.display = "flex";
