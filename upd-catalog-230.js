@@ -70,7 +70,7 @@ function shieldForRecs() {
       shield.style.display = "none";
     } else {
       const recommendations = document.getElementById("recommendations");   
-      if (recommendations.clientHeight < 800) {
+      if (recommendations.clientHeight < 1000) {
   	shield.style.display = "none";
       } else {
         shield.style.display = "flex";
@@ -78,6 +78,8 @@ function shieldForRecs() {
     }
   });	  
 }
+
+console.log(recommendations.clientHeight);
 
 ageField.addEventListener('input', (event) => {
   profileAge.value = ageField.value;
