@@ -585,6 +585,29 @@ async function recommend() {
            setTimeout(() => {
              feedbackWindow.style.display = 'flex';
            }, 10000);
+
+           const user = firebase.auth().currentUser;
+
+           if (user) {
+             const userDocRef = firebase.firestore().collection('users').doc(user.uid);
+
+             userDocRef.get().then((doc) => {
+               if (doc.exists) {
+                 const userData = doc.data();
+                 const usageCount = userData.usageCount || 0;
+
+                 if (usageCount < 5) {
+                   userDocRef.update({
+                     usageCount: usageCount + 1
+                   });
+                 } else {
+                   //Here should be the part for setting up the subscription
+                 }
+               }
+             }).catch((error) => {
+               console.log('Error getting user document:', error);
+             });  
+           }
          }) 
          .catch(error => {
            console.log('Error:', error);
