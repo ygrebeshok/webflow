@@ -62,13 +62,14 @@ const loadMoreButton = document.getElementById('load-more');
 
 function shieldForRecs() {
   firebase.auth().onAuthStateChanged(function(authUser) {
-  user = authUser;
+    user = authUser;
 
-  if (user) {
-    document.getElementById("shield").style.display = "none";
-  } else {
-    document.getElementById("shield").style.display = "flex";
-  }
+    if (user) {
+      document.getElementById("shield").style.display = "none";
+    } else {
+      document.getElementById("shield").style.display = "flex";
+    }
+  });	  
 }
 
 ageField.addEventListener('input', (event) => {
