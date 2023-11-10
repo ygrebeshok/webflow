@@ -575,7 +575,7 @@ async function recommend() {
            output.textContent = `${visibleCards.length} gift(s) found`;
            openaiRec.textContent = newKeywords;
            lottieLoader.style.visibility = "hidden";
-           shieldForRecs();
+           shieldForRecs(visibleCards);
            results.scrollIntoView({ behavior: 'smooth' });
            searchAgain.style.visibility = "visible";
            profileDiv.classList.remove("disablegrid");
@@ -606,6 +606,23 @@ async function recommend() {
        searchAgain.style.visibility = "visible";
      }
     } 
+  }
+
+  function shieldForRecs(visibleCards) {
+    const shield = document.getElementById("shield");
+    firebase.auth().onAuthStateChanged(function(authUser) {
+      user = authUser;
+
+      if (user) {
+        shield.style.display = "none";
+      } else {
+        if (visibleCards.length < 4) {
+          shield.style.display = "none";
+        } else {
+          shield.style.display = "flex";
+        }
+      }
+    });
   }
 
 
