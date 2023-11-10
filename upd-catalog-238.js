@@ -56,8 +56,8 @@ const personalitySelect = document.getElementById("personality-select");
 
 let currentPage = 1;
 let totalDisplayedItems = 0;
-const itemsPerPage = 100;
-const itemsToAdd = 100;
+const itemsPerPage = 50;
+const itemsToAdd = 50;
 const loadMoreButton = document.getElementById('load-more');	  
 
 ageField.addEventListener('input', (event) => {
