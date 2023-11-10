@@ -60,21 +60,7 @@ let currentPage = 1;
 let totalDisplayedItems = 0;
 const itemsPerPage = 30;
 const itemsToAdd = 30;
-const loadMoreButton = document.getElementById('load-more');
-
-firebase.auth().onAuthStateChanged(function(authUser) {
-  user = authUser;
-
-  if (user) {
-    shield.style.display = "none";
-  } else {
-    if (catalogGrid.children.length > 4) {
-      shield.style.display = "flex";
-    } else {
-      shield.style.display = "none";
-    }
-  }
-});	  
+const loadMoreButton = document.getElementById('load-more');	  
 
 ageField.addEventListener('input', (event) => {
   profileAge.value = ageField.value;
