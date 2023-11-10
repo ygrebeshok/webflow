@@ -575,6 +575,7 @@ async function recommend() {
            output.textContent = `${visibleCards.length} gift(s) found`;
            openaiRec.textContent = newKeywords;
            lottieLoader.style.visibility = "hidden";
+           shieldForRecs();
            results.scrollIntoView({ behavior: 'smooth' });
            searchAgain.style.visibility = "visible";
            profileDiv.classList.remove("disablegrid");
