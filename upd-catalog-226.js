@@ -54,6 +54,8 @@ const ageAlert = document.getElementById("age-alert");
 const ageField = document.getElementById("age-field");
 const personalitySelect = document.getElementById("personality-select");
 
+const shield = document.getElementById("shield");
+
 let currentPage = 1;
 let totalDisplayedItems = 0;
 const itemsPerPage = 30;
@@ -65,9 +67,14 @@ function shieldForRecs() {
     user = authUser;
 
     if (user) {
-      document.getElementById("shield").style.display = "none";
+      shield.style.display = "none";
     } else {
-      document.getElementById("shield").style.display = "flex";
+      const recommendations = document.getElementById("recommendations");   
+      if (recommendations.clientHeight < 50 * parseFloat(getComputedStyle(document.documentElement).fontSize)) {
+  	shield.style.display = "none";
+      } else {
+        shield.style.display = "flex";
+      }
     }
   });	  
 }
