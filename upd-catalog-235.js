@@ -54,8 +54,6 @@ const ageAlert = document.getElementById("age-alert");
 const ageField = document.getElementById("age-field");
 const personalitySelect = document.getElementById("personality-select");
 
-const shield = document.getElementById("shield");
-
 let currentPage = 1;
 let totalDisplayedItems = 0;
 const itemsPerPage = 30;
