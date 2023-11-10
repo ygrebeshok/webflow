@@ -84,20 +84,6 @@ loadMoreButton.addEventListener('click', function() {
   showPage();
 });
 
-const shield = document.getElementById("shield");
-
-function shieldForRecs() {
-  firebase.auth().onAuthStateChanged(function(authUser) {
-    user = authUser;
-
-    if (user) {
-      shield.style.display = "none";
-    } else {
-      shield.style.display = "flex";
-    }
-  });
-}
-
 document.addEventListener('DOMContentLoaded', function() {
 	
   const urlParams = new URLSearchParams(window.location.search);
