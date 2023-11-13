@@ -629,16 +629,10 @@ async function recommend() {
                      });
                    
                    // Wait for the CheckoutSession to get attached by the extension
-                   docRef.then((snap) => {
-                     const { error, url } = snap.data();
+                   docRef.then(() => {
+                     window.location.assign(window.location.origin);
                      if (error) {
-                       // Show an error to your customer and
-                       // inspect your Cloud Function logs in the Firebase console.
                        console.error(`An error occurred: ${error.message}`);
-                     }
-                     if (url) {
-                       // We have a Stripe Checkout URL, let's redirect.
-                       window.location.assign(url);
                      }
                    });           
                  }
