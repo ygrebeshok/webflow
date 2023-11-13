@@ -627,7 +627,7 @@ async function recommend() {
                        cancel_url: "https://www.smappy.io/recommendations",
                      });
 
-                     docRef.onSnapshot((snap) => {
+                     checkoutSessionRef.onSnapshot((snap) => {
                        const { error, url } = snap.data();
                        if (error) {
                          // Show an error to your customer and
