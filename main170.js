@@ -629,11 +629,17 @@ async function recommend() {
                      });
                    
                    // Wait for the CheckoutSession to get attached by the extension
-                   docRef.then(() => {
-                     window.location.assign(window.location.origin);
+                   docRef.then((doc) => {
+                     return doc.get();
+                   }).then((snap) => {
+                     const { error, stripeLink } = snap.data();
                      if (error) {
-                       console.error(`An error occurred: ${error.message}`);
+                       alert(`An error occured: ${error.message}`);
                      }
+                     if (stripeLink) {
+                       // Redirect the user to the Stripe Checkout page using stripeLink
+                       window.location.assign(stripeLink);
+                     } 
                    });           
                  }
                }
