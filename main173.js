@@ -618,7 +618,7 @@ async function recommend() {
                    try {
                      const checkoutSessionRef = await firebase.firestore()
                      .collection('customers')
-                     .doc(currentUser.uid)
+                     .doc(user.uid)
                      .collection('checkout_sessions')
                      .add({
                        userId: user.uid,
