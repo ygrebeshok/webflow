@@ -623,21 +623,21 @@ async function recommend() {
                      .add({
                        userId: user.uid,
                        price: price_id,
-                       success_url: window.location.origin,
-                       cancel_url: window.location.origin,
+                       success_url: "https://www.smappy.io/recommendations",
+                       cancel_url: "https://www.smappy.io/recommendations"n,
                      });
 
-                     // Retrieve the created document
-                     const snap = await checkoutSessionRef.get();
-
-                     const { error, url } = snap.data();
-                     if (error) {
-                       console.error(`An error occurred: ${error.message}`);
-                     }
-                     if (url) {
-                       // Redirect the user to the Stripe Checkout page using stripeLink
-                       window.location.assign(url);
-                     }
+                     docRef.onSnapshot((snap) => {
+                       const { error, url } = snap.data();
+                       if (error) {
+                         // Show an error to your customer and
+                         alert(`An error occured: ${error.message}`);
+                       }
+                       if (url) {
+                         // We have a Stripe Checkout URL, let's redirect.
+                         window.location.assign(url);
+                       }
+                     });
                    } catch (error) {
                      console.error(`An error occurred: ${error.message}`);
                    }
