@@ -595,7 +595,7 @@ async function recommend() {
            if (user) {
              const userDocRef = firebase.firestore().collection('users').doc(user.uid);
 
-             userDocRef.get().then((doc) => {
+             userDocRef.get().then( async (doc) => {
                if (doc.exists) {
                  const userData = doc.data();
                  const usageCount = userData.usageCount || 0;
@@ -615,32 +615,31 @@ async function recommend() {
                    });
                  } else {
                    // Set up subscription using Firebase extension with Stripe
-                   const docRef = firebase
+                   try {
+                     const checkoutSessionRef = await firebase
                      .firestore()
-                     .collection('customers')
-                     .doc(user.uid)
                      .collection('checkout_sessions')
                      .add({
-                       automatic_tax: true,
+                       userId: user.uid,
                        price: price_id,
-                       allow_promotion_codes: true,
                        success_url: window.location.origin,
                        cancel_url: window.location.origin,
                      });
-                   
-                   // Wait for the CheckoutSession to get attached by the extension
-                   docRef.then((doc) => {
-                     return doc.get();
-                   }).then((snap) => {
-                     const { error, stripeLink } = snap.data();
+
+                     // Retrieve the created document
+                     const snap = await checkoutSessionRef.get();
+
+                     const { error, url } = snap.data();
                      if (error) {
-                       alert(`An error occured: ${error.message}`);
+                       console.error(`An error occurred: ${error.message}`);
                      }
-                     if (stripeLink) {
+                     if (url) {
                        // Redirect the user to the Stripe Checkout page using stripeLink
-                       window.location.assign(stripeLink);
-                     } 
-                   });           
+                       window.location.assign(url);
+                     }
+                   } catch (error) {
+                     console.error(`An error occurred: ${error.message}`);
+                   }
                  }
                }
              }).catch((error) => {
