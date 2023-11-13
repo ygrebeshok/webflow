@@ -624,7 +624,7 @@ async function recommend() {
                        userId: user.uid,
                        price: price_id,
                        success_url: "https://www.smappy.io/recommendations",
-                       cancel_url: "https://www.smappy.io/recommendations"n,
+                       cancel_url: "https://www.smappy.io/recommendations",
                      });
 
                      docRef.onSnapshot((snap) => {
