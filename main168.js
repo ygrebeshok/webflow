@@ -615,7 +615,7 @@ async function recommend() {
                    });
                  } else {
                    // Set up subscription using Firebase extension with Stripe
-                   const docRef = await db
+                   const docRef = firebase
                      .firestore()
                      .collection('customers')
                      .doc(user.uid)
