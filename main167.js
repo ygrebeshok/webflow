@@ -615,7 +615,7 @@ async function recommend() {
                    });
                  } else {
                    // Set up subscription using Firebase extension with Stripe
-                   const checkoutSessionRef = firebase
+                   const docRef = await db
                      .firestore()
                      .collection('customers')
                      .doc(user.uid)
@@ -629,7 +629,7 @@ async function recommend() {
                      });
                    
                    // Wait for the CheckoutSession to get attached by the extension
-                   checkoutSessionRef.onSnapshot((snap) => {
+                   docRef.then((snap) => {
                      const { error, url } = snap.data();
                      if (error) {
                        // Show an error to your customer and
