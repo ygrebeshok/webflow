@@ -595,13 +595,37 @@ async function recommend() {
                if (doc.exists) {
                  const userData = doc.data();
                  const usageCount = userData.usageCount || 0;
+                 const lastUpdate = userData.lastUpdate || null;
 
-                 if (usageCount < 5) {
+                 // Check if it's a new month
+                 if (!lastUpdate || !isSameMonth(new Date(lastUpdate.toMillis()), new Date())) {
+                   // Reset usageCount for a new month
+                   userDocRef.update({
+                     usageCount: 1,
+                     lastUpdate: firebase.firestore.FieldValue.serverTimestamp()
+                   });
+                 } else if (usageCount < 5) {
+                   // Update usageCount if it's less than 5
                    userDocRef.update({
                      usageCount: usageCount + 1
                    });
                  } else {
                    //Here should be the part for setting up the subscription
+                   const stripe = Stripe(stripe_key);
+
+                   firebase.functions().httpsCallable('createCheckoutSession')({
+                     priceId: price_id,
+                     customerId: user.uid
+                   }).then((result) => {
+                     // Redirect the user to the Stripe Checkout page
+                     return stripe.redirectToCheckout({ sessionId: result.data.id });
+                   }).then((result) => {
+                     if (result.error) {
+                       console.error('Error redirecting to checkout:', result.error.message);
+                     }
+                   }).catch((error) => {
+                     console.error('Error creating checkout session:', error);
+                   });
                  }
                }
              }).catch((error) => {
