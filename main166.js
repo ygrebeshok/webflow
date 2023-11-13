@@ -614,22 +614,33 @@ async function recommend() {
                      usageCount: usageCount + 1
                    });
                  } else {
-                   //Here should be the part for setting up the subscription
-                   const stripe = Stripe(stripe_key);
-
-                   firebase.functions().httpsCallable('createCheckoutSession')({
-                     priceId: price_id,
-                     customerId: user.uid
-                   }).then((result) => {
-                     // Redirect the user to the Stripe Checkout page
-                     return stripe.redirectToCheckout({ sessionId: result.data.id });
-                   }).then((result) => {
-                     if (result.error) {
-                       console.error('Error redirecting to checkout:', result.error.message);
+                   // Set up subscription using Firebase extension with Stripe
+                   const checkoutSessionRef = firebase
+                     .firestore()
+                     .collection('customers')
+                     .doc(user.uid)
+                     .collection('checkout_sessions')
+                     .add({
+                       automatic_tax: true,
+                       price: price_id,
+                       allow_promotion_codes: true,
+                       success_url: window.location.origin,
+                       cancel_url: window.location.origin,
+                     });
+                   
+                   // Wait for the CheckoutSession to get attached by the extension
+                   checkoutSessionRef.onSnapshot((snap) => {
+                     const { error, url } = snap.data();
+                     if (error) {
+                       // Show an error to your customer and
+                       // inspect your Cloud Function logs in the Firebase console.
+                       console.error(`An error occurred: ${error.message}`);
                      }
-                   }).catch((error) => {
-                     console.error('Error creating checkout session:', error);
-                   });
+                     if (url) {
+                       // We have a Stripe Checkout URL, let's redirect.
+                       window.location.assign(url);
+                     }
+                   });           
                  }
                }
              }).catch((error) => {
