@@ -616,8 +616,9 @@ async function recommend() {
                  } else {
                    // Set up subscription using Firebase extension with Stripe
                    try {
-                     const checkoutSessionRef = await firebase
-                     .firestore()
+                     const checkoutSessionRef = await firebase.firestore()
+                     .collection('customers')
+                     .doc(currentUser.uid)
                      .collection('checkout_sessions')
                      .add({
                        userId: user.uid,
