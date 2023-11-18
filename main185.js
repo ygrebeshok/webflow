@@ -766,6 +766,11 @@ async function recommend() {
       btn.classList.remove('focus');
     });
 
+    profileName.textContent = "";
+    profileAge.value = "";
+    customHoliday.textContent = "Tap on Holiday Panel";
+    profileDate.value = "";
+
     updateCatalog();
   }
 
