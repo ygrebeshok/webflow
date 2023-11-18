@@ -187,15 +187,15 @@ function sendReactionToFirebase(reactionValue) {
     reaction: reactionValue,
     occasion: selected_holiday,
     gift_desc: document.getElementById("textarea").value,
-    date: profileDate.value || "",
     recommended_products: []
   };
 
   visibleCards.forEach(card => {
     const productName = card.querySelector("#name").textContent;
     const productImage = card.querySelector("#product_image").src;
-    const nameImage = [productName, productImage];
-    requestData.recommended_products.push(JSON.stringify(nameImage));
+    const productKeywords = card.querySelector("#keywords").textContent;
+    const nameImageKeywords = [productName, productImage, productKeywords];
+    requestData.recommended_products.push(JSON.stringify(nameImageKeywords));
   });
 
   const requestsRef = firebase.firestore().collection('gift-requests');
@@ -247,40 +247,38 @@ async function recommend() {
   
   resetFilters();
   
-  document.getElementById("textarea").disabled = true;
   errorAlert.style.visibility = "hidden";
-  holidayGrid.classList.add('disablegrid');
-  switcher.classList.add('disablegrid');
-  familyGrid.classList.add('disablegrid');
-  secondHalfGrid.classList.add('disablegrid');
-  closeOnesGrid.classList.add('disablegrid');
-  petsGrid.classList.add('disablegrid');
-  age_personality.classList.add('disablegrid');
-  mainButton.classList.add('disablegrid');
-  searchAgain.style.visibility = "hidden";
-  resetSelections.classList.add('disablegrid');
-  document.getElementById("textarea").style.color = "black";
   lottieLoader.style.visibility = "visible";
-  const text = document.getElementById("textarea").value;
-  loadMoreButton.style.display = "none";
 
   if (age < 0 || age > 100) {
+    
     ageAlert.style.display = "block";
     ageAlert.textContent = "The input for age field is wrong";
     lottieLoader.style.visibility = "hidden";
-    searchAgain.style.visibility = "visible";
-  } else if (age === "") {
+  
+  } else if ((age === "") || (personality === ""))  {
+    
     ageAlert.style.display = "block";
-    ageAlert.textContent = "Please, type in the age (even approximate)";
+    ageAlert.textContent = "Please, enter the age or personality";
     lottieLoader.style.visibility = "hidden";
-    searchAgain.style.visibility = "visible";
-  } else if (personality === "") {
-    ageAlert.style.display = "block";
-    ageAlert.textContent = "Please, choose one of the personalities";
-    lottieLoader.style.visibility = "hidden";
-    searchAgain.style.visibility = "visible";
+  
   } else {
 
+    holidayGrid.classList.add('disablegrid');
+    switcher.classList.add('disablegrid');
+    familyGrid.classList.add('disablegrid');
+    secondHalfGrid.classList.add('disablegrid');
+    closeOnesGrid.classList.add('disablegrid');
+    petsGrid.classList.add('disablegrid');
+    age_personality.classList.add('disablegrid');
+    mainButton.classList.add('disablegrid');
+    resetSelections.classList.add('disablegrid');
+    searchAgain.style.visibility = "hidden";
+    document.getElementById("textarea").disabled = true;
+    document.getElementById("textarea").style.color = "black";
+    const text = document.getElementById("textarea").value;
+    loadMoreButton.style.display = "none";
+    
     let age_reference = null;
     let subject_reference = null;
     let personality_reference = null;
@@ -300,24 +298,16 @@ async function recommend() {
     } else if (age >= 8 && age <= 12) {
       age_reference = "8-12 years";
       subject_reference = "kid";
-    } else if (age >= 13 && age <= 18) {
-      age_reference = "13-18 years";
+    } else if (age >= 13 && age <= 16) {
+      age_reference = "13-16 years";
     
       if (selected_who === "Daughter" || selected_who === "Sister" || selected_who === "Niece" || selected_who === "Aunt" || selected_who === "Girlfriend" || selected_who === "Wife" || selected_who === "Mom") {
         subject_reference = "girl";
       } else if (selected_who === "Son" || selected_who === "Brother" || selected_who === "Nephew" || selected_who === "Uncle" || selected_who === "Boyfriend" || selected_who === "Husband" || selected_who === "Dad") {
         subject_reference = "boy";
       }
-    } else if (age >= 19 && age <= 21) {
-      age_reference = "19-21 years";
-
-      if (selected_who === "Daughter" || selected_who === "Sister" || selected_who === "Niece" || selected_who === "Aunt" || selected_who === "Girlfriend" || selected_who === "Wife" || selected_who === "Mom") {
-        subject_reference = "adult woman";
-      } else if (selected_who === "Son" || selected_who === "Brother" || selected_who === "Nephew" || selected_who === "Uncle" || selected_who === "Boyfriend" || selected_who === "Husband" || selected_who === "Dad") {
-        subject_reference = "adult man";
-      }
-    } else if (age >= 22 && age <= 30) {
-      age_reference = "22-30 years";
+    } else if (age >= 17 && age <= 30) {
+      age_reference = "17-30 years";
 
       if (selected_who === "Daughter" || selected_who === "Sister" || selected_who === "Niece" || selected_who === "Aunt" || selected_who === "Girlfriend"|| selected_who === "Wife" || selected_who === "Mom") {
         subject_reference = "adult woman";
@@ -392,7 +382,7 @@ async function recommend() {
   
     // Prompt to Open AI
     try {
-      const prompt = "Give some gift recommendations for " + selected_who + " and for this occasion " + selected_holiday + ". The person is " + personality + "\n" + "Here is the gift situation description: " + text;
+      const prompt = "Give some gift recommendations for " + selected_who + " and for this occasion " + selected_holiday + ". The person is " + personality + " inside" + "\n" + "Here is the gift situation description: " + text;
 
       const requestOptions = {
         method: 'POST',
@@ -475,9 +465,9 @@ async function recommend() {
                let category = card.querySelector("#category").textContent;
                let subjectCategory = card.querySelector("#subject-category").textContent;
 
-               if (ageCategory === age_reference && category === personality_reference && subjectCategory === subject_reference) {
+               if ((ageCategory === age_reference || ageCategory === "universal") && category === personality_reference && subjectCategory === subject_reference) {
                  topCards.push(card);
-               } else if (ageCategory === age_reference || category === personality_reference || subjectCategory === subject_reference) {
+               } else if (ageCategory === age_reference || ageCategory === "universal" || category === personality_reference || subjectCategory === subject_reference) {
                  middleCards.push(card);
                } else {
                  bottomCards.push(card);
@@ -651,6 +641,7 @@ async function recommend() {
          .catch(error => {
            console.log('Error:', error);
            errorAlert.textContent = "Too many requests at this time, please, try again later";
+           errorAlert.style.visibility = "visible";
            lottieLoader.style.visibility = "hidden";
            searchAgain.style.visibility = "visible";
          });      
@@ -658,12 +649,14 @@ async function recommend() {
        .catch(error => {
          console.log('Error:', error);
          errorAlert.textContent = "Too many requests at this time, please, try again later";
+         errorAlert.style.visibility = "visible";
          lottieLoader.style.visibility = "hidden";
          searchAgain.style.visibility = "visible";
        });  
      } catch (error) {
        console.log(error);
        errorAlert.textContent = "Too many requests at this time, please, try again later";
+       errorAlert.style.visibility = "visible";
        lottieLoader.style.visibility = "hidden";
        searchAgain.style.visibility = "visible";
      }
