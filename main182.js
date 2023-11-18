@@ -234,10 +234,10 @@ function isSameMonth(date1, date2) {
   return date1.getFullYear() === date2.getFullYear() && date1.getMonth() === date2.getMonth();
 }
 
-const personality = personalitySelect.value;
-const age = ageField.value;
 
 mainButton.addEventListener('click', () => {
+  const personality = personalitySelect.value;
+  const age = ageField.value;
   
   if (age < 0 || age > 100) {
     
@@ -256,6 +256,8 @@ mainButton.addEventListener('click', () => {
 
 async function recommend() {
   event.preventDefault();
+  const personality = personalitySelect.value;
+  const age = ageField.value;
   
   const priceRange = document.getElementById("price-range");
   const priceDisplay = document.getElementById("price-display");
