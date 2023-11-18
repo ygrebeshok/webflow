@@ -741,6 +741,11 @@ async function recommend() {
 
     personalitySelect.value = "";
     ageField.value = "";
+
+    document.getElementById("profile-name").textContent = "";
+    document.getElementById("profile-age").value = "";
+    document.getElementById("custom-holiday").textContent = "Tap on Holiday Panel";
+    document.getElementById("profile-date").value = "";
     
     if (profileArea.classList.contains('move-right')) {
       profileArea.classList.remove('move-right');
@@ -765,11 +770,6 @@ async function recommend() {
     petsGrid.querySelectorAll('button').forEach(btn => {
       btn.classList.remove('focus');
     });
-
-    profileName.textContent = "";
-    profileAge.value = "";
-    customHoliday.textContent = "Tap on Holiday Panel";
-    profileDate.value = "";
 
     updateCatalog();
   }
