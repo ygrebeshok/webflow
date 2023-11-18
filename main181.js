@@ -234,11 +234,28 @@ function isSameMonth(date1, date2) {
   return date1.getFullYear() === date2.getFullYear() && date1.getMonth() === date2.getMonth();
 }
 
+const personality = personalitySelect.value;
+const age = ageField.value;
+
+mainButton.addEventListener('click', () => {
+  
+  if (age < 0 || age > 100) {
+    
+    ageAlert.style.display = "block";
+    ageAlert.textContent = "The input for age field is wrong";
+  
+  } else if ((age === "") || (personality === ""))  {
+    
+    ageAlert.style.display = "block";
+    ageAlert.textContent = "Please, enter the age or personality";
+  
+  } else {
+    recommend();
+  }
+});
+
 async function recommend() {
   event.preventDefault();
-
-  const personality = personalitySelect.value;
-  const age = ageField.value;
   
   const priceRange = document.getElementById("price-range");
   const priceDisplay = document.getElementById("price-display");
@@ -249,20 +266,6 @@ async function recommend() {
   
   errorAlert.style.visibility = "hidden";
   lottieLoader.style.visibility = "visible";
-
-  if (age < 0 || age > 100) {
-    
-    ageAlert.style.display = "block";
-    ageAlert.textContent = "The input for age field is wrong";
-    lottieLoader.style.visibility = "hidden";
-  
-  } else if ((age === "") || (personality === ""))  {
-    
-    ageAlert.style.display = "block";
-    ageAlert.textContent = "Please, enter the age or personality";
-    lottieLoader.style.visibility = "hidden";
-  
-  } else {
 
     holidayGrid.classList.add('disablegrid');
     switcher.classList.add('disablegrid');
@@ -660,7 +663,6 @@ async function recommend() {
        lottieLoader.style.visibility = "hidden";
        searchAgain.style.visibility = "visible";
      }
-    } 
   }
 
   function shieldForRecs(visibleCards) {
