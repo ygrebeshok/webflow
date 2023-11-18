@@ -250,6 +250,7 @@ mainButton.addEventListener('click', () => {
     ageAlert.textContent = "Please, enter the age or personality";
   
   } else {
+    ageAlert.style.display = "none";
     recommend();
   }
 });
