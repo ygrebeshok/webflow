@@ -253,10 +253,20 @@ mainButton.addEventListener('click', () => {
   
   } else {
     ageAlert.style.display = "none";
-    // Run recommend as long as visibleCards is not empty
-    while (visibleCards.length > 0) {
-      recommend();
+
+    // Run recommend initially
+    recommend();
+
+    // Check if visibleCards is empty and run recommend in a loop until it's not
+    function runRecommendInLoop() {
+      if (visibleCards.length === 0) {
+        recommend();
+        // Use setTimeout to avoid blocking the main thread
+        setTimeout(runRecommendInLoop, 0);
+      }
     }
+
+    runRecommendInLoop();
   }
 });
 
