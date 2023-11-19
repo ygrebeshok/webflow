@@ -101,7 +101,7 @@
       friends.forEach((friend) => {
     	  const button = document.createElement('button');
           button.textContent = friend;
-          button.className = 'who-button';
+          button.className = 'gender-button';
           button.addEventListener('mouseenter', () => {
       	    button.classList.add('hover');
           });
