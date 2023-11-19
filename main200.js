@@ -267,6 +267,9 @@ mainButton.addEventListener('click', () => {
         recommend();
         // Use setTimeout to avoid blocking the main thread
         setTimeout(runRecommendInLoop, 10000); // 10 seconds
+      } else if (!(visibleCards.length === 0)) {
+        errorAlert.textContent = "";
+        errorAlert.style.visibility = "hidden";
       } else {
         errorAlert.textContent = "Sorry, your request was too complicated, we haven't found any recommendations";
         errorAlert.style.visibility = "visible";
