@@ -96,8 +96,8 @@
       });
   }
 
-  function closeOnes() {
-      const friends = ["Friend", "Colleague", "Acquaintance", "Teacher"];
+  function genderGridFunc() {
+      const friends = ["Male", "Female", "Non-binary"];
       friends.forEach((friend) => {
     	  const button = document.createElement('button');
           button.textContent = friend;
