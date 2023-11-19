@@ -263,9 +263,15 @@ mainButton.addEventListener('click', () => {
         recommend();
         // Use setTimeout to avoid blocking the main thread
         setTimeout(runRecommendInLoop, 10000);
+
+        // Set a time limit of 2 minutes (120,000 milliseconds)
+        const timeLimit = 120000;
+        setTimeout(() => {
+          errorAlert.textContent = "Sorry, your request was too complicated, we haven't found any recommendations";
+          errorAlert.style.visibility = "visible";
+        }, timeLimit);
       }
     }
-
     runRecommendInLoop();
   }
 });
