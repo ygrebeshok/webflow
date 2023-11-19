@@ -240,6 +240,7 @@ function isSameMonth(date1, date2) {
 mainButton.addEventListener('click', async () => {
   const personality = personalitySelect.value;
   const age = ageField.value;
+  visibleCards = [];
   
   if (age < 0 || age > 100) {
     
