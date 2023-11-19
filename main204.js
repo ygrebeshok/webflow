@@ -276,6 +276,19 @@ mainButton.addEventListener('click', () => {
       }
     }   
     runRecommendInLoop();
+
+    output.textContent = `${visibleCards.length} gift(s) found`;
+    lottieLoader.style.visibility = "hidden";
+    shieldForRecs(visibleCards);
+    results.scrollIntoView({ behavior: 'smooth' });
+    searchAgain.style.visibility = "visible";
+    profileDiv.classList.remove("disablegrid");
+    profilesBtn.classList.remove("disablegrid");
+    created.textContent = "";
+
+    setTimeout(() => {
+      feedbackWindow.style.display = 'flex';
+    }, 10000);
   }
 });
 
@@ -607,20 +620,6 @@ async function recommend() {
            function removeDuplicates(array) {
              return Array.from(new Set(array));
            }
-
-           output.textContent = `${visibleCards.length} gift(s) found`;
-           openaiRec.textContent = newKeywords;
-           lottieLoader.style.visibility = "hidden";
-           shieldForRecs(visibleCards);
-           results.scrollIntoView({ behavior: 'smooth' });
-           searchAgain.style.visibility = "visible";
-           profileDiv.classList.remove("disablegrid");
-           profilesBtn.classList.remove("disablegrid");
-           created.textContent = "";
-
-           setTimeout(() => {
-             feedbackWindow.style.display = 'flex';
-           }, 10000);
 
            //const user = firebase.auth().currentUser;
 
