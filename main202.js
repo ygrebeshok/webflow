@@ -776,6 +776,7 @@ async function recommend() {
     ageAlert.style.display = "none";
     errorAlert.textContent = "";
     output.textContent = "";
+    loadMoreButton.style.display = "block";
 
     personalitySelect.value = "";
     ageField.value = "";
