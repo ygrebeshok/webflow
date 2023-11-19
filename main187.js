@@ -97,7 +97,7 @@
   }
 
   function closeOnes() {
-      const friends = ["Friend", "Colleague", "Acquaintance"];
+      const friends = ["Friend", "Colleague", "Acquaintance", "Teacher"];
       friends.forEach((friend) => {
     	  const button = document.createElement('button');
           button.textContent = friend;
@@ -115,7 +115,7 @@
             selWho.textContent = selected_who;
           });
 
-      closeOnesGrid.appendChild(button);
+      genderGrid.appendChild(button);
       });
   }
 
@@ -274,7 +274,7 @@ async function recommend() {
     switcher.classList.add('disablegrid');
     familyGrid.classList.add('disablegrid');
     secondHalfGrid.classList.add('disablegrid');
-    closeOnesGrid.classList.add('disablegrid');
+    genderGrid.classList.add('disablegrid');
     petsGrid.classList.add('disablegrid');
     age_personality.classList.add('disablegrid');
     mainButton.classList.add('disablegrid');
@@ -695,7 +695,7 @@ async function recommend() {
     holidayGrid.addEventListener('click', checkInputs);
     familyGrid.addEventListener('click', checkInputs);
     secondHalfGrid.addEventListener('click', checkInputs);
-    closeOnesGrid.addEventListener('click', checkInputs);
+    genderGrid.addEventListener('click', checkInputs);
     petsGrid.addEventListener('click', checkInputs);
     age_personality.addEventListener('click', checkInputs);
     errorAlert.textContent = "";
@@ -733,7 +733,7 @@ async function recommend() {
     switcher.classList.remove('disablegrid');
     familyGrid.classList.remove("disablegrid");
     secondHalfGrid.classList.remove("disablegrid");
-    closeOnesGrid.classList.remove("disablegrid");
+    genderGrid.classList.remove("disablegrid");
     petsGrid.classList.remove("disablegrid");
     age_personality.classList.remove('disablegrid');
     ageAlert.style.display = "none";
@@ -764,7 +764,7 @@ async function recommend() {
     secondHalfGrid.querySelectorAll('button').forEach(btn => {
       btn.classList.remove('focus');
     });
-    closeOnesGrid.querySelectorAll('button').forEach(btn => {
+    genderGrid.querySelectorAll('button').forEach(btn => {
       btn.classList.remove('focus');
     });
     petsGrid.querySelectorAll('button').forEach(btn => {
