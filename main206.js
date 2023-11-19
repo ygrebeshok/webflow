@@ -267,10 +267,10 @@ mainButton.addEventListener('click', () => {
         recommend();
         // Use setTimeout to avoid blocking the main thread
         setTimeout(runRecommendInLoop, 10000); // 10 seconds
-      } else if (!(visibleCards.length === 0)) {
-        errorAlert.textContent = "";
-        errorAlert.style.visibility = "hidden";
-
+      } else if (!(Date.now() - loopStartTime < timeLimit)) {
+        errorAlert.textContent = "Sorry, your request was too complicated, we haven't found any recommendations";
+        errorAlert.style.visibility = "visible";
+      } else {
         output.textContent = `${visibleCards.length} gift(s) found`;
         lottieLoader.style.visibility = "hidden";
         shieldForRecs(visibleCards);
@@ -283,10 +283,6 @@ mainButton.addEventListener('click', () => {
         setTimeout(() => {
           feedbackWindow.style.display = 'flex';
         }, 10000);
-      
-      } else {
-        errorAlert.textContent = "Sorry, your request was too complicated, we haven't found any recommendations";
-        errorAlert.style.visibility = "visible";
       }
     }   
     runRecommendInLoop();
