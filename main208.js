@@ -237,7 +237,7 @@ function isSameMonth(date1, date2) {
 }
 
 
-mainButton.addEventListener('click', () => {
+mainButton.addEventListener('click', async () => {
   const personality = personalitySelect.value;
   const age = ageField.value;
   
@@ -264,7 +264,7 @@ mainButton.addEventListener('click', () => {
     // Check if visibleCards is empty and run recommend in a loop until it's not
     async function runRecommendInLoop() {
       if (visibleCards.length === 0 && Date.now() - loopStartTime < timeLimit) {
-        recommend();
+        await recommend();
         // Use setTimeout to avoid blocking the main thread
         setTimeout(runRecommendInLoop, 10000); // 10 seconds
       } else if (!(Date.now() - loopStartTime < timeLimit)) {
