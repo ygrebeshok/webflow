@@ -96,7 +96,7 @@
       });
   }
 
-  const selected_gender = "";
+  let selected_gender = null;
 
   function genderGridFunc() {
       const friends = ["Male", "Female", "Non-binary"];
