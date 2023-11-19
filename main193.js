@@ -404,6 +404,8 @@ async function recommend() {
   try {
     const prompt = "Give some gift recommendations for " + selWho.textContent + " and for this occasion " + selected_holiday + ". The person is " + personality + " inside" + "\n" + "Here is the gift situation description: " + text;
 
+    console.log(prompt);
+    
     const requestOptions = {
       method: 'POST',
       headers: {
