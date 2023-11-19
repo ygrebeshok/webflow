@@ -253,7 +253,10 @@ mainButton.addEventListener('click', () => {
   
   } else {
     ageAlert.style.display = "none";
-    recommend();
+    // Run recommend as long as visibleCards is not empty
+    while (visibleCards.length > 0) {
+      recommend();
+    }
   }
 });
 
