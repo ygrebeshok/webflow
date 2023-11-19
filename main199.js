@@ -257,21 +257,21 @@ mainButton.addEventListener('click', () => {
     // Run recommend initially
     recommend();
 
+    // Set a time limit of 2 minutes (120,000 milliseconds)
+    const timeLimit = 120000;
+    let loopStartTime = Date.now();
+
     // Check if visibleCards is empty and run recommend in a loop until it's not
     function runRecommendInLoop() {
-      if (visibleCards.length === 0) {
+      if (visibleCards.length === 0 && Date.now() - loopStartTime < timeLimit) {
         recommend();
         // Use setTimeout to avoid blocking the main thread
-        setTimeout(runRecommendInLoop, 10000);
-
-        // Set a time limit of 2 minutes (120,000 milliseconds)
-        const timeLimit = 120000;
-        setTimeout(() => {
-          errorAlert.textContent = "Sorry, your request was too complicated, we haven't found any recommendations";
-          errorAlert.style.visibility = "visible";
-        }, timeLimit);
+        setTimeout(runRecommendInLoop, 10000); // 10 seconds
+      } else {
+        errorAlert.textContent = "Sorry, your request was too complicated, we haven't found any recommendations";
+        errorAlert.style.visibility = "visible";
       }
-    }
+    }   
     runRecommendInLoop();
   }
 });
