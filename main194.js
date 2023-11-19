@@ -274,6 +274,7 @@ async function recommend() {
 
   holidayGrid.classList.add('disablegrid');
   switcher.classList.add('disablegrid');
+  switcherClose.classList.add('disablegrid');
   familyGrid.classList.add('disablegrid');
   secondHalfGrid.classList.add('disablegrid');
   genderGrid.classList.add('disablegrid');
@@ -403,8 +404,6 @@ async function recommend() {
     // Prompt to Open AI
   try {
     const prompt = "Give some gift recommendations for " + selWho.textContent + " and for this occasion " + selected_holiday + ". The person is " + personality + " inside" + "\n" + "Here is the gift situation description: " + text;
-
-    console.log(prompt);
     
     const requestOptions = {
       method: 'POST',
@@ -747,6 +746,7 @@ async function recommend() {
     profilesBtn.classList.add("disablegrid");
     holidayGrid.classList.remove("disablegrid");
     switcher.classList.remove('disablegrid');
+    switcherClose.classList.remove('disablegrid');
     familyGrid.classList.remove("disablegrid");
     secondHalfGrid.classList.remove("disablegrid");
     genderGrid.classList.remove("disablegrid");
