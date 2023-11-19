@@ -128,7 +128,7 @@ resetSelections.addEventListener('click', () => {
   secondHalfGrid.querySelectorAll('button').forEach(btn => {
     btn.classList.remove('focus');
   });
-  closeOnesGrid.querySelectorAll('button').forEach(btn => {
+  genderGrid.querySelectorAll('button').forEach(btn => {
     btn.classList.remove('focus');
   });
   petsGrid.querySelectorAll('button').forEach(btn => {
