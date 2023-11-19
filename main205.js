@@ -270,25 +270,26 @@ mainButton.addEventListener('click', () => {
       } else if (!(visibleCards.length === 0)) {
         errorAlert.textContent = "";
         errorAlert.style.visibility = "hidden";
+
+        output.textContent = `${visibleCards.length} gift(s) found`;
+        lottieLoader.style.visibility = "hidden";
+        shieldForRecs(visibleCards);
+        results.scrollIntoView({ behavior: 'smooth' });
+        searchAgain.style.visibility = "visible";
+        profileDiv.classList.remove("disablegrid");
+        profilesBtn.classList.remove("disablegrid");
+        created.textContent = "";
+
+        setTimeout(() => {
+          feedbackWindow.style.display = 'flex';
+        }, 10000);
+      
       } else {
         errorAlert.textContent = "Sorry, your request was too complicated, we haven't found any recommendations";
         errorAlert.style.visibility = "visible";
       }
     }   
     runRecommendInLoop();
-
-    output.textContent = `${visibleCards.length} gift(s) found`;
-    lottieLoader.style.visibility = "hidden";
-    shieldForRecs(visibleCards);
-    results.scrollIntoView({ behavior: 'smooth' });
-    searchAgain.style.visibility = "visible";
-    profileDiv.classList.remove("disablegrid");
-    profilesBtn.classList.remove("disablegrid");
-    created.textContent = "";
-
-    setTimeout(() => {
-      feedbackWindow.style.display = 'flex';
-    }, 10000);
   }
 });
 
