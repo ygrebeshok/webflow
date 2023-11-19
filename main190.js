@@ -96,6 +96,8 @@
       });
   }
 
+  const selected_gender = "";
+
   function genderGridFunc() {
       const friends = ["Male", "Female", "Non-binary"];
       friends.forEach((friend) => {
@@ -109,10 +111,10 @@
       	    button.classList.remove('hover');
           });
           button.addEventListener('click', function() {
-            if (selected_who !== friend) {
-              selected_who = friend;
+            if (selected_gender !== friend) {
+              selected_gender = friend;
             }
-            selWho.textContent = selected_who;
+            selWho.textContent = selected_who + " (" + selected_gender + ")";
           });
 
       genderGrid.appendChild(button);
