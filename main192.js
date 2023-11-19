@@ -272,152 +272,164 @@ async function recommend() {
   errorAlert.style.visibility = "hidden";
   lottieLoader.style.visibility = "visible";
 
-    holidayGrid.classList.add('disablegrid');
-    switcher.classList.add('disablegrid');
-    familyGrid.classList.add('disablegrid');
-    secondHalfGrid.classList.add('disablegrid');
-    genderGrid.classList.add('disablegrid');
-    petsGrid.classList.add('disablegrid');
-    age_personality.classList.add('disablegrid');
-    mainButton.classList.add('disablegrid');
-    resetSelections.classList.add('disablegrid');
-    searchAgain.style.visibility = "hidden";
-    document.getElementById("textarea").disabled = true;
-    document.getElementById("textarea").style.color = "black";
-    const text = document.getElementById("textarea").value;
-    loadMoreButton.style.display = "none";
+  holidayGrid.classList.add('disablegrid');
+  switcher.classList.add('disablegrid');
+  familyGrid.classList.add('disablegrid');
+  secondHalfGrid.classList.add('disablegrid');
+  genderGrid.classList.add('disablegrid');
+  petsGrid.classList.add('disablegrid');
+  age_personality.classList.add('disablegrid');
+  mainButton.classList.add('disablegrid');
+  resetSelections.classList.add('disablegrid');
+  searchAgain.style.visibility = "hidden";
+  document.getElementById("textarea").disabled = true;
+  document.getElementById("textarea").style.color = "black";
+  const text = document.getElementById("textarea").value;
+  loadMoreButton.style.display = "none";
     
-    let age_reference = null;
-    let subject_reference = null;
-    let personality_reference = null;
+  let age_reference = null;
+  let subject_reference = null;
+  let personality_reference = null;
 
-    if (selected_who === "Grandma") {
-      subject_reference = "old woman";
-    } else if (selected_who === "Grandpa") {
-      subject_reference = "old man";
-    }
+  if (selected_who === "Grandma") {
+    subject_reference = "old woman";
+  } else if (selected_who === "Grandpa") {
+    subject_reference = "old man";
+  }
   
-    if (age <= 4) {
-      age_reference = "1.5-4 years";
-      subject_reference = "toddler";
-    } else if (age >= 5 && age <= 7) {
-      age_reference = "5-7 years";
-      subject_reference = "kid";
-    } else if (age >= 8 && age <= 12) {
-      age_reference = "8-12 years";
-      subject_reference = "kid";
-    } else if (age >= 13 && age <= 16) {
-      age_reference = "13-16 years";
+  if (age <= 4) {
+    age_reference = "1.5-4 years";
+    subject_reference = "toddler";
+  } else if (age >= 5 && age <= 7) {
+    age_reference = "5-7 years";
+    subject_reference = "kid";
+  } else if (age >= 8 && age <= 12) {
+    age_reference = "8-12 years";
+    subject_reference = "kid";
+  } else if (age >= 13 && age <= 16) {
+    age_reference = "13-16 years";
     
-      if (selected_who === "Daughter" || selected_who === "Sister" || selected_who === "Niece" || selected_who === "Aunt" || selected_who === "Girlfriend" || selected_who === "Wife" || selected_who === "Mom") {
-        subject_reference = "girl";
-      } else if (selected_who === "Son" || selected_who === "Brother" || selected_who === "Nephew" || selected_who === "Uncle" || selected_who === "Boyfriend" || selected_who === "Husband" || selected_who === "Dad") {
-        subject_reference = "boy";
-      }
-    } else if (age >= 17 && age <= 30) {
-      age_reference = "17-30 years";
-
-      if (selected_who === "Daughter" || selected_who === "Sister" || selected_who === "Niece" || selected_who === "Aunt" || selected_who === "Girlfriend"|| selected_who === "Wife" || selected_who === "Mom") {
-        subject_reference = "adult woman";
-      } else if (selected_who === "Son" || selected_who === "Brother" || selected_who === "Nephew" || selected_who === "Uncle" || selected_who === "Boyfriend" || selected_who === "Husband" || selected_who === "Dad") {
-        subject_reference = "adult man";
-      }
-    } else if (age >= 31 && age <= 40) {
-      age_reference = "31-40 years";
-
-      if (selected_who === "Daughter" || selected_who === "Sister" || selected_who === "Niece" || selected_who === "Aunt" || selected_who === "Girlfriend" || selected_who === "Wife" || selected_who === "Mom") {
-        subject_reference = "adult woman";
-      } else if (selected_who === "Son" || selected_who === "Brother" || selected_who === "Nephew" || selected_who === "Uncle" || selected_who === "Boyfriend" || selected_who === "Husband" || selected_who === "Dad") {
-        subject_reference = "adult man";
-      }
-    } else if (age >= 41 && age <= 50) {
-      age_reference = "41-50 years";
-
-      if (selected_who === "Daughter" || selected_who === "Sister" || selected_who === "Niece" || selected_who === "Aunt" || selected_who === "Girlfriend" || selected_who === "Wife" || selected_who === "Mom") {
-        subject_reference = "adult woman";
-      } else if (selected_who === "Son" || selected_who === "Brother" || selected_who === "Nephew" || selected_who === "Uncle" || selected_who === "Boyfriend" || selected_who === "Husband" || selected_who === "Dad") {
-        subject_reference = "adult man";
-      }
-    } else if (age >= 51 && age <= 60) {
-      age_reference = "51-60 years";
-
-      if (selected_who === "Daughter" || selected_who === "Sister" || selected_who === "Niece" || selected_who === "Aunt" || selected_who === "Girlfriend" || selected_who === "Wife" || selected_who === "Mom") {
-        subject_reference = "old woman";
-      } else if (selected_who === "Son" || selected_who === "Brother" || selected_who === "Nephew" || selected_who === "Uncle" || selected_who === "Boyfriend" || selected_who === "Husband" || selected_who === "Dad") {
-        subject_reference = "old man";
-      }
-    } else if (age >= 61) {
-      age_reference = "61+ years";
-
-      if (selected_who === "Daughter" || selected_who === "Sister" || selected_who === "Niece" || selected_who === "Aunt" || selected_who === "Girlfriend" || selected_who === "Wife" || selected_who === "Mom") {
-        subject_reference = "old woman";
-      } else if (selected_who === "Son" || selected_who === "Brother" || selected_who === "Nephew" || selected_who === "Uncle" || selected_who === "Boyfriend" || selected_who === "Husband" || selected_who === "Dad") {
-        subject_reference = "old man";
-      }
+    if (selected_who === "Daughter" || selected_who === "Sister" || selected_who === "Niece" || selected_who === "Aunt" || selected_who === "Girlfriend" || selected_who === "Wife" || selected_who === "Mom" || selected_gender === "Female") {
+      subject_reference = "girl";
+    } else if (selected_who === "Son" || selected_who === "Brother" || selected_who === "Nephew" || selected_who === "Uncle" || selected_who === "Boyfriend" || selected_who === "Husband" || selected_who === "Dad" || selected_gender === "Male") {
+      subject_reference = "boy";
+    } else if (selected_gender === "Non-binary") {
+      subject_reference = "unisex";
     }
+  } else if (age >= 17 && age <= 30) {
+    age_reference = "17-30 years";
 
-    if (personality === "Tech Geek") {
-      personality_reference = "Electronics and Gadgets";
-    } else if (personality === "Bookworm") {
-      personality_reference = "Books and Stationery";
-    } else if (personality === "Fashionista") {
-      personality_reference = "Clothing and Accessories";
-    } else if (personality === "Artist") {
-      personality_reference = "Art";
-    } else if (personality === "Skin Care Master") {
-      personality_reference = "Beauty and Hair Products";
-    } else if (personality === "Jewelry Admirer") {
-      personality_reference = "Jewelry and Watches";
-    } else if (personality === "Sports Star") {
-      personality_reference = "Fitness and Wellness Items";
-    } else if (personality === "Life Taster") {
-      personality_reference = "Experiences";
-    } else if (personality === "Chef") {
-      personality_reference = "Kitchen Appliances";
-    } else if (personality === "Hiker") {
-      personality_reference = "Outdoor Gear";
-    } else if (personality === "Adorable kid") {
-      personality_reference = "Toys and Games";
-    } else if (personality === "Asian Culture Follower") {
-      personality_reference = "Anime";
-    } else if (personality === "Foodie") {
-      personality_reference = "Food and Beverage";
-    } else if (personality === "Gardener") {
-      personality_reference = "Plants and Gardening";
-    } else if (personality === "Home Esthete") {
-      personality_reference = "Travel Accessories";
+    if (selected_who === "Daughter" || selected_who === "Sister" || selected_who === "Niece" || selected_who === "Aunt" || selected_who === "Girlfriend"|| selected_who === "Wife" || selected_who === "Mom" || selected_gender === "Female") {
+      subject_reference = "adult woman";
+    } else if (selected_who === "Son" || selected_who === "Brother" || selected_who === "Nephew" || selected_who === "Uncle" || selected_who === "Boyfriend" || selected_who === "Husband" || selected_who === "Dad" || selected_gender === "Male") {
+      subject_reference = "adult man";
+    } else if (selected_gender === "Non-binary") {
+      subject_reference = "unisex";
     }
+  } else if (age >= 31 && age <= 40) {
+    age_reference = "31-40 years";
+
+    if (selected_who === "Daughter" || selected_who === "Sister" || selected_who === "Niece" || selected_who === "Aunt" || selected_who === "Girlfriend" || selected_who === "Wife" || selected_who === "Mom" || selected_gender === "Female") {
+      subject_reference = "adult woman";
+    } else if (selected_who === "Son" || selected_who === "Brother" || selected_who === "Nephew" || selected_who === "Uncle" || selected_who === "Boyfriend" || selected_who === "Husband" || selected_who === "Dad" || selected_gender === "Male") {
+      subject_reference = "adult man";
+    } else if (selected_gender === "Non-binary") {
+      subject_reference = "unisex";
+    }
+  } else if (age >= 41 && age <= 50) {
+    age_reference = "41-50 years";
+
+    if (selected_who === "Daughter" || selected_who === "Sister" || selected_who === "Niece" || selected_who === "Aunt" || selected_who === "Girlfriend" || selected_who === "Wife" || selected_who === "Mom" || selected_gender === "Female") {
+      subject_reference = "adult woman";
+    } else if (selected_who === "Son" || selected_who === "Brother" || selected_who === "Nephew" || selected_who === "Uncle" || selected_who === "Boyfriend" || selected_who === "Husband" || selected_who === "Dad" || selected_gender === "Male") {
+      subject_reference = "adult man";
+    } else if (selected_gender === "Non-binary") {
+      subject_reference = "unisex";
+    }
+  } else if (age >= 51 && age <= 60) {
+    age_reference = "51-60 years";
+
+    if (selected_who === "Daughter" || selected_who === "Sister" || selected_who === "Niece" || selected_who === "Aunt" || selected_who === "Girlfriend" || selected_who === "Wife" || selected_who === "Mom" || selected_gender === "Female") {
+      subject_reference = "old woman";
+    } else if (selected_who === "Son" || selected_who === "Brother" || selected_who === "Nephew" || selected_who === "Uncle" || selected_who === "Boyfriend" || selected_who === "Husband" || selected_who === "Dad" || selected_gender === "Male") {
+      subject_reference = "old man";
+    } else if (selected_gender === "Non-binary") {
+      subject_reference = "unisex";
+    }
+  } else if (age >= 61) {
+    age_reference = "61+ years";
+
+    if (selected_who === "Daughter" || selected_who === "Sister" || selected_who === "Niece" || selected_who === "Aunt" || selected_who === "Girlfriend" || selected_who === "Wife" || selected_who === "Mom" || selected_gender === "Female") {
+      subject_reference = "old woman";
+    } else if (selected_who === "Son" || selected_who === "Brother" || selected_who === "Nephew" || selected_who === "Uncle" || selected_who === "Boyfriend" || selected_who === "Husband" || selected_who === "Dad" || selected_gender === "Male") {
+      subject_reference = "old man";
+    } else if (selected_gender === "Non-binary") {
+      subject_reference = "unisex";
+    }
+  }
+
+  if (personality === "Tech Geek") {
+    personality_reference = "Electronics and Gadgets";
+  } else if (personality === "Bookworm") {
+    personality_reference = "Books and Stationery";
+  } else if (personality === "Fashionista") {
+    personality_reference = "Clothing and Accessories";
+  } else if (personality === "Artist") {
+    personality_reference = "Art";
+  } else if (personality === "Skin Care Master") {
+    personality_reference = "Beauty and Hair Products";
+  } else if (personality === "Jewelry Admirer") {
+    personality_reference = "Jewelry and Watches";
+  } else if (personality === "Sports Star") {
+    personality_reference = "Fitness and Wellness Items";
+  } else if (personality === "Life Taster") {
+    personality_reference = "Experiences";
+  } else if (personality === "Chef") {
+    personality_reference = "Kitchen Appliances";
+  } else if (personality === "Hiker") {
+    personality_reference = "Outdoor Gear";
+  } else if (personality === "Adorable kid") {
+    personality_reference = "Toys and Games";
+  } else if (personality === "Asian Culture Follower") {
+    personality_reference = "Anime";
+  } else if (personality === "Foodie") {
+    personality_reference = "Food and Beverage";
+  } else if (personality === "Gardener") {
+    personality_reference = "Plants and Gardening";
+  } else if (personality === "Home Esthete") {
+    personality_reference = "Travel Accessories";
+  }
   
     // Prompt to Open AI
-    try {
-      const prompt = "Give some gift recommendations for " + selected_who + " and for this occasion " + selected_holiday + ". The person is " + personality + " inside" + "\n" + "Here is the gift situation description: " + text;
+  try {
+    const prompt = "Give some gift recommendations for " + selWho.textContent + " and for this occasion " + selected_holiday + ". The person is " + personality + " inside" + "\n" + "Here is the gift situation description: " + text;
 
-      const requestOptions = {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${openaiApiKey}`
-        },
-        body: JSON.stringify({
-          model: 'gpt-3.5-turbo-instruct',
-          prompt: prompt,
-          temperature: 1,
-          max_tokens: 256,
-          top_p: 1,
-          frequency_penalty: 0,
-          presence_penalty: 0
-       })
-     };
+    const requestOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${openaiApiKey}`
+      },
+      body: JSON.stringify({
+        model: 'gpt-3.5-turbo-instruct',
+        prompt: prompt,
+        temperature: 1,
+        max_tokens: 256,
+        top_p: 1,
+        frequency_penalty: 0,
+        presence_penalty: 0
+      })
+    };
 
-     fetch('https://api.openai.com/v1/completions', requestOptions)
-       .then(response => response.json())
-       .then(data => {
-         const responseText = data.choices[0].text;
+    fetch('https://api.openai.com/v1/completions', requestOptions)
+    .then(response => response.json())
+      .then(data => {
+        const responseText = data.choices[0].text;
 
-         const subjectCategories = ["adult woman", "adult man", "girl", "boy", "kid", "toddler", "old man", "old woman", "unisex"];
+        const subjectCategories = ["adult woman", "adult man", "girl", "boy", "kid", "toddler", "old man", "old woman", "unisex"];
     
-         for (const category of subjectCategories) {
-           if (responseText.toLowerCase().includes(category)) {
+        for (const category of subjectCategories) {
+          if (responseText.toLowerCase().includes(category)) {
             subject_reference = category;
             break;
            }
