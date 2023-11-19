@@ -262,7 +262,7 @@ mainButton.addEventListener('click', () => {
       if (visibleCards.length === 0) {
         recommend();
         // Use setTimeout to avoid blocking the main thread
-        setTimeout(runRecommendInLoop, 0);
+        setTimeout(runRecommendInLoop, 10000);
       }
     }
 
@@ -271,7 +271,6 @@ mainButton.addEventListener('click', () => {
 });
 
 async function recommend() {
-  event.preventDefault();
   const personality = personalitySelect.value;
   const age = ageField.value;
   
