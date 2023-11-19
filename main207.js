@@ -255,14 +255,14 @@ mainButton.addEventListener('click', () => {
     ageAlert.style.display = "none";
 
     // Run recommend initially
-    recommend();
+    await recommend();
 
     // Set a time limit of 2 minutes (120,000 milliseconds)
     const timeLimit = 120000;
     let loopStartTime = Date.now();
 
     // Check if visibleCards is empty and run recommend in a loop until it's not
-    function runRecommendInLoop() {
+    async function runRecommendInLoop() {
       if (visibleCards.length === 0 && Date.now() - loopStartTime < timeLimit) {
         recommend();
         // Use setTimeout to avoid blocking the main thread
