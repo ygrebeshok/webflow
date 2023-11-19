@@ -775,6 +775,7 @@ async function recommend() {
     age_personality.classList.remove('disablegrid');
     ageAlert.style.display = "none";
     errorAlert.textContent = "";
+    output.textContent = "";
 
     personalitySelect.value = "";
     ageField.value = "";
