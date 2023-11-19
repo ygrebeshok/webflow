@@ -73,12 +73,12 @@
     background-image: linear-gradient(40deg, #A157FF, #6F63FF, #E065FF);
    }
 
-  .gender-grid:hover {
+  .gender-button:hover {
     color: white;
     background-image: linear-gradient(40deg, #9069FF, #B173FF, #5D80FF);
    }
 
-  .gender-grid:focus {
+  .gender-button:focus {
     color: white;
     background-image: linear-gradient(40deg, #9069FF, #B173FF, #5D80FF);
    }
