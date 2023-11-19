@@ -89,12 +89,12 @@
 
   .gender-button:hover {
     color: white;
-    background-image: linear-gradient(40deg, #9069FF, #B173FF, #5D80FF);
+    background-image: linear-gradient(40deg, #7D68FF, #9E62FF, #6A8BFF);
    }
 
   .gender-button:focus {
     color: white;
-    background-image: linear-gradient(40deg, #9069FF, #B173FF, #5D80FF);
+    background-image: linear-gradient(40deg, #7D68FF, #9E62FF, #6A8BFF);
    }
 
   .category-button {
