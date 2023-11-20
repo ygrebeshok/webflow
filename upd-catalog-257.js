@@ -310,6 +310,7 @@ createNewCollectionBtn.addEventListener("click", async () => {
   });
 });
 
+const noCollectionsImage = document.getElementById('no-collections-image');
 
 function loadCollections(userId) {
   const defaultCollectionCover = "https://firebasestorage.googleapis.com/v0/b/smappy-ai.appspot.com/o/default-collection-cover_600x600.png?alt=media&token=9155ed41-888b-4e07-936e-9fe156da1120";
@@ -321,6 +322,12 @@ function loadCollections(userId) {
       if (doc.exists) {
         const data = doc.data();
         const collections = data.collections || [];
+
+	if (collections.length === 0) {
+	  noCollectionsImage.style.display = "block";
+	} else {
+	  noCollectionsImage.style.display = "none";
+	}
 
         collections.forEach(async (collectionName) => {
           const collectionCard = collectionCardTemplate.cloneNode(true);
