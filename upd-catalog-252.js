@@ -307,10 +307,10 @@ function loadCollections(userId) {
   const defaultCollectionCover = "https://firebasestorage.googleapis.com/v0/b/smappy-ai.appspot.com/o/default-collection-cover_600x600.png?alt=media&token=9155ed41-888b-4e07-936e-9fe156da1120";
 
   firebase.firestore().collection('users').doc(userId).get()
-    .then((querySnapshot) => {
+    .then((doc) => {
       collectionListPopup.innerHTML = "";
 
-      querySnapshot.forEach((doc) => {
+      if (doc.exists) {
         const data = doc.data();
         const collections = data.collections || [];
 
@@ -334,13 +334,14 @@ function loadCollections(userId) {
 
           collectionListPopup.appendChild(collectionCard);
         });
-      });
+      } else {
+        console.error("User document not found");
+      }
     })
     .catch((error) => {
       console.error("Error loading collections:", error);
     });
 }
-
 
 
 function checkInputForCollection() {
