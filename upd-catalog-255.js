@@ -285,29 +285,29 @@ createCollectionBtn.addEventListener("click", () => {
 });
 
 
-createNewCollectionBtn.addEventListener("click", () => {
+createNewCollectionBtn.addEventListener("click", async () => {
   moveUnauthorizedToLogIn();
 
-  firebase.auth().onAuthStateChanged(function (authUser) {
+  firebase.auth().onAuthStateChanged(async function (authUser) {
     if (authUser) {
       const userId = authUser.uid;
       const collectionName = collectionNameInput.value;
 
-      createNewCollection(userId, collectionName)
-      .then(() => {
+      try {
+        await createNewCollection(userId, collectionName);
         setCollectionNameWindow.style.display = "none";
         loadCollections(userId);
-	collectionNameInput.value = "";
-      })
-      .catch((error) => {
+        collectionNameInput.value = "";
+      } catch (error) {
         console.error("Error creating new collection:", error);
-      });
+      }
     } else {
       // Handle the case where no user is authenticated
       console.log("No authenticated user");
     }
   });
 });
+
 
 function loadCollections(userId) {
   const defaultCollectionCover = "https://firebasestorage.googleapis.com/v0/b/smappy-ai.appspot.com/o/default-collection-cover_600x600.png?alt=media&token=9155ed41-888b-4e07-936e-9fe156da1120";
