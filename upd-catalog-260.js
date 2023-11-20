@@ -255,6 +255,7 @@ const collectionNameInput = document.getElementById('collection-name-input');
 const setCollectionNameWindow = document.getElementById('set-collection-name-window');
 const collectionListPopup = document.getElementById('collection-list-popup');
 const collectionCardTemplate = document.querySelector('.collection-card');
+const editCollectionListBtn = document.getElementById('edit-collection-list');
 
 linkButton.addEventListener("click", () => {
   collectionPopupWindow.style.display = "flex";
@@ -264,6 +265,8 @@ linkButton.addEventListener("click", () => {
       const userId = authUser.uid;
       
       loadCollections(userId);
+
+      
     } else {
       // Handle the case where no user is authenticated
       console.log("No authenticated user");
@@ -318,6 +321,7 @@ function loadCollections(userId) {
   firebase.firestore().collection('users').doc(userId).get()
     .then((doc) => {
       collectionListPopup.innerHTML = "";
+      document.querySelector("#remove-collection-btn").style.display = "none";
 
       if (doc.exists) {
         const data = doc.data();
@@ -347,9 +351,20 @@ function loadCollections(userId) {
             collectionCard.querySelector("#collection-cover").src = defaultCollectionCover;
           }
 
+	  collectionCard.querySelector("#remove-collection-btn").addEventListener("click", () => {
+	    removeCollection(userId, collectionName);
+            collectionCard.style.display = 'none';
+	  });
+
           collectionListPopup.appendChild(collectionCard);
 		
         });
+
+	editCollectionListBtn.addEventListener("click", () => {
+	  document.querySelectorAll(".remove-collection-btn").forEach(btn => {
+            btn.style.display = "block";
+          });
+	});
 	      
       } else {
         console.error("User document not found");
@@ -358,6 +373,20 @@ function loadCollections(userId) {
     .catch((error) => {
       console.error("Error loading collections:", error);
     });
+}
+
+function removeCollection(userId, collectionName) {
+  const userDocRef = firebase.firestore().collection('users').doc(userId);
+
+  userDocRef.update({
+    collections: firebase.firestore.FieldValue.arrayRemove(collectionName)
+  })
+  .then(() => {
+    console.log(`Collection '${collectionName}' removed successfully.`);
+  })
+  .catch((error) => {
+    console.error("Error removing collection:", error);
+  });
 }
 
 
