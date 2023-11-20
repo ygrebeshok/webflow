@@ -325,21 +325,20 @@ function loadCollections(userId) {
 	
   editCollectionListBtn.addEventListener("click", () => {
     
-    if (isEditing === true) {
-      editCollectionListBtn.textContent === "Done"
+    if (isEditing) {
+      editCollectionListBtn.textContent = "Done";
 	    
       document.querySelectorAll(".remove-collection-btn").forEach(btn => {
         btn.style.display = "block";
       });
 	    
     } else {
-      editCollectionListBtn.textContent === "Edit List"
+      editCollectionListBtn.textContent = "Edit List";
 	    
       document.querySelectorAll(".remove-collection-btn").forEach(btn => {
         btn.style.display = "none";
       });
-    }
-	  
+    }	  
     
   });
 	
