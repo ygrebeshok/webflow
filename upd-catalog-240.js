@@ -246,6 +246,16 @@ function toggleFavorite(element, userId, productId) {
 }
 
 const linkButton = document.getElementById('link-button');
+const collectionPopupWindow = document.getElementById('collection-popup-window');
+const collectionPopupClose = document.getElementById('collection-popup-close');
+
+linkButton.addEventListener("click", () => {
+  collectionPopupWindow.style.display = "flex";
+});
+
+collectionPopupClose.addEventListener("click", () => {
+  collectionPopupWindow.style.display = "none";
+});
 
 function showPopup(productData) {
   const slideContainer = document.querySelector('.slides');
@@ -256,7 +266,6 @@ function showPopup(productData) {
   popupTitle.textContent = productData.name;
   popupBrand.textContent = productData.brand;
   //popupBrand.href = productData.product_link;
-  linkButton.href = productData.product_link;
   popupDesc.textContent = productData.description;
   popupPrice.textContent = `$${productData.price}`;
 
