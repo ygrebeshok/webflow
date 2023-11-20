@@ -280,21 +280,21 @@ createNewCollectionBtn.addEventListener("click", () => {
 });
 
 
-function loadCollections(productId, productImage) {
-  firebase.firestore().collection('users').get().then((querySnapshot) => {
-    collectionListPopup.innerHTML = "";
+//function loadCollections(productId, productImage) {
+  //firebase.firestore().collection('users').get().then((querySnapshot) => {
+    //collectionListPopup.innerHTML = "";
 
-    querySnapshot.forEach((doc) => {
-      const data = doc.data();
+    //querySnapshot.forEach((doc) => {
+      //const data = doc.data();
 
-      const collectionCard = collectionCardTemplate.cloneNode(true);
+      //const collectionCard = collectionCardTemplate.cloneNode(true);
 
-      collectionCard.querySelector("#collection-cover").src = data.images[0],
-      collectionCard.querySelector("#collection-name").textContent = data.name,
+      //collectionCard.querySelector("#collection-cover").src = data.images[0],
+      //collectionCard.querySelector("#collection-name").textContent = data.name,
 	    
-    });
-  });
-}
+    //});
+  //});
+//}
 
 function checkInputForCollection() {
   createNewCollectionBtn.classList.add('disablegrid');
