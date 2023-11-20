@@ -265,7 +265,7 @@ collectionPopupClose.addEventListener("click", () => {
 });
 
 newCollectionClose.addEventListener("click", () => {
-  setCollectionNameWindow..style.display = "none";
+  setCollectionNameWindow.style.display = "none";
 });
 
 createCollectionBtn.addEventListener("click", () => {
