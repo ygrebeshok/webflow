@@ -295,9 +295,11 @@ createNewCollectionBtn.addEventListener("click", async () => {
 
       try {
         await createNewCollection(userId, collectionName);
-        setCollectionNameWindow.style.display = "none";
-        loadCollections(userId);
-        collectionNameInput.value = "";
+        setTimeout(() => {
+          loadCollections(userId);
+          collectionNameInput.value = "";
+	  setCollectionNameWindow.style.display = "none";
+        }, 1000);
       } catch (error) {
         console.error("Error creating new collection:", error);
       }
