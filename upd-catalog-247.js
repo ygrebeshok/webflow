@@ -278,6 +278,7 @@ createNewCollectionBtn.addEventListener("click", () => {
   moveUnauthorizedToLogIn();
 
   const user = firebase.auth().currentUser;
+  const userId = user.uid;
 	
   createNewCollection(collectionNameInput.value);
   setCollectionNameWindow.style.display = "none";
@@ -310,7 +311,7 @@ function checkInputForCollection() {
 
 function createNewCollection(collection_name) {
 
-  const userDocRef = firebase.firestore().collection('users').doc(user.uid);
+  const userDocRef = firebase.firestore().collection('users').doc(userId);
   // Check if the 'collections' array exists in the user document
   userDocRef.get().then((doc) => {
     if (doc.exists) {
