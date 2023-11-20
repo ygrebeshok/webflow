@@ -277,11 +277,24 @@ createCollectionBtn.addEventListener("click", () => {
 createNewCollectionBtn.addEventListener("click", () => {
   moveUnauthorizedToLogIn();
 
-  const user = firebase.auth().currentUser;
-  const userId = user.uid;
-	
-  createNewCollection(collectionNameInput.value);
-  setCollectionNameWindow.style.display = "none";
+  firebase.auth().onAuthStateChanged(function (authUser) {
+    if (authUser) {
+      const userId = authUser.uid;
+      const collectionName = collectionNameInput.value;
+
+      createNewCollection(userId, collectionName)
+        .then(() => {
+          setCollectionNameWindow.style.display = "none";
+        })
+        .catch((error) => {
+          console.error("Error creating new collection:", error);
+          // Handle the error, e.g., display an error message to the user
+        });
+    } else {
+      // Handle the case where no user is authenticated
+      console.log("No authenticated user");
+    }
+  });
 });
 
 
@@ -309,7 +322,7 @@ function checkInputForCollection() {
   });
 }
 
-function createNewCollection(collection_name) {
+function createNewCollection(userId, collection_name) {
 
   const userDocRef = firebase.firestore().collection('users').doc(userId);
   // Check if the 'collections' array exists in the user document
