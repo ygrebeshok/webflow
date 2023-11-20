@@ -750,11 +750,6 @@ async function recommend() {
     });
   }
 
-  function checkInputs() {
-    document.getElementById("button-container").classList.remove('disablegrid');
-    mainButton.classList.remove('disablegrid');
-  }
-
   function handleSearchAgain() {
     document.getElementById("textarea").disabled = false;
     errorAlert.style.visibility = "hidden";
