@@ -316,30 +316,29 @@ createNewCollectionBtn.addEventListener("click", async () => {
 const noCollectionsImage = document.getElementById('no-collections-image');
 const isEditing = editCollectionListBtn.textContent === "Edit List";
 
+editCollectionListBtn.addEventListener("click", () => {
+    
+  if (isEditing) {
+    editCollectionListBtn.textContent = "Done";
+	    
+    document.querySelectorAll(".remove-collection-btn").forEach(btn => {
+      btn.style.display = "block";
+    });
+	    
+  } else {
+    editCollectionListBtn.textContent = "Edit List";
+	    
+    document.querySelectorAll(".remove-collection-btn").forEach(btn => {
+      btn.style.display = "none";
+    });
+  }	  
+});
+
 function loadCollections(userId) {
   const defaultCollectionCover = "https://firebasestorage.googleapis.com/v0/b/smappy-ai.appspot.com/o/default-collection-cover_600x600.png?alt=media&token=9155ed41-888b-4e07-936e-9fe156da1120";
 	
   document.querySelectorAll(".remove-collection-btn").forEach(btn => {
     btn.style.display = "none";
-  });
-	
-  editCollectionListBtn.addEventListener("click", () => {
-    
-    if (isEditing) {
-      editCollectionListBtn.textContent = "Done";
-	    
-      document.querySelectorAll(".remove-collection-btn").forEach(btn => {
-        btn.style.display = "block";
-      });
-	    
-    } else {
-      editCollectionListBtn.textContent = "Edit List";
-	    
-      document.querySelectorAll(".remove-collection-btn").forEach(btn => {
-        btn.style.display = "none";
-      });
-    }	  
-    
   });
 	
   firebase.firestore().collection('users').doc(userId).get()
