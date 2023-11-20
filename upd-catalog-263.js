@@ -314,18 +314,18 @@ createNewCollectionBtn.addEventListener("click", async () => {
 });
 
 const noCollectionsImage = document.getElementById('no-collections-image');
+let isEditing = false;
 
 function loadCollections(userId) {
   const defaultCollectionCover = "https://firebasestorage.googleapis.com/v0/b/smappy-ai.appspot.com/o/default-collection-cover_600x600.png?alt=media&token=9155ed41-888b-4e07-936e-9fe156da1120";
-  let isEditing = false;
+  isEditing = (editCollectionListBtn.value === "Edit List");
 	
   document.querySelectorAll(".remove-collection-btn").forEach(btn => {
     btn.style.display = "none";
   });
 	
   editCollectionListBtn.addEventListener("click", () => {
-    isEditing = (editCollectionListBtn.textContent === "Edit List");
-
+    
     if (isEditing) {
       editCollectionListBtn.textContent === "Done"
 	    
