@@ -314,18 +314,17 @@ createNewCollectionBtn.addEventListener("click", async () => {
 });
 
 const noCollectionsImage = document.getElementById('no-collections-image');
-const isEditing = editCollectionListBtn.textContent === "Edit List";
 
 editCollectionListBtn.addEventListener("click", () => {
     
-  if (isEditing) {
+  if (editCollectionListBtn.textContent === "Edit List") {
     editCollectionListBtn.textContent = "Done";
 	    
     document.querySelectorAll(".remove-collection-btn").forEach(btn => {
       btn.style.display = "block";
     });
 	    
-  } else {
+  } else if (editCollectionListBtn.textContent === "Done") {
     editCollectionListBtn.textContent = "Edit List";
 	    
     document.querySelectorAll(".remove-collection-btn").forEach(btn => {
