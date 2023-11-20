@@ -258,6 +258,7 @@ const collectionCardTemplate = document.querySelector('.collection-card');
 
 linkButton.addEventListener("click", () => {
   collectionPopupWindow.style.display = "flex";
+  loadCollections();
 });
 
 collectionPopupClose.addEventListener("click", () => {
@@ -292,22 +293,45 @@ createNewCollectionBtn.addEventListener("click", () => {
   });
 });
 
+function loadCollections() {
+  const defaultCollectionCover = "https://firebasestorage.googleapis.com/v0/b/smappy-ai.appspot.com/o/default-collection-cover_600x600.png?alt=media&token=9155ed41-888b-4e07-936e-9fe156da1120";
 
-//function loadCollections(productId, productImage) {
-  //firebase.firestore().collection('users').get().then((querySnapshot) => {
-    //collectionListPopup.innerHTML = "";
+  firebase.firestore().collection('users').get()
+    .then((querySnapshot) => {
+      collectionListPopup.innerHTML = "";
 
-    //querySnapshot.forEach((doc) => {
-      //const data = doc.data();
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        const collections = data.collections || [];
 
-      //const collectionCard = collectionCardTemplate.cloneNode(true);
+        collections.forEach(async (collectionName) => {
+          const collectionCard = collectionCardTemplate.cloneNode(true);
 
-      //collectionCard.querySelector("#collection-cover").src = data.images[0],
-      //collectionCard.querySelector("#collection-name").textContent = data.name,
-	    
-    //});
-  //});
-//}
+          collectionCard.querySelector("#collection-name").textContent = collectionName;
+
+          // Fetch additional data related to the collection (adjust the path according to your data structure)
+          const collectionData = await firebase.firestore().collection('collections').doc(collectionName).get();
+          
+          // Check if the collection document exists
+          if (collectionData.exists) {
+            // Set the cover image if available, otherwise use the default
+            const coverImage = collectionData.data().coverImage || defaultCollectionCover;
+            collectionCard.querySelector("#collection-cover").src = coverImage;
+          } else {
+            // Collection document does not exist, set default cover
+            collectionCard.querySelector("#collection-cover").src = defaultCollectionCover;
+          }
+
+          collectionListPopup.appendChild(collectionCard);
+        });
+      });
+    })
+    .catch((error) => {
+      console.error("Error loading collections:", error);
+    });
+}
+
+
 
 function checkInputForCollection() {
   createNewCollectionBtn.classList.add('disablegrid');
