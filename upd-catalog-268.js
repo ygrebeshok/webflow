@@ -366,10 +366,10 @@ function loadCollections(userId) {
           if (collectionData.exists) {
             // Set the cover image if available, otherwise use the default
             const coverImage = collectionData.data().coverImage || defaultCollectionCover;
-            collectionCard.querySelector("#collection-cover").src = coverImage;
+            collectionCard.style.backgroundImage = coverImage;
           } else {
             // Collection document does not exist, set default cover
-            collectionCard.querySelector("#collection-cover").src = defaultCollectionCover;
+            collectionCard.style.backgroundImage = defaultCollectionCover;
           }
 
 	  collectionCard.querySelector("#remove-collection-btn").addEventListener("click", () => {
