@@ -248,6 +248,15 @@ function toggleFavorite(element, userId, productId) {
 const linkButton = document.getElementById('link-button');
 const collectionPopupWindow = document.getElementById('collection-popup-window');
 const collectionPopupClose = document.getElementById('collection-popup-close');
+const createCollectionBtn = document.getElementById('create-collection-btn');
+const newCollectionClose = document.getElementById('new-collection-close');
+const createNewCollectionBtn = document.getElementById('create-new-collection-btn');
+const collectionNameInput = document.getElementById('collection-name-input');
+const setCollectionNameWindow = document.getElementById('set-collection-name-window');
+const collectionListPopup = document.getElementById('collection-list-popup');
+const collectionCardTemplate = document.querySelector('.collection-card');
+const createNewCollectionBtn = document.getElementById('create-new-collection-btn');
+const collectionNameInput = document.getElementById('collection-name-input');
 
 linkButton.addEventListener("click", () => {
   collectionPopupWindow.style.display = "flex";
@@ -256,6 +265,77 @@ linkButton.addEventListener("click", () => {
 collectionPopupClose.addEventListener("click", () => {
   collectionPopupWindow.style.display = "none";
 });
+
+newCollectionClose.addEventListener("click", () => {
+  setCollectionNameWindow..style.display = "none";
+});
+
+createCollectionBtn.addEventListener("click", () => {
+  setCollectionNameWindow.style.display = "flex";
+  checkInputForCollection();
+});
+
+
+createNewCollectionBtn.addEventListener("click", () => {
+  createNewCollection(collectionNameInput.value);
+  setCollectionNameWindow.style.display = "none";
+});
+
+
+function loadCollections(productId, productImage) {
+  firebase.firestore().collection('users').get().then((querySnapshot) => {
+    collectionListPopup.innerHTML = "";
+
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+
+      const collectionCard = collectionCardTemplate.cloneNode(true);
+
+      collectionCard.querySelector("#collection-cover").src = data.images[0],
+      collectionCard.querySelector("#collection-name").textContent = data.name,
+	    
+    });
+  });
+}
+
+function checkInputForCollection() {
+  createNewCollectionBtn.classList.add('disablegrid');
+
+  collectionNameInput.addEventListener('input', (event) => {
+    createNewCollectionBtn.classList.remove('disablegrid');
+  });
+}
+
+function createNewCollection(collection_name) {
+
+  const userDocRef = firebase.firestore().collection('users').doc(user.uid);
+  // Check if the 'collections' array exists in the user document
+  userDocRef.get().then((doc) => {
+    if (doc.exists) {
+      const userData = doc.data();
+    
+      // Check if the 'collections' array exists
+      if (!userData.collections) {
+        // If it doesn't exist, create a new 'collections' array with the new collection name
+        userDocRef.update({
+          collections: [collection_name]
+        });
+      } else {
+        // If it exists, append the new collection name to the existing array
+        userDocRef.update({
+          collections: [...userData.collections, collection_name]
+        });
+      }
+
+      setCollectionNameWindow.style.display = "none";
+    } else {
+      // Handle the case where the user document doesn't exist
+      console.log("User document not found");
+    }
+  }).catch((error) => {
+    console.error("Error getting user document:", error);
+  });
+}
 
 function showPopup(productData) {
   const slideContainer = document.querySelector('.slides');
@@ -769,4 +849,10 @@ function toggleDislike(dislikeImage, likeImage, userId, productId, ref_category,
       console.log("Error adding disliked:", error);
     });
   }
+}
+
+
+function checkInputs() {
+  document.getElementById("button-container").classList.remove('disablegrid');
+  mainButton.classList.remove('disablegrid');
 }
