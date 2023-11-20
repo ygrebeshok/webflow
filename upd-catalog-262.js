@@ -317,15 +317,31 @@ const noCollectionsImage = document.getElementById('no-collections-image');
 
 function loadCollections(userId) {
   const defaultCollectionCover = "https://firebasestorage.googleapis.com/v0/b/smappy-ai.appspot.com/o/default-collection-cover_600x600.png?alt=media&token=9155ed41-888b-4e07-936e-9fe156da1120";
-
+  let isEditing = false;
+	
   document.querySelectorAll(".remove-collection-btn").forEach(btn => {
     btn.style.display = "none";
   });
 	
   editCollectionListBtn.addEventListener("click", () => {
-    document.querySelectorAll(".remove-collection-btn").forEach(btn => {
-      btn.style.display = "block";
-    });
+    isEditing = (editCollectionListBtn.textContent === "Edit List");
+
+    if (isEditing) {
+      editCollectionListBtn.textContent === "Done"
+	    
+      document.querySelectorAll(".remove-collection-btn").forEach(btn => {
+        btn.style.display = "block";
+      });
+	    
+    } else {
+      editCollectionListBtn.textContent === "Edit List"
+	    
+      document.querySelectorAll(".remove-collection-btn").forEach(btn => {
+        btn.style.display = "none";
+      });
+    }
+	  
+    
   });
 	
   firebase.firestore().collection('users').doc(userId).get()
