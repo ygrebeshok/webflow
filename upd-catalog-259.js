@@ -323,6 +323,12 @@ function loadCollections(userId) {
         const data = doc.data();
         const collections = data.collections || [];
 
+	if (collections.length === 0) {
+    	  noCollectionsImage.style.display = "block";
+  	} else {
+    	  noCollectionsImage.style.display = "none";
+  	}
+
         collections.forEach(async (collectionName) => {
           const collectionCard = collectionCardTemplate.cloneNode(true);
 
@@ -344,12 +350,6 @@ function loadCollections(userId) {
           collectionListPopup.appendChild(collectionCard);
 		
         });
-
-	if (collectionListPopup.childElementCount === 0) {
-	  noCollectionsImage.style.display = "block";
-	} else {
-	  noCollectionsImage.style.display = "none";
-	}
 	      
       } else {
         console.error("User document not found");
