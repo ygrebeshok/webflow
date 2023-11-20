@@ -258,7 +258,17 @@ const collectionCardTemplate = document.querySelector('.collection-card');
 
 linkButton.addEventListener("click", () => {
   collectionPopupWindow.style.display = "flex";
-  loadCollections();
+
+  firebase.auth().onAuthStateChanged(function (authUser) {
+    if (authUser) {
+      const userId = authUser.uid;
+      
+      loadCollections(userId);
+    } else {
+      // Handle the case where no user is authenticated
+      console.log("No authenticated user");
+    }
+  });
 });
 
 collectionPopupClose.addEventListener("click", () => {
@@ -293,10 +303,10 @@ createNewCollectionBtn.addEventListener("click", () => {
   });
 });
 
-function loadCollections() {
+function loadCollections(userId) {
   const defaultCollectionCover = "https://firebasestorage.googleapis.com/v0/b/smappy-ai.appspot.com/o/default-collection-cover_600x600.png?alt=media&token=9155ed41-888b-4e07-936e-9fe156da1120";
 
-  firebase.firestore().collection('users').get()
+  firebase.firestore().collection('users').doc(userId).get()
     .then((querySnapshot) => {
       collectionListPopup.innerHTML = "";
 
