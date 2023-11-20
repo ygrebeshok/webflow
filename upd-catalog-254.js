@@ -294,9 +294,14 @@ createNewCollectionBtn.addEventListener("click", () => {
       const collectionName = collectionNameInput.value;
 
       createNewCollection(userId, collectionName)
-      setCollectionNameWindow.style.display = "none";
-      loadCollections(userId);
-        
+      .then(() => {
+        setCollectionNameWindow.style.display = "none";
+        loadCollections(userId);
+	collectionNameInput.value = "";
+      })
+      .catch((error) => {
+        console.error("Error creating new collection:", error);
+      });
     } else {
       // Handle the case where no user is authenticated
       console.log("No authenticated user");
