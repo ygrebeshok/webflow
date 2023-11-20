@@ -275,6 +275,10 @@ createCollectionBtn.addEventListener("click", () => {
 
 
 createNewCollectionBtn.addEventListener("click", () => {
+  moveUnauthorizedToLogIn();
+
+  const user = firebase.auth().currentUser;
+	
   createNewCollection(collectionNameInput.value);
   setCollectionNameWindow.style.display = "none";
 });
