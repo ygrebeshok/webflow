@@ -295,6 +295,7 @@ createNewCollectionBtn.addEventListener("click", () => {
 
       createNewCollection(userId, collectionName)
       setCollectionNameWindow.style.display = "none";
+      loadCollections(userId);
         
     } else {
       // Handle the case where no user is authenticated
