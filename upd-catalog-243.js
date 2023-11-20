@@ -255,7 +255,6 @@ const collectionNameInput = document.getElementById('collection-name-input');
 const setCollectionNameWindow = document.getElementById('set-collection-name-window');
 const collectionListPopup = document.getElementById('collection-list-popup');
 const collectionCardTemplate = document.querySelector('.collection-card');
-const collectionNameInput = document.getElementById('collection-name-input');
 
 linkButton.addEventListener("click", () => {
   collectionPopupWindow.style.display = "flex";
