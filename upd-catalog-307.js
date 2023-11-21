@@ -255,30 +255,17 @@ const editCollectionListBtn = document.getElementById('edit-collection-list');
 const createCollectionBtn = document.getElementById('create-collection-btn');
 const linkButton = document.getElementById('link-button');
 
-const controller = new AbortController();
-const { signal } = controller;
-
-const asyncOperation = async () => {
-  // Simulate an asynchronous task
-  await new Promise(resolve => setTimeout(resolve, 2000));
-
-  // Check if the operation was aborted
-  if (signal.aborted) {
-    console.log('Operation aborted');
-    return;
-  }
-
-};
-
 collectionPopupClose.addEventListener("click", () => {
   collectionPopupWindow.style.display = "none";
+});
+
+newCollectionClose.addEventListener("click", () => {
+  setCollectionNameWindow.style.display = "none";
 });
 
 createCollectionBtn.addEventListener("click", () => {
   setCollectionNameWindow.style.display = "flex";
   checkInputForCollection();
-  controller.abort();
-  asyncOperation({ signal });
 });
 
 const noCollectionsImage = document.getElementById('no-collections-image');
@@ -311,34 +298,75 @@ editCollectionListBtn.addEventListener("click", () => {
   }	  
 });
 
-function loadCollections(userId, productId, productData) {
+createNewCollectionBtn.addEventListener('click', async () => {
+  const collectionName = collectionNameInput.value;
+
+  let productImage = '';
+
+  firebase.firestore().collection('added-by-parsing').where("name", "==", popupTitle.textContent)
+  .get()
+  .then((querySnapshot) => {
+    if (!querySnapshot.empty) {
+      const doc = querySnapshot.docs[0];
+      const data = doc.data();
+      productImage = data.images[0];
+      console.log("Product Image:", productImage);
+    } else {
+      console.log("Document not found");
+    }
+  })
+  .catch((error) => {
+    console.error("Error getting document:", error);
+  });
+
+  console.log(productImage)
+
+  firebase.auth().onAuthStateChanged(function(authUser) {
+    user = authUser;
+    if (user) {
+      const userId = user.uid;
+      try {
+        await createNewCollection(userId, collectionName, popupTitle.textContent, productImage);
+        setTimeout(() => {
+          collectionNameInput.value = "";
+          setCollectionNameWindow.style.display = "none";
+          collectionPopupWindow.style.display = "none";
+        }, 1000);
+      } catch (error) {
+        console.error("Error creating new collection:", error);
+      }
+    } else {
+      moveUnauthorizedToLogIn();
+    }
+  });
+});
+
+function loadCollections(userId, productId) {
   const defaultCollectionCover = "https://firebasestorage.googleapis.com/v0/b/smappy-ai.appspot.com/o/default-collection-cover_600x600.png?alt=media&token=9155ed41-888b-4e07-936e-9fe156da1120";
 	
   document.querySelectorAll(".remove-collection-btn").forEach(btn => {
     btn.style.display = "none";
   });
 
-  createNewCollectionBtn.addEventListener('click', async () => {
-    const collectionName = collectionNameInput.value;
-	  
-    try {
-      controller.abort();
-      await createNewCollection(userId, collectionName, productId, productData.images[0]);
-      setTimeout(() => {
-        collectionNameInput.value = "";
-        setCollectionNameWindow.style.display = "none";
-        collectionPopupWindow.style.display = "none";
-      }, 1000);
-    } catch (error) {
-      console.error("Error creating new collection:", error);
+  let productImage = '';
+
+  firebase.firestore().collection('added-by-parsing').where("name", "==", productId)
+  .get()
+  .then((querySnapshot) => {
+    if (!querySnapshot.empty) {
+      const doc = querySnapshot.docs[0];
+      const data = doc.data();
+      productImage = data.images[0];
+      console.log("Product Image:", productImage);
+    } else {
+      console.log("Document not found");
     }
-
-    asyncOperation({ signal });
+  })
+  .catch((error) => {
+    console.error("Error getting document:", error);
   });
 
-  newCollectionClose.addEventListener("click", () => {
-    setCollectionNameWindow.style.display = "none";
-  });
+  console.log(productImage)
 	
   firebase.firestore().collection('users').doc(userId).get()
     .then((doc) => {
@@ -371,13 +399,10 @@ function loadCollections(userId, productId, productData) {
 	  });
 
 	  collectionCard.querySelector("#link-to-collection").addEventListener("click", () => {
-	    addToCollection(userId, collectionCard.querySelector("#collection-name").textContent, productId, productData.images[0]);
-	    controller.abort();
-	    asyncOperation({ signal });
+	    addToCollection(userId, collectionCard.querySelector("#collection-name").textContent, productId, productImage);
 	  });
 
           collectionListPopup.appendChild(collectionCard);
-		
         });
 	      
       } else {
@@ -543,17 +568,6 @@ function showPopup(productData) {
     });
   }
 
-  popupFavoriteBtn.addEventListener('click', () => {
-    if (user) {
-      const userId = user.uid;
-      toggleFavorite(favoritesLabel, userId, productId);
-    } else {
-      moveUnauthorizedToLogIn();
-    }
-    controller.abort();
-    asyncOperation({ signal });
-  });
-
   productData.images.forEach(imageUrl => {
     const thumbnail = document.createElement('div');
     thumbnail.classList.add('thumbnail');
@@ -564,17 +578,6 @@ function showPopup(productData) {
     slide.classList.add('slide');
     slide.innerHTML = `<img src="${imageUrl}" alt="Product Image">`;
     slideContainer.appendChild(slide);
-  });
-
-  linkButton.addEventListener("click", () => {
-    collectionPopupWindow.style.display = "flex";
-
-    if (user) {
-      const userId = user.uid;
-      loadCollections(userId, productId, productData);
-    } else {
-      moveUnauthorizedToLogIn();
-    }
   });
 	
   popupContainer.style.display = "flex";
@@ -606,15 +609,6 @@ function showPopup(productData) {
     });
 
     showSlide(currentSlide);
-
-    popupClose.addEventListener("click", () => {
-      popupContainer.style.display = "none";
-
-      popupTitle.textContent = '';
-      popupBrand.textContent = '';
-      popupDesc.textContent = '';
-      popupPrice.textContent = '';
-    });
   }
 
   function populateBrandFilter(brands) {
@@ -643,6 +637,42 @@ function showPopup(productData) {
     brandFilterContainer.appendChild(document.createElement('br'));
   });
 }
+
+popupFavoriteBtn.addEventListener('click', () => {
+  firebase.auth().onAuthStateChanged(function(authUser) {
+    user = authUser;
+    if (user) {
+      const userId = user.uid;
+      toggleFavorite(favoritesLabel, userId, popupTitle.textContent);
+    } else {
+      moveUnauthorizedToLogIn();
+    }
+  }); 
+});
+
+linkButton.addEventListener("click", () => {
+  collectionPopupWindow.style.display = "flex";
+  firebase.auth().onAuthStateChanged(function(authUser) {
+    user = authUser;
+
+    if (user) {
+      const userId = user.uid;
+      loadCollections(userId, popupTitle.textContent);
+    } else {
+      moveUnauthorizedToLogIn();
+    }
+	  
+  });
+});
+
+popupClose.addEventListener("click", () => {
+  popupContainer.style.display = "none";
+  popupTitle.textContent = '';
+  popupBrand.textContent = '';
+  popupDesc.textContent = '';
+  popupPrice.textContent = '';
+});
+
 
 let brandFilters = [];
 let priceRange;
@@ -771,8 +801,6 @@ function updateCatalog() {
 	  price: card.querySelector("#price").textContent.replace("$", "")
 	};
 	showPopup(productData);
-	controller.abort();
-	asyncOperation({ signal });
       });
 
       const likeBtn = card.querySelector("#like-button");
@@ -819,8 +847,6 @@ function updateCatalog() {
 	  const userId = user.uid;
 	  toggleLike(likeImage, dislikeImage, userId, productId, selected_who, selected_holiday)
 	}
-        controller.abort();
-	asyncOperation({ signal });
       });
 
       dislikeBtn.addEventListener("click", () => {
@@ -829,8 +855,6 @@ function updateCatalog() {
 	  const userId = user.uid;
 	  toggleDislike(dislikeImage, likeImage, userId, productId, selected_who, selected_holiday)
 	}
-        controller.abort();
-	asyncOperation({ signal });
       });
 
       catalogGrid.appendChild(card);
