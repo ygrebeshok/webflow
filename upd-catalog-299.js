@@ -447,7 +447,7 @@ function checkInputForCollection() {
 }
 
 
-function createNewCollection(userId, collectionNameInput, productId, productImage) {
+async function createNewCollection(userId, collectionNameInput, productId, productImage) {
   const collectionName = collectionNameInput.value;
 
   try {
