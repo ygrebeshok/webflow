@@ -336,26 +336,15 @@ function loadCollections(userId, productId, productData) {
     	  noCollectionsImage.style.display = "none";
   	}
 
-        collections.forEach(async (collectionName) => {
+        collections.forEach(async (collection) => {
           const collectionCard = collectionCardTemplate.cloneNode(true);
 
-          collectionCard.querySelector("#collection-name").textContent = collectionName;
+	  collectionCard.querySelector("#collection-name").textContent = collection.name;
 
-          // Fetch additional data related to the collection (adjust the path according to your data structure)
-          const collectionQuery = await firebase.firestore().collection('collections').where('name', '==', collectionName).get();
-          
-          // Check if the collection document exists
-    	  if (!collectionQuery.empty) {
-            const collectionData = collectionQuery.docs[0].data();
-	    const products = collectionData.products || [];
-
-	    const coverImage = products.length > 0 ? products[0].productImage : defaultCollectionCover;
+	  const coverImage = collection.products.length > 0 ? collection.products[0].productImage : defaultCollectionCover;
             
-            collectionCard.style.backgroundImage = coverImage;
-          } else {
-            // Collection document does not exist, set default cover
-            collectionCard.style.backgroundImage = defaultCollectionCover;
-          }
+          collectionCard.style.backgroundImage = coverImage;
+        
 
 	  collectionCard.querySelector("#remove-collection-btn").addEventListener("click", () => {
 	    removeCollection(userId, collectionName);
