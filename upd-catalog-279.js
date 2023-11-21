@@ -341,6 +341,9 @@ function loadCollections(userId, productId, productData) {
 
 	  collectionCard.querySelector("#collection-name").textContent = collection.name;
 
+	  console.log(collection.products[0].productImage);
+	  console.log(collection.products.length);
+
 	  const coverImage = collection.products.length > 0 ? collection.products[0].productImage : defaultCollectionCover;
             
           collectionCard.style.backgroundImage = coverImage;
