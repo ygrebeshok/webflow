@@ -390,12 +390,18 @@ function removeCollection(userId, collectionName) {
   });
 }
 
+
 function addToCollection(userId, collectionName, productId, productImage) {
     const userDocRef = firebase.firestore().collection('users').doc(userId);
 
-    userDocRef.get().then((doc) => {
-        if (doc.exists) {
-            const userData = doc.data();
+    firebase.firestore().runTransaction(transaction => {
+        return transaction.get(userDocRef).then(userDoc => {
+            if (!userDoc.exists) {
+                console.error("User document not found");
+                return;
+            }
+
+            const userData = userDoc.data();
             const collections = userData.collections || [];
 
             // Find the index of the collection with the given name
@@ -406,19 +412,22 @@ function addToCollection(userId, collectionName, productId, productImage) {
                 collections[collectionIndex].products.push({ productId, productImage });
 
                 // Update the user document with the modified collections array
-                userDocRef.update({
+                transaction.update(userDocRef, {
                     collections: collections
                 });
             } else {
-                // Collection with the given name doesn't exist
-                console.error("Collection not found:", collectionName);
+                // Collection with the given name doesn't exist, create a new one
+                const newCollection = { name: collectionName, products: [{ productId, productImage }] };
+                collections.push(newCollection);
+
+                // Update the user document with the modified collections array
+                transaction.update(userDocRef, {
+                    collections: collections
+                });
             }
-        } else {
-            // Handle the case where the user document doesn't exist
-            console.error("User document not found");
-        }
-    }).catch((error) => {
-        console.error("Error getting user document:", error);
+        });
+    }).catch(error => {
+        console.error("Error updating user document:", error);
     });
 }
 
