@@ -297,29 +297,6 @@ function loadCollections(userId, productId, productData) {
   document.querySelectorAll(".remove-collection-btn").forEach(btn => {
     btn.style.display = "none";
   });
-
-  createNewCollectionBtn.addEventListener("click", async () => {
-  
-    firebase.auth().onAuthStateChanged(async function (authUser) {
-      if (authUser) {
-        const userId = authUser.uid;
-        const collectionName = collectionNameInput.value;
-
-        try {
-          await createNewCollection(userId, collectionName, productId, productData.images[0]);
-          setTimeout(() => {
-            collectionNameInput.value = "";
-	    setCollectionNameWindow.style.display = "none";
-	    collectionPopupWindow.style.display = "none";
-          }, 1000);
-        } catch (error) {
-          console.error("Error creating new collection:", error);
-        }
-      } else {
-        moveUnauthorizedToLogIn();
-      }
-    });
-  });
 	
   firebase.firestore().collection('users').doc(userId).get()
     .then((doc) => {
@@ -553,6 +530,29 @@ function showPopup(productData) {
         moveUnauthorizedToLogIn();
       }
 
+  });
+
+  createNewCollectionBtn.addEventListener("click", async () => {
+  
+    firebase.auth().onAuthStateChanged(async function (authUser) {
+      if (authUser) {
+        const userId = authUser.uid;
+        const collectionName = collectionNameInput.value;
+
+        try {
+          await createNewCollection(userId, collectionName, productId, productData.images[0]);
+          setTimeout(() => {
+            collectionNameInput.value = "";
+	    setCollectionNameWindow.style.display = "none";
+	    collectionPopupWindow.style.display = "none";
+          }, 1000);
+        } catch (error) {
+          console.error("Error creating new collection:", error);
+        }
+      } else {
+        moveUnauthorizedToLogIn();
+      }
+    });
   });
 	
   popupContainer.style.display = "flex";
