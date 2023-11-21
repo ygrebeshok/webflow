@@ -255,7 +255,6 @@ const collectionListPopup = document.getElementById('collection-list-popup');
 const collectionCardTemplate = document.querySelector('.collection-card');
 const editCollectionListBtn = document.getElementById('edit-collection-list');
 const createCollectionBtn = document.getElementById('create-collection-btn');
-const createNewCollectionBtn = document.getElementById('create-new-collection-btn');
 const linkButton = document.getElementById('link-button');
 
 
