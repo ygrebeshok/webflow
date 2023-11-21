@@ -596,10 +596,10 @@ function showPopup(productData) {
     popupClose.addEventListener("click", () => {
       popupContainer.style.display = "none";
 
-      popupContainer.querySelector('popup_title').textContent = '';
-      popupContainer.querySelector('popup_brand').textContent = '';
-      popupContainer.querySelector('popup_desc').textContent = '';
-      popupContainer.querySelector('popup_price').textContent = '';
+      popupTitle.textContent = '';
+      popupBrand.textContent = '';
+      popupDesc.textContent = '';
+      popupPrice.textContent = '';
     });
   }
 
