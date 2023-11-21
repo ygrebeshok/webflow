@@ -254,6 +254,7 @@ const setCollectionNameWindow = document.getElementById('set-collection-name-win
 const collectionListPopup = document.getElementById('collection-list-popup');
 const collectionCardTemplate = document.querySelector('.collection-card');
 const editCollectionListBtn = document.getElementById('edit-collection-list');
+const createCollectionBtn = document.getElementById('edit-collection-list');
 
 
 collectionPopupClose.addEventListener("click", () => {
@@ -306,8 +307,7 @@ function loadCollections(userId, productId, productData) {
     btn.style.display = "none";
   });
 
-  collectionPopupWindow.querySelector('#create-collection-btn').addEventListener("click", async () => {
-    moveUnauthorizedToLogIn();
+  setCollectionNameWindow.querySelector('#create-new-collection-btn').addEventListener("click", async () => {
     
     const collectionName = collectionNameInput.value;
 
