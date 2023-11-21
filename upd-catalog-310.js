@@ -308,7 +308,6 @@ createNewCollectionBtn.addEventListener('click', async () => {
       const doc = querySnapshot.docs[0];
       const data = doc.data();
       const productImage = data.images[0];
-      console.log("Product Image:", productImage);
 
       const authUser = firebase.auth().currentUser;
       
@@ -352,7 +351,6 @@ function loadCollections(userId, productId) {
       const doc = querySnapshot.docs[0];
       const data = doc.data();
       productImage = data.images[0];
-      console.log("Product Image:", productImage);
     } else {
       console.log("Document not found");
     }
