@@ -342,12 +342,15 @@ function loadCollections(userId, productId, productData) {
           collectionCard.querySelector("#collection-name").textContent = collectionName;
 
           // Fetch additional data related to the collection (adjust the path according to your data structure)
-          const collectionData = await firebase.firestore().collection('collections').doc(collectionName).get();
+          const collectionQuery = await firebase.firestore().collection('collections').where('name', '==', collectionName).get();
           
           // Check if the collection document exists
-          if (collectionData.exists) {
-            // Set the cover image if available, otherwise use the default
-            const coverImage = collectionData.data().image || defaultCollectionCover;
+    	  if (!collectionQuery.empty) {
+            const collectionData = collectionQuery.docs[0].data();
+	    const products = collectionData.products || [];
+
+	    const coverImage = products.length > 0 ? products[0].productImage : defaultCollectionCover;
+            
             collectionCard.style.backgroundImage = coverImage;
           } else {
             // Collection document does not exist, set default cover
@@ -392,40 +395,40 @@ function removeCollection(userId, collectionName) {
 
 
 function addToCollection(userId, collectionName, productId, productImage) {
-    const userDocRef = firebase.firestore().collection('users').doc(userId);
+  const userDocRef = firebase.firestore().collection('users').doc(userId);
 
-    firebase.firestore().runTransaction(transaction => {
-        return transaction.get(userDocRef).then(userDoc => {
-            if (!userDoc.exists) {
-                console.error("User document not found");
-                return;
-            }
+  firebase.firestore().runTransaction(transaction => {
+    return transaction.get(userDocRef).then(userDoc => {
+      if (!userDoc.exists) {
+        console.error("User document not found");
+        return;
+      }
 
-            const userData = userDoc.data();
-            const collections = userData.collections || [];
+      const userData = userDoc.data();
+      const collections = userData.collections || [];
 
-            // Find the index of the collection with the given name
-            const collectionIndex = collections.findIndex(collection => collection.name === collectionName);
+      // Find the index of the collection with the given name
+      const collectionIndex = collections.findIndex(collection => collection.name === collectionName);
 
-            if (collectionIndex !== -1) {
-                // Collection with the given name exists, update it with new data
-                collections[collectionIndex].products.push({ productId, productImage });
+      if (collectionIndex !== -1) {
+        // Collection with the given name exists, update it with new data
+        collections[collectionIndex].products.push({ productId, productImage });
 
-                // Update the user document with the modified collections array
-                transaction.update(userDocRef, {
-                    collections: collections
-                });
-            } else {
-                // Collection with the given name doesn't exist, create a new one
-                const newCollection = { name: collectionName, products: [{ productId, productImage }] };
-                collections.push(newCollection);
-
-                // Update the user document with the modified collections array
-                transaction.update(userDocRef, {
-                    collections: collections
-                });
-            }
+        // Update the user document with the modified collections array
+        transaction.update(userDocRef, {
+          collections: collections
         });
+      } else {
+        // Collection with the given name doesn't exist, create a new one
+        const newCollection = { name: collectionName, products: [{ productId, productImage }] };
+        collections.push(newCollection);
+
+        // Update the user document with the modified collections array
+        transaction.update(userDocRef, {
+          collections: collections
+        });
+        }
+      });
     }).catch(error => {
         console.error("Error updating user document:", error);
     });
