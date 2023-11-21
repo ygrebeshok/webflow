@@ -479,7 +479,6 @@ function showPopup(productData) {
 	
   popupTitle.textContent = productData.name;
   popupBrand.textContent = productData.brand;
-  //popupBrand.href = productData.product_link;
   popupDesc.textContent = productData.description;
   popupPrice.textContent = `$${productData.price}`;
 
@@ -511,19 +510,6 @@ function showPopup(productData) {
     }
   });
 
-  linkButton.addEventListener("click", () => {
-  collectionPopupWindow.style.display = "flex";
-
-    if (user) {
-      const userId = user.uid;
-      loadCollections(userId, productId, productData.images[0]);
-      
-    } else {
-      moveUnauthorizedToLogIn();
-    }
-
-});
-
   productData.images.forEach(imageUrl => {
     const thumbnail = document.createElement('div');
     thumbnail.classList.add('thumbnail');
@@ -534,6 +520,19 @@ function showPopup(productData) {
     slide.classList.add('slide');
     slide.innerHTML = `<img src="${imageUrl}" alt="Product Image">`;
     slideContainer.appendChild(slide);
+  });
+
+  linkButton.addEventListener("click", () => {
+    collectionPopupWindow.style.display = "flex";
+
+      if (user) {
+        const userId = user.uid;
+        loadCollections(userId, productId, productData.images[0]);
+      
+      } else {
+        moveUnauthorizedToLogIn();
+      }
+
   });
 	
   popupContainer.style.display = "flex";
