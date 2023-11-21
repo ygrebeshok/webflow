@@ -262,11 +262,6 @@ collectionPopupClose.addEventListener("click", () => {
   collectionPopupWindow.style.display = "none";
 });
 
-newCollectionClose.addEventListener("click", () => {
-  setCollectionNameWindow.style.display = "none";
-  createNewCollectionBtn.removeEventListener('click', handler);
-});
-
 createCollectionBtn.addEventListener("click", () => {
   setCollectionNameWindow.style.display = "flex";
   checkInputForCollection();
@@ -309,21 +304,15 @@ function loadCollections(userId, productId, productData) {
     btn.style.display = "none";
   });
 
-  createNewCollectionBtn.addEventListener("click", async () => {
-    
-    const collectionName = collectionNameInput.value;
+  createNewCollectionBtn.addEventListener('click', () => {
+    createNewCollection(userId, collectionNameInput, productId, productImage);
+  });
 
-    try {
-      await createNewCollection(userId, collectionName, productId, productData.images[0]);
-      setTimeout(() => {
-        collectionNameInput.value = "";
-	setCollectionNameWindow.style.display = "none";
-	collectionPopupWindow.style.display = "none";
-      }, 1000);
-    } catch (error) {
-      console.error("Error creating new collection:", error);
-    }
-
+  newCollectionClose.addEventListener("click", () => {
+    setCollectionNameWindow.style.display = "none";
+    createNewCollectionBtn.removeEventListener("click", () => {
+      createNewCollection(userId, collectionNameInput, productId, productImage);
+    }):
   });
 	
   firebase.firestore().collection('users').doc(userId).get()
@@ -457,41 +446,57 @@ function checkInputForCollection() {
   });
 }
 
-function createNewCollection(userId, collectionName, productId, productImage) {
-  const userDocRef = firebase.firestore().collection('users').doc(userId);
 
-  // Check if the 'collections' array exists in the user document
-  userDocRef.get().then((doc) => {
-    if (doc.exists) {
-      const userData = doc.data();
+function createNewCollection(userId, collectionNameInput, productId, productImage) {
+  const collectionName = collectionNameInput.value;
 
-      // Check if the 'collections' array exists
-      if (!userData.collections) {
-        // If it doesn't exist, create a new 'collections' array with the new collection structure
-        userDocRef.update({
-          collections: [{
-            name: collectionName,
-            products: [{ productId, productImage }]
-          }]
-        });
-      } else {
-        // If it exists, append the new collection structure using arrayUnion
-        userDocRef.update({
-          collections: firebase.firestore.FieldValue.arrayUnion({
-            name: collectionName,
-            products: [{ productId, productImage }]
-          })
-        });
-      }
-
+  try {
+    await createNewCollectionFunc(userId, collectionName, productId, productImage);
+    setTimeout(() => {
+      collectionNameInput.value = "";
       setCollectionNameWindow.style.display = "none";
-    } else {
-      // Handle the case where the user document doesn't exist
-      console.log("User document not found");
-    }
-  }).catch((error) => {
-    console.error("Error getting user document:", error);
-  });
+      collectionPopupWindow.style.display = "none";
+    }, 1000);
+  } catch (error) {
+    console.error("Error creating new collection:", error);
+  }
+
+  async function createNewCollectionFunc(userId, collectionName, productId, productImage) {
+    const userDocRef = firebase.firestore().collection('users').doc(userId);
+
+    // Check if the 'collections' array exists in the user document
+    userDocRef.get().then((doc) => {
+      if (doc.exists) {
+        const userData = doc.data();
+
+        // Check if the 'collections' array exists
+        if (!userData.collections) {
+          // If it doesn't exist, create a new 'collections' array with the new collection structure
+          userDocRef.update({
+            collections: [{
+              name: collectionName,
+              products: [{ productId, productImage }]
+            }]
+          });
+        } else {
+          // If it exists, append the new collection structure using arrayUnion
+          userDocRef.update({
+            collections: firebase.firestore.FieldValue.arrayUnion({
+              name: collectionName,
+              products: [{ productId, productImage }]
+            })
+          });
+        }
+
+        setCollectionNameWindow.style.display = "none";
+      } else {
+        // Handle the case where the user document doesn't exist
+        console.log("User document not found");
+      }
+    }).catch((error) => {
+      console.error("Error getting user document:", error);
+    });
+  }
 }
 
 
@@ -589,8 +594,25 @@ function showPopup(productData) {
 
     popupClose.addEventListener("click", () => {
       popupContainer.style.display = "none";
-      linkButton.removeEventListener('click', handler);
-      popupFavoriteBtn.removeEventListener('click', handler);
+      linkButton.removeEventListener('click', () => {
+	collectionPopupWindow.style.display = "flex";
+
+    	if (user) {
+      	  const userId = user.uid;
+      	  loadCollections(userId, productId, productData);
+    	} else {
+      	  moveUnauthorizedToLogIn();
+    	}
+      });
+	    
+      popupFavoriteBtn.removeEventListener('click', () => {
+        if (user) {
+          const userId = user.uid;
+          toggleFavorite(favoritesLabel, userId, productId);
+        } else {
+          moveUnauthorizedToLogIn();
+        }
+      });
     });
   }
 
