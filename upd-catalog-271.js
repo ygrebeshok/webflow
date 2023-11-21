@@ -433,36 +433,43 @@ function checkInputForCollection() {
   });
 }
 
-function createNewCollection(userId, collection_name) {
+function createNewCollection(userId, collectionName) {
+    const userDocRef = firebase.firestore().collection('users').doc(userId);
 
-  const userDocRef = firebase.firestore().collection('users').doc(userId);
-  // Check if the 'collections' array exists in the user document
-  userDocRef.get().then((doc) => {
-    if (doc.exists) {
-      const userData = doc.data();
-    
-      // Check if the 'collections' array exists
-      if (!userData.collections) {
-        // If it doesn't exist, create a new 'collections' array with the new collection name
-        userDocRef.update({
-          collections: [collection_name]
-        });
+    // Check if the 'collections' array exists in the user document
+    userDocRef.get().then((doc) => {
+      if (doc.exists) {
+        const userData = doc.data();
+
+        // Check if the 'collections' array exists
+        if (!userData.collections) {
+          // If it doesn't exist, create a new 'collections' array with the new collection structure
+          userDocRef.update({
+            collections: [{
+              name: collectionName,
+              products: []
+            }]
+	  });
+        } else {
+          // If it exists, append the new collection structure to the existing array
+          userDocRef.update({
+            collections: [...userData.collections, {
+              name: collectionName,
+              products: []
+            }]
+          });
+        }
+
+        setCollectionNameWindow.style.display = "none";
       } else {
-        // If it exists, append the new collection name to the existing array
-        userDocRef.update({
-          collections: [...userData.collections, collection_name]
-        });
+        // Handle the case where the user document doesn't exist
+        console.log("User document not found");
       }
-
-      setCollectionNameWindow.style.display = "none";
-    } else {
-      // Handle the case where the user document doesn't exist
-      console.log("User document not found");
-    }
-  }).catch((error) => {
-    console.error("Error getting user document:", error);
-  });
+    }).catch((error) => {
+        console.error("Error getting user document:", error);
+    });
 }
+
 
 function showPopup(productData) {
   const slideContainer = document.querySelector('.slides');
