@@ -317,6 +317,7 @@ editCollectionListBtn.addEventListener("click", () => {
 
 function loadCollections(userId, productId, productData) {
   const defaultCollectionCover = "https://firebasestorage.googleapis.com/v0/b/smappy-ai.appspot.com/o/default-collection-cover_600x600.png?alt=media&token=9155ed41-888b-4e07-936e-9fe156da1120";
+  console.log(productData);
 	
   document.querySelectorAll(".remove-collection-btn").forEach(btn => {
     btn.style.display = "none";
@@ -360,7 +361,7 @@ function loadCollections(userId, productId, productData) {
 	  });
 
 	  collectionCard.querySelector("#link-to-collection").addEventListener("click", () => {
-	    addToCollection(userId, collectionName, productId, productData.images[0]);
+	    addToCollection(userId, collectionName, productId);
 	  });
 
           collectionListPopup.appendChild(collectionCard);
@@ -390,7 +391,7 @@ function removeCollection(userId, collectionName) {
   });
 }
 
-function addToCollection(userId, collectionName, productId, image) {
+function addToCollection(userId, collectionName, productId) {
     const userDocRef = firebase.firestore().collection('users').doc(userId);
 
     userDocRef.get().then((doc) => {
@@ -403,7 +404,7 @@ function addToCollection(userId, collectionName, productId, image) {
 
             if (collectionIndex !== -1) {
                 // Collection with the given name exists, update it with new data
-                collections[collectionIndex].products.push({ productId, image });
+                collections[collectionIndex].products.push({ productId });
 
                 // Update the user document with the modified collections array
                 userDocRef.update({
