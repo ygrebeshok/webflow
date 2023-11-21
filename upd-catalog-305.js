@@ -258,6 +258,17 @@ const linkButton = document.getElementById('link-button');
 const controller = new AbortController();
 const { signal } = controller;
 
+const asyncOperation = async () => {
+  // Simulate an asynchronous task
+  await new Promise(resolve => setTimeout(resolve, 2000));
+
+  // Check if the operation was aborted
+  if (signal.aborted) {
+    console.log('Operation aborted');
+    return;
+  }
+
+};
 
 collectionPopupClose.addEventListener("click", () => {
   collectionPopupWindow.style.display = "none";
@@ -266,7 +277,7 @@ collectionPopupClose.addEventListener("click", () => {
 createCollectionBtn.addEventListener("click", () => {
   setCollectionNameWindow.style.display = "flex";
   checkInputForCollection();
-  controller.abort();
+  asyncOperation({ signal });
 });
 
 const noCollectionsImage = document.getElementById('no-collections-image');
@@ -320,7 +331,7 @@ function loadCollections(userId, productId, productData) {
       console.error("Error creating new collection:", error);
     }
 
-    controller.abort();
+    asyncOperation({ signal });
   });
 
   newCollectionClose.addEventListener("click", () => {
@@ -359,7 +370,7 @@ function loadCollections(userId, productId, productData) {
 
 	  collectionCard.querySelector("#link-to-collection").addEventListener("click", () => {
 	    addToCollection(userId, collectionCard.querySelector("#collection-name").textContent, productId, productData.images[0]);
-	    controller.abort();
+	    asyncOperation({ signal });
 	  });
 
           collectionListPopup.appendChild(collectionCard);
@@ -537,7 +548,7 @@ function showPopup(productData) {
       moveUnauthorizedToLogIn();
     }
 
-    controller.abort();
+    asyncOperation({ signal });
   });
 
   productData.images.forEach(imageUrl => {
@@ -739,7 +750,16 @@ function updateCatalog() {
 
       const quickLookBtn = card.querySelector("#quick_look");
       quickLookBtn.addEventListener("click", () => {
-	const productData = {
+	let productData = {
+	  images: [],
+	  name: '',
+	  brand: '',
+	  description: '',
+	  product_link: '',
+	  price: ''
+	};
+		
+	productData = {
 	  images: data.images,
 	  name: card.querySelector("#name").textContent,
 	  brand: card.querySelector("#brand").textContent,
@@ -748,7 +768,7 @@ function updateCatalog() {
 	  price: card.querySelector("#price").textContent.replace("$", "")
 	};
 	showPopup(productData);
-	controller.abort();
+	asyncOperation({ signal });
       });
 
       const likeBtn = card.querySelector("#like-button");
@@ -796,7 +816,7 @@ function updateCatalog() {
 	  toggleLike(likeImage, dislikeImage, userId, productId, selected_who, selected_holiday)
 	}
 
-	controller.abort();
+	asyncOperation({ signal });
       });
 
       dislikeBtn.addEventListener("click", () => {
@@ -806,7 +826,7 @@ function updateCatalog() {
 	  toggleDislike(dislikeImage, likeImage, userId, productId, selected_who, selected_holiday)
 	}
 
-	controller.abort();
+	asyncOperation({ signal });
       });
 
       catalogGrid.appendChild(card);
