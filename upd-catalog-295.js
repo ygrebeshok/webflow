@@ -255,6 +255,8 @@ const collectionListPopup = document.getElementById('collection-list-popup');
 const collectionCardTemplate = document.querySelector('.collection-card');
 const editCollectionListBtn = document.getElementById('edit-collection-list');
 const createCollectionBtn = document.getElementById('create-collection-btn');
+const createNewCollectionBtn = document.getElementById('create-new-collection-btn');
+const linkButton = document.getElementById('link-button');
 
 
 collectionPopupClose.addEventListener("click", () => {
@@ -263,7 +265,7 @@ collectionPopupClose.addEventListener("click", () => {
 
 newCollectionClose.addEventListener("click", () => {
   setCollectionNameWindow.style.display = "none";
-  setCollectionNameWindow.querySelector('#create-new-collection-btn').innerHTML = "";
+  createNewCollectionBtn.removeEventListener('click', handler);
 });
 
 createCollectionBtn.addEventListener("click", () => {
@@ -308,7 +310,7 @@ function loadCollections(userId, productId, productData) {
     btn.style.display = "none";
   });
 
-  setCollectionNameWindow.querySelector('#create-new-collection-btn').addEventListener("click", async () => {
+  createNewCollectionBtn.addEventListener("click", async () => {
     
     const collectionName = collectionNameInput.value;
 
@@ -444,7 +446,6 @@ function addToCollection(userId, collectionName, productId, productImage) {
     }).catch(error => {
         console.error("Error updating user document:", error);
     });
-
     collectionPopupWindow.style.display = "none";
 }
 
@@ -525,7 +526,7 @@ function showPopup(productData) {
     });
   }
 
-  popupContainer.querySelector('#look-fav-btn').addEventListener('click', () => {
+  popupFavoriteBtn.addEventListener('click', () => {
     if (user) {
       const userId = user.uid;
       toggleFavorite(favoritesLabel, userId, productId);
@@ -546,17 +547,15 @@ function showPopup(productData) {
     slideContainer.appendChild(slide);
   });
 
-  popupContainer.querySelector('#link-button').addEventListener("click", () => {
+  linkButton.addEventListener("click", () => {
     collectionPopupWindow.style.display = "flex";
 
-      if (user) {
-        const userId = user.uid;
-        loadCollections(userId, productId, productData);
-      
-      } else {
-        moveUnauthorizedToLogIn();
-      }
-
+    if (user) {
+      const userId = user.uid;
+      loadCollections(userId, productId, productData);
+    } else {
+      moveUnauthorizedToLogIn();
+    }
   });
 	
   popupContainer.style.display = "flex";
@@ -591,8 +590,8 @@ function showPopup(productData) {
 
     popupClose.addEventListener("click", () => {
       popupContainer.style.display = "none";
-      popupContainer.querySelector('#look-fav-btn').innerHTML = "";
-      popupContainer.querySelector('#link-button').innerHTML = "";
+      linkButton.removeEventListener('click', handler);
+      popupFavoriteBtn.removeEventListener('click', handler);
     });
   }
 
