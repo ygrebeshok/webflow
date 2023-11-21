@@ -340,17 +340,11 @@ function loadCollections(userId, productId, productData) {
           const collectionCard = collectionCardTemplate.cloneNode(true);
 
 	  collectionCard.querySelector("#collection-name").textContent = collection.name;
-
-	  console.log(collection.products[0].productImage);
-	  console.log(collection.products.length);
-
-	  const coverImage = collection.products.length > 0 ? collection.products[0].productImage : defaultCollectionCover;
             
-          collectionCard.style.backgroundImage = coverImage;
+          collectionCard.style.backgroundImage = collection.products.length > 0 ? collection.products[0].productImage : defaultCollectionCover;
         
-
 	  collectionCard.querySelector("#remove-collection-btn").addEventListener("click", () => {
-	    removeCollection(userId, collectionName);
+	    removeCollection(userId, collection.name);
             collectionCard.style.display = 'none';
 	  });
 
