@@ -257,6 +257,9 @@ const editCollectionListBtn = document.getElementById('edit-collection-list');
 const createCollectionBtn = document.getElementById('create-collection-btn');
 const linkButton = document.getElementById('link-button');
 
+const controller = new AbortController();
+const { signal } = controller;
+
 
 collectionPopupClose.addEventListener("click", () => {
   collectionPopupWindow.style.display = "none";
@@ -265,6 +268,7 @@ collectionPopupClose.addEventListener("click", () => {
 createCollectionBtn.addEventListener("click", () => {
   setCollectionNameWindow.style.display = "flex";
   checkInputForCollection();
+  controller.abort();
 });
 
 const noCollectionsImage = document.getElementById('no-collections-image');
@@ -317,7 +321,9 @@ function loadCollections(userId, productId, productData) {
     } catch (error) {
       console.error("Error creating new collection:", error);
     }
-  }, { once: true });
+
+    controller.abort();
+  });
 
   newCollectionClose.addEventListener("click", () => {
     setCollectionNameWindow.style.display = "none";
@@ -355,7 +361,8 @@ function loadCollections(userId, productId, productData) {
 
 	  collectionCard.querySelector("#link-to-collection").addEventListener("click", () => {
 	    addToCollection(userId, collectionCard.querySelector("#collection-name").textContent, productId, productData.images[0]);
-	  }, { once: true });
+	    controller.abort();
+	  });
 
           collectionListPopup.appendChild(collectionCard);
 		
@@ -531,7 +538,9 @@ function showPopup(productData) {
     } else {
       moveUnauthorizedToLogIn();
     }
-  }, { once: true });
+
+    controller.abort();
+  });
 
   productData.images.forEach(imageUrl => {
     const thumbnail = document.createElement('div');
@@ -736,7 +745,8 @@ function updateCatalog() {
 	  price: card.querySelector("#price").textContent.replace("$", "")
 	};
 	showPopup(productData);
-      }, { once: true });
+	controller.abort();
+      });
 
       const likeBtn = card.querySelector("#like-button");
       const dislikeBtn = card.querySelector("#dislike-button");
@@ -782,7 +792,9 @@ function updateCatalog() {
 	  const userId = user.uid;
 	  toggleLike(likeImage, dislikeImage, userId, productId, selected_who, selected_holiday)
 	}
-      }, { once: true });
+
+	controller.abort();
+      });
 
       dislikeBtn.addEventListener("click", () => {
 	moveUnauthorizedToLogIn();
@@ -790,7 +802,9 @@ function updateCatalog() {
 	  const userId = user.uid;
 	  toggleDislike(dislikeImage, likeImage, userId, productId, selected_who, selected_holiday)
 	}
-      }, { once: true });
+
+	controller.abort();
+      });
 
       catalogGrid.appendChild(card);
 
