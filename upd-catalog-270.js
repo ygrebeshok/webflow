@@ -393,12 +393,35 @@ function removeCollection(userId, collectionName) {
 }
 
 function addToCollection(userId, collectionName, productId, image) {
-  const userDocRef = firebase.firestore().collection('users').doc(userId);
+    const userDocRef = firebase.firestore().collection('users').doc(userId);
 
-  // Update the collections array in the user document
-  userDocRef.update({
-    collections: firebase.firestore.FieldValue.arrayUnion({ name: collectionName, productId, image })
-  });
+    userDocRef.get().then((doc) => {
+        if (doc.exists) {
+            const userData = doc.data();
+            const collections = userData.collections || [];
+
+            // Find the index of the collection with the given name
+            const collectionIndex = collections.findIndex(collection => collection.name === collectionName);
+
+            if (collectionIndex !== -1) {
+                // Collection with the given name exists, update it with new data
+                collections[collectionIndex].products.push({ productId, image });
+
+                // Update the user document with the modified collections array
+                userDocRef.update({
+                    collections: collections
+                });
+            } else {
+                // Collection with the given name doesn't exist
+                console.error("Collection not found:", collectionName);
+            }
+        } else {
+            // Handle the case where the user document doesn't exist
+            console.error("User document not found");
+        }
+    }).catch((error) => {
+        console.error("Error getting user document:", error);
+    });
 }
 
 
