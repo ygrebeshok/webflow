@@ -245,10 +245,8 @@ function toggleFavorite(element, userId, productId) {
    }
 }
 
-const linkButton = document.getElementById('link-button');
 const collectionPopupWindow = document.getElementById('collection-popup-window');
 const collectionPopupClose = document.getElementById('collection-popup-close');
-const createCollectionBtn = document.getElementById('create-collection-btn');
 const newCollectionClose = document.getElementById('new-collection-close');
 const createNewCollectionBtn = document.getElementById('create-new-collection-btn');
 const collectionNameInput = document.getElementById('collection-name-input');
@@ -306,6 +304,24 @@ function loadCollections(userId, productId, productData) {
 	
   document.querySelectorAll(".remove-collection-btn").forEach(btn => {
     btn.style.display = "none";
+  });
+
+  collectionPopupWindow.querySelector('#create-collection-btn').addEventListener("click", async () => {
+    moveUnauthorizedToLogIn();
+    
+    const collectionName = collectionNameInput.value;
+
+    try {
+      await createNewCollection(userId, collectionName, productId, productData.images[0]);
+      setTimeout(() => {
+        collectionNameInput.value = "";
+	setCollectionNameWindow.style.display = "none";
+	collectionPopupWindow.style.display = "none";
+      }, 1000);
+    } catch (error) {
+      console.error("Error creating new collection:", error);
+    }
+
   });
 	
   firebase.firestore().collection('users').doc(userId).get()
@@ -508,7 +524,7 @@ function showPopup(productData) {
     });
   }
 
-  popupFavoriteBtn.addEventListener('click', () => {
+  popupContainer.querySelector('#look-fav-btn').addEventListener('click', () => {
     if (user) {
       const userId = user.uid;
       toggleFavorite(favoritesLabel, userId, productId);
@@ -529,7 +545,7 @@ function showPopup(productData) {
     slideContainer.appendChild(slide);
   });
 
-  linkButton.addEventListener("click", () => {
+  popupContainer.querySelector('#link-button').addEventListener("click", () => {
     collectionPopupWindow.style.display = "flex";
 
       if (user) {
@@ -540,29 +556,6 @@ function showPopup(productData) {
         moveUnauthorizedToLogIn();
       }
 
-  });
-
-  createNewCollectionBtn.addEventListener("click", async () => {
-  
-    firebase.auth().onAuthStateChanged(async function (authUser) {
-      if (authUser) {
-        const userId = authUser.uid;
-        const collectionName = collectionNameInput.value;
-
-        try {
-          await createNewCollection(userId, collectionName, productId, productData.images[0]);
-          setTimeout(() => {
-            collectionNameInput.value = "";
-	    setCollectionNameWindow.style.display = "none";
-	    collectionPopupWindow.style.display = "none";
-          }, 1000);
-        } catch (error) {
-          console.error("Error creating new collection:", error);
-        }
-      } else {
-        moveUnauthorizedToLogIn();
-      }
-    });
   });
 	
   popupContainer.style.display = "flex";
