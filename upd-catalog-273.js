@@ -273,8 +273,7 @@ createCollectionBtn.addEventListener("click", () => {
 
 
 createNewCollectionBtn.addEventListener("click", async () => {
-  moveUnauthorizedToLogIn();
-
+  
   firebase.auth().onAuthStateChanged(async function (authUser) {
     if (authUser) {
       const userId = authUser.uid;
@@ -291,8 +290,7 @@ createNewCollectionBtn.addEventListener("click", async () => {
         console.error("Error creating new collection:", error);
       }
     } else {
-      // Handle the case where no user is authenticated
-      console.log("No authenticated user");
+      moveUnauthorizedToLogIn();
     }
   });
 });
@@ -317,7 +315,7 @@ editCollectionListBtn.addEventListener("click", () => {
   }	  
 });
 
-function loadCollections(userId, productId, image) {
+function loadCollections(userId, productId, productData) {
   const defaultCollectionCover = "https://firebasestorage.googleapis.com/v0/b/smappy-ai.appspot.com/o/default-collection-cover_600x600.png?alt=media&token=9155ed41-888b-4e07-936e-9fe156da1120";
 	
   document.querySelectorAll(".remove-collection-btn").forEach(btn => {
@@ -362,7 +360,7 @@ function loadCollections(userId, productId, image) {
 	  });
 
 	  collectionCard.querySelector("#link-to-collection").addEventListener("click", () => {
-	    addToCollection(userId, collectionName, productId, image);
+	    addToCollection(userId, collectionName, productId, productData.images[0]);
 	  });
 
           collectionListPopup.appendChild(collectionCard);
@@ -527,7 +525,7 @@ function showPopup(productData) {
 
       if (user) {
         const userId = user.uid;
-        loadCollections(userId, productId, productData.images[0]);
+        loadCollections(userId, productId, productData);
       
       } else {
         moveUnauthorizedToLogIn();
