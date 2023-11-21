@@ -682,6 +682,7 @@ favoriteBtn.addEventListener("click", () => {
     if (user) {
       const userId = user.uid;
       toggleFavorite(favoritesLabel, userId, popupTitle.textContent);
+      setupUser();
     } else {
       moveUnauthorizedToLogIn();
     }
