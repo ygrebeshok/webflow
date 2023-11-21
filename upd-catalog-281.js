@@ -340,8 +340,12 @@ function loadCollections(userId, productId, productData) {
           const collectionCard = collectionCardTemplate.cloneNode(true);
 
 	  collectionCard.querySelector("#collection-name").textContent = collection.name;
-            
-          collectionCard.style.backgroundImage = collection.products.length > 0 ? collection.products[0].productImage : defaultCollectionCover;
+
+	  if (collection.products.length > 0) {
+	    collectionCard.style.backgroundImage = collection.products[0].productImage;
+	  } else {
+	    collectionCard.style.backgroundImage = defaultCollectionCover;
+	  }
         
 	  collectionCard.querySelector("#remove-collection-btn").addEventListener("click", () => {
 	    removeCollection(userId, collection.name);
@@ -368,14 +372,33 @@ function loadCollections(userId, productId, productData) {
 function removeCollection(userId, collectionName) {
   const userDocRef = firebase.firestore().collection('users').doc(userId);
 
-  userDocRef.update({
-    collections: firebase.firestore.FieldValue.arrayRemove(collectionName)
-  })
-  .then(() => {
-    console.log(`Collection '${collectionName}' removed successfully.`);
-  })
-  .catch((error) => {
-    console.error("Error removing collection:", error);
+  // Fetch the user document to get the current collections array
+  userDocRef.get().then((doc) => {
+    if (doc.exists) {
+      const userData = doc.data();
+      const collections = userData.collections || [];
+
+      // Find the index of the collection with the given name
+      const collectionIndex = collections.findIndex(collection => collection.name === collectionName);
+
+      if (collectionIndex !== -1) {
+        // Collection with the given name exists, update it with new data
+        collections.splice(collectionIndex, 1); // Remove the collection at the found index
+
+        // Update the user document with the modified collections array
+        userDocRef.update({
+          collections: collections
+        });
+      } else {
+        // Collection with the given name doesn't exist
+        console.error("Collection not found:", collectionName);
+      }
+    } else {
+      // Handle the case where the user document doesn't exist
+      console.error("User document not found");
+    }
+  }).catch((error) => {
+    console.error("Error getting user document:", error);
   });
 }
 
