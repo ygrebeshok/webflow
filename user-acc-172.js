@@ -27,8 +27,7 @@ const profileProductDefault = document.querySelector(".default-profile-product-c
 const profileProductName = document.getElementById("profile-product-name");
 const profileProductPopup = document.getElementById("profile-products-popup-container");
 const profileFavoritesLabel = document.getElementById("profile-popup-favorite-label");
-const showProductsPageLink = document.getElementById("show-products-page-link-btn");
-const pageLink = document.getElementById("page-link-btn");
+const addToCollectionOrdinaryBtn = document.getElementById("page-link-btn");
 
 var bodyAuth = document.body.getAttribute('data-user-auth');
 var bodyUnauth = document.body.getAttribute('data-user-unauth');
@@ -185,7 +184,6 @@ function showPopupForProfileProducts(productName, userId) {
   profilePopupBrand.innerHTML = '';
   profilePopupDesc.innerHTML = '';
   profilePopupPrice.innerHTML = '';
-  showProductsPageLink.href = '';
 
   profileFavoritesLabel.innerHTML = '';
 
@@ -269,6 +267,322 @@ function showPopupForProfileProducts(productName, userId) {
   });	
 }
 
+collectionPopupClose.addEventListener("click", () => {
+  collectionPopupWindow.style.display = "none";
+});
+
+newCollectionClose.addEventListener("click", () => {
+  setCollectionNameWindow.style.display = "none";
+});
+
+createCollectionBtn.addEventListener("click", () => {
+  setCollectionNameWindow.style.display = "flex";
+  checkInputForCollection();
+});
+
+
+const collectionPopupWindow = document.getElementById('collection-popup-window');
+const collectionPopupClose = document.getElementById('collection-popup-close');
+const newCollectionClose = document.getElementById('new-collection-close');
+const createNewCollectionBtn = document.getElementById('create-new-collection-btn');
+const collectionNameInput = document.getElementById('collection-name-input');
+const setCollectionNameWindow = document.getElementById('set-collection-name-window');
+const collectionListPopup = document.getElementById('collection-list-popup');
+const collectionCardTemplate = document.querySelector('.collection-card');
+const editCollectionListBtn = document.getElementById('edit-collection-list');
+const createCollectionBtn = document.getElementById('create-collection-btn');
+
+
+const noCollectionsImage = document.getElementById('no-collections-image');
+
+editCollectionListBtn.addEventListener("click", () => {
+    
+  if (editCollectionListBtn.textContent === "Edit List") {
+    editCollectionListBtn.textContent = "Done";
+	    
+    document.querySelectorAll(".remove-collection-btn").forEach(btn => {
+      btn.style.display = "block";
+    });
+
+    document.querySelectorAll('.collection-card').forEach(card => {
+      card.querySelector('#link-to-collection').style.pointerEvents = 'none';
+      card.classList.remove('donate');
+    }); 
+	    
+  } else if (editCollectionListBtn.textContent === "Done") {
+    editCollectionListBtn.textContent = "Edit List";
+	    
+    document.querySelectorAll(".remove-collection-btn").forEach(btn => {
+      btn.style.display = "none";
+    });
+
+    document.querySelectorAll('.collection-card').forEach(card => {
+      card.querySelector('#link-to-collection').style.pointerEvents = '';
+      card.classList.add('donate');
+    });
+  }	  
+});
+
+createNewCollectionBtn.addEventListener('click', async () => {
+  const collectionName = collectionNameInput.value;
+
+  try {
+    const querySnapshot = await firebase.firestore().collection('added-by-parsing').where("name", "==", popupTitle.textContent).get();
+
+    if (!querySnapshot.empty) {
+      const doc = querySnapshot.docs[0];
+      const data = doc.data();
+      const productImage = data.images[0];
+
+      const authUser = firebase.auth().currentUser;
+      
+      if (authUser) {
+        const userId = authUser.uid;
+        try {
+          await createNewCollection(userId, collectionName, popupTitle.textContent, productImage);
+          setTimeout(() => {
+            collectionNameInput.value = "";
+            setCollectionNameWindow.style.display = "none";
+            collectionPopupWindow.style.display = "none";
+          }, 1000);
+        } catch (error) {
+          console.error("Error creating new collection:", error);
+        }
+      } else {
+        moveUnauthorizedToLogIn();
+      }
+    } else {
+      console.log("Document not found");
+    }
+  } catch (error) {
+    console.error("Error getting document:", error);
+  }
+});
+
+
+function loadCollections(userId, productId) {
+  const defaultCollectionCover = "https://firebasestorage.googleapis.com/v0/b/smappy-ai.appspot.com/o/default-collection-cover_600x600.png?alt=media&token=9155ed41-888b-4e07-936e-9fe156da1120";
+	
+  document.querySelectorAll(".remove-collection-btn").forEach(btn => {
+    btn.style.display = "none";
+  });
+
+  let productImage = '';
+
+  firebase.firestore().collection('added-by-parsing').where("name", "==", productId)
+  .get()
+  .then((querySnapshot) => {
+    if (!querySnapshot.empty) {
+      const doc = querySnapshot.docs[0];
+      const data = doc.data();
+      productImage = data.images[0];
+    } else {
+      console.log("Document not found");
+    }
+  })
+  .catch((error) => {
+    console.error("Error getting document:", error);
+  });
+
+  console.log(productImage)
+	
+  firebase.firestore().collection('users').doc(userId).get()
+    .then((doc) => {
+      collectionListPopup.innerHTML = "";
+
+      if (doc.exists) {
+        const data = doc.data();
+        const collections = data.collections || [];
+
+	if (collections.length === 0) {
+    	  noCollectionsImage.style.display = "block";
+  	} else {
+    	  noCollectionsImage.style.display = "none";
+  	}
+
+        collections.forEach(async (collection) => {
+          const collectionCard = collectionCardTemplate.cloneNode(true);
+
+	  collectionCard.querySelector("#collection-name").textContent = collection.name;
+
+	  if (collection.products.length > 0) {
+	    collectionCard.querySelector("#cover-collection").src = collection.products[0].productImage;
+	  } else {
+	    collectionCard.querySelector("#cover-collection").src = defaultCollectionCover;
+	  }
+        
+	  collectionCard.querySelector("#remove-collection-btn").addEventListener("click", () => {
+	    removeCollection(userId, collection.name);
+            collectionCard.style.display = 'none';
+	  });
+
+	  collectionCard.querySelector("#link-to-collection").addEventListener("click", () => {
+	    addToCollection(userId, collectionCard.querySelector("#collection-name").textContent, productId, productImage);
+	  });
+
+          collectionListPopup.appendChild(collectionCard);
+        });
+	      
+      } else {
+        console.error("User document not found");
+      }
+    })
+    .catch((error) => {
+      console.error("Error loading collections:", error);
+    });
+}
+
+function removeCollection(userId, collectionName) {
+  const userDocRef = firebase.firestore().collection('users').doc(userId);
+
+  // Fetch the user document to get the current collections array
+  userDocRef.get().then((doc) => {
+    if (doc.exists) {
+      const userData = doc.data();
+      const collections = userData.collections || [];
+
+      // Find the index of the collection with the given name
+      const collectionIndex = collections.findIndex(collection => collection.name === collectionName);
+
+      if (collectionIndex !== -1) {
+        // Collection with the given name exists, update it with new data
+        collections.splice(collectionIndex, 1); // Remove the collection at the found index
+
+        // Update the user document with the modified collections array
+        userDocRef.update({
+          collections: collections
+        });
+      } else {
+        // Collection with the given name doesn't exist
+        console.error("Collection not found:", collectionName);
+      }
+    } else {
+      // Handle the case where the user document doesn't exist
+      console.error("User document not found");
+    }
+  }).catch((error) => {
+    console.error("Error getting user document:", error);
+  });
+}
+
+
+function addToCollection(userId, collectionName, productId, productImage) {
+  const userDocRef = firebase.firestore().collection('users').doc(userId);
+
+  firebase.firestore().runTransaction(transaction => {
+    return transaction.get(userDocRef).then(userDoc => {
+      if (!userDoc.exists) {
+        console.error("User document not found");
+        return;
+      }
+
+      const userData = userDoc.data();
+      const collections = userData.collections || [];
+
+      // Find the index of the collection with the given name
+      const collectionIndex = collections.findIndex(collection => collection.name === collectionName);
+
+      if (collectionIndex !== -1) {
+        // Collection with the given name exists, update it with new data
+        collections[collectionIndex].products.push({ productId, productImage });
+
+        // Update the user document with the modified collections array
+        transaction.update(userDocRef, {
+          collections: collections
+        });
+      } else {
+        // Collection with the given name doesn't exist, create a new one
+        const newCollection = { name: collectionName, products: [{ productId, productImage }] };
+        collections.push(newCollection);
+
+        // Update the user document with the modified collections array
+        transaction.update(userDocRef, {
+          collections: collections
+        });
+        }
+      });
+    }).catch(error => {
+        console.error("Error updating user document:", error);
+    });
+    collectionPopupWindow.style.display = "none";
+}
+
+
+function checkInputForCollection() {
+  createNewCollectionBtn.classList.add('disablegrid');
+
+  collectionNameInput.addEventListener('input', (event) => {
+    createNewCollectionBtn.classList.remove('disablegrid');
+  });
+}
+
+
+async function createNewCollection(userId, collectionName, productId, productImage) {
+  
+  const userDocRef = firebase.firestore().collection('users').doc(userId);
+
+  // Check if the 'collections' array exists in the user document
+  userDocRef.get().then((doc) => {
+    if (doc.exists) {
+      const userData = doc.data();
+
+      // Check if the 'collections' array exists
+      if (!userData.collections) {
+        // If it doesn't exist, create a new 'collections' array with the new collection structure
+        userDocRef.update({
+          collections: [{
+            name: collectionName,
+            products: [{ productId, productImage }]
+          }]
+        });
+      } else {
+        // If it exists, append the new collection structure using arrayUnion
+        userDocRef.update({
+          collections: firebase.firestore.FieldValue.arrayUnion({
+            name: collectionName,
+            products: [{ productId, productImage }]
+          })
+        });
+      }
+
+      setCollectionNameWindow.style.display = "none";
+    } else {
+      // Handle the case where the user document doesn't exist
+      console.log("User document not found");
+    }
+  }).catch((error) => {
+    console.error("Error getting user document:", error);
+  });
+}
+
+
+function toggleFavorite(element, userId, productId) {
+  const isFavorite = element.textContent === "Remove from Favorites";
+
+  if (isFavorite) {
+    firebase.firestore().collection("users").doc(userId).update({
+    favorites: firebase.firestore.FieldValue.arrayRemove(productId)
+    })
+    .then(() => {
+      element.textContent = "Add to Favorites";
+    })
+    .catch(error => {
+      console.log("Error removing product from favorites:", error);
+    });
+  } else {
+    firebase.firestore().collection("users").doc(userId).update({
+      favorites: firebase.firestore.FieldValue.arrayUnion(productId)
+    })
+    .then(() => {
+      element.textContent = "Remove from Favorites";
+    })
+    .catch(error => {
+      console.log("Error adding product to favorites:", error);
+    });
+   }
+}
+
+
 function showPopupUser(productData, card) {
 	
   const slideContainer = document.querySelector('.slides');
@@ -276,111 +590,104 @@ function showPopupUser(productData, card) {
   slideContainer.innerHTML = ''; // Clear existing slides
   thumbnailContainer.innerHTML = ''; // Clear existing thumbnails
 
-  popupTitle.innerHTML = '';
-  popupBrand.innerHTML = '';
-  popupBrand.innerHTML = '';
-  popupDesc.innerHTML = '';
-  popupPrice.innerHTML = '';
-  favoritesLabel.innerHTML = '';
-  pageLink.href = productData.product_link;
-	
   popupTitle.textContent = productData.name;
   popupBrand.textContent = productData.brand;
-  //popupBrand.href = productData.product_link;
   popupDesc.textContent = productData.description;
   popupPrice.textContent = `$${productData.price}`;
-  pageLink.href = productData.product_link;
 
   const user = firebase.auth().currentUser;
   const userId = user.uid;
   const productId = productData.name;
 
-  firebase.firestore().collection("users").doc(userId).get()
+  if (user) {
+    const userId = user.uid;
+    firebase.firestore().collection("users").doc(userId).get()
     .then(doc => {
-      const favorite = doc.data().favorites;
-      if (favorite.includes(productId)) {
+      const favorites = doc.data().favorites;
+      if (favorites.includes(productId)) {
         favoritesLabel.textContent = "Remove from Favorites";
       } else {
-        favoritesLabel.textContent = "Add to Favorites";
+	favoritesLabel.textContent = "Add to Favorites";
       }
-	    
-      favoriteBtn.addEventListener('click', () => {
-        const isFavorite = favoritesLabel.textContent === "Remove from Favorites";
-
-        if (isFavorite) {
-          firebase.firestore().collection("users").doc(userId).update({
-            favorites: firebase.firestore.FieldValue.arrayRemove(productId)
-          })
-          .then(() => {
-            favoritesLabel.textContent = "Add to Favorites";
-	      card.style.display = "none";
-          })
-          .catch(error => {
-            console.log("Error removing product from favorites:", error);
-          });
-          } else {
-            firebase.firestore().collection("users").doc(userId).update({
-              favorites: firebase.firestore.FieldValue.arrayUnion(productId)
-            })
-            .then(() => {
-              favoritesLabel.textContent = "Remove from Favorites";
-            })
-            .catch(error => {
-              console.log("Error adding product to favorites:", error);
-            });
-          }
-       });
     })
     .catch(error => {
       console.log("Error getting favorites:", error);
     });
+  }
 
-    productData.images.forEach(imageUrl => {
-      const thumbnail = document.createElement('div');
-      thumbnail.classList.add('thumbnail');
-      thumbnail.innerHTML = `<img src="${imageUrl}" alt="Thumbnail">`;
-      thumbnailContainer.appendChild(thumbnail);
+  productData.images.forEach(imageUrl => {
+    const thumbnail = document.createElement('div');
+    thumbnail.classList.add('thumbnail');
+    thumbnail.innerHTML = `<img src="${imageUrl}" alt="Thumbnail">`;
+    thumbnailContainer.appendChild(thumbnail);
 
-      const slide = document.createElement('div');
-      slide.classList.add('slide');
-      slide.innerHTML = `<img src="${imageUrl}" alt="Product Image">`;
-      slideContainer.appendChild(slide);
-    })
+    const slide = document.createElement('div');
+    slide.classList.add('slide');
+    slide.innerHTML = `<img src="${imageUrl}" alt="Product Image">`;
+    slideContainer.appendChild(slide);
+  })
 	
-    popupContainer.style.display = "flex";
+  popupContainer.style.display = "flex";
 
-    const slides = document.querySelector('.slides');
-    const thumbnails = document.querySelectorAll('.thumbnail');
-    let currentSlide = 0;
+  const slides = document.querySelector('.slides');
+  const thumbnails = document.querySelectorAll('.thumbnail');
+  let currentSlide = 0;
 
-    function updateThumbnails() {
-      thumbnails.forEach((thumbnail, index) => {
-        if (index === currentSlide) {
-          thumbnail.classList.add('active');
-        } else {
-          thumbnail.classList.remove('active');
-        }
-      });
-     }
-
-    function showSlide(slideIndex) {
-      slides.style.transform = `translateX(-${slideIndex * 100}%)`;
-      currentSlide = slideIndex;
-      updateThumbnails();
-    }
-
+  function updateThumbnails() {
     thumbnails.forEach((thumbnail, index) => {
-      thumbnail.addEventListener('click', function() {
-        showSlide(index);
-      });
+      if (index === currentSlide) {
+        thumbnail.classList.add('active');
+      } else {
+        thumbnail.classList.remove('active');
+      }
     });
+  }
 
-    showSlide(currentSlide);
+  function showSlide(slideIndex) {
+    slides.style.transform = `translateX(-${slideIndex * 100}%)`;
+    currentSlide = slideIndex;
+    updateThumbnails();
+  }
 
-    popupClose.addEventListener("click", () => {
-      popupContainer.style.display = "none";
+  thumbnails.forEach((thumbnail, index) => {
+    thumbnail.addEventListener('click', function() {
+      showSlide(index);
     });
+  });
+
+  showSlide(currentSlide);
 }
+
+popupClose.addEventListener("click", () => {
+  popupContainer.style.display = "none";
+});
+
+addToCollectionOrdinaryBtn.addEventListener("click", () => {
+  collectionPopupWindow.style.display = "flex";
+  firebase.auth().onAuthStateChanged(function(authUser) {
+    user = authUser;
+
+    if (user) {
+      const userId = user.uid;
+      loadCollections(userId, popupTitle.textContent);
+    } else {
+      moveUnauthorizedToLogIn();
+    }
+	  
+  });
+});
+
+favoriteBtn.addEventListener("click", () => {
+  firebase.auth().onAuthStateChanged(function(authUser) {
+    user = authUser;
+    if (user) {
+      const userId = user.uid;
+      toggleFavorite(favoritesLabel, userId, popupTitle.textContent);
+    } else {
+      moveUnauthorizedToLogIn();
+    }
+  }); 
+});
 
 const defaultCard = document.querySelector(".default-card");
 favoritesGrid.removeChild(defaultCard);
