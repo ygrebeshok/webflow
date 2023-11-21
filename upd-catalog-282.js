@@ -342,9 +342,9 @@ function loadCollections(userId, productId, productData) {
 	  collectionCard.querySelector("#collection-name").textContent = collection.name;
 
 	  if (collection.products.length > 0) {
-	    collectionCard.style.backgroundImage = collection.products[0].productImage;
+	    collectionCard.style.background = collection.products[0].productImage;
 	  } else {
-	    collectionCard.style.backgroundImage = defaultCollectionCover;
+	    collectionCard.style.background = defaultCollectionCover;
 	  }
         
 	  collectionCard.querySelector("#remove-collection-btn").addEventListener("click", () => {
