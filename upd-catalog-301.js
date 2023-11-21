@@ -304,11 +304,11 @@ function loadCollections(userId, productId, productData) {
     btn.style.display = "none";
   });
 
-  createNewCollectionBtn.addEventListener('click', () => {
+  createNewCollectionBtn.addEventListener('click', async () => {
     const collectionName = collectionNameInput.value;
 	  
     try {
-      await createNewCollection(userId, collectionName, productId, productImage);
+      await createNewCollection(userId, collectionName, productId, productData.images[0]);
       setTimeout(() => {
         collectionNameInput.value = "";
         setCollectionNameWindow.style.display = "none";
