@@ -277,6 +277,7 @@ collectionPopupClose.addEventListener("click", () => {
 createCollectionBtn.addEventListener("click", () => {
   setCollectionNameWindow.style.display = "flex";
   checkInputForCollection();
+  controller.abort();
   asyncOperation({ signal });
 });
 
@@ -321,6 +322,7 @@ function loadCollections(userId, productId, productData) {
     const collectionName = collectionNameInput.value;
 	  
     try {
+      controller.abort();
       await createNewCollection(userId, collectionName, productId, productData.images[0]);
       setTimeout(() => {
         collectionNameInput.value = "";
@@ -370,6 +372,7 @@ function loadCollections(userId, productId, productData) {
 
 	  collectionCard.querySelector("#link-to-collection").addEventListener("click", () => {
 	    addToCollection(userId, collectionCard.querySelector("#collection-name").textContent, productId, productData.images[0]);
+	    controller.abort();
 	    asyncOperation({ signal });
 	  });
 
@@ -547,7 +550,7 @@ function showPopup(productData) {
     } else {
       moveUnauthorizedToLogIn();
     }
-
+    controller.abort();
     asyncOperation({ signal });
   });
 
@@ -768,6 +771,7 @@ function updateCatalog() {
 	  price: card.querySelector("#price").textContent.replace("$", "")
 	};
 	showPopup(productData);
+	controller.abort();
 	asyncOperation({ signal });
       });
 
@@ -815,7 +819,7 @@ function updateCatalog() {
 	  const userId = user.uid;
 	  toggleLike(likeImage, dislikeImage, userId, productId, selected_who, selected_holiday)
 	}
-
+        controller.abort();
 	asyncOperation({ signal });
       });
 
@@ -825,7 +829,7 @@ function updateCatalog() {
 	  const userId = user.uid;
 	  toggleDislike(dislikeImage, likeImage, userId, productId, selected_who, selected_holiday)
 	}
-
+        controller.abort();
 	asyncOperation({ signal });
       });
 
