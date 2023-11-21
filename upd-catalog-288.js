@@ -282,8 +282,10 @@ editCollectionListBtn.addEventListener("click", () => {
       btn.style.display = "block";
     });
 
-    document.querySelectAll('.collection-card').style.pointerEvents = 'none';
-    document.querySelectAll('.collection-card').classList.remove('donate');  
+    document.querySelectorAll('.collection-card').forEach(card => {
+      card.style.pointerEvents = 'none';
+      card.classList.remove('donate');
+    }); 
 	    
   } else if (editCollectionListBtn.textContent === "Done") {
     editCollectionListBtn.textContent = "Edit List";
@@ -292,8 +294,10 @@ editCollectionListBtn.addEventListener("click", () => {
       btn.style.display = "none";
     });
 
-    document.querySelectAll('.collection-card').style.pointerEvents = '';
-    document.querySelectAll('.collection-card').classList.add('donate'); 
+    document.querySelectorAll('.collection-card').forEach(card => {
+      card.style.pointerEvents = '';
+      card.classList.add('donate');
+    });
   }	  
 });
 
