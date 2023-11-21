@@ -259,10 +259,12 @@ const createCollectionBtn = document.getElementById('create-collection-btn');
 
 collectionPopupClose.addEventListener("click", () => {
   collectionPopupWindow.style.display = "none";
+  collectionPopupWindow.innerHTML = "";
 });
 
 newCollectionClose.addEventListener("click", () => {
   setCollectionNameWindow.style.display = "none";
+  setCollectionNameWindow.innerHTML = "";
 });
 
 createCollectionBtn.addEventListener("click", () => {
@@ -590,6 +592,7 @@ function showPopup(productData) {
 
     popupClose.addEventListener("click", () => {
       popupContainer.style.display = "none";
+      popupContainer.innerHTML = "";
     });
   }
 
