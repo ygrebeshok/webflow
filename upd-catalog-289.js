@@ -283,7 +283,7 @@ editCollectionListBtn.addEventListener("click", () => {
     });
 
     document.querySelectorAll('.collection-card').forEach(card => {
-      card.style.pointerEvents = 'none';
+      card.querySelector('#link-to-collection').style.pointerEvents = 'none';
       card.classList.remove('donate');
     }); 
 	    
@@ -295,7 +295,7 @@ editCollectionListBtn.addEventListener("click", () => {
     });
 
     document.querySelectorAll('.collection-card').forEach(card => {
-      card.style.pointerEvents = '';
+      card.querySelector('#link-to-collection').style.pointerEvents = '';
       card.classList.add('donate');
     });
   }	  
