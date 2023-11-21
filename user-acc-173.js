@@ -267,19 +267,6 @@ function showPopupForProfileProducts(productName, userId) {
   });	
 }
 
-collectionPopupClose.addEventListener("click", () => {
-  collectionPopupWindow.style.display = "none";
-});
-
-newCollectionClose.addEventListener("click", () => {
-  setCollectionNameWindow.style.display = "none";
-});
-
-createCollectionBtn.addEventListener("click", () => {
-  setCollectionNameWindow.style.display = "flex";
-  checkInputForCollection();
-});
-
 
 const collectionPopupWindow = document.getElementById('collection-popup-window');
 const collectionPopupClose = document.getElementById('collection-popup-close');
@@ -292,8 +279,20 @@ const collectionCardTemplate = document.querySelector('.collection-card');
 const editCollectionListBtn = document.getElementById('edit-collection-list');
 const createCollectionBtn = document.getElementById('create-collection-btn');
 
-
 const noCollectionsImage = document.getElementById('no-collections-image');
+
+collectionPopupClose.addEventListener("click", () => {
+  collectionPopupWindow.style.display = "none";
+});
+
+newCollectionClose.addEventListener("click", () => {
+  setCollectionNameWindow.style.display = "none";
+});
+
+createCollectionBtn.addEventListener("click", () => {
+  setCollectionNameWindow.style.display = "flex";
+  checkInputForCollection();
+});
 
 editCollectionListBtn.addEventListener("click", () => {
     
