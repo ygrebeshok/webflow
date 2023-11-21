@@ -257,22 +257,6 @@ const collectionListPopup = document.getElementById('collection-list-popup');
 const collectionCardTemplate = document.querySelector('.collection-card');
 const editCollectionListBtn = document.getElementById('edit-collection-list');
 
-linkButton.addEventListener("click", () => {
-  collectionPopupWindow.style.display = "flex";
-
-  firebase.auth().onAuthStateChanged(function (authUser) {
-    if (authUser) {
-      const userId = authUser.uid;
-      
-      loadCollections(userId);
-
-      
-    } else {
-      // Handle the case where no user is authenticated
-      console.log("No authenticated user");
-    }
-  });
-});
 
 collectionPopupClose.addEventListener("click", () => {
   collectionPopupWindow.style.display = "none";
@@ -333,7 +317,7 @@ editCollectionListBtn.addEventListener("click", () => {
   }	  
 });
 
-function loadCollections(userId) {
+function loadCollections(userId, productId, image) {
   const defaultCollectionCover = "https://firebasestorage.googleapis.com/v0/b/smappy-ai.appspot.com/o/default-collection-cover_600x600.png?alt=media&token=9155ed41-888b-4e07-936e-9fe156da1120";
 	
   document.querySelectorAll(".remove-collection-btn").forEach(btn => {
@@ -365,7 +349,7 @@ function loadCollections(userId) {
           // Check if the collection document exists
           if (collectionData.exists) {
             // Set the cover image if available, otherwise use the default
-            const coverImage = collectionData.data().coverImage || defaultCollectionCover;
+            const coverImage = collectionData.data().image || defaultCollectionCover;
             collectionCard.style.backgroundImage = coverImage;
           } else {
             // Collection document does not exist, set default cover
@@ -375,6 +359,10 @@ function loadCollections(userId) {
 	  collectionCard.querySelector("#remove-collection-btn").addEventListener("click", () => {
 	    removeCollection(userId, collectionName);
             collectionCard.style.display = 'none';
+	  });
+
+	  collectionCard.querySelector("#link-to-collection").addEventListener("click", () => {
+	    addToCollection(userId, collectionName, productId, image);
 	  });
 
           collectionListPopup.appendChild(collectionCard);
@@ -401,6 +389,15 @@ function removeCollection(userId, collectionName) {
   })
   .catch((error) => {
     console.error("Error removing collection:", error);
+  });
+}
+
+function addToCollection(userId, collectionName, productId, image) {
+  const userDocRef = firebase.firestore().collection('users').doc(userId);
+
+  // Update the collections array in the user document
+  userDocRef.update({
+    collections: firebase.firestore.FieldValue.arrayUnion({ name: collectionName, productId, image })
   });
 }
 
@@ -483,6 +480,19 @@ function showPopup(productData) {
       moveUnauthorizedToLogIn();
     }
   });
+
+  linkButton.addEventListener("click", () => {
+  collectionPopupWindow.style.display = "flex";
+
+    if (user) {
+      const userId = user.uid;
+      loadCollections(userId, productId, productData.images[0]);
+      
+    } else {
+      moveUnauthorizedToLogIn();
+    }
+
+});
 
   productData.images.forEach(imageUrl => {
     const thumbnail = document.createElement('div');
