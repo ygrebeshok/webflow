@@ -301,45 +301,40 @@ editCollectionListBtn.addEventListener("click", () => {
 createNewCollectionBtn.addEventListener('click', async () => {
   const collectionName = collectionNameInput.value;
 
-  let productImage = '';
+  try {
+    const querySnapshot = await firebase.firestore().collection('added-by-parsing').where("name", "==", popupTitle.textContent).get();
 
-  firebase.firestore().collection('added-by-parsing').where("name", "==", popupTitle.textContent)
-  .get()
-  .then((querySnapshot) => {
     if (!querySnapshot.empty) {
       const doc = querySnapshot.docs[0];
       const data = doc.data();
-      productImage = data.images[0];
+      const productImage = data.images[0];
       console.log("Product Image:", productImage);
+
+      const authUser = firebase.auth().currentUser;
+      
+      if (authUser) {
+        const userId = authUser.uid;
+        try {
+          await createNewCollection(userId, collectionName, popupTitle.textContent, productImage);
+          setTimeout(() => {
+            collectionNameInput.value = "";
+            setCollectionNameWindow.style.display = "none";
+            collectionPopupWindow.style.display = "none";
+          }, 1000);
+        } catch (error) {
+          console.error("Error creating new collection:", error);
+        }
+      } else {
+        moveUnauthorizedToLogIn();
+      }
     } else {
       console.log("Document not found");
     }
-  })
-  .catch((error) => {
+  } catch (error) {
     console.error("Error getting document:", error);
-  });
-
-  console.log(productImage)
-
-  firebase.auth().onAuthStateChanged(async function(authUser) {
-    user = authUser;
-    if (user) {
-      const userId = user.uid;
-      try {
-        await createNewCollection(userId, collectionName, popupTitle.textContent, productImage);
-        setTimeout(() => {
-          collectionNameInput.value = "";
-          setCollectionNameWindow.style.display = "none";
-          collectionPopupWindow.style.display = "none";
-        }, 1000);
-      } catch (error) {
-        console.error("Error creating new collection:", error);
-      }
-    } else {
-      moveUnauthorizedToLogIn();
-    }
-  });
+  }
 });
+
 
 function loadCollections(userId, productId) {
   const defaultCollectionCover = "https://firebasestorage.googleapis.com/v0/b/smappy-ai.appspot.com/o/default-collection-cover_600x600.png?alt=media&token=9155ed41-888b-4e07-936e-9fe156da1120";
