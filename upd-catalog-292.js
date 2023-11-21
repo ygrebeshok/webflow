@@ -254,7 +254,7 @@ const setCollectionNameWindow = document.getElementById('set-collection-name-win
 const collectionListPopup = document.getElementById('collection-list-popup');
 const collectionCardTemplate = document.querySelector('.collection-card');
 const editCollectionListBtn = document.getElementById('edit-collection-list');
-const createCollectionBtn = document.getElementById('edit-collection-list');
+const createCollectionBtn = document.getElementById('create-collection-btn');
 
 
 collectionPopupClose.addEventListener("click", () => {
