@@ -305,14 +305,22 @@ function loadCollections(userId, productId, productData) {
   });
 
   createNewCollectionBtn.addEventListener('click', () => {
-    createNewCollection(userId, collectionNameInput, productId, productImage);
-  });
+    const collectionName = collectionNameInput.value;
+	  
+    try {
+      await createNewCollection(userId, collectionName, productId, productImage);
+      setTimeout(() => {
+        collectionNameInput.value = "";
+        setCollectionNameWindow.style.display = "none";
+        collectionPopupWindow.style.display = "none";
+      }, 1000);
+    } catch (error) {
+      console.error("Error creating new collection:", error);
+    }
+  }, { once: true });
 
   newCollectionClose.addEventListener("click", () => {
     setCollectionNameWindow.style.display = "none";
-    createNewCollectionBtn.removeEventListener("click", () => {
-      createNewCollection(userId, collectionNameInput, productId, productImage);
-    });
   });
 	
   firebase.firestore().collection('users').doc(userId).get()
@@ -347,7 +355,7 @@ function loadCollections(userId, productId, productData) {
 
 	  collectionCard.querySelector("#link-to-collection").addEventListener("click", () => {
 	    addToCollection(userId, collectionCard.querySelector("#collection-name").textContent, productId, productData.images[0]);
-	  });
+	  }, { once: true });
 
           collectionListPopup.appendChild(collectionCard);
 		
@@ -447,56 +455,42 @@ function checkInputForCollection() {
 }
 
 
-async function createNewCollection(userId, collectionNameInput, productId, productImage) {
-  const collectionName = collectionNameInput.value;
+async function createNewCollection(userId, collectionName, productId, productImage) {
+  
+  const userDocRef = firebase.firestore().collection('users').doc(userId);
 
-  try {
-    await createNewCollectionFunc(userId, collectionName, productId, productImage);
-    setTimeout(() => {
-      collectionNameInput.value = "";
-      setCollectionNameWindow.style.display = "none";
-      collectionPopupWindow.style.display = "none";
-    }, 1000);
-  } catch (error) {
-    console.error("Error creating new collection:", error);
-  }
+  // Check if the 'collections' array exists in the user document
+  userDocRef.get().then((doc) => {
+    if (doc.exists) {
+      const userData = doc.data();
 
-  async function createNewCollectionFunc(userId, collectionName, productId, productImage) {
-    const userDocRef = firebase.firestore().collection('users').doc(userId);
-
-    // Check if the 'collections' array exists in the user document
-    userDocRef.get().then((doc) => {
-      if (doc.exists) {
-        const userData = doc.data();
-
-        // Check if the 'collections' array exists
-        if (!userData.collections) {
-          // If it doesn't exist, create a new 'collections' array with the new collection structure
-          userDocRef.update({
-            collections: [{
-              name: collectionName,
-              products: [{ productId, productImage }]
-            }]
-          });
-        } else {
-          // If it exists, append the new collection structure using arrayUnion
-          userDocRef.update({
-            collections: firebase.firestore.FieldValue.arrayUnion({
-              name: collectionName,
-              products: [{ productId, productImage }]
-            })
-          });
-        }
-
-        setCollectionNameWindow.style.display = "none";
+      // Check if the 'collections' array exists
+      if (!userData.collections) {
+        // If it doesn't exist, create a new 'collections' array with the new collection structure
+        userDocRef.update({
+          collections: [{
+            name: collectionName,
+            products: [{ productId, productImage }]
+          }]
+        });
       } else {
-        // Handle the case where the user document doesn't exist
-        console.log("User document not found");
+        // If it exists, append the new collection structure using arrayUnion
+        userDocRef.update({
+          collections: firebase.firestore.FieldValue.arrayUnion({
+            name: collectionName,
+            products: [{ productId, productImage }]
+          })
+        });
       }
-    }).catch((error) => {
-      console.error("Error getting user document:", error);
-    });
-  }
+
+      setCollectionNameWindow.style.display = "none";
+    } else {
+      // Handle the case where the user document doesn't exist
+      console.log("User document not found");
+    }
+  }).catch((error) => {
+    console.error("Error getting user document:", error);
+  });
 }
 
 
@@ -537,7 +531,7 @@ function showPopup(productData) {
     } else {
       moveUnauthorizedToLogIn();
     }
-  });
+  }, { once: true });
 
   productData.images.forEach(imageUrl => {
     const thumbnail = document.createElement('div');
@@ -594,25 +588,6 @@ function showPopup(productData) {
 
     popupClose.addEventListener("click", () => {
       popupContainer.style.display = "none";
-      linkButton.removeEventListener('click', () => {
-	collectionPopupWindow.style.display = "flex";
-
-    	if (user) {
-      	  const userId = user.uid;
-      	  loadCollections(userId, productId, productData);
-    	} else {
-      	  moveUnauthorizedToLogIn();
-    	}
-      });
-	    
-      popupFavoriteBtn.removeEventListener('click', () => {
-        if (user) {
-          const userId = user.uid;
-          toggleFavorite(favoritesLabel, userId, productId);
-        } else {
-          moveUnauthorizedToLogIn();
-        }
-      });
     });
   }
 
@@ -761,7 +736,7 @@ function updateCatalog() {
 	  price: card.querySelector("#price").textContent.replace("$", "")
 	};
 	showPopup(productData);
-      });
+      }, { once: true });
 
       const likeBtn = card.querySelector("#like-button");
       const dislikeBtn = card.querySelector("#dislike-button");
@@ -807,7 +782,7 @@ function updateCatalog() {
 	  const userId = user.uid;
 	  toggleLike(likeImage, dislikeImage, userId, productId, selected_who, selected_holiday)
 	}
-      });
+      }, { once: true });
 
       dislikeBtn.addEventListener("click", () => {
 	moveUnauthorizedToLogIn();
@@ -815,7 +790,7 @@ function updateCatalog() {
 	  const userId = user.uid;
 	  toggleDislike(dislikeImage, likeImage, userId, productId, selected_who, selected_holiday)
 	}
-      });
+      }, { once: true });
 
       catalogGrid.appendChild(card);
 
