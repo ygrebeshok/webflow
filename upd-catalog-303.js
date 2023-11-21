@@ -18,11 +18,9 @@ const highestPriceButton = document.getElementById('highestPrice');
 const filtersContainer = document.getElementById("filters-container");
 const closeFilters = document.getElementById("close-filters");
 const filterActivator = document.getElementById("filter-activator");
-const popupImage = document.getElementById('popup_image');
 const popupTitle = document.getElementById('popup_title');
 const popupBrand = document.getElementById('popup_brand');
 const popupDesc = document.getElementById('popup_desc');
-const popupLink = document.getElementById('popup_link');
 const popupPrice = document.getElementById('popup_price');
 const quickLook = document.getElementById('quick_look');
 const popupContainer = document.getElementById('popup-fade');
@@ -597,6 +595,11 @@ function showPopup(productData) {
 
     popupClose.addEventListener("click", () => {
       popupContainer.style.display = "none";
+
+      popupContainer.querySelector('popup_title').textContent = '';
+      popupContainer.querySelector('popup_brand').textContent = '';
+      popupContainer.querySelector('popup_desc').textContent = '';
+      popupContainer.querySelector('popup_price').textContent = '';
     });
   }
 
