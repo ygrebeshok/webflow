@@ -321,7 +321,7 @@ createNewCollectionBtn.addEventListener('click', async () => {
 
   console.log(productImage)
 
-  firebase.auth().onAuthStateChanged(function(authUser) {
+  firebase.auth().onAuthStateChanged(async function(authUser) {
     user = authUser;
     if (user) {
       const userId = user.uid;
