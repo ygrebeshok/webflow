@@ -312,7 +312,7 @@ function loadCollections(userId, productId, productData) {
     setCollectionNameWindow.style.display = "none";
     createNewCollectionBtn.removeEventListener("click", () => {
       createNewCollection(userId, collectionNameInput, productId, productImage);
-    }):
+    });
   });
 	
   firebase.firestore().collection('users').doc(userId).get()
