@@ -976,9 +976,9 @@ function collectionsDivFunc() {
 	  collectionCard.querySelector("#collection-div-card-name").textContent = collection.name;
 
 	  if (collection.products.length > 0) {
-	    collectionCard.querySelector("#cover-collection").src = collection.products[0].productImage;
+	    collectionCard.querySelector("#collection-div-cover-image").src = collection.products[0].productImage;
 	  } else {
-	    collectionCard.querySelector("#cover-collection").src = defaultCollectionCover;
+	    collectionCard.querySelector("#collection-div-cover-image").src = defaultCollectionCover;
 	  }
         
 	  collectionCard.querySelector("#remove-collection-div-btn").addEventListener("click", () => {
