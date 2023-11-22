@@ -134,6 +134,14 @@ resetSelections.addEventListener('click', () => {
   });
 });
 
+function uuidv4() {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    var r = (Math.random() * 16) | 0,
+      v = c === 'x' ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
+}
+
 createProfile.addEventListener('click', () => {
   moveUnauthorizedToLogIn();
 	
@@ -142,6 +150,7 @@ createProfile.addEventListener('click', () => {
   }
 
   const profileData = {
+    profileId: uuidv4(),
     profile_name: profileName.value,
     profile_age: ageField.value || profileAge.value,
     receiver: selected_who || "",
@@ -504,6 +513,7 @@ async function createNewCollection(userId, collectionName, productId, productIma
         // If it doesn't exist, create a new 'collections' array with the new collection structure
         userDocRef.update({
           collections: [{
+	    collectionId: uuidv4(),
             name: collectionName,
             products: [{ productId, productImage }]
           }]
@@ -512,6 +522,7 @@ async function createNewCollection(userId, collectionName, productId, productIma
         // If it exists, append the new collection structure using arrayUnion
         userDocRef.update({
           collections: firebase.firestore.FieldValue.arrayUnion({
+	    collectionId: uuidv4(),
             name: collectionName,
             products: [{ productId, productImage }]
           })
