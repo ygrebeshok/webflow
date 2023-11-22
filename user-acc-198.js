@@ -52,6 +52,7 @@ function loadProfileData(profiles, userId) {
      profile.querySelector(".occasion-mark").textContent = data.occasion;
      profile.querySelector(".reference").textContent = data.receiver;
      profile.querySelector(".age-from-data").textContent = data.profile_age;
+     profile.querySelector(".profile-id").textContent = data.profileId;
 
      const dateString = data.date;
      const dateObject = new Date(dateString);
@@ -94,6 +95,17 @@ function loadProfileData(profiles, userId) {
        } catch (error) {
 	 console.error('Error handling profile click event:', error);       
        }	     
+     });
+
+     profile.querySelector(".remove-profile-div-btn").addEventListener('click', (event) => {
+       firebase.auth().onAuthStateChanged(function(authUser) {
+         user = authUser;
+         if (user) {
+           const userId = user.uid; 
+           removeProfile(userId, profile.querySelector(".profile-id").textContent);
+	 } else {
+	   moveUnauthorizedToLogIn();
+	 }
      });
 	  
      profile.querySelector(".show-products").addEventListener('click', (event) => {
@@ -321,31 +333,7 @@ createCollectionBtn.addEventListener("click", () => {
 });
 
 editCollectionListBtn.addEventListener("click", () => {
-    
-  if (editCollectionListBtn.textContent === "Edit List") {
-    editCollectionListBtn.textContent = "Done";
-	    
-    document.querySelectorAll(".remove-collection-btn").forEach(btn => {
-      btn.style.display = "block";
-    });
-
-    document.querySelectorAll('.collection-card').forEach(card => {
-      card.querySelector('#link-to-collection').style.pointerEvents = 'none';
-      card.classList.remove('donate');
-    }); 
-	    
-  } else if (editCollectionListBtn.textContent === "Done") {
-    editCollectionListBtn.textContent = "Edit List";
-	    
-    document.querySelectorAll(".remove-collection-btn").forEach(btn => {
-      btn.style.display = "none";
-    });
-
-    document.querySelectorAll('.collection-card').forEach(card => {
-      card.querySelector('#link-to-collection').style.pointerEvents = '';
-      card.classList.add('donate');
-    });
-  }	  
+  editButtonShowRemove(editCollectionListBtn, ".remove-collection-btn", ".collection-card", "#link-to-collection"); 
 });
 
 createNewCollectionBtn.addEventListener('click', async () => {
@@ -435,6 +423,7 @@ function loadCollections(userId, productId) {
           const collectionCard = collectionCardTemplate.cloneNode(true);
 
 	  collectionCard.querySelector("#collection-name").textContent = collection.name;
+	  collectionCard.querySelector("#collection-id").textContent = collection.collectionId;
 
 	  if (collection.products.length > 0) {
 	    collectionCard.querySelector("#cover-collection").src = collection.products[0].productImage;
@@ -443,12 +432,12 @@ function loadCollections(userId, productId) {
 	  }
         
 	  collectionCard.querySelector("#remove-collection-btn").addEventListener("click", () => {
-	    removeCollection(userId, collection.name);
+	    removeCollection(userId, collection.collectionId);
             collectionCard.style.display = 'none';
 	  });
 
 	  collectionCard.querySelector("#link-to-collection").addEventListener("click", () => {
-	    addToCollection(userId, collectionCard.querySelector("#collection-name").textContent, productId, productImage);
+	    addToCollection(userId, collectionCard.querySelector("#collection-id").textContent, collectionCard.querySelector("#collection-name").textContent, productId, productImage);
 	  });
 
           collectionListPopup.appendChild(collectionCard);
@@ -463,7 +452,7 @@ function loadCollections(userId, productId) {
     });
 }
 
-function removeCollection(userId, collectionName) {
+function removeCollection(userId, collectionId) {
   const userDocRef = firebase.firestore().collection('users').doc(userId);
 
   // Fetch the user document to get the current collections array
@@ -473,7 +462,7 @@ function removeCollection(userId, collectionName) {
       const collections = userData.collections || [];
 
       // Find the index of the collection with the given name
-      const collectionIndex = collections.findIndex(collection => collection.name === collectionName);
+      const collectionIndex = collections.findIndex(collection => collection.collectionId === collectionId);
 
       if (collectionIndex !== -1) {
         // Collection with the given name exists, update it with new data
@@ -485,7 +474,7 @@ function removeCollection(userId, collectionName) {
         });
       } else {
         // Collection with the given name doesn't exist
-        console.error("Collection not found:", collectionName);
+        console.error("Collection not found:", collectionId);
       }
     } else {
       // Handle the case where the user document doesn't exist
@@ -497,7 +486,7 @@ function removeCollection(userId, collectionName) {
 }
 
 
-function addToCollection(userId, collectionName, productId, productImage) {
+function addToCollection(userId, collectionId, collectionName, productId, productImage) {
   const userDocRef = firebase.firestore().collection('users').doc(userId);
 
   firebase.firestore().runTransaction(transaction => {
@@ -511,7 +500,7 @@ function addToCollection(userId, collectionName, productId, productImage) {
       const collections = userData.collections || [];
 
       // Find the index of the collection with the given name
-      const collectionIndex = collections.findIndex(collection => collection.name === collectionName);
+      const collectionIndex = collections.findIndex(collection => collection.collectionId === collectionId);
 
       if (collectionIndex !== -1) {
         // Collection with the given name exists, update it with new data
@@ -523,7 +512,7 @@ function addToCollection(userId, collectionName, productId, productImage) {
         });
       } else {
         // Collection with the given name doesn't exist, create a new one
-        const newCollection = { name: collectionName, products: [{ productId, productImage }] };
+        const newCollection = { collectionId: uuidv4(), name: collectionName, products: [{ productId, productImage }] };
         collections.push(newCollection);
 
         // Update the user document with the modified collections array
@@ -538,6 +527,13 @@ function addToCollection(userId, collectionName, productId, productImage) {
     collectionPopupWindow.style.display = "none";
 }
 
+function uuidv4() {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    var r = (Math.random() * 16) | 0,
+      v = c === 'x' ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
+}
 
 function checkInputForCollection() {
   createNewCollectionBtn.classList.add('disablegrid');
@@ -562,6 +558,7 @@ async function createNewCollection(userId, collectionName, productId, productIma
         // If it doesn't exist, create a new 'collections' array with the new collection structure
         userDocRef.update({
           collections: [{
+	    collectionId: uuidv4(),
             name: collectionName,
             products: [{ productId, productImage }]
           }]
@@ -570,6 +567,7 @@ async function createNewCollection(userId, collectionName, productId, productIma
         // If it exists, append the new collection structure using arrayUnion
         userDocRef.update({
           collections: firebase.firestore.FieldValue.arrayUnion({
+	    collectionId: uuidv4(),
             name: collectionName,
             products: [{ productId, productImage }]
           })
@@ -952,32 +950,35 @@ const collectionDivCardTemplate = document.querySelector('.collection-div-card')
 const editCollectionDivBtn = document.getElementById('edit-collection-div-btn');
 
 editCollectionDivBtn.addEventListener("click", () => {
-    
+  editButtonShowRemove(editCollectionDivBtn, ".remove-collection-div-btn", ".collection-div-card", "#link-to-collection-btn");
+});
+
+function editButtonShowRemove(editCollectionDivBtn, removeButtonSelector, cardSelector, linkButtonSelector) {
   if (editCollectionDivBtn.textContent === "Edit List") {
     editCollectionDivBtn.textContent = "Done";
 	    
-    document.querySelectorAll(".remove-collection-div-btn").forEach(btn => {
+    document.querySelectorAll(removeButtonSelector).forEach(btn => {
       btn.style.display = "block";
     });
 
-    document.querySelectorAll('.collection-div-card').forEach(card => {
-      card.querySelector('#link-to-collection-btn').style.pointerEvents = 'none';
+    document.querySelectorAll(cardSelector).forEach(card => {
+      card.querySelector(linkButtonSelector).style.pointerEvents = 'none';
       card.classList.remove('donate');
     }); 
 	    
   } else if (editCollectionDivBtn.textContent === "Done") {
     editCollectionDivBtn.textContent = "Edit List";
 	    
-    document.querySelectorAll(".remove-collection-div-btn").forEach(btn => {
+    document.querySelectorAll(removeButtonSelector).forEach(btn => {
       btn.style.display = "none";
     });
 
-    document.querySelectorAll('.collection-div-card').forEach(card => {
-      card.querySelector('#link-to-collection-btn').style.pointerEvents = '';
+    document.querySelectorAll(cardSelector).forEach(card => {
+      card.querySelector(linkButtonSelector).style.pointerEvents = '';
       card.classList.add('donate');
     });
-  }	  
-});
+  }	
+}
 
 const showCollectionPopupContainer = document.getElementById('show-collection-popup-container');
 showCollectionPopupContainer.style.display = 'none';
@@ -1116,6 +1117,45 @@ popupCloseCollection.addEventListener("click", () => {
   showCollectionPopupContainer.style.display = 'none';
 });
 
+const editProfileDivBtn = document.getElementById('edit-profile-div-btn');
+
+editProfileDivBtn.addEventListener("click", () => {
+  editButtonShowRemove(editProfileDivBtn, ".remove-profile-div-btn", ".profile-card", "#button-for-profiles")
+});
+
+
+function removeProfile(userId, profileId) {
+  const userDocRef = firebase.firestore().collection('users').doc(userId);
+
+  // Fetch the user document to get the current collections array
+  userDocRef.get().then((doc) => {
+    if (doc.exists) {
+      const userData = doc.data();
+      const profiles = userData.profiles || [];
+
+      // Find the index of the collection with the given name
+      const profileIndex = profiles.findIndex(profile => profile.profileId === profileId);
+
+      if (profileIndex !== -1) {
+        // Collection with the given name exists, update it with new data
+        profiles.splice(profileIndex, 1); // Remove the collection at the found index
+
+        // Update the user document with the modified collections array
+        userDocRef.update({
+          profiles: profiles
+        });
+      } else {
+        // Collection with the given name doesn't exist
+        console.error("Profile not found:", profileId);
+      }
+    } else {
+      // Handle the case where the user document doesn't exist
+      console.error("User document not found");
+    }
+  }).catch((error) => {
+    console.error("Error getting user document:", error);
+  });
+}
 
 
 
