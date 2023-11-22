@@ -355,9 +355,9 @@ createNewCollectionBtn.addEventListener('click', async () => {
 
   let productName = '';
 
-  if (popupTitle.textContent === '') {
+  if ((popupTitle.textContent === '') || (popupTitle.textContent === 'Heading')) {
     productName = profilePopupTitle.textContent;
-  } else {
+  } else if ((profilePopupTitle.textContent === '') || (profilePopupTitle.textContent === 'Heading')) {
     productName = popupTitle.textContent;
   }
 
