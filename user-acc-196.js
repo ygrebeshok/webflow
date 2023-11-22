@@ -1081,7 +1081,7 @@ function loadShowProductsOfCollection(collectionName) {
             });
 
 	    productCollectionCard.addEventListener('mouseenter', () => {
-              profileProductCard.animate([
+              productCollectionCard.animate([
                 { transform: 'scale(1)' },
                 { transform: 'scale(1.05)' }
               ], {
@@ -1091,7 +1091,7 @@ function loadShowProductsOfCollection(collectionName) {
             });
 
             productCollectionCard.addEventListener('mouseleave', () => {
-              profileProductCard.animate([
+              productCollectionCard.animate([
                 { transform: 'scale(1.05)' },
                 { transform: 'scale(1)' }
               ], {
