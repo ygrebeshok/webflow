@@ -1023,6 +1023,7 @@ function collectionsDivFunc() {
 	  });
 
 	  collectionCard.querySelector("#link-to-collection-btn").addEventListener("click", () => {
+	    showCollectionProductsGrid.innerHTML = "";
 	    loadShowProductsOfCollection(collectionCard.querySelector("#collection-div-card-name").textContent);
 	    showCollectionPopupContainer.style.display = 'flex';
 	  });
@@ -1054,8 +1055,6 @@ function loadShowProductsOfCollection(collectionName) {
 
     firebase.firestore().collection('users').doc(userId).get()
     .then((doc) => {
-
-      showCollectionProductsGrid.innerHTML = "";
 
       if (doc.exists) {
         const data = doc.data();
