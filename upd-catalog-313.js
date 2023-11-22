@@ -386,6 +386,7 @@ function loadCollections(userId, productId) {
           const collectionCard = collectionCardTemplate.cloneNode(true);
 
 	  collectionCard.querySelector("#collection-name").textContent = collection.name;
+	  collectionCard.querySelector("#collection-id").textContent = collection.collectionId;
 
 	  if (collection.products.length > 0) {
 	    collectionCard.querySelector("#cover-collection").src = collection.products[0].productImage;
@@ -394,12 +395,12 @@ function loadCollections(userId, productId) {
 	  }
         
 	  collectionCard.querySelector("#remove-collection-btn").addEventListener("click", () => {
-	    removeCollection(userId, collection.name);
+	    removeCollection(userId, collection.collectionId);
             collectionCard.style.display = 'none';
 	  });
 
 	  collectionCard.querySelector("#link-to-collection").addEventListener("click", () => {
-	    addToCollection(userId, collectionCard.querySelector("#collection-name").textContent, productId, productImage);
+	    addToCollection(userId, collectionCard.querySelector("#collection-id").textContent, collectionCard.querySelector("#collection-name").textContent, productId, productImage);
 	  });
 
           collectionListPopup.appendChild(collectionCard);
@@ -414,7 +415,7 @@ function loadCollections(userId, productId) {
     });
 }
 
-function removeCollection(userId, collectionName) {
+function removeCollection(userId, collectionId) {
   const userDocRef = firebase.firestore().collection('users').doc(userId);
 
   // Fetch the user document to get the current collections array
@@ -424,7 +425,7 @@ function removeCollection(userId, collectionName) {
       const collections = userData.collections || [];
 
       // Find the index of the collection with the given name
-      const collectionIndex = collections.findIndex(collection => collection.name === collectionName);
+      const collectionIndex = collections.findIndex(collection => collection.collectionId === collectionId);
 
       if (collectionIndex !== -1) {
         // Collection with the given name exists, update it with new data
@@ -436,7 +437,7 @@ function removeCollection(userId, collectionName) {
         });
       } else {
         // Collection with the given name doesn't exist
-        console.error("Collection not found:", collectionName);
+        console.error("Collection not found:", collectionId);
       }
     } else {
       // Handle the case where the user document doesn't exist
@@ -448,7 +449,7 @@ function removeCollection(userId, collectionName) {
 }
 
 
-function addToCollection(userId, collectionName, productId, productImage) {
+function addToCollection(userId, collectionId, collectionName, productId, productImage) {
   const userDocRef = firebase.firestore().collection('users').doc(userId);
 
   firebase.firestore().runTransaction(transaction => {
@@ -462,7 +463,7 @@ function addToCollection(userId, collectionName, productId, productImage) {
       const collections = userData.collections || [];
 
       // Find the index of the collection with the given name
-      const collectionIndex = collections.findIndex(collection => collection.name === collectionName);
+      const collectionIndex = collections.findIndex(collection => collection.collectionId === collectionId);
 
       if (collectionIndex !== -1) {
         // Collection with the given name exists, update it with new data
@@ -474,19 +475,19 @@ function addToCollection(userId, collectionName, productId, productImage) {
         });
       } else {
         // Collection with the given name doesn't exist, create a new one
-        const newCollection = { name: collectionName, products: [{ productId, productImage }] };
+        const newCollection = { collectionId: uuidv4(), name: collectionName, products: [{ productId, productImage }] };
         collections.push(newCollection);
 
         // Update the user document with the modified collections array
         transaction.update(userDocRef, {
           collections: collections
         });
-        }
-      });
-    }).catch(error => {
-        console.error("Error updating user document:", error);
+      }
     });
-    collectionPopupWindow.style.display = "none";
+  }).catch(error => {
+    console.error("Error updating user document:", error);
+  });
+  collectionPopupWindow.style.display = "none";
 }
 
 
