@@ -310,6 +310,7 @@ collectionPopupClose.addEventListener("click", () => {
 
 newCollectionClose.addEventListener("click", () => {
   setCollectionNameWindow.style.display = "none";
+  collectionNameInput = '';
 });
 
 createCollectionBtn.addEventListener("click", () => {
@@ -348,8 +349,16 @@ editCollectionListBtn.addEventListener("click", () => {
 createNewCollectionBtn.addEventListener('click', async () => {
   const collectionName = collectionNameInput.value;
 
+  let productName = '';
+
+  if (popupTitle.textContent === '') {
+    productName = profilePopupTitle.textContent;
+  } else if (profilePopupTitle.textContent === '') {
+    productName = popupTitle.textContent;
+  }
+	
   try {
-    const querySnapshot = await firebase.firestore().collection('added-by-parsing').where("name", "==", popupTitle.textContent).get();
+    const querySnapshot = await firebase.firestore().collection('added-by-parsing').where("name", "==", productName).get();
 
     if (!querySnapshot.empty) {
       const doc = querySnapshot.docs[0];
@@ -361,7 +370,7 @@ createNewCollectionBtn.addEventListener('click', async () => {
       if (authUser) {
         const userId = authUser.uid;
         try {
-          await createNewCollection(userId, collectionName, popupTitle.textContent, productImage);
+          await createNewCollection(userId, collectionName, productName, productImage);
           setTimeout(() => {
             collectionNameInput.value = "";
             setCollectionNameWindow.style.display = "none";
