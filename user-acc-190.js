@@ -979,6 +979,8 @@ editCollectionDivBtn.addEventListener("click", () => {
   }	  
 });
 
+const showCollectionPopupContainer = document.getElementById('show-collection-popup-container');
+
 function collectionsDivFunc() {
 
   document.querySelectorAll(".remove-collection-div-btn").forEach(btn => {
@@ -1020,6 +1022,7 @@ function collectionsDivFunc() {
 	  });
 
 	  collectionCard.querySelector("#link-to-collection-btn").addEventListener("click", () => {
+	    showCollectionPopupContainer.style.display = 'flex';
 	    loadShowProductsOfCollection(collectionCard.querySelector("#collection-div-card-name").textContent);
 	  });
 
@@ -1037,7 +1040,6 @@ function collectionsDivFunc() {
   });
 }
 
-const showCollectionPopupContainer = document.getElementById('show-collection-popup-container');
 const popupCloseCollection = document.getElementById('popup-close-collection');
 const showCollectionProductsGrid = document.getElementById('show-collection-products-grid');
 const profileCollectionProductTemplate = document.getElementById('profile-collection-product-template');
@@ -1082,6 +1084,11 @@ function loadShowProductsOfCollection(collectionName) {
   });
 }
 
+popupCloseCollection.addEventListener("click", () => {
+  document.querySelectorAll('#profile-product-collection-grid-name').textContent = '';
+  document.querySelectorAll('#profile-collection-product-image').src = '';
+  showCollectionPopupContainer.style.display = 'none';
+});
 
 
 
