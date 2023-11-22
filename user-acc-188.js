@@ -949,8 +949,41 @@ firebase.auth().onAuthStateChanged(function(authUser) {
 const collectionsGrid = document.getElementById('collections-grid');
 const noCollectionsDefault = document.getElementById('no-collections-default');
 const collectionDivCardTemplate = document.querySelector('.collection-div-card');
+const editCollectionDivBtn = document.getElementById('edit-collection-div-btn');
+
+editCollectionDivBtn.addEventListener("click", () => {
+    
+  if (editCollectionDivBtn.textContent === "Edit List") {
+    editCollectionDivBtn.textContent = "Done";
+	    
+    document.querySelectorAll(".remove-collection-div-btn").forEach(btn => {
+      btn.style.display = "block";
+    });
+
+    document.querySelectorAll('.collection-div-card').forEach(card => {
+      card.querySelector('#link-to-collection-btn').style.pointerEvents = 'none';
+      card.classList.remove('donate');
+    }); 
+	    
+  } else if (editCollectionDivBtn.textContent === "Done") {
+    editCollectionDivBtn.textContent = "Edit List";
+	    
+    document.querySelectorAll(".remove-collection-div-btn").forEach(btn => {
+      btn.style.display = "none";
+    });
+
+    document.querySelectorAll('.collection-div-card').forEach(card => {
+      card.querySelector('#link-to-collection-btn').style.pointerEvents = '';
+      card.classList.add('donate');
+    });
+  }	  
+});
 
 function collectionsDivFunc() {
+
+  document.querySelectorAll(".remove-collection-div-btn").forEach(btn => {
+    btn.style.display = "none";
+  });
 
   firebase.auth().onAuthStateChanged(function(authUser) {
     user = authUser;
