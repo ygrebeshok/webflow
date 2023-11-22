@@ -266,7 +266,7 @@ profilePopupClose.addEventListener("click", () => {
 
 addToCollectionProfileBtn.addEventListener("click", () => {
   collectionPopupWindow.style.display = "flex";
-  console.log(profilePopupTitle.textContent);
+
   firebase.auth().onAuthStateChanged(function(authUser) {
     user = authUser;
 
@@ -316,9 +316,6 @@ newCollectionClose.addEventListener("click", () => {
 
 createCollectionBtn.addEventListener("click", () => {
   setCollectionNameWindow.style.display = "flex";
-
-  console.log("Popup Title: " + popupTitle.textContent)
-  console.log("Profile Popup Title: " + profilePopupTitle.textContent);
   checkInputForCollection();
 });
 
@@ -360,8 +357,6 @@ createNewCollectionBtn.addEventListener('click', async () => {
   } else if ((profilePopupTitle.textContent === '') || (profilePopupTitle.textContent === 'Heading')) {
     productName = popupTitle.textContent;
   }
-
-  console.log(productName);
 	
   try {
     const querySnapshot = await firebase.firestore().collection('added-by-parsing').where("name", "==", productName).get();
@@ -421,7 +416,6 @@ function loadCollections(userId, productId) {
     console.error("Error getting document:", error);
   });
 
-  console.log(productImage)
 	
   firebase.firestore().collection('users').doc(userId).get()
     .then((doc) => {
