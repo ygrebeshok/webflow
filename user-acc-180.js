@@ -316,6 +316,7 @@ newCollectionClose.addEventListener("click", () => {
 
 createCollectionBtn.addEventListener("click", () => {
   setCollectionNameWindow.style.display = "flex";
+  console.log(profilePopupTitle.textContent);
   checkInputForCollection();
 });
 
