@@ -266,6 +266,7 @@ profilePopupClose.addEventListener("click", () => {
 
 addToCollectionProfileBtn.addEventListener("click", () => {
   collectionPopupWindow.style.display = "flex";
+  console.log(profilePopupTitle.textContent);
   firebase.auth().onAuthStateChanged(function(authUser) {
     user = authUser;
 
