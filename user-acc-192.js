@@ -1023,6 +1023,7 @@ function collectionsDivFunc() {
 
 	  collectionCard.querySelector("#link-to-collection-btn").addEventListener("click", () => {
 	    showCollectionPopupContainer.style.display = 'flex';
+	    showCollectionPopupContainer.querySelector('#collection-popup-name').textContent = collectionCard.querySelector("#collection-div-card-name").textContent;
 	    loadShowProductsOfCollection(collectionCard.querySelector("#collection-div-card-name").textContent);
 	  });
 
