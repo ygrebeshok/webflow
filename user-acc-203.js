@@ -136,6 +136,7 @@ function loadProfileData(profiles, userId) {
          if (user) {
            const userId = user.uid; 
            removeProfile(userId, profile.querySelector(".profile-id").textContent);
+	   profile.style.display = 'none';
 	 } else {
 	   moveUnauthorizedToLogIn();
 	 }
