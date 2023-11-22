@@ -27,6 +27,7 @@ const profileProductDefault = document.querySelector(".default-profile-product-c
 const profileProductName = document.getElementById("profile-product-name");
 const profileProductPopup = document.getElementById("profile-products-popup-container");
 const profileFavoritesLabel = document.getElementById("profile-popup-favorite-label");
+const profileFavoritesBtn = document.getElementById("profile-popup-favorite");
 const addToCollectionOrdinaryBtn = document.getElementById("page-link-btn");
 const addToCollectionProfileBtn = document.getElementById("show-products-page-link-btn");
 
@@ -94,8 +95,6 @@ function loadProfileData(profiles, userId) {
 	 console.error('Error handling profile click event:', error);       
        }	     
      });
-
-     const profileFavoritesBtn = document.getElementById("profile-popup-favorite");
 	  
      profile.querySelector(".show-products").addEventListener('click', (event) => {
        profileProductName.textContent = data.profile_name;
@@ -179,8 +178,6 @@ function showPopupForProfileProducts(productName, userId) {
   slideContainer.innerHTML = ''; // Clear existing slides
   thumbnailContainer.innerHTML = ''; // Clear existing thumbnails
 
-  profileFavoritesLabel.innerHTML = '';
-
   const giftsRef = firebase.firestore().collection('added-by-parsing');
 
   giftsRef
@@ -216,9 +213,9 @@ function showPopupForProfileProducts(productName, userId) {
         .then(doc => {
           const favorites = doc.data().favorites;
           if (favorites.includes(productName)) {
-            favoritesLabel.textContent = "Remove from Favorites";
+            profileFavoritesLabel.textContent = "Remove from Favorites";
           } else {
-	    favoritesLabel.textContent = "Add to Favorites";
+	    profileFavoritesLabel.textContent = "Add to Favorites";
           }
         })
         .catch(error => {
@@ -274,7 +271,7 @@ addToCollectionProfileBtn.addEventListener("click", () => {
 
     if (user) {
       const userId = user.uid;
-      loadCollections(userId, profilePopupTitletextContent);
+      loadCollections(userId, profilePopupTitle.textContent);
     } else {
       moveUnauthorizedToLogIn();
     }
@@ -282,6 +279,17 @@ addToCollectionProfileBtn.addEventListener("click", () => {
   });
 });
 
+profileFavoritesBtn.addEventListener("click", () => {
+  firebase.auth().onAuthStateChanged(function(authUser) {
+    user = authUser;
+    if (user) {
+      const userId = user.uid;
+      toggleFavorite(profileFavoritesLabel, userId, profilePopupTitle.textContent);
+    } else {
+      moveUnauthorizedToLogIn();
+    }
+  }); 
+});
 
 const collectionPopupWindow = document.getElementById('collection-popup-window');
 const collectionPopupClose = document.getElementById('collection-popup-close');
