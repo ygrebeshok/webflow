@@ -310,7 +310,7 @@ collectionPopupClose.addEventListener("click", () => {
 
 newCollectionClose.addEventListener("click", () => {
   setCollectionNameWindow.style.display = "none";
-  collectionNameInput = '';
+  collectionNameInput.value = '';
 });
 
 createCollectionBtn.addEventListener("click", () => {
@@ -356,6 +356,8 @@ createNewCollectionBtn.addEventListener('click', async () => {
   } else if (profilePopupTitle.textContent === '') {
     productName = popupTitle.textContent;
   }
+
+  console.log(productName);
 	
   try {
     const querySnapshot = await firebase.firestore().collection('added-by-parsing').where("name", "==", productName).get();
