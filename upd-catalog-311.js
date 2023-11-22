@@ -358,8 +358,6 @@ function loadCollections(userId, productId) {
   .catch((error) => {
     console.error("Error getting document:", error);
   });
-
-  console.log(productImage)
 	
   firebase.firestore().collection('users').doc(userId).get()
     .then((doc) => {
