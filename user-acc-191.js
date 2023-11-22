@@ -1068,8 +1068,8 @@ function loadShowProductsOfCollection(collectionName) {
 
             const productCollectionCard = profileCollectionProductTemplate.cloneNode(true);
             
-	    productCollectionCard.querySelector('#profile-product-collection-grid-name').textContent = products.productId;
-	    productCollectionCard.querySelector('#profile-collection-product-image').src = products.productImage;
+	    productCollectionCard.querySelector('#profile-product-collection-grid-name').textContent = product.productId;
+	    productCollectionCard.querySelector('#profile-collection-product-image').src = product.productImage;
 
             showCollectionProductsGrid.appendChild(productCollectionCard);
           });
