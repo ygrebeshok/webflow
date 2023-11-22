@@ -1020,7 +1020,7 @@ function collectionsDivFunc() {
 	  });
 
 	  collectionCard.querySelector("#link-to-collection-btn").addEventListener("click", () => {
-	    
+	    loadShowProductsOfCollection(collectionCard.querySelector("#collection-div-card-name").textContent);
 	  });
 
           collectionsGrid.appendChild(collectionCard);
@@ -1036,5 +1036,53 @@ function collectionsDivFunc() {
 
   });
 }
+
+const showCollectionPopupContainer = document.getElementById('show-collection-popup-container');
+const popupCloseCollection = document.getElementById('popup-close-collection');
+const showCollectionProductsGrid = document.getElementById('show-collection-products-grid');
+const profileCollectionProductTemplate = document.getElementById('profile-collection-product-template');
+
+function loadShowProductsOfCollection(collectionName) {
+  firebase.auth().onAuthStateChanged(function(authUser) {
+    user = authUser;
+    const userId = user.uid;
+
+    firebase.firestore().collection('users').doc(userId).get()
+    .then((doc) => {
+
+      showCollectionProductsGrid.innerHTML = "";
+
+      if (doc.exists) {
+        const data = doc.data();
+        const collections = data.collections || [];
+
+	// Find the selected collection by name
+        const selectedCollection = collections.find(collection => collection.name === collectionName);
+
+	if (selectedCollection) {
+          const products = selectedCollection.products || [];
+
+          products.forEach(product => {
+
+            const productCollectionCard = profileCollectionProductTemplate.cloneNode(true);
+            
+	    productCollectionCard.querySelector('#profile-product-collection-grid-name').textContent = products.productId;
+	    productCollectionCard.querySelector('#profile-collection-product-image').src = products.productImage;
+
+            showCollectionProductsGrid.appendChild(productCollectionCard);
+          });
+        } else {
+          console.error("Selected collection not found");
+        }
+	
+      } else {
+        console.error("User document not found");
+      }
+    });
+  });
+}
+
+
+
 
 
