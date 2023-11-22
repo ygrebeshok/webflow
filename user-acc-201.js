@@ -42,7 +42,30 @@ let isFavorite
 const editProfileDivBtn = document.getElementById('edit-profile-div-btn');
 
 editProfileDivBtn.addEventListener("click", () => {
-  editButtonShowRemove(editProfileDivBtn, ".remove-profile-div-btn", ".profile-card", "#button-for-profiles")
+  if (editProfileDivBtn.textContent === "Edit List") {
+    editProfileDivBtn.textContent = "Done";
+	    
+    document.querySelectorAll('.remove-profile-div-btn').forEach(btn => {
+      btn.style.display = "block";
+    });
+
+    document.querySelectorAll('.profile-card').forEach(card => {
+      card.querySelector('#new-search').style.pointerEvents = 'none';
+      card.querySelector('#show-products').style.pointerEvents = 'none';
+    }); 
+	    
+  } else if (editProfileDivBtn.textContent === "Done") {
+    editProfileDivBtn.textContent = "Edit List";
+	    
+    document.querySelectorAll('.remove-profile-div-btn').forEach(btn => {
+      btn.style.display = "none";
+    });
+
+    document.querySelectorAll(cardSelector).forEach(card => {
+      card.querySelector('#new-search').style.pointerEvents = '';
+      card.querySelector('#show-products').style.pointerEvents = '';
+    });
+  }	
 });
 
 function loadProfileData(profiles, userId) {
@@ -467,7 +490,7 @@ function loadCollections(userId, productId) {
           const collectionCard = collectionCardTemplate.cloneNode(true);
 
 	  collectionCard.querySelector("#collection-name").textContent = collection.name;
-	  collectionCard.querySelector("#collection-id").textContent = collection.collectionId;
+	  collectionCard.querySelector("#collection-id-main").textContent = collection.collectionId;
 
 	  if (collection.products.length > 0) {
 	    collectionCard.querySelector("#cover-collection").src = collection.products[0].productImage;
@@ -1063,7 +1086,7 @@ function collectionsDivFunc() {
 	  }
         
 	  collectionCard.querySelector("#remove-collection-div-btn").addEventListener("click", () => {
-	    removeCollection(userId, collection.name);
+	    removeCollection(userId, collection.collectionId);
             collectionCard.style.display = 'none';
 	  });
 
