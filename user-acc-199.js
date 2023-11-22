@@ -39,9 +39,19 @@ profileProductGrid.removeChild(profileProductDefault);
 let currentProductId = null;
 let isFavorite
 
+const editProfileDivBtn = document.getElementById('edit-profile-div-btn');
+
+editProfileDivBtn.addEventListener("click", () => {
+  editButtonShowRemove(editProfileDivBtn, ".remove-profile-div-btn", ".profile-card", "#button-for-profiles")
+});
+
 function loadProfileData(profiles, userId) {
   profilesContain.innerHTML = "";
   profiles.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+  document.querySelectorAll(".remove-profile-div-btn").forEach(btn => {
+    btn.style.display = "none";
+  });
 
   profiles.forEach(async (data) => {
 	  
@@ -176,6 +186,39 @@ function loadProfileData(profiles, userId) {
         showProductsContainer.style.display = "flex";
       });  
    });
+}
+
+function removeProfile(userId, profileId) {
+  const userDocRef = firebase.firestore().collection('users').doc(userId);
+
+  // Fetch the user document to get the current collections array
+  userDocRef.get().then((doc) => {
+    if (doc.exists) {
+      const userData = doc.data();
+      const profiles = userData.profiles || [];
+
+      // Find the index of the collection with the given name
+      const profileIndex = profiles.findIndex(profile => profile.profileId === profileId);
+
+      if (profileIndex !== -1) {
+        // Collection with the given name exists, update it with new data
+        profiles.splice(profileIndex, 1); // Remove the collection at the found index
+
+        // Update the user document with the modified collections array
+        userDocRef.update({
+          profiles: profiles
+        });
+      } else {
+        // Collection with the given name doesn't exist
+        console.error("Profile not found:", profileId);
+      }
+    } else {
+      // Handle the case where the user document doesn't exist
+      console.error("User document not found");
+    }
+  }).catch((error) => {
+    console.error("Error getting user document:", error);
+  });
 }
 
 const closeShowProducts = document.getElementById("show-product-cross");
@@ -1117,45 +1160,6 @@ popupCloseCollection.addEventListener("click", () => {
   showCollectionPopupContainer.style.display = 'none';
 });
 
-const editProfileDivBtn = document.getElementById('edit-profile-div-btn');
-
-editProfileDivBtn.addEventListener("click", () => {
-  editButtonShowRemove(editProfileDivBtn, ".remove-profile-div-btn", ".profile-card", "#button-for-profiles")
-});
-
-
-function removeProfile(userId, profileId) {
-  const userDocRef = firebase.firestore().collection('users').doc(userId);
-
-  // Fetch the user document to get the current collections array
-  userDocRef.get().then((doc) => {
-    if (doc.exists) {
-      const userData = doc.data();
-      const profiles = userData.profiles || [];
-
-      // Find the index of the collection with the given name
-      const profileIndex = profiles.findIndex(profile => profile.profileId === profileId);
-
-      if (profileIndex !== -1) {
-        // Collection with the given name exists, update it with new data
-        profiles.splice(profileIndex, 1); // Remove the collection at the found index
-
-        // Update the user document with the modified collections array
-        userDocRef.update({
-          profiles: profiles
-        });
-      } else {
-        // Collection with the given name doesn't exist
-        console.error("Profile not found:", profileId);
-      }
-    } else {
-      // Handle the case where the user document doesn't exist
-      console.error("User document not found");
-    }
-  }).catch((error) => {
-    console.error("Error getting user document:", error);
-  });
-}
 
 
 
