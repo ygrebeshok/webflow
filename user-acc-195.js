@@ -1023,8 +1023,8 @@ function collectionsDivFunc() {
 	  });
 
 	  collectionCard.querySelector("#link-to-collection-btn").addEventListener("click", () => {
-	    showCollectionPopupContainer.style.display = 'flex';
 	    loadShowProductsOfCollection(collectionCard.querySelector("#collection-div-card-name").textContent);
+	    showCollectionPopupContainer.style.display = 'flex';
 	  });
 
           collectionsGrid.appendChild(collectionCard);
@@ -1075,6 +1075,30 @@ function loadShowProductsOfCollection(collectionName) {
 	    productCollectionCard.querySelector('#profile-collection-product-image').src = product.productImage;
 
             showCollectionProductsGrid.appendChild(productCollectionCard);
+
+	    productCollectionCard.addEventListener('click', (event) => {
+	      showPopupForProfileProducts(productCollectionCard.querySelector('#profile-product-collection-grid-name').textContent, userId);
+            });
+
+	    productCollectionCard.addEventListener('mouseenter', () => {
+              profileProductCard.animate([
+                { transform: 'scale(1)' },
+                { transform: 'scale(1.05)' }
+              ], {
+                duration: 200,
+                fill: 'forwards'
+              });
+            });
+
+            productCollectionCard.addEventListener('mouseleave', () => {
+              profileProductCard.animate([
+                { transform: 'scale(1.05)' },
+                { transform: 'scale(1)' }
+              ], {
+                duration: 200,
+                fill: 'forwards'
+              });
+            });
           });
         } else {
           console.error("Selected collection not found");
