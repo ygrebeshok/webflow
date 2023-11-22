@@ -980,6 +980,7 @@ editCollectionDivBtn.addEventListener("click", () => {
 });
 
 const showCollectionPopupContainer = document.getElementById('show-collection-popup-container');
+showCollectionPopupContainer.style.display = 'none';
 
 function collectionsDivFunc() {
 
@@ -1023,7 +1024,6 @@ function collectionsDivFunc() {
 
 	  collectionCard.querySelector("#link-to-collection-btn").addEventListener("click", () => {
 	    showCollectionPopupContainer.style.display = 'flex';
-	    showCollectionPopupContainer.querySelector('#collection-popup-name').textContent = collectionCard.querySelector("#collection-div-card-name").textContent;
 	    loadShowProductsOfCollection(collectionCard.querySelector("#collection-div-card-name").textContent);
 	  });
 
@@ -1046,6 +1046,8 @@ const showCollectionProductsGrid = document.getElementById('show-collection-prod
 const profileCollectionProductTemplate = document.getElementById('profile-collection-product-template');
 
 function loadShowProductsOfCollection(collectionName) {
+  document.getElementById('collection-popup-name').textContent = collectionName;
+	
   firebase.auth().onAuthStateChanged(function(authUser) {
     user = authUser;
     const userId = user.uid;
