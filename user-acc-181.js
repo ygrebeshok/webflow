@@ -316,7 +316,9 @@ newCollectionClose.addEventListener("click", () => {
 
 createCollectionBtn.addEventListener("click", () => {
   setCollectionNameWindow.style.display = "flex";
-  console.log(profilePopupTitle.textContent);
+
+  console.log("Popup Title: " + popupTitle.textContent)
+  console.log("Profile Popup Title: " + profilePopupTitle.textContent);
   checkInputForCollection();
 });
 
@@ -355,7 +357,7 @@ createNewCollectionBtn.addEventListener('click', async () => {
 
   if (popupTitle.textContent === '') {
     productName = profilePopupTitle.textContent;
-  } else if (profilePopupTitle.textContent === '') {
+  } else {
     productName = popupTitle.textContent;
   }
 
