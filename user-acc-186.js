@@ -951,10 +951,12 @@ const noCollectionsDefault = document.getElementById('no-collections-default');
 const collectionDivCardTemplate = document.querySelector('.collection-div-card');
 
 function collectionsDivFunc() {
-  const user = firebase.auth().currentUser;
-  const userId = user.uid;
 
-  firebase.firestore().collection('users').doc(userId).get()
+  firebase.auth().onAuthStateChanged(function(authUser) {
+    user = authUser;
+    const userId = user.uid;
+
+    firebase.firestore().collection('users').doc(userId).get()
     .then((doc) => {
       collectionsGrid.innerHTML = "";
 
@@ -998,6 +1000,8 @@ function collectionsDivFunc() {
     .catch((error) => {
       console.error("Error loading collections:", error);
     });
+
+  });
 }
 
 
