@@ -304,6 +304,7 @@ const editCollectionListBtn = document.getElementById('edit-collection-list');
 const createCollectionBtn = document.getElementById('create-collection-btn');
 
 const noCollectionsImage = document.getElementById('no-collections-image');
+const defaultCollectionCover = "https://firebasestorage.googleapis.com/v0/b/smappy-ai.appspot.com/o/default-collection-cover_600x600.png?alt=media&token=9155ed41-888b-4e07-936e-9fe156da1120";
 
 collectionPopupClose.addEventListener("click", () => {
   collectionPopupWindow.style.display = "none";
@@ -393,7 +394,6 @@ createNewCollectionBtn.addEventListener('click', async () => {
 
 
 function loadCollections(userId, productId) {
-  const defaultCollectionCover = "https://firebasestorage.googleapis.com/v0/b/smappy-ai.appspot.com/o/default-collection-cover_600x600.png?alt=media&token=9155ed41-888b-4e07-936e-9fe156da1120";
 	
   document.querySelectorAll(".remove-collection-btn").forEach(btn => {
     btn.style.display = "none";
@@ -942,3 +942,62 @@ firebase.auth().onAuthStateChanged(function(authUser) {
   }
 });
 }
+
+
+// Part about Collections
+
+const collectionsGrid = document.getElementById('collections-grid');
+const noCollectionsDefault = document.getElementById('no-collections-default');
+const collectionDivCardTemplate = document.querySelector('.collection-div-card');
+
+function collectionsDiv() {
+  const user = firebase.auth().currentUser;
+  const userId = user.uid;
+
+  firebase.firestore().collection('users').doc(userId).get()
+    .then((doc) => {
+      collectionsGrid.innerHTML = "";
+
+      if (doc.exists) {
+        const data = doc.data();
+        const collections = data.collections || [];
+
+	if (collections.length === 0) {
+    	  noCollectionsDefault.style.display = "block";
+  	} else {
+    	  noCollectionsDefault.style.display = "none";
+  	}
+
+        collections.forEach(async (collection) => {
+          const collectionCard = collectionDivCardTemplate.cloneNode(true);
+
+	  collectionCard.querySelector("#collection-div-card-name").textContent = collection.name;
+
+	  if (collection.products.length > 0) {
+	    collectionCard.querySelector("#cover-collection").src = collection.products[0].productImage;
+	  } else {
+	    collectionCard.querySelector("#cover-collection").src = defaultCollectionCover;
+	  }
+        
+	  collectionCard.querySelector("#remove-collection-div-btn").addEventListener("click", () => {
+	    removeCollection(userId, collection.name);
+            collectionCard.style.display = 'none';
+	  });
+
+	  collectionCard.querySelector("#link-to-collection-btn").addEventListener("click", () => {
+	    
+	  });
+
+          collectionsGrid.appendChild(collectionCard);
+        });
+	      
+      } else {
+        console.error("User document not found");
+      }
+    })
+    .catch((error) => {
+      console.error("Error loading collections:", error);
+    });
+}
+
+
