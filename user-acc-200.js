@@ -116,6 +116,7 @@ function loadProfileData(profiles, userId) {
 	 } else {
 	   moveUnauthorizedToLogIn();
 	 }
+       });
      });
 	  
      profile.querySelector(".show-products").addEventListener('click', (event) => {
