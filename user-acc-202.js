@@ -41,6 +41,10 @@ let isFavorite
 
 const editProfileDivBtn = document.getElementById('edit-profile-div-btn');
 
+document.querySelectorAll(".remove-profile-div-btn").forEach(btn => {
+  btn.style.display = "none";
+});
+
 editProfileDivBtn.addEventListener("click", () => {
   if (editProfileDivBtn.textContent === "Edit List") {
     editProfileDivBtn.textContent = "Done";
@@ -61,7 +65,7 @@ editProfileDivBtn.addEventListener("click", () => {
       btn.style.display = "none";
     });
 
-    document.querySelectorAll(cardSelector).forEach(card => {
+    document.querySelectorAll('.profile-card').forEach(card => {
       card.querySelector('#new-search').style.pointerEvents = '';
       card.querySelector('#show-products').style.pointerEvents = '';
     });
@@ -71,10 +75,6 @@ editProfileDivBtn.addEventListener("click", () => {
 function loadProfileData(profiles, userId) {
   profilesContain.innerHTML = "";
   profiles.sort((a, b) => new Date(a.date) - new Date(b.date));
-
-  document.querySelectorAll(".remove-profile-div-btn").forEach(btn => {
-    btn.style.display = "none";
-  });
 
   profiles.forEach(async (data) => {
 	  
@@ -490,7 +490,7 @@ function loadCollections(userId, productId) {
           const collectionCard = collectionCardTemplate.cloneNode(true);
 
 	  collectionCard.querySelector("#collection-name").textContent = collection.name;
-	  collectionCard.querySelector("#collection-id-main").textContent = collection.collectionId;
+	  collectionCard.querySelector("#collection-id").textContent = collection.collectionId;
 
 	  if (collection.products.length > 0) {
 	    collectionCard.querySelector("#cover-collection").src = collection.products[0].productImage;
@@ -1078,6 +1078,7 @@ function collectionsDivFunc() {
           const collectionCard = collectionDivCardTemplate.cloneNode(true);
 
 	  collectionCard.querySelector("#collection-div-card-name").textContent = collection.name;
+	  collectionCard.querySelector("#collection-id-main").textContent = collection.collectionId;
 
 	  if (collection.products.length > 0) {
 	    collectionCard.querySelector("#collection-div-cover-image").src = collection.products[0].productImage;
