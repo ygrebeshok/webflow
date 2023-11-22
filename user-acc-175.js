@@ -28,6 +28,7 @@ const profileProductName = document.getElementById("profile-product-name");
 const profileProductPopup = document.getElementById("profile-products-popup-container");
 const profileFavoritesLabel = document.getElementById("profile-popup-favorite-label");
 const addToCollectionOrdinaryBtn = document.getElementById("page-link-btn");
+const addToCollectionProfileBtn = document.getElementById("show-products-page-link-btn");
 
 var bodyAuth = document.body.getAttribute('data-user-auth');
 var bodyUnauth = document.body.getAttribute('data-user-unauth');
@@ -172,25 +173,18 @@ closeShowProducts.addEventListener('click', (event) => {
 });
 
 function showPopupForProfileProducts(productName, userId) {
-  currentProductId = productName;
 
   const slideContainer = document.querySelector('.profile-slides');
   const thumbnailContainer = document.querySelector('.profile-thumbnails');
   slideContainer.innerHTML = ''; // Clear existing slides
   thumbnailContainer.innerHTML = ''; // Clear existing thumbnails
-	
-  profilePopupTitle.innerHTML = '';
-  profilePopupBrand.innerHTML = '';
-  profilePopupBrand.innerHTML = '';
-  profilePopupDesc.innerHTML = '';
-  profilePopupPrice.innerHTML = '';
 
   profileFavoritesLabel.innerHTML = '';
 
   const giftsRef = firebase.firestore().collection('added-by-parsing');
 
   giftsRef
-  .where('name', '==', currentProductId)
+  .where('name', '==', productName)
   .get()
   .then((querySnapshot) => {
     querySnapshot.forEach((doc) => {
@@ -198,10 +192,8 @@ function showPopupForProfileProducts(productName, userId) {
 
       profilePopupTitle.textContent = productData.name;
       profilePopupBrand.textContent = productData.brand;
-      //profilePopupBrand.href = productData.product_link;
       profilePopupDesc.textContent = productData.description;
       profilePopupPrice.textContent = `$${productData.price}`;
-      showProductsPageLink.href = productData.product_link;
 
       productData.images.forEach(imageUrl => {
         const thumbnail = document.createElement('div');
@@ -215,20 +207,24 @@ function showPopupForProfileProducts(productName, userId) {
         slideContainer.appendChild(slide);
       })
 
-      firebase.firestore().collection("users").doc(userId).get()
-      .then(doc => {
-        const favorite = doc.data().favorites;
-        if (favorite.includes(currentProductId)) {
-          profileFavoritesLabel.textContent = "Remove from Favorites";
-	  isFavorite = true;
-        } else {
-          profileFavoritesLabel.textContent = "Add to Favorites";
-	  isFavorite = false;
-        }
-      })
-      .catch(error => {
-        console.log("Error getting favorites:", error);
-      });
+      const user = firebase.auth().currentUser;
+      const productId = productData.name;
+
+      if (user) {
+        const userId = user.uid;
+        firebase.firestore().collection("users").doc(userId).get()
+        .then(doc => {
+          const favorites = doc.data().favorites;
+          if (favorites.includes(productName)) {
+            favoritesLabel.textContent = "Remove from Favorites";
+          } else {
+	    favoritesLabel.textContent = "Add to Favorites";
+          }
+        })
+        .catch(error => {
+          console.log("Error getting favorites:", error);
+        });
+      }
 
       const slides = document.querySelector('.profile-slides');
       const thumbnails = document.querySelectorAll('.profile-thumbnail');
@@ -261,11 +257,30 @@ function showPopupForProfileProducts(productName, userId) {
   });
 
   profileProductPopup.style.display = "flex";
-
-  profilePopupClose.addEventListener("click", () => {
-    profileProductPopup.style.display = "none";
-  });	
 }
+
+profilePopupClose.addEventListener("click", () => {
+  profileProductPopup.style.display = "none";
+  profilePopupTitle.textContent = '';
+  profilePopupBrand.textContent = '';
+  profilePopupDesc.textContent = '';
+  profilePopupPrice.textContent = '';
+});	
+
+addToCollectionProfileBtn.addEventListener("click", () => {
+  collectionPopupWindow.style.display = "flex";
+  firebase.auth().onAuthStateChanged(function(authUser) {
+    user = authUser;
+
+    if (user) {
+      const userId = user.uid;
+      loadCollections(userId, profilePopupTitletextContent);
+    } else {
+      moveUnauthorizedToLogIn();
+    }
+	  
+  });
+});
 
 
 const collectionPopupWindow = document.getElementById('collection-popup-window');
@@ -659,6 +674,10 @@ function showPopupUser(productData, card) {
 
 popupClose.addEventListener("click", () => {
   popupContainer.style.display = "none";
+  popupTitle.textContent = '';
+  popupBrand.textContent = '';
+  popupDesc.textContent = '';
+  popupPrice.textContent = '';
 });
 
 addToCollectionOrdinaryBtn.addEventListener("click", () => {
