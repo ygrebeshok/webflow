@@ -950,7 +950,7 @@ const collectionsGrid = document.getElementById('collections-grid');
 const noCollectionsDefault = document.getElementById('no-collections-default');
 const collectionDivCardTemplate = document.querySelector('.collection-div-card');
 
-function collectionsDiv() {
+function collectionsDivFunc() {
   const user = firebase.auth().currentUser;
   const userId = user.uid;
 
