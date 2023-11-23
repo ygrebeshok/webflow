@@ -592,7 +592,9 @@ function addToCollection(userId, collectionId, collectionName, productId, produc
 	  collectionPopupWindow.style.display = "none";
 		
         } else {
-          productExistsError.style.display = 'block';
+	  setTimeout(() => {
+    	    productExistsError.style.display = 'block';
+  	  }, 5000);
         }
       } else {
         // Collection with the given collectionId doesn't exist
