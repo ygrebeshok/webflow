@@ -45,6 +45,10 @@ document.querySelectorAll(".remove-profile-div-btn").forEach(btn => {
   btn.style.display = "none";
 });
 
+document.querySelectorAll(".remove-collection-products-btn").forEach(btn => {
+  btn.style.display = "none";
+});
+
 editProfileDivBtn.addEventListener("click", () => {
   if (editProfileDivBtn.textContent === "Edit List") {
     editProfileDivBtn.textContent = "Done";
