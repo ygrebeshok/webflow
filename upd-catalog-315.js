@@ -56,7 +56,10 @@ let currentPage = 1;
 let totalDisplayedItems = 0;
 const itemsPerPage = 50;
 const itemsToAdd = 50;
-const loadMoreButton = document.getElementById('load-more');	  
+const loadMoreButton = document.getElementById('load-more');
+
+const productExistsError = document.getElementById('product-exists-error');
+productExistsError.style.display = 'none';
 
 ageField.addEventListener('input', (event) => {
   profileAge.value = ageField.value;
