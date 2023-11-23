@@ -1094,7 +1094,7 @@ function collectionsDivFunc() {
 
 	  collectionCard.querySelector("#link-to-collection-btn").addEventListener("click", () => {
 	    showCollectionProductsGrid.innerHTML = "";
-	    loadShowProductsOfCollection(collectionCard.querySelector("#collection-id-main").textContent);
+	    loadShowProductsOfCollection(collectionCard.querySelector("#collection-id-main").textContent, collectionCard.querySelector("#collection-div-card-name").textContent);
 	    showCollectionPopupContainer.style.display = 'flex';
 	  });
 
@@ -1116,7 +1116,7 @@ const popupCloseCollection = document.getElementById('popup-close-collection');
 const showCollectionProductsGrid = document.getElementById('show-collection-products-grid');
 const profileCollectionProductTemplate = document.getElementById('profile-collection-product-template');
 
-function loadShowProductsOfCollection(collectionId) {
+function loadShowProductsOfCollection(collectionId, collectionName) {
   document.getElementById('collection-popup-name').textContent = collectionName;
 	
   firebase.auth().onAuthStateChanged(function(authUser) {
