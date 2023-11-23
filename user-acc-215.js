@@ -1206,9 +1206,11 @@ editProductsBtn.addEventListener("click", () => {
       btn.style.display = "block";
     });
 
-    document.querySelectorAll('#collection-product-link').forEach(btn => {
-      btn.style.pointerEvents = 'none';
-    });
+    document.querySelectorAll('.profile-collection-product-template').forEach(card => {
+      card.querySelector('#collection-product-link').style.pointerEvents = 'none';
+      card.classList.remove('donate');
+    }); 
+
     shareTheCollectionBtn.style.pointerEvents = 'none';
 	    
   } else if (editProductsBtn.textContent === "Done") {
@@ -1218,9 +1220,11 @@ editProductsBtn.addEventListener("click", () => {
       btn.style.display = "none";
     });
 
-    document.querySelectorAll('#collection-product-link').forEach(btn => {
-      btn.style.pointerEvents = '';
-    });
+    document.querySelectorAll('.profile-collection-product-template').forEach(card => {
+      card.querySelector('#collection-product-link').style.pointerEvents = '';
+      card.classList.add('donate');
+    }); 
+	  
     shareTheCollectionBtn.style.pointerEvents = '';
   }
 });
