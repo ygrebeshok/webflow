@@ -1170,33 +1170,14 @@ function loadShowProductsOfCollection(collectionId, collectionName) {
               window.location.href = collectionUrl;
             });
 
-	    productCollectionCard.addEventListener('click', (event) => {
+	    productCollectionCard.querySelector('#collection-product-link').addEventListener('click', (event) => {
 	      showPopupForProfileProducts(productCollectionCard.querySelector('#profile-product-collection-grid-name').textContent, userId);
             });
 
 	    productCollectionCard.querySelector('#remove-collection-products-btn').addEventListener('click', (event) => {
 	      removeProductFromCollection(userId, collectionId, productCollectionCard.querySelector('#profile-product-collection-grid-name').textContent);
+	      productCollectionCard.style.display = 'none';
 	    });
-
-	    productCollectionCard.addEventListener('mouseenter', () => {
-              productCollectionCard.animate([
-                { transform: 'scale(1)' },
-                { transform: 'scale(1.05)' }
-              ], {
-                duration: 200,
-                fill: 'forwards'
-              });
-            });
-
-            productCollectionCard.addEventListener('mouseleave', () => {
-              productCollectionCard.animate([
-                { transform: 'scale(1.05)' },
-                { transform: 'scale(1)' }
-              ], {
-                duration: 200,
-                fill: 'forwards'
-              });
-            });
           });
         } else {
           console.error("Selected collection not found");
@@ -1225,6 +1206,9 @@ editProductsBtn.addEventListener("click", () => {
       btn.style.display = "block";
     });
 
+    document.querySelectorAll('#collection-product-link').forEach(btn => {
+      btn.style.pointerEvents = 'none';
+    });
     shareTheCollectionBtn.style.pointerEvents = 'none';
 	    
   } else if (editProductsBtn.textContent === "Done") {
@@ -1234,6 +1218,9 @@ editProductsBtn.addEventListener("click", () => {
       btn.style.display = "none";
     });
 
+    document.querySelectorAll('#collection-product-link').forEach(btn => {
+      btn.style.pointerEvents = '';
+    });
     shareTheCollectionBtn.style.pointerEvents = '';
   }
 });
