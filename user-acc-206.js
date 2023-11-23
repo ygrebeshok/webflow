@@ -1137,6 +1137,7 @@ function loadShowProductsOfCollection(collectionId, collectionName) {
           const products = selectedCollection.products || [];
 
           products.forEach(product => {
+	    const queryParams = products.map(product => `productId=${encodeURIComponent(product.productId)}&productImage=${encodeURIComponent(product.productImage)}`).join('&');
 
             const productCollectionCard = profileCollectionProductTemplate.cloneNode(true);
             
@@ -1144,6 +1145,13 @@ function loadShowProductsOfCollection(collectionId, collectionName) {
 	    productCollectionCard.querySelector('#profile-collection-product-image').src = product.productImage;
 
             showCollectionProductsGrid.appendChild(productCollectionCard);
+
+	    const shareTheCollectionBtn = document.getElementById('share-the-collection-btn');
+
+	    shareTheCollectionBtn.addEventListener('click', () => {
+              const collectionUrl = `/collection?collectionId=${encodeURIComponent(collectionId)}&${queryParams}`;
+              window.location.href = collectionUrl;
+            });
 
 	    productCollectionCard.addEventListener('click', (event) => {
 	      showPopupForProfileProducts(productCollectionCard.querySelector('#profile-product-collection-grid-name').textContent, userId);
