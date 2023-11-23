@@ -1129,6 +1129,7 @@ function collectionsDivFunc() {
 const popupCloseCollection = document.getElementById('popup-close-collection');
 const showCollectionProductsGrid = document.getElementById('show-collection-products-grid');
 const profileCollectionProductTemplate = document.getElementById('profile-collection-product-template');
+const shareTheCollectionBtn = document.getElementById('share-the-collection-btn');
 
 function loadShowProductsOfCollection(collectionId, collectionName) {
   document.getElementById('collection-popup-name').textContent = collectionName;
@@ -1160,8 +1161,6 @@ function loadShowProductsOfCollection(collectionId, collectionName) {
 
             showCollectionProductsGrid.appendChild(productCollectionCard);
 
-	    const shareTheCollectionBtn = document.getElementById('share-the-collection-btn');
-
 	    shareTheCollectionBtn.addEventListener('click', () => {
               const collectionUrl = `/collection?collectionId=${encodeURIComponent(collectionId)}&${queryParams}`;
               window.location.href = collectionUrl;
@@ -1170,6 +1169,10 @@ function loadShowProductsOfCollection(collectionId, collectionName) {
 	    productCollectionCard.addEventListener('click', (event) => {
 	      showPopupForProfileProducts(productCollectionCard.querySelector('#profile-product-collection-grid-name').textContent, userId);
             });
+
+	    productCollectionCard.querySelector('#remove-collection-products-btn').addEventListener('click', (event) => {
+	      removeProductFromCollection(userId, collectionId, productCollectionCard.querySelector('#profile-product-collection-grid-name').textContent);
+	    });
 
 	    productCollectionCard.addEventListener('mouseenter', () => {
               productCollectionCard.animate([
@@ -1207,6 +1210,73 @@ popupCloseCollection.addEventListener("click", () => {
   document.querySelectorAll('#profile-collection-product-image').src = '';
   showCollectionPopupContainer.style.display = 'none';
 });
+
+const editProductsBtn = document.getElementById('edit-products-btn');
+
+editProductsBtn.addEventListener("click", () => {
+  if (editProductsBtn.textContent === "Edit List") {
+    editProductsBtn.textContent = "Done";
+	    
+    document.querySelectorAll('#remove-collection-products-btn').forEach(btn => {
+      btn.style.display = "block";
+    });
+
+    document.querySelectorAll('.profile-collection-product-template').style.pointerEvents = 'none';
+    shareTheCollectionBtn.style.pointerEvents = 'none';
+	    
+  } else if (editProductsBtn.textContent === "Done") {
+    editProductsBtn.textContent = "Edit List";
+	    
+    document.querySelectorAll('#remove-collection-products-btn').forEach(btn => {
+      btn.style.display = "none";
+    });
+
+    document.querySelectorAll('.profile-collection-product-template').style.pointerEvents = '';
+    shareTheCollectionBtn.style.pointerEvents = '';
+  }
+});
+
+function removeProductFromCollection(userId, collectionId, productId) {
+  const userDocRef = firebase.firestore().collection('users').doc(userId);
+
+  firebase.firestore().runTransaction(transaction => {
+    return transaction.get(userDocRef).then(userDoc => {
+      if (!userDoc.exists) {
+        console.error("User document not found");
+        return;
+      }
+
+      const userData = userDoc.data();
+      const collections = userData.collections || [];
+
+      // Find the index of the collection with the given ID
+      const collectionIndex = collections.findIndex(collection => collection.collectionId === collectionId);
+
+      if (collectionIndex !== -1) {
+        // Collection with the given ID exists, update it by removing the product with the specified ID
+        const products = collections[collectionIndex].products || [];
+        const productIndex = products.findIndex(product => product.productId === productId);
+
+        if (productIndex !== -1) {
+          // Product with the specified ID exists in the collection, remove it
+          products.splice(productIndex, 1);
+
+          // Update the user document with the modified collections array
+          transaction.update(userDocRef, {
+            collections: collections
+          });
+        } else {
+          console.error("Product not found in the collection");
+        }
+      } else {
+        console.error("Collection not found");
+      }
+    });
+  }).catch(error => {
+    console.error("Error updating user document:", error);
+  });
+}
+
 
 
 
