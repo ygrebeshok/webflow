@@ -1218,24 +1218,22 @@ popupCloseCollection.addEventListener("click", () => {
 const editProductsBtn = document.getElementById('edit-products-btn');
 
 editProductsBtn.addEventListener("click", () => {
-  if (editProductsBtn.textContent === "Edit List") {
+  if (editProductsBtn.textContent === "Edit Products") {
     editProductsBtn.textContent = "Done";
 	    
     document.querySelectorAll('#remove-collection-products-btn').forEach(btn => {
       btn.style.display = "block";
     });
 
-    document.querySelectorAll('.profile-collection-product-template').style.pointerEvents = 'none';
     shareTheCollectionBtn.style.pointerEvents = 'none';
 	    
   } else if (editProductsBtn.textContent === "Done") {
-    editProductsBtn.textContent = "Edit List";
+    editProductsBtn.textContent = "Edit Products";
 	    
     document.querySelectorAll('#remove-collection-products-btn').forEach(btn => {
       btn.style.display = "none";
     });
 
-    document.querySelectorAll('.profile-collection-product-template').style.pointerEvents = '';
     shareTheCollectionBtn.style.pointerEvents = '';
   }
 });
