@@ -1094,7 +1094,7 @@ function collectionsDivFunc() {
 
 	  collectionCard.querySelector("#link-to-collection-btn").addEventListener("click", () => {
 	    showCollectionProductsGrid.innerHTML = "";
-	    loadShowProductsOfCollection(collectionCard.querySelector("#collection-div-card-name").textContent);
+	    loadShowProductsOfCollection(collectionCard.querySelector("#collection-id-main").textContent);
 	    showCollectionPopupContainer.style.display = 'flex';
 	  });
 
@@ -1116,7 +1116,7 @@ const popupCloseCollection = document.getElementById('popup-close-collection');
 const showCollectionProductsGrid = document.getElementById('show-collection-products-grid');
 const profileCollectionProductTemplate = document.getElementById('profile-collection-product-template');
 
-function loadShowProductsOfCollection(collectionName) {
+function loadShowProductsOfCollection(collectionId) {
   document.getElementById('collection-popup-name').textContent = collectionName;
 	
   firebase.auth().onAuthStateChanged(function(authUser) {
@@ -1131,7 +1131,7 @@ function loadShowProductsOfCollection(collectionName) {
         const collections = data.collections || [];
 
 	// Find the selected collection by name
-        const selectedCollection = collections.find(collection => collection.name === collectionName);
+        const selectedCollection = collections.find(collection => collection.collectionId === collectionId);
 
 	if (selectedCollection) {
           const products = selectedCollection.products || [];
