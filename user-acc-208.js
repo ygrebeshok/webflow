@@ -588,6 +588,9 @@ function addToCollection(userId, collectionId, collectionName, productId, produc
           transaction.update(userDocRef, {
             collections: collections
           });
+
+	  collectionPopupWindow.style.display = "none";
+		
         } else {
           productExistsError.style.display = 'block';
         }
@@ -599,9 +602,6 @@ function addToCollection(userId, collectionId, collectionName, productId, produc
   }).catch(error => {
     console.error("Error updating user document:", error);
   });
-
-  // Optionally, you can hide the collectionPopupWindow here or in the calling code
-  collectionPopupWindow.style.display = "none";
 }
 
 
