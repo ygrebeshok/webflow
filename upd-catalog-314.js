@@ -462,32 +462,42 @@ function addToCollection(userId, collectionId, collectionName, productId, produc
       const userData = userDoc.data();
       const collections = userData.collections || [];
 
-      // Find the index of the collection with the given name
+      // Find the index of the collection with the given collectionId
       const collectionIndex = collections.findIndex(collection => collection.collectionId === collectionId);
 
       if (collectionIndex !== -1) {
-        // Collection with the given name exists, update it with new data
-        collections[collectionIndex].products.push({ productId, productImage });
+        // Collection with the given collectionId exists
+        const existingProducts = collections[collectionIndex].products;
+        
+        // Check if the product with productId already exists in the collection
+        const productExists = existingProducts.some(product => product.productId === productId);
 
-        // Update the user document with the modified collections array
-        transaction.update(userDocRef, {
-          collections: collections
-        });
+        if (!productExists) {
+          // Product is not in the collection, add it
+          collections[collectionIndex].products.push({ productId, productImage });
+
+          // Update the user document with the modified collections array
+          transaction.update(userDocRef, {
+            collections: collections
+          });
+
+	  collectionPopupWindow.style.display = "none";
+		
+        } else {
+    	  productExistsError.style.display = 'block';
+
+	  setTimeout(() => {
+  	    productExistsError.style.display = 'none';
+	  }, 5000);
+        }
       } else {
-        // Collection with the given name doesn't exist, create a new one
-        const newCollection = { collectionId: uuidv4(), name: collectionName, products: [{ productId, productImage }] };
-        collections.push(newCollection);
-
-        // Update the user document with the modified collections array
-        transaction.update(userDocRef, {
-          collections: collections
-        });
+        // Collection with the given collectionId doesn't exist
+        console.error("Collection not found:", collectionId);
       }
     });
   }).catch(error => {
     console.error("Error updating user document:", error);
   });
-  collectionPopupWindow.style.display = "none";
 }
 
 
