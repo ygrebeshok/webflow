@@ -1166,7 +1166,7 @@ function loadShowProductsOfCollection(collectionId, collectionName) {
             showCollectionProductsGrid.appendChild(productCollectionCard);
 
 	    shareTheCollectionBtn.addEventListener('click', () => {
-              const collectionUrl = `/collection?collectionId=${encodeURIComponent(collectionId)}&${queryParams}`;
+              const collectionUrl = `/collection?collectionId=${encodeURIComponent(collectionId)}&collectionName=${encodeURIComponent(collectionName)}&${queryParams}`;
               window.location.href = collectionUrl;
             });
 
