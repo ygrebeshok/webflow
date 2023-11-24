@@ -227,7 +227,7 @@ async function sendEmail(userEmail, collectionName, selectedProducts) {
             'userEmail': userEmail,
             'collectionName': collectionName,
             'subject': subject,
-            'selectedProducts': selectedProductTitles.join('\n')
+            'selectedProducts': selectedProducts.join('\n')
         }
     };
 
