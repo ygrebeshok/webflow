@@ -257,9 +257,14 @@ function showPopupForSharedCollection(productName) {
         }, 5000);
         
     } catch (error) {
-        console.error(error);
-        alert('Oops... ' + error.message);
-    }
+      console.error('Error:', error);
+
+      if (response) {
+        console.error('Response:', await response.text());
+      }
+
+      alert('Oops... ' + error.message);
+  }
 }
   
   const subjectForEmailClose = document.getElementById('subject-for-email-close');
