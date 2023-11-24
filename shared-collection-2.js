@@ -213,59 +213,60 @@ function showPopupForSharedCollection(productName) {
 }
 
 
-  async function sendEmail(userEmail, collectionName, selectedProducts) {
-    const subject = document.getElementById('subject-name').value;
+async function sendEmail(userEmail, collectionName, selectedProducts) {
+  const subject = document.getElementById('subject-name').value;
 
-    const selectedProductsHTML = selectedProducts.map(product => `
-        <div style="text-align: center;">
-            <img src="${product.image}" alt="${product.title}" style="max-width: 100%; max-height: 100px;">
-            <p>${product.title}</p>
-        </div>
-    `).join('');
+  const selectedProductsHTML = selectedProducts.map(product => `
+    <div style="text-align: center;">
+      <img src="${product.image}" alt="${product.title}" style="max-width: 100%; max-height: 100px;">
+        <p>${product.title}</p>
+    </div>
+  `).join('');
 
-    const data = {
-        service_id: 'service_ul2j91r',
-        template_id: 'template_0dbcy8h',
-        user_id: 'itqPvk6ktAUpJxEYV',
-        template_params: {
-            'userEmail': userEmail,
-            'collectionName': collectionName,
-            'subject': subject,
-            'selectedProducts': selectedProductsHTML,
-        }
-    };
+  const data = {
+    service_id: 'service_ul2j91r',
+    template_id: 'template_0dbcy8h',
+    user_id: 'itqPvk6ktAUpJxEYV',
+    template_params: {
+      'userEmail': userEmail,
+      'collectionName': collectionName,
+      'subject': subject,
+      'selectedProducts': selectedProductsHTML,
+    }
+  };
 
-    try {
-        const response = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
-        });
+  try {
+    const response = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
 
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
 
-        const responseData = await response.json();
-        console.log(responseData);
+    const responseData = await response.json();
+    console.log(responseData);
         
-        successEmail.style.display = 'block';
-        setTimeout(() => {
-          successEmail.style.display = 'none'
-        }, 5000);
+    successEmail.style.display = 'block';
+    setTimeout(() => {
+      successEmail.style.display = 'none'
+    }, 5000);
         
-    } catch (error) {
-      console.error('Error:', error);
+  } catch (error) {
+    console.error('Error:', error);
 
-      if (response) {
-        console.error('Response:', await response.text());
-      }
+    if (response) {
+      console.error('Response:', await response.text());
+    }
 
-      alert('Oops... ' + error.message);
+    alert('Oops... ' + error.message);
   }
 }
+
   
   const subjectForEmailClose = document.getElementById('subject-for-email-close');
   
