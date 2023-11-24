@@ -39,7 +39,7 @@ products.forEach(product => {
   });
   
   shareCollectionCard.querySelector('#choose-btn').addEventListener('click', () => {
-    shareCollectionCard.querySelector('#choose-btn-cover').src = 'https://firebasestorage.googleapis.com/v0/b/smappy-ai.appspot.com/o/filled%20circle_600x600.png?alt=media&token=90732f55-23d3-4fad-b5ee-eaccb5af9553';
+    shareCollectionCard.querySelector('#choose-btn-cover').src = 'https://firebasestorage.googleapis.com/v0/b/smappy-ai.appspot.com/o/filled%20circle_600x600.png?alt=media&token=295c07e3-692a-4c3e-8450-8ef05a45102e';
   });
 });
 
@@ -94,7 +94,7 @@ selectGiftsBtn.addEventListener('click', () => {
       const titleElement = card.querySelector('#share-collection-card-title');
       const chooseBtnCoverElement = card.querySelector('#choose-btn-cover');
 
-      if (chooseBtnCoverElement.src === 'https://firebasestorage.googleapis.com/v0/b/smappy-ai.appspot.com/o/filled%20circle_600x600.png?alt=media&token=90732f55-23d3-4fad-b5ee-eaccb5af9553') {
+      if (chooseBtnCoverElement.src === 'https://firebasestorage.googleapis.com/v0/b/smappy-ai.appspot.com/o/filled%20circle_600x600.png?alt=media&token=295c07e3-692a-4c3e-8450-8ef05a45102e') {
         selectedProductTitles.push(titleElement.textContent);
       }
     });
@@ -114,7 +114,7 @@ selectGiftsBtn.addEventListener('click', () => {
     });
     
     document.querySelectorAll('#choose-btn-cover').forEach(btn => {
-      btn.src = 'https://firebasestorage.googleapis.com/v0/b/smappy-ai.appspot.com/o/empty%20circle_600x600.png?alt=media&token=e68d9e00-3552-4c85-bdd3-dffa05d23f41';
+      btn.src = 'https://firebasestorage.googleapis.com/v0/b/smappy-ai.appspot.com/o/empty%20circle_600x600.png?alt=media&token=e0db0c5d-dad6-40db-aa94-3948af00dbfa';
     });
     
     document.querySelectorAll('#link-block-product-shared').forEach(btn => {
