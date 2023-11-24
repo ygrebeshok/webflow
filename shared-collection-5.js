@@ -104,7 +104,7 @@ selectGiftsBtn.addEventListener('click', () => {
     const sendEmailBtn = document.getElementById('send-email-btn');
     
     sendEmailBtn.addEventListener('click', () => {
-      sendEmail(userEmail, collectionName, selectedProducts);
+      sendEmail(userEmail, collectionName, selectedProductTitles);
     });
   
     selectGiftsBtn.textContent = "Select the gifts I like";
