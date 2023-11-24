@@ -221,7 +221,7 @@ async function sendEmail(userEmail, collectionName, selectedProducts) {
 
     var data = {
         service_id: 'service_ul2j91r',
-        template_id: 'share-collection',
+        template_id: 'template_0dbcy8h',
         user_id: 'itqPvk6ktAUpJxEYV',
         template_params: {
             'userEmail': userEmail,
