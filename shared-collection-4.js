@@ -87,18 +87,15 @@ selectGiftsBtn.addEventListener('click', () => {
   } else if (selectGiftsBtn.textContent === "Done") {
   
     const productCards = document.querySelectorAll('.share-collection-card');
-    const selectedProducts = [];
+    const selectedProductTitles = [];
 
     productCards.forEach(card => {
+
       const titleElement = card.querySelector('#share-collection-card-title');
-      const imageElement = card.querySelector('#share-collection-card-cover');
       const chooseBtnCoverElement = card.querySelector('#choose-btn-cover');
 
       if (chooseBtnCoverElement.src === 'https://firebasestorage.googleapis.com/v0/b/smappy-ai.appspot.com/o/filled%20circle_600x600.png?alt=media&token=90732f55-23d3-4fad-b5ee-eaccb5af9553') {
-        selectedProducts.push({
-            title: titleElement.textContent,
-            image: imageElement.src
-        });
+        selectedProductTitles.push(titleElement.textContent);
       }
     });
 
@@ -230,7 +227,7 @@ async function sendEmail(userEmail, collectionName, selectedProducts) {
             'userEmail': userEmail,
             'collectionName': collectionName,
             'subject': subject,
-            'selectedProducts': selectedProductsHTML
+            'selectedProducts': selectedProductTitles.join('\n')
         }
     };
 
