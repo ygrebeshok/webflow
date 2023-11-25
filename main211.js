@@ -619,63 +619,8 @@ async function recommend() {
              return Array.from(new Set(array));
            }
 
-           //const user = firebase.auth().currentUser;
-
-           //if (user) {
-             //const userDocRef = firebase.firestore().collection('users').doc(user.uid);
-
-             //userDocRef.get().then( async (doc) => {
-               //if (doc.exists) {
-                 //const userData = doc.data();
-                 //const usageCount = userData.usageCount || 0;
-                 //const lastUpdate = userData.lastUpdate || null;
-
-                 // Check if it's a new month
-                 //if (!lastUpdate || !isSameMonth(new Date(lastUpdate.toMillis()), new Date())) {
-                   // Reset usageCount for a new month
-                   //userDocRef.update({
-                     //usageCount: 1,
-                     //lastUpdate: firebase.firestore.FieldValue.serverTimestamp()
-                   //});
-                 //} else if (usageCount < 5) {
-                   // Update usageCount if it's less than 5
-                   //userDocRef.update({
-                     //usageCount: usageCount + 1
-                   //});
-                 //} else {
-                   // Set up subscription using Firebase extension with Stripe
-                   //try {
-                     //const checkoutSessionRef = await firebase.firestore()
-                     //.collection('customers')
-                     //.doc(user.uid)
-                     //.collection('checkout_sessions')
-                     //.add({
-                       //userId: user.uid,
-                       //price: price_id,
-                       //success_url: "https://www.smappy.io/recommendations",
-                       //cancel_url: "https://www.smappy.io/recommendations",
-                     //});
-
-                     //checkoutSessionRef.onSnapshot((snap) => {
-                       //const { error, url } = snap.data();
-                       //if (error) {
-                         // Show an error to your customer and
-                         //alert(`An error occured: ${error.message}`);
-                       //}
-                       //if (url) {
-                         // We have a Stripe Checkout URL, let's redirect.
-                         //window.location.assign(url);
-                       //}
-                     //});
-                   //} catch (error) {
-                     //console.error(`An error occurred: ${error.message}`);
-                   //}
-                 //}
-               //}
-             //}).catch((error) => {
-               //console.log('Error getting user document:', error);
-             //});  
-           //}
+           subscriptionForRecommendations()
+           
          }) 
          .catch(error => {
            console.log('Error:', error);
@@ -716,6 +661,68 @@ async function recommend() {
         }
       }
     });
+  }
+
+  function subscriptionForRecommendations() {
+    const user = firebase.auth().currentUser;
+
+    if (user) {
+    const userDocRef = firebase.firestore().collection('users').doc(user.uid);
+
+    userDocRef.get().then( async (doc) => {
+      if (doc.exists) {
+        const userData = doc.data();
+        const usageCount = userData.usageCount || 0;
+        const lastUpdate = userData.lastUpdate || null;
+
+        // Check if it's a new month
+        if (!lastUpdate || !isSameMonth(new Date(lastUpdate.toMillis()), new Date())) {
+        // Reset usageCount for a new month
+          userDocRef.update({
+            usageCount: 1,
+            lastUpdate: firebase.firestore.FieldValue.serverTimestamp()
+          });
+        } else if (usageCount < 5) {
+          // Update usageCount if it's less than 5
+          userDocRef.update({
+            usageCount: usageCount + 1
+          });
+        } else {
+          // Set up subscription using Firebase extension with Stripe
+          try {
+            const checkoutSessionRef = await firebase.firestore()
+            .collection('customers')
+            .doc(user.uid)
+            .collection('checkout_sessions')
+            .add({
+              userId: user.uid,
+              automatic_tax: true,
+              price: 'price_1OG9kxGxbLrXvUTsxIhWMIT1',
+              allow_promotion_codes: true,
+              success_url: "https://www.smappy.io/recommendations",
+              cancel_url: "https://www.smappy.io/recommendations",
+            });
+
+            checkoutSessionRef.onSnapshot((snap) => {
+              const { error, url } = snap.data();
+              if (error) {
+                // Show an error to your customer and
+                alert(`An error occured: ${error.message}`);
+              } 
+              if (url) {
+                // We have a Stripe Checkout URL, let's redirect.
+                window.location.assign(url);
+              }
+            });
+          } catch (error) {
+            console.error(`An error occurred: ${error.message}`);
+          }
+        }
+      }
+    }).catch((error) => {
+      console.log('Error getting user document:', error);
+    });  
+   }
   }
 
 
