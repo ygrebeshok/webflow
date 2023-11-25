@@ -272,6 +272,7 @@ mainButton.addEventListener('click', async () => {
         errorAlert.textContent = "Sorry, your request was too complicated, we haven't found any recommendations";
         errorAlert.style.visibility = "visible";
       } else {
+        subscriptionForRecommendations();
         output.textContent = `${visibleCards.length} gift(s) found`;
         lottieLoader.style.visibility = "hidden";
         shieldForRecs(visibleCards);
@@ -280,7 +281,6 @@ mainButton.addEventListener('click', async () => {
         profileDiv.classList.remove("disablegrid");
         profilesBtn.classList.remove("disablegrid");
         created.textContent = "";
-        subscriptionForRecommendations();
 
         setTimeout(() => {
           feedbackWindow.style.display = 'flex';
@@ -695,6 +695,14 @@ async function recommend() {
     });
   }
 
+  const subscriptionPopupContainer = document.getElementById('subscription-popup-container');
+  subscriptionPopupContainer.style.display = 'none';
+
+  const subPopupClose = document.getElementById('sub-popup-close');
+  subPopupClose.addEventListener('click', () => {
+    subscriptionPopupContainer.style.display = 'none';
+  });
+
   function subscriptionForRecommendations() {
     const user = firebase.auth().currentUser;
 
@@ -720,34 +728,25 @@ async function recommend() {
               usageCount: usageCount + 1
             });
           } else {
-            // Set up subscription using Firebase extension with Stripe
-            try {
-              const checkoutSessionRef = await firebase.firestore()
-              .collection('customers')
-              .doc(user.uid)
-              .collection('checkout_sessions')
-              .add({
-                userId: user.uid,
-                automatic_tax: true,
-                price: 'price_1OG9kxGxbLrXvUTsxIhWMIT1',
-                allow_promotion_codes: true,
-                success_url: "https://www.smappy.io/recommendations",
-                cancel_url: "https://www.smappy.io/recommendations",
+
+            const subscriptionStatus = doc.data().subscriptionStatus;
+
+            if (subscriptionStatus === 'active') {
+              
+            } else {
+              subscriptionPopupContainer.style.display = 'flex';
+
+              document.querySelector('#sub-1').addEventListener('click', () => {
+                checkOutSubscription('price_1OGFdxGxbLrXvUTsfni2AThu');
               });
 
-              checkoutSessionRef.onSnapshot((snap) => {
-                const { error, url } = snap.data();
-                if (error) {
-                  // Show an error to your customer and
-                  alert(`An error occured: ${error.message}`);
-                } 
-                if (url) {
-                  // We have a Stripe Checkout URL, let's redirect.
-                  window.location.assign(url);
-                }
+              document.querySelector('#sub-6').addEventListener('click', () => {
+                checkOutSubscription('price_1OANQMGxbLrXvUTsDb4fz7iM');
               });
-            } catch (error) {
-              console.error(`An error occurred: ${error.message}`);
+
+              document.querySelector('#sub-year').addEventListener('click', () => {
+                checkOutSubscription('price_1OANRMGxbLrXvUTs0x4rginM');
+              });
             }
           }
         }
@@ -755,6 +754,37 @@ async function recommend() {
         console.log('Error getting user document:', error);
       });  
      }
+  }
+
+  function checkOutSubscription(priceId) {
+    try {
+      const checkoutSessionRef = await firebase.firestore()
+      .collection('customers')
+      .doc(user.uid)
+      .collection('checkout_sessions')
+      .add({
+        userId: user.uid,
+        automatic_tax: true,
+        price: priceId,
+        allow_promotion_codes: true,
+        success_url: "https://www.smappy.io/recommendations",
+        cancel_url: "https://www.smappy.io/recommendations",
+      });
+
+      checkoutSessionRef.onSnapshot((snap) => {
+        const { error, url } = snap.data();
+        if (error) {
+          // Show an error to your customer and
+          alert(`An error occured: ${error.message}`);
+        } 
+        if (url) {
+          // We have a Stripe Checkout URL, let's redirect.
+          window.location.assign(url);
+        }
+      });
+    } catch (error) {
+      console.error(`An error occurred: ${error.message}`);
+    }
   }
 
 
