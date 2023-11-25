@@ -756,7 +756,7 @@ async function recommend() {
      }
   }
 
-  function checkOutSubscription(priceId) {
+  async function checkOutSubscription(priceId) {
     try {
       const checkoutSessionRef = await firebase.firestore()
       .collection('customers')
