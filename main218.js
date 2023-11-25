@@ -698,11 +698,6 @@ async function recommend() {
   const subscriptionPopupContainer = document.getElementById('subscription-popup-container');
   subscriptionPopupContainer.style.display = 'none';
 
-  const subPopupClose = document.getElementById('sub-popup-close');
-  subPopupClose.addEventListener('click', () => {
-    subscriptionPopupContainer.style.display = 'none';
-  });
-
   function subscriptionForRecommendations() {
     const user = firebase.auth().currentUser;
 
@@ -741,11 +736,11 @@ async function recommend() {
               });
 
               document.querySelector('#sub-6').addEventListener('click', () => {
-                checkOutSubscription('price_1OANQMGxbLrXvUTsDb4fz7iM');
+                checkOutSubscription('price_1OGH8fGxbLrXvUTsXxCnHch6');
               });
 
               document.querySelector('#sub-year').addEventListener('click', () => {
-                checkOutSubscription('price_1OANRMGxbLrXvUTs0x4rginM');
+                checkOutSubscription('price_1OGH9gGxbLrXvUTsBZ3ZHnNV');
               });
             }
           }
