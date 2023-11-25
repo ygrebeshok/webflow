@@ -280,6 +280,7 @@ mainButton.addEventListener('click', async () => {
         profileDiv.classList.remove("disablegrid");
         profilesBtn.classList.remove("disablegrid");
         created.textContent = "";
+        subscriptionForRecommendations();
 
         setTimeout(() => {
           feedbackWindow.style.display = 'flex';
@@ -618,8 +619,6 @@ async function recommend() {
            function removeDuplicates(array) {
              return Array.from(new Set(array));
            }
-
-           subscriptionForRecommendations()
            
          }) 
          .catch(error => {
@@ -663,66 +662,99 @@ async function recommend() {
     });
   }
 
+  function checkForSubscriptionStatus() {
+    firebase.auth().onAuthStateChanged(function (authUser) {
+        user = authUser;
+
+        if (user) {
+          const customerRef = firebase.firestore().collection('customers').doc(user.uid);
+
+          customerRef.collection('subscriptions')
+          .where('status', 'in', ['trialing', 'active'])
+          .onSnapshot(async (snapshot) => {
+            // In this implementation, we only expect one active or trialing subscription to exist.
+            const doc = snapshot.docs[0];
+
+            if (doc) {
+              const subscriptionStatus = doc.data().status;
+
+              // Update the corresponding user in the "users" collection with the subscriptionStatus
+              const userRef = firebase.firestore().collection('users').doc(user.uid);
+
+              try {
+                await userRef.set({
+                  subscriptionStatus: subscriptionStatus
+                }, { merge: true });
+
+              } catch (error) {
+                console.error('Error updating subscription status:', error);
+              }
+            }
+          });
+        }
+    });
+  }
+
   function subscriptionForRecommendations() {
     const user = firebase.auth().currentUser;
 
     if (user) {
-    const userDocRef = firebase.firestore().collection('users').doc(user.uid);
+      const userDocRef = firebase.firestore().collection('users').doc(user.uid);
 
-    userDocRef.get().then( async (doc) => {
-      if (doc.exists) {
-        const userData = doc.data();
-        const usageCount = userData.usageCount || 0;
-        const lastUpdate = userData.lastUpdate || null;
+      userDocRef.get().then( async (doc) => {
+        if (doc.exists) {
+          const userData = doc.data();
+          const usageCount = userData.usageCount || 0;
+          const lastUpdate = userData.lastUpdate || null;
 
-        // Check if it's a new month
-        if (!lastUpdate || !isSameMonth(new Date(lastUpdate.toMillis()), new Date())) {
-        // Reset usageCount for a new month
-          userDocRef.update({
-            usageCount: 1,
-            lastUpdate: firebase.firestore.FieldValue.serverTimestamp()
-          });
-        } else if (usageCount < 5) {
-          // Update usageCount if it's less than 5
-          userDocRef.update({
-            usageCount: usageCount + 1
-          });
-        } else {
-          // Set up subscription using Firebase extension with Stripe
-          try {
-            const checkoutSessionRef = await firebase.firestore()
-            .collection('customers')
-            .doc(user.uid)
-            .collection('checkout_sessions')
-            .add({
-              userId: user.uid,
-              automatic_tax: true,
-              price: 'price_1OG9kxGxbLrXvUTsxIhWMIT1',
-              allow_promotion_codes: true,
-              success_url: "https://www.smappy.io/recommendations",
-              cancel_url: "https://www.smappy.io/recommendations",
+          // Check if it's a new month
+          if (!lastUpdate || !isSameMonth(new Date(lastUpdate.toMillis()), new Date())) {
+          // Reset usageCount for a new month
+            userDocRef.update({
+              usageCount: 1,
+              lastUpdate: firebase.firestore.FieldValue.serverTimestamp()
             });
-
-            checkoutSessionRef.onSnapshot((snap) => {
-              const { error, url } = snap.data();
-              if (error) {
-                // Show an error to your customer and
-                alert(`An error occured: ${error.message}`);
-              } 
-              if (url) {
-                // We have a Stripe Checkout URL, let's redirect.
-                window.location.assign(url);
-              }
+          } else if (usageCount < 5) {
+            // Update usageCount if it's less than 5
+            userDocRef.update({
+              usageCount: usageCount + 1
             });
-          } catch (error) {
-            console.error(`An error occurred: ${error.message}`);
+          } else {
+            // Set up subscription using Firebase extension with Stripe
+            try {
+              const checkoutSessionRef = await firebase.firestore()
+              .collection('customers')
+              .doc(user.uid)
+              .collection('checkout_sessions')
+              .add({
+                userId: user.uid,
+                automatic_tax: true,
+                price: 'price_1OG9kxGxbLrXvUTsxIhWMIT1',
+                allow_promotion_codes: true,
+                success_url: "https://www.smappy.io/recommendations",
+                cancel_url: "https://www.smappy.io/recommendations",
+              });
+
+              checkoutSessionRef.onSnapshot((snap) => {
+                const { error, url } = snap.data();
+                if (error) {
+                  // Show an error to your customer and
+                  alert(`An error occured: ${error.message}`);
+                } 
+                if (url) {
+                  // We have a Stripe Checkout URL, let's redirect.
+                  window.location.assign(url);
+                }
+              });
+            } catch (error) {
+              console.error(`An error occurred: ${error.message}`);
+            }
           }
         }
-      }
-    }).catch((error) => {
-      console.log('Error getting user document:', error);
-    });  
-   }
+      }).catch((error) => {
+        console.log('Error getting user document:', error);
+      });  
+     }
   }
 
 
