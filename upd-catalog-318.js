@@ -600,6 +600,7 @@ function showPopup(productData) {
 
   const user = firebase.auth().currentUser;
   const productId = productData.name;
+  const productDesc = productData.description;
 
   if (user) {
     const userId = user.uid;
@@ -610,6 +611,15 @@ function showPopup(productData) {
         favoritesLabel.textContent = "Remove from Favorites";
       } else {
 	favoritesLabel.textContent = "Add to Favorites";
+      }
+
+      const cart = doc.data().cart;
+      const isInCart = cart.some(item => item.productId === productId && item.productDesc === productDesc);
+
+      if (isInCart) {
+        addToCartLabel.textContent = "Remove from Cart";
+      } else {
+        addToCartLabel.textContent = "Add to Cart";
       }
     })
     .catch(error => {
