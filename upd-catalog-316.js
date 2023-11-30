@@ -45,6 +45,8 @@ let selected_category = null;
 let visibleCards = [];
 const catalogGrid = document.getElementById("catalog");
 const cardTemplate = document.querySelector(".card");
+const addToCartBtn = document.getElementById("add-to-cart-btn");
+const cartGrid = document.getElementById("cart-grid");
 
 const age_personality = document.getElementById("age-personality");
 const errorAlert = document.getElementById("error-alert");
@@ -144,6 +146,10 @@ function uuidv4() {
     return v.toString(16);
   });
 }
+
+addToCartBtn.addEventListener('click', () => {
+
+});
 
 createProfile.addEventListener('click', () => {
   moveUnauthorizedToLogIn();
@@ -251,6 +257,32 @@ function toggleFavorite(element, userId, productId) {
     })
     .catch(error => {
       console.log("Error adding product to favorites:", error);
+    });
+   }
+}
+
+function toggleCart(element, userId, productId, productDesc) {
+  const isInCart = element.textContent === "Remove from Cart";
+
+  if (isInCart) {
+    firebase.firestore().collection("users").doc(userId).update({
+    cart: firebase.firestore.FieldValue.arrayRemove({ productId, productDesc })
+    })
+    .then(() => {
+      element.textContent = "Add to Cart";
+    })
+    .catch(error => {
+      console.log("Error removing product from cart:", error);
+    });
+  } else {
+    firebase.firestore().collection("users").doc(userId).update({
+      cart: firebase.firestore.FieldValue.arrayUnion({ productId, productDesc })
+    })
+    .then(() => {
+      element.textContent = "Remove from Cart";
+    })
+    .catch(error => {
+      console.log("Error adding product to cart:", error);
     });
    }
 }
@@ -666,6 +698,18 @@ popupFavoriteBtn.addEventListener('click', () => {
   }); 
 });
 
+addToCartBtn.addEventListener('click', () => {
+  firebase.auth().onAuthStateChanged(function(authUser) {
+    user = authUser;
+    if (user) {
+      const userId = user.uid;
+      toggleCart(element, userId, popupTitle.textContent, popupDesc.textContent);
+    } else {
+      moveUnauthorizedToLogIn();
+    }
+  }); 
+});
+
 linkButton.addEventListener("click", () => {
   collectionPopupWindow.style.display = "flex";
   firebase.auth().onAuthStateChanged(function(authUser) {
@@ -688,6 +732,8 @@ popupClose.addEventListener("click", () => {
   popupDesc.textContent = '';
   popupPrice.textContent = '';
 });
+
+const addToCartLabel = document.getElementById("add-to-cart-label");
 
 
 let brandFilters = [];
