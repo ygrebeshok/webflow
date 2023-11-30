@@ -585,6 +585,7 @@ async function createNewCollection(userId, collectionName, productId, productIma
   });
 }
 
+const addToCartLabel = document.getElementById("add-to-cart-label");
 
 function showPopup(productData) {
   const slideContainer = document.querySelector('.slides');
@@ -703,7 +704,7 @@ addToCartBtn.addEventListener('click', () => {
     user = authUser;
     if (user) {
       const userId = user.uid;
-      toggleCart(element, userId, popupTitle.textContent, popupDesc.textContent);
+      toggleCart(addToCartLabel, userId, popupTitle.textContent, popupDesc.textContent);
     } else {
       moveUnauthorizedToLogIn();
     }
@@ -733,7 +734,6 @@ popupClose.addEventListener("click", () => {
   popupPrice.textContent = '';
 });
 
-const addToCartLabel = document.getElementById("add-to-cart-label");
 
 
 let brandFilters = [];
