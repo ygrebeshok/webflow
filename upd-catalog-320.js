@@ -71,7 +71,6 @@ popupCloseCart.addEventListener('click', (event) => {
   cartPopupContainer.style.display = 'none';
 });
 
-const cartGrid = document.getElementById('cart-grid');
 const cartCardTemplate = document.querySelector('.cart-card');
 
 cartIconBtn.addEventListener('click', (event) => {
