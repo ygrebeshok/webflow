@@ -74,46 +74,54 @@ popupCloseCart.addEventListener('click', (event) => {
 const cartCardTemplate = document.querySelector('.cart-card');
 
 cartIconBtn.addEventListener('click', (event) => {
-  firebase.firestore().collection('users').doc(userId).get()
-    .then((doc) => {
-      cartGrid.innerHTML = ""; // Clear the cartGrid before rendering
+  firebase.auth().onAuthStateChanged(function(authUser) {
+    user = authUser;
+    if (user) {
+      const userId = user.uid;
 
-      if (doc.exists) {
-        const data = doc.data();
-        const cart = data.cart || [];
+      firebase.firestore().collection('users').doc(userId).get()
+      .then((doc) => {
+        cartGrid.innerHTML = "";
 
-        const promises = cart.map(async (product) => {
-          const cartCard = cartCardTemplate.cloneNode(true);
+        if (doc.exists) {
+          const data = doc.data();
+          const cart = data.cart || [];
 
-          cartCard.querySelector('#cart-product-name').textContent = product.productId;
+          const promises = cart.map(async (product) => {
+            const cartCard = cartCardTemplate.cloneNode(true);
 
-          try {
-            const querySnapshot = await firebase.firestore().collection('added-by-parsing').where("name", "==", product.productId).get();
-            if (!querySnapshot.empty) {
-              const doc = querySnapshot.docs[0];
-              const data = doc.data();
-              const productPrice = data.price;
-              cartCard.querySelector('#cart-product-price').textContent = "$" + productPrice;
-            } else {
-              console.log("Document not found");
+            cartCard.querySelector('#cart-product-name').textContent = product.productId;
+
+            try {
+              const querySnapshot = await firebase.firestore().collection('added-by-parsing').where("name", "==", product.productId).get();
+              if (!querySnapshot.empty) {
+                const doc = querySnapshot.docs[0];
+                const data = doc.data();
+                const productPrice = data.price;
+                cartCard.querySelector('#cart-product-price').textContent = "$" + productPrice;
+              } else {
+                console.log("Document not found");
+              }
+            } catch (error) {
+              console.error("Error getting document:", error);
             }
-          } catch (error) {
-            console.error("Error getting document:", error);
-          }
 
-          // Append the cartCard to the cartGrid
-          cartGrid.appendChild(cartCard);
-        });
+            cartGrid.appendChild(cartCard);
+          });
 
-        // Wait for all asynchronous operations to complete before displaying the cartPopupContainer
-        Promise.all(promises).then(() => {
-          cartPopupContainer.style.display = 'flex';
-        });
-      }
-    })
-    .catch((error) => {
-      console.error("Error getting user document:", error);
-    });
+          Promise.all(promises).then(() => {
+            cartPopupContainer.style.display = 'flex';
+          });
+        }
+      })
+      .catch((error) => {
+        console.error("Error getting user document:", error);
+      });
+	    
+    } else {
+      moveUnauthorizedToLogIn();
+    }
+  });
 });
 
 
