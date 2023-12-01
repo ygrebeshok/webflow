@@ -47,6 +47,9 @@ const catalogGrid = document.getElementById("catalog");
 const cardTemplate = document.querySelector(".card");
 const addToCartBtn = document.getElementById("add-to-cart-btn");
 const cartGrid = document.getElementById("cart-grid");
+const cartIconBtn = document.getElementById("cart-icon-btn");
+const cartPopupContainer = document.getElementById("cart-popup-container");
+const popupCloseCart = document.getElementById("popup-close-cart");
 
 const age_personality = document.getElementById("age-personality");
 const errorAlert = document.getElementById("error-alert");
@@ -62,6 +65,58 @@ const loadMoreButton = document.getElementById('load-more');
 
 const productExistsError = document.getElementById('product-exists-error');
 productExistsError.style.display = 'none';
+cartPopupContainer.style.display = 'none';
+
+popupCloseCart.addEventListener('click', (event) => {
+  cartPopupContainer.style.display = 'none';
+});
+
+const cartGrid = document.getElementById('cart-grid');
+const cartCardTemplate = document.querySelector('.cart-card');
+
+cartIconBtn.addEventListener('click', (event) => {
+  firebase.firestore().collection('users').doc(userId).get()
+    .then((doc) => {
+      cartGrid.innerHTML = ""; // Clear the cartGrid before rendering
+
+      if (doc.exists) {
+        const data = doc.data();
+        const cart = data.cart || [];
+
+        const promises = cart.map(async (product) => {
+          const cartCard = cartCardTemplate.cloneNode(true);
+
+          cartCard.querySelector('#cart-product-name').textContent = product.productId;
+
+          try {
+            const querySnapshot = await firebase.firestore().collection('added-by-parsing').where("name", "==", product.productId).get();
+            if (!querySnapshot.empty) {
+              const doc = querySnapshot.docs[0];
+              const data = doc.data();
+              const productPrice = data.price;
+              cartCard.querySelector('#cart-product-price').textContent = "$" + productPrice;
+            } else {
+              console.log("Document not found");
+            }
+          } catch (error) {
+            console.error("Error getting document:", error);
+          }
+
+          // Append the cartCard to the cartGrid
+          cartGrid.appendChild(cartCard);
+        });
+
+        // Wait for all asynchronous operations to complete before displaying the cartPopupContainer
+        Promise.all(promises).then(() => {
+          cartPopupContainer.style.display = 'flex';
+        });
+      }
+    })
+    .catch((error) => {
+      console.error("Error getting user document:", error);
+    });
+});
+
 
 ageField.addEventListener('input', (event) => {
   profileAge.value = ageField.value;
@@ -146,10 +201,6 @@ function uuidv4() {
     return v.toString(16);
   });
 }
-
-addToCartBtn.addEventListener('click', () => {
-
-});
 
 createProfile.addEventListener('click', () => {
   moveUnauthorizedToLogIn();
