@@ -99,6 +99,7 @@ cartIconBtn.addEventListener('click', (event) => {
                 const data = doc.data();
                 const productPrice = data.price;
                 cartCard.querySelector('#cart-product-price').textContent = "$" + productPrice;
+		cartCard.querySelector('#cart-product-desc').textContent = data.description;
               } else {
                 console.log("Document not found");
               }
@@ -107,6 +108,21 @@ cartIconBtn.addEventListener('click', (event) => {
             }
 
             cartGrid.appendChild(cartCard);
+
+	    cartCard.querySelector("#delete-from-cart-btn").addEventListener('click', (event) => {
+	      firebase.firestore().collection("users").doc(userId).update({
+    		cart: firebase.firestore.FieldValue.arrayRemove({
+      		  productId: cartCard.querySelector('#cart-product-name').textContent,
+      		  productDesc: cartCard.querySelector('#cart-product-desc').textContent
+    		})
+    	      })
+    	      .then(() => {
+      		cartCard.style.display = 'none';
+    	      })
+    	      .catch(error => {
+      		console.log("Error removing product from cart:", error);
+    	      });
+	    });
           });
 
           Promise.all(promises).then(() => {
@@ -801,7 +817,6 @@ popupClose.addEventListener("click", () => {
   popupDesc.textContent = '';
   popupPrice.textContent = '';
 });
-
 
 
 let brandFilters = [];
