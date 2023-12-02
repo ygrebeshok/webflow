@@ -142,28 +142,30 @@ cartIconBtn.addEventListener('click', (event) => {
      function updateSubtotal() {
        const subtotalPriceElement = document.getElementById('subtotal-price');
        const totalPriceText = document.getElementById('total-price-text');
+       let feeRate = 1.08;
 
        // Calculate subtotal
        let subtotal = totalAmount.toFixed(2);
 
        // Check subscription status
-       const customerRef = firebase.firestore().collection('customers').doc(user.uid);
+       firebase.firestore().collection('users').doc(user.uid).get()
+       .then((userDoc) => {
+         const subscriptionStatus = userDoc.data().subscriptionStatus;
 
-       customerRef.collection('subscriptions')
-       .where('status', 'in', ['trialing', 'active'])
-       .onSnapshot(async (snapshot) => {
-         const doc = snapshot.docs[0];
-
-         if (doc) {
-           // If subscription is active, adjust subtotal with a different tax rate
-           subtotal = (totalAmount * 1.04).toFixed(2);
+         // If subscription is active, adjust subtotal with a different tax rate
+         if (subscriptionStatus === 'active') {
+           feeRate = 1.04;
          }
 
          // Update subtotal element
          subtotalPriceElement.textContent = "$" + subtotal;
-         totalPriceText.textContent = "$" + (subtotal * 1.08).toFixed(2);
+         totalPriceText.textContent = "$" + (subtotal * feeRate).toFixed(2);
+       })
+       .catch((error) => {
+         console.error("Error getting user document:", error);
        });
-      }
+     }
+
     } else {
       moveUnauthorizedToLogIn();
     }
