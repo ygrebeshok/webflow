@@ -78,7 +78,8 @@ cartIconBtn.addEventListener('click', (event) => {
     user = authUser;
     if (user) {
       const userId = user.uid;
-
+      let totalAmount = 0;
+	    
       firebase.firestore().collection('users').doc(userId).get()
       .then((doc) => {
         cartGrid.innerHTML = "";
@@ -98,6 +99,7 @@ cartIconBtn.addEventListener('click', (event) => {
                 const doc = querySnapshot.docs[0];
                 const data = doc.data();
                 const productPrice = data.price;
+		totalAmount += productPrice;
                 cartCard.querySelector('#cart-product-price').textContent = "$" + productPrice;
 		cartCard.querySelector('#cart-product-desc').textContent = data.description;
               } else {
@@ -118,6 +120,7 @@ cartIconBtn.addEventListener('click', (event) => {
     	      })
     	      .then(() => {
       		cartCard.style.display = 'none';
+		updateSubtotal();
     	      })
     	      .catch(error => {
       		console.log("Error removing product from cart:", error);
@@ -126,6 +129,7 @@ cartIconBtn.addEventListener('click', (event) => {
           });
 
           Promise.all(promises).then(() => {
+	    updateSubtotal();
             cartPopupContainer.style.display = 'flex';
           });
         }
@@ -133,7 +137,33 @@ cartIconBtn.addEventListener('click', (event) => {
       .catch((error) => {
         console.error("Error getting user document:", error);
       });
-	    
+
+      // Function to update the subtotal element
+     function updateSubtotal() {
+       const subtotalPriceElement = document.getElementById('subtotal-price');
+       const totalPriceText = document.getElementById('total-price-text');
+
+       // Calculate subtotal
+       let subtotal = totalAmount.toFixed(2);
+
+       // Check subscription status
+       const customerRef = firebase.firestore().collection('customers').doc(user.uid);
+
+       customerRef.collection('subscriptions')
+       .where('status', 'in', ['trialing', 'active'])
+       .onSnapshot(async (snapshot) => {
+         const doc = snapshot.docs[0];
+
+         if (doc) {
+           // If subscription is active, adjust subtotal with a different tax rate
+           subtotal = (totalAmount * 1.04).toFixed(2);
+         }
+
+         // Update subtotal element
+         subtotalPriceElement.textContent = "$" + subtotal;
+         totalPriceText.textContent = "$" + (subtotal * 1.08).toFixed(2);
+       });
+      }
     } else {
       moveUnauthorizedToLogIn();
     }
