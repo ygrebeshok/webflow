@@ -72,13 +72,13 @@ popupCloseCart.addEventListener('click', (event) => {
 });
 
 const cartCardTemplate = document.querySelector('.cart-card');
+let totalAmount = 0;
 
 cartIconBtn.addEventListener('click', (event) => {
   firebase.auth().onAuthStateChanged(function(authUser) {
     user = authUser;
     if (user) {
       const userId = user.uid;
-      let totalAmount = 0;
 	    
       firebase.firestore().collection('users').doc(userId).get()
       .then((doc) => {
@@ -120,7 +120,8 @@ cartIconBtn.addEventListener('click', (event) => {
     	      })
     	      .then(() => {
       		cartCard.style.display = 'none';
-		updateSubtotal();
+		console.log('Total Amount:', totalAmount);
+		updateSubtotal(userId);
     	      })
     	      .catch(error => {
       		console.log("Error removing product from cart:", error);
@@ -129,7 +130,7 @@ cartIconBtn.addEventListener('click', (event) => {
           });
 
           Promise.all(promises).then(() => {
-	    updateSubtotal();
+	    updateSubtotal(userId);
             cartPopupContainer.style.display = 'flex';
           });
         }
@@ -138,39 +139,39 @@ cartIconBtn.addEventListener('click', (event) => {
         console.error("Error getting user document:", error);
       });
 
-      // Function to update the subtotal element
-     function updateSubtotal() {
-       const subtotalPriceElement = document.getElementById('subtotal-price');
-       const totalPriceText = document.getElementById('total-price-text');
-       let feeRate = 1.08;
-
-       // Calculate subtotal
-       let subtotal = totalAmount.toFixed(2);
-
-       // Check subscription status
-       firebase.firestore().collection('users').doc(user.uid).get()
-       .then((userDoc) => {
-         const subscriptionStatus = userDoc.data().subscriptionStatus;
-
-         // If subscription is active, adjust subtotal with a different tax rate
-         if (subscriptionStatus === 'active') {
-           feeRate = 1.04;
-         }
-
-         // Update subtotal element
-         subtotalPriceElement.textContent = "$" + subtotal;
-         totalPriceText.textContent = "$" + (subtotal * feeRate).toFixed(2);
-       })
-       .catch((error) => {
-         console.error("Error getting user document:", error);
-       });
-     }
-
     } else {
       moveUnauthorizedToLogIn();
     }
   });
 });
+
+// Function to update the subtotal element
+function updateSubtotal(userId) {
+  const subtotalPriceElement = document.getElementById('subtotal-price');
+  const totalPriceText = document.getElementById('total-price-text');
+  let feeRate = 1.08;
+
+  // Calculate subtotal
+  let subtotal = totalAmount.toFixed(2);
+
+  // Check subscription status
+  firebase.firestore().collection('users').doc(userId).get()
+  .then((userDoc) => {
+    const subscriptionStatus = userDoc.data().subscriptionStatus;
+
+    // If subscription is active, adjust subtotal with a different tax rate
+    if (subscriptionStatus === 'active') {
+      feeRate = 1.04;
+    }
+
+    // Update subtotal element
+    subtotalPriceElement.textContent = "$" + subtotal;
+    totalPriceText.textContent = "$" + (subtotal * feeRate).toFixed(2);
+  })
+  .catch((error) => {
+    console.error("Error getting user document:", error);
+  });
+}
 
 
 ageField.addEventListener('input', (event) => {
