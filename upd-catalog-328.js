@@ -75,6 +75,7 @@ const cartCardTemplate = document.querySelector('.cart-card');
 let totalAmount = 0;
 
 cartIconBtn.addEventListener('click', (event) => {
+  totalAmount = 0;
   firebase.auth().onAuthStateChanged(function(authUser) {
     user = authUser;
     if (user) {
