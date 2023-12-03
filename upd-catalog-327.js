@@ -112,6 +112,8 @@ cartIconBtn.addEventListener('click', (event) => {
             cartGrid.appendChild(cartCard);
 
 	    cartCard.querySelector("#delete-from-cart-btn").addEventListener('click', (event) => {
+	      const currentProductPrice = parseFloat(cartCard.querySelector('#cart-product-price').textContent.replace('$', ''));
+		    
 	      firebase.firestore().collection("users").doc(userId).update({
     		cart: firebase.firestore.FieldValue.arrayRemove({
       		  productId: cartCard.querySelector('#cart-product-name').textContent,
@@ -120,7 +122,7 @@ cartIconBtn.addEventListener('click', (event) => {
     	      })
     	      .then(() => {
       		cartCard.style.display = 'none';
-		console.log('Total Amount:', totalAmount);
+		totalAmount -= currentProductPrice;
 		updateSubtotal(userId);
     	      })
     	      .catch(error => {
