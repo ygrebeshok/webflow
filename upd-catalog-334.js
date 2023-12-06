@@ -160,23 +160,42 @@ cartIconBtn.addEventListener('click', (event) => {
    	      updateSubtotal(userId);
 	    });
 
-	    cartCard.querySelector("#delete-from-cart-btn").addEventListener('click', (event) => {
-	      const currentProductPrice = parseFloat(cartCard.querySelector('#cart-product-price').textContent.replace('$', ''));
-		    
-	      firebase.firestore().collection("users").doc(userId).update({
-    		cart: firebase.firestore.FieldValue.arrayRemove({
-      		  productId: cartCard.querySelector('#cart-product-name').textContent,
-      		  productDesc: cartCard.querySelector('#cart-product-desc').textContent
-    		})
-    	      })
-    	      .then(() => {
-      		cartCard.style.display = 'none';
-		totalAmount -= currentProductPrice;
-		updateSubtotal(userId);
-    	      })
-    	      .catch(error => {
-      		console.log("Error removing product from cart:", error);
-    	      });
+	    cartCard.querySelector("#delete-from-cart-btn").addEventListener('click', async (event) => {
+  	      const productId = cartCard.querySelector('#cart-product-name').textContent;
+  	      const productDesc = cartCard.querySelector('#cart-product-desc').textContent;
+
+  	      try {
+    	        // Get the user's cart
+    	        const userDoc = await firebase.firestore().collection("users").doc(userId).get();
+    	        if (userDoc.exists) {
+      	          const userData = userDoc.data();
+      		  let cart = userData.cart || [];
+
+      	          // Find the index of the product to be removed in the cart
+      		  const indexToRemove = cart.findIndex(item => item.productId === productId && item.productDesc === productDesc);
+
+      		  if (indexToRemove !== -1) {
+        	    // Remove the product from the local cart
+        	    const removedItem = cart.splice(indexToRemove, 1)[0];
+
+        	    // Update the total amount
+        	    totalAmount -= (parseFloat(cartCard.querySelector('#cart-product-price').textContent.replace('$', '')) * removedItem.quantity);
+
+        	    // Update the entire cart in the Firestore database
+        	    await firebase.firestore().collection("users").doc(userId).update({
+          	      cart: cart,
+        	    });
+
+        	    // Update the UI
+        	    cartCard.style.display = 'none';
+        	    updateSubtotal(userId);
+      		  } else {
+        	    console.log("Product not found in the cart");
+      		  }
+    	        } 
+  	      } catch (error) {
+    	        console.log("Error removing product from cart:", error);
+  	      }
 	    });
           });
 
