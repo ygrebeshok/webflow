@@ -36,6 +36,7 @@ const cartGrid = document.getElementById("cart-grid");
 const cartIconBtn = document.getElementById("cart-icon-button");
 const cartPopupContainer = document.getElementById("cart-popup-container");
 const popupCloseCart = document.getElementById("popup-close-cart");
+const addToCartLabel = document.getElementById("add-to-cart-label");
 
 var bodyAuth = document.body.getAttribute('data-user-auth');
 var bodyUnauth = document.body.getAttribute('data-user-unauth');
