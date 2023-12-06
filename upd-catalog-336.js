@@ -73,6 +73,7 @@ popupCloseCart.addEventListener('click', (event) => {
 
 const cartCardTemplate = document.querySelector('.cart-card');
 let totalAmount = 0;
+let additionalCharge = 0;
 
 cartIconBtn.addEventListener('click', (event) => {
   totalAmount = 0;
@@ -80,6 +81,7 @@ cartIconBtn.addEventListener('click', (event) => {
     user = authUser;
     if (user) {
       const userId = user.uid;
+      const checkbox = document.getElementById('expressDelivery');
 	    
       firebase.firestore().collection('users').doc(userId).get()
       .then((doc) => {
@@ -198,6 +200,18 @@ cartIconBtn.addEventListener('click', (event) => {
   	      }
 	    });
           });
+
+	  // Add the additional charge to the totalAmount
+          totalAmount += additionalCharge;
+
+	  // Check if the checkbox is clicked
+      	  if (checkbox.checked) {
+            additionalCharge = 14.99;
+	    updateSubtotal(userId);
+      	  } else {
+	    additionalCharge = 0;
+	    updateSubtotal(userId);
+      	  }
 
           Promise.all(promises).then(() => {
 	    updateSubtotal(userId);
@@ -326,7 +340,7 @@ function checkForProductsInCart() {
 // Function to update the subtotal element
 function updateSubtotal(userId) {
   const subtotalPriceElement = document.getElementById('subtotal-price');
-  let feeRate = 1.08;
+  let feeRate = 1.12;
 
   // Calculate subtotal
   let subtotal = totalAmount.toFixed(2);
@@ -338,7 +352,7 @@ function updateSubtotal(userId) {
 
     // If subscription is active, adjust subtotal with a different tax rate
     if (subscriptionStatus === 'active') {
-      feeRate = 1.04;
+      feeRate = 1.06;
     }
 
     // Update subtotal element
