@@ -100,6 +100,7 @@ cartIconBtn.addEventListener('click', (event) => {
                 const doc = querySnapshot.docs[0];
                 const data = doc.data();
                 const productPrice = data.price;
+		cartCard.querySelector('#quantity-product-text').textContent = product.quantity || 1;
 		totalAmount += productPrice;
                 cartCard.querySelector('#cart-product-price').textContent = "$" + productPrice;
 		cartCard.querySelector('#cart-product-desc').textContent = data.description;
@@ -115,15 +116,20 @@ cartIconBtn.addEventListener('click', (event) => {
 	    const currentQuantityElement = cartCard.querySelector('#quantity-product-text');
 	    let currentQuantity = parseInt(currentQuantityElement.textContent);
 
-	    cartCard.querySelector("#plus-btn").addEventListener('click', (event) => {
+	    cartCard.querySelector("#plus-btn").addEventListener('click', async (event) => {
 
   	      // Increase quantity by one
   	      currentQuantity += 1;
   	      currentQuantityElement.textContent = currentQuantity;
 
-  	      // Update the corresponding price
+  	      // Update the total price
   	      const productPrice = parseFloat(cartCard.querySelector('#cart-product-price').textContent.replace('$', ''));
   	      totalAmount += productPrice;
+
+	      // Update the quantity in the user's cart field
+  	      const productId = cartCard.querySelector('#cart-product-name').textContent;
+  	      await updateCartItemQuantity(userId, productId, currentQuantity);
+
   	      updateSubtotal(userId);
 	    });
 
@@ -140,9 +146,14 @@ cartIconBtn.addEventListener('click', (event) => {
     	      currentQuantity -= 1;
     	      currentQuantityElement.textContent = currentQuantity;
 
-    	      // Update the corresponding price
+    	      // Update the total price
     	      const productPrice = parseFloat(cartCard.querySelector('#cart-product-price').textContent.replace('$', ''));
     	      totalAmount -= productPrice;
+
+	      // Update the quantity in the user's cart field
+  	      const productId = cartCard.querySelector('#cart-product-name').textContent;
+  	      await updateCartItemQuantity(userId, productId, currentQuantity);
+		    
    	      updateSubtotal(userId);
 	    });
 
@@ -182,6 +193,31 @@ cartIconBtn.addEventListener('click', (event) => {
   });
 });
 
+async function updateCartItemQuantity(userId, productId, quantity) {
+  try {
+    const userRef = firebase.firestore().collection('users').doc(userId);
+    const userDoc = await userRef.get();
+    if (userDoc.exists) {
+      const userData = userDoc.data();
+      const cart = userData.cart || [];
+
+      // Find the index of the product in the cart
+      const index = cart.findIndex(item => item.productId === productId);
+
+      if (index !== -1) {
+        // Update the quantity for the product
+        cart[index].quantity = quantity;
+
+        // Update the user's cart field
+        await userRef.update({ cart });
+      }
+    }
+  } catch (error) {
+    console.error('Error updating cart item quantity:', error);
+  }
+}
+
+
 const goToCheckoutBtn = document.getElementById('go-to-checkout-btn');
 const cartNotification = document.getElementById('cart-notification');
 const totalPriceText = document.getElementById('total-price-text');
@@ -198,33 +234,46 @@ goToCheckoutBtn.addEventListener('click', (event) => {
 
 async function checkOut(totalAmount) {
   try {
-      const checkoutSessionRef = await firebase.firestore()
-      .collection('customers')
-      .doc(user.uid)
-      .collection('checkout_sessions')
-      .add({
-        userId: user.uid,
-        automatic_tax: true,
-        price: totalAmount,
-        success_url: "https://www.smappy.io/recommendations",
-        cancel_url: "https://www.smappy.io/recommendations",
-      });
+    const checkoutSessionRef = await firebase.firestore()
+    .collection('customers')
+    .doc(user.uid)
+    .collection('checkout_sessions')
+    .add({
+      userId: user.uid,
+      automatic_tax: true,
+      payment_method_types: ['card'],
+      line_items: [
+        {
+          price_data: {
+            unit_amount: totalAmount * 100, // Stripe requires the amount in cents
+            currency: 'usd',
+            product_data: {
+            name: 'Order #' + user.uid,
+          },
+        },
+        quantity: 1, // You can adjust the quantity as needed
+        },
+      ],
+      mode: 'payment',
+      success_url: "https://www.smappy.io/recommendations",
+      cancel_url: "https://www.smappy.io/recommendations",
+    });
 
-      checkoutSessionRef.onSnapshot((snap) => {
-        const { error, url } = snap.data();
-        if (error) {
-          // Show an error to your customer and
-          alert(`An error occured: ${error.message}`);
-        } 
-        if (url) {
-          // We have a Stripe Checkout URL, let's redirect.
-          window.location.assign(url);
-        }
-      });
-    } catch (error) {
-      console.error(`An error occurred: ${error.message}`);
-    }
+    checkoutSessionRef.onSnapshot((snap) => {
+      const { error, url } = snap.data();
+      if (error) {
+        // Show an error to your customer and
+        alert(`An error occured: ${error.message}`);
+      } 
+      if (url) {
+        // We have a Stripe Checkout URL, let's redirect.
+        window.location.assign(url);
+      }
+    });
+  } catch (error) {
+    console.error(`An error occurred: ${error.message}`);
   }
+}
 
 function checkForProductsInCart() {
   firebase.auth().onAuthStateChanged(function(authUser) {
