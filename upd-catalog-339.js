@@ -78,6 +78,7 @@ let additionalCharge = 14.99;
 
 cartIconBtn.addEventListener('click', (event) => {
   totalAmount = 0;
+  addExpressDelivery.textContent = "+";
   firebase.auth().onAuthStateChanged(function(authUser) {
     user = authUser;
     if (user) {
@@ -212,7 +213,7 @@ cartIconBtn.addEventListener('click', (event) => {
 	      if (isPlus) {
 		totalAmount += additionalCharge;
 		updateSubtotal(userId);
-		addExpressDelivery.textContent = "-";
+		addExpressDelivery.textContent = "–";
 	      } else {
 		totalAmount -= additionalCharge;
 		updateSubtotal(userId);
