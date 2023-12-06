@@ -101,7 +101,10 @@ cartIconBtn.addEventListener('click', (event) => {
                 const data = doc.data();
                 const productPrice = data.price;
 		cartCard.querySelector('#quantity-product-text').textContent = product.quantity || 1;
-		totalAmount += productPrice;
+		      
+		// Update total amount
+                totalAmount += productPrice * (product.quantity || 1);
+		      
                 cartCard.querySelector('#cart-product-price').textContent = "$" + productPrice;
 		cartCard.querySelector('#cart-product-desc').textContent = data.description;
               } else {
@@ -247,11 +250,12 @@ async function checkOut(totalAmount) {
           price_data: {
             unit_amount: totalAmount * 100, // Stripe requires the amount in cents
             currency: 'usd',
+	    tax_behavior: "exclusive",
             product_data: {
-            name: 'Order #' + user.uid,
+              name: 'Order #' + user.uid,
+            },
           },
-        },
-        quantity: 1, // You can adjust the quantity as needed
+          quantity: 1, // You can adjust the quantity as needed
         },
       ],
       mode: 'payment',
