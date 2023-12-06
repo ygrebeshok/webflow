@@ -138,6 +138,8 @@ cartIconBtn.addEventListener('click', (event) => {
   	      await updateCartItemQuantity(userId, productId, currentQuantity);
 
   	      updateSubtotal(userId);
+
+	      cartCard.querySelector("#minus-btn").classList.remove('disableBtn');
 	    });
 
 	    // Ensure the minimum quantity is 1
@@ -148,20 +150,26 @@ cartIconBtn.addEventListener('click', (event) => {
 	    }
 
 	    cartCard.querySelector("#minus-btn").addEventListener('click', async (event) => {
-	
-    	      // Decrease quantity by one
-    	      currentQuantity -= 1;
-    	      currentQuantityElement.textContent = currentQuantity;
 
-    	      // Update the total price
-    	      const productPrice = parseFloat(cartCard.querySelector('#cart-product-price').textContent.replace('$', ''));
-    	      totalAmount -= productPrice;
+	      if (currentQuantity > 1) {
+    	        // Decrease quantity by one
+    	        currentQuantity -= 1;
+    	        currentQuantityElement.textContent = currentQuantity;
 
-	      // Update the quantity in the user's cart field
-  	      const productId = cartCard.querySelector('#cart-product-name').textContent;
-  	      await updateCartItemQuantity(userId, productId, currentQuantity);
+    	        // Update the total price
+    	        const productPrice = parseFloat(cartCard.querySelector('#cart-product-price').textContent.replace('$', ''));
+    	        totalAmount -= productPrice;
+
+	        // Update the quantity in the user's cart field
+  	        const productId = cartCard.querySelector('#cart-product-name').textContent;
+  	        await updateCartItemQuantity(userId, productId, currentQuantity);
 		    
-   	      updateSubtotal(userId);
+   	        updateSubtotal(userId);
+
+		if (currentQuantity === 1) {
+		  cartCard.querySelector("#minus-btn").classList.add('disableBtn');
+		}
+	      }
 	    });
 
 	    cartCard.querySelector("#delete-from-cart-btn").addEventListener('click', async (event) => {
