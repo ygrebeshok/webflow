@@ -139,7 +139,7 @@ cartIconBtn.addEventListener('click', (event) => {
 
   	      updateSubtotal(userId);
 
-	      cartCard.querySelector("#minus-btn").classList.remove('disableBtn');
+	      cartCard.querySelector("#minus-btn").classList.remove('disablegrid');
 	    });
 
 	    // Ensure the minimum quantity is 1
@@ -167,7 +167,7 @@ cartIconBtn.addEventListener('click', (event) => {
    	        updateSubtotal(userId);
 
 		if (currentQuantity === 1) {
-		  cartCard.querySelector("#minus-btn").classList.add('disableBtn');
+		  cartCard.querySelector("#minus-btn").classList.add('disablegrid');
 		}
 	      }
 	    });
