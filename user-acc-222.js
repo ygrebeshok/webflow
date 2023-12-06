@@ -167,20 +167,23 @@ cartIconBtn.addEventListener('click', (event) => {
 	    }
 
 	    cartCard.querySelector("#minus-btn").addEventListener('click', async (event) => {
-	
-    	      // Decrease quantity by one
-    	      currentQuantity -= 1;
-    	      currentQuantityElement.textContent = currentQuantity;
 
-    	      // Update the total price
-    	      const productPrice = parseFloat(cartCard.querySelector('#cart-product-price').textContent.replace('$', ''));
-    	      totalAmount -= productPrice;
+	      if (currentQuantity > 1) {
+    	        // Decrease quantity by one
+    	        currentQuantity -= 1;
+    	        currentQuantityElement.textContent = currentQuantity;
 
-	      // Update the quantity in the user's cart field
-  	      const productId = cartCard.querySelector('#cart-product-name').textContent;
-  	      await updateCartItemQuantity(userId, productId, currentQuantity);
+    	        // Update the total price
+    	        const productPrice = parseFloat(cartCard.querySelector('#cart-product-price').textContent.replace('$', ''));
+    	        totalAmount -= productPrice;
+
+	        // Update the quantity in the user's cart field
+  	        const productId = cartCard.querySelector('#cart-product-name').textContent;
+  	        await updateCartItemQuantity(userId, productId, currentQuantity);
 		    
-   	      updateSubtotal(userId);
+   	        updateSubtotal(userId);
+
+	      }
 	    });
 
 	    cartCard.querySelector("#delete-from-cart-btn").addEventListener('click', async (event) => {
@@ -1065,6 +1068,15 @@ function showPopupUser(productData, card) {
         favoritesLabel.textContent = "Remove from Favorites";
       } else {
 	favoritesLabel.textContent = "Add to Favorites";
+      }
+
+      const cart = doc.data().cart;
+      const isInCart = cart.some(item => item.productId === productId && item.productDesc === productDesc);
+
+      if (isInCart) {
+        addToCartLabel.textContent = "Remove from Cart";
+      } else {
+        addToCartLabel.textContent = "Add to Cart";
       }
     })
     .catch(error => {
