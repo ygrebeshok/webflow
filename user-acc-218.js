@@ -30,6 +30,12 @@ const profileFavoritesLabel = document.getElementById("profile-popup-favorite-la
 const profileFavoritesBtn = document.getElementById("profile-popup-favorite");
 const addToCollectionOrdinaryBtn = document.getElementById("page-link-btn");
 const addToCollectionProfileBtn = document.getElementById("show-products-page-link-btn");
+const cardTemplate = document.querySelector(".card");
+const addToCartBtn = document.getElementById("add-to-cart-btn");
+const cartGrid = document.getElementById("cart-grid");
+const cartIconBtn = document.getElementById("cart-icon-btn");
+const cartPopupContainer = document.getElementById("cart-popup-container");
+const popupCloseCart = document.getElementById("popup-close-cart");
 
 var bodyAuth = document.body.getAttribute('data-user-auth');
 var bodyUnauth = document.body.getAttribute('data-user-unauth');
@@ -75,6 +81,341 @@ editProfileDivBtn.addEventListener("click", () => {
     });
   }	
 });
+
+
+cartPopupContainer.style.display = 'none';
+
+popupCloseCart.addEventListener('click', (event) => {
+  cartPopupContainer.style.display = 'none';
+});
+
+const cartCardTemplate = document.querySelector('.cart-card');
+const addExpressDelivery = document.getElementById('add-express-delivery');
+let totalAmount = 0;
+let additionalCharge = 14.99;
+
+cartIconBtn.addEventListener('click', (event) => {
+  totalAmount = 0;
+  addExpressDelivery.textContent = "+";
+  firebase.auth().onAuthStateChanged(function(authUser) {
+    user = authUser;
+    if (user) {
+      const userId = user.uid;
+      const deliveryCheckbox = document.getElementById('expressDelivery');
+	    
+      firebase.firestore().collection('users').doc(userId).get()
+      .then((doc) => {
+        cartGrid.innerHTML = "";
+
+        if (doc.exists) {
+          const data = doc.data();
+          const cart = data.cart || [];
+
+          const promises = cart.map(async (product) => {
+            const cartCard = cartCardTemplate.cloneNode(true);
+
+            cartCard.querySelector('#cart-product-name').textContent = product.productId;
+
+            try {
+              const querySnapshot = await firebase.firestore().collection('added-by-parsing').where("name", "==", product.productId).get();
+              if (!querySnapshot.empty) {
+                const doc = querySnapshot.docs[0];
+                const data = doc.data();
+                const productPrice = data.price;
+		cartCard.querySelector('#quantity-product-text').textContent = product.quantity || 1;
+		      
+		// Update total amount
+                totalAmount += productPrice * (product.quantity || 1);
+		      
+                cartCard.querySelector('#cart-product-price').textContent = "$" + productPrice;
+		cartCard.querySelector('#cart-product-desc').textContent = data.description;
+              } else {
+                console.log("Document not found");
+              }
+            } catch (error) {
+              console.error("Error getting document:", error);
+            }
+
+            cartGrid.appendChild(cartCard);
+
+	    const currentQuantityElement = cartCard.querySelector('#quantity-product-text');
+	    let currentQuantity = parseInt(currentQuantityElement.textContent);
+
+	    cartCard.querySelector("#plus-btn").addEventListener('click', async (event) => {
+
+  	      // Increase quantity by one
+  	      currentQuantity += 1;
+  	      currentQuantityElement.textContent = currentQuantity;
+
+  	      // Update the total price
+  	      const productPrice = parseFloat(cartCard.querySelector('#cart-product-price').textContent.replace('$', ''));
+  	      totalAmount += productPrice;
+
+	      // Update the quantity in the user's cart field
+  	      const productId = cartCard.querySelector('#cart-product-name').textContent;
+  	      await updateCartItemQuantity(userId, productId, currentQuantity);
+
+  	      updateSubtotal(userId);
+	    });
+
+	    // Ensure the minimum quantity is 1
+  	    if (currentQuantity > 1) {
+	      cartCard.querySelector("#minus-btn").classList.remove('disablegrid');
+	    } else {
+	      cartCard.querySelector("#minus-btn").classList.add('disablegrid');
+	    }
+
+	    cartCard.querySelector("#minus-btn").addEventListener('click', async (event) => {
+	
+    	      // Decrease quantity by one
+    	      currentQuantity -= 1;
+    	      currentQuantityElement.textContent = currentQuantity;
+
+    	      // Update the total price
+    	      const productPrice = parseFloat(cartCard.querySelector('#cart-product-price').textContent.replace('$', ''));
+    	      totalAmount -= productPrice;
+
+	      // Update the quantity in the user's cart field
+  	      const productId = cartCard.querySelector('#cart-product-name').textContent;
+  	      await updateCartItemQuantity(userId, productId, currentQuantity);
+		    
+   	      updateSubtotal(userId);
+	    });
+
+	    cartCard.querySelector("#delete-from-cart-btn").addEventListener('click', async (event) => {
+  	      const productId = cartCard.querySelector('#cart-product-name').textContent;
+  	      const productDesc = cartCard.querySelector('#cart-product-desc').textContent;
+
+  	      try {
+    	        // Get the user's cart
+    	        const userDoc = await firebase.firestore().collection("users").doc(userId).get();
+    	        if (userDoc.exists) {
+      	          const userData = userDoc.data();
+      		  let cart = userData.cart || [];
+
+      	          // Find the index of the product to be removed in the cart
+      		  const indexToRemove = cart.findIndex(item => item.productId === productId && item.productDesc === productDesc);
+
+      		  if (indexToRemove !== -1) {
+        	    // Remove the product from the local cart
+        	    const removedItem = cart.splice(indexToRemove, 1)[0];
+
+        	    // Update the total amount
+        	    totalAmount -= (parseFloat(cartCard.querySelector('#cart-product-price').textContent.replace('$', '')) * removedItem.quantity);
+
+        	    // Update the entire cart in the Firestore database
+        	    await firebase.firestore().collection("users").doc(userId).update({
+          	      cart: cart,
+        	    });
+
+        	    // Update the UI
+        	    cartCard.style.display = 'none';
+        	    updateSubtotal(userId);
+      		  } else {
+        	    console.log("Product not found in the cart");
+      		  }
+    	        } 
+  	      } catch (error) {
+    	        console.log("Error removing product from cart:", error);
+  	      }
+	    });
+          });
+
+          Promise.all(promises).then(() => {
+	    updateSubtotal(userId);
+            cartPopupContainer.style.display = 'flex';
+
+	    addExpressDelivery.addEventListener('click', (event) => {
+	      let isPlus = addExpressDelivery.textContent === "+";
+
+	      if (isPlus) {
+		totalAmount += additionalCharge;
+		updateSubtotal(userId);
+		addExpressDelivery.textContent = "–";
+	      } else {
+		totalAmount -= additionalCharge;
+		updateSubtotal(userId);
+		addExpressDelivery.textContent = "+";
+	      }
+		    
+	    });
+          });
+        }
+      })
+      .catch((error) => {
+        console.error("Error getting user document:", error);
+      });
+
+    } else {
+      moveUnauthorizedToLogIn();
+    }
+  });
+});
+
+async function updateCartItemQuantity(userId, productId, quantity) {
+  try {
+    const userRef = firebase.firestore().collection('users').doc(userId);
+    const userDoc = await userRef.get();
+    if (userDoc.exists) {
+      const userData = userDoc.data();
+      const cart = userData.cart || [];
+
+      // Find the index of the product in the cart
+      const index = cart.findIndex(item => item.productId === productId);
+
+      if (index !== -1) {
+        // Update the quantity for the product
+        cart[index].quantity = quantity;
+
+        // Update the user's cart field
+        await userRef.update({ cart });
+      }
+    }
+  } catch (error) {
+    console.error('Error updating cart item quantity:', error);
+  }
+}
+
+
+const goToCheckoutBtn = document.getElementById('go-to-checkout-btn');
+const cartNotification = document.getElementById('cart-notification');
+const totalPriceText = document.getElementById('total-price-text');
+const checkOutAlert = document.getElementById('check-out-alert');
+const loaderCopy = document.getElementById('lottie-loader-copy');
+
+loaderCopy.style.visibility = "hidden";
+
+goToCheckoutBtn.addEventListener('click', (event) => {
+  if (!(parseFloat(totalPriceText.textContent.replace('$', '')) === 0)) {
+    loaderCopy.style.visibility = "visible";
+    checkOut(parseFloat(totalPriceText.textContent.replace('$', '')));
+  } else {
+    checkOutAlert.textContent = "Choose some products to purchase first";
+    checkOutAlert.style.display = 'block';
+  }
+});
+
+async function checkOut(totalAmount) {
+  try {
+    const checkoutSessionRef = await firebase.firestore()
+    .collection('customers')
+    .doc(user.uid)
+    .collection('checkout_sessions')
+    .add({
+      userId: user.uid,
+      automatic_tax: true,
+      shipping_address_collection: true,
+      payment_method_types: ['card'],
+      line_items: [
+        {
+          price_data: {
+            unit_amount: totalAmount * 100, // Stripe requires the amount in cents
+            currency: 'usd',
+	    tax_behavior: "exclusive",
+            product_data: {
+              name: 'Order #' + user.uid,
+            },
+          },
+          quantity: 1, // You can adjust the quantity as needed
+        },
+      ],
+      mode: 'payment',
+      success_url: "https://www.smappy.io/recommendations",
+      cancel_url: "https://www.smappy.io/recommendations",
+    });
+
+    checkoutSessionRef.onSnapshot((snap) => {
+      const { error, url } = snap.data();
+      if (error) {
+        // Show an error to your customer and
+        alert(`An error occured: ${error.message}`);
+      } 
+      if (url) {
+        // We have a Stripe Checkout URL, let's redirect.
+        window.location.assign(url);
+      }
+    });
+  } catch (error) {
+    console.error(`An error occurred: ${error.message}`);
+  }
+}
+
+function checkForProductsInCart() {
+  firebase.auth().onAuthStateChanged(function(authUser) {
+    user = authUser;
+    if (user) {
+      const userId = user.uid;
+
+      firebase.firestore().collection('users').doc(userId).get()
+      .then((doc) => {
+	const data = doc.data();
+	const cart = data.cart || [];
+
+	if (cart.length === 0) {
+	  cartIconBtn.classList.add('disablegrid');
+	  cartNotification.style.display = 'none';
+	} else {
+	  cartIconBtn.classList.remove('disablegrid');
+	  cartNotification.style.display = 'block';
+	}
+      });
+      
+    }
+  });
+}
+
+// Function to update the subtotal element
+function updateSubtotal(userId) {
+  const subtotalPriceElement = document.getElementById('subtotal-price');
+  let feeRate = 1.12;
+
+  // Calculate subtotal
+  let subtotal = totalAmount.toFixed(2);
+
+  // Check subscription status
+  firebase.firestore().collection('users').doc(userId).get()
+  .then((userDoc) => {
+    const subscriptionStatus = userDoc.data().subscriptionStatus;
+
+    // If subscription is active, adjust subtotal with a different tax rate
+    if (subscriptionStatus === 'active') {
+      feeRate = 1.06;
+    }
+
+    // Update subtotal element
+    subtotalPriceElement.textContent = "$" + subtotal;
+    totalPriceText.textContent = "$" + (subtotal * feeRate).toFixed(2);
+  })
+  .catch((error) => {
+    console.error("Error getting user document:", error);
+  });
+}
+
+function toggleCart(element, userId, productId, productDesc) {
+  const isInCart = element.textContent === "Remove from Cart";
+
+  if (isInCart) {
+    firebase.firestore().collection("users").doc(userId).update({
+    cart: firebase.firestore.FieldValue.arrayRemove({ productId, productDesc })
+    })
+    .then(() => {
+      element.textContent = "Add to Cart";
+    })
+    .catch(error => {
+      console.log("Error removing product from cart:", error);
+    });
+  } else {
+    firebase.firestore().collection("users").doc(userId).update({
+      cart: firebase.firestore.FieldValue.arrayUnion({ productId, productDesc })
+    })
+    .then(() => {
+      element.textContent = "Remove from Cart";
+    })
+    .catch(error => {
+      console.log("Error adding product to cart:", error);
+    });
+   }
+}
 
 function loadProfileData(profiles, userId) {
   profilesContain.innerHTML = "";
@@ -803,6 +1144,19 @@ favoriteBtn.addEventListener("click", () => {
       const userId = user.uid;
       toggleFavorite(favoritesLabel, userId, popupTitle.textContent);
       setupUser();
+    } else {
+      moveUnauthorizedToLogIn();
+    }
+  }); 
+});
+
+addToCartBtn.addEventListener('click', () => {
+  firebase.auth().onAuthStateChanged(function(authUser) {
+    user = authUser;
+    if (user) {
+      const userId = user.uid;
+      toggleCart(addToCartLabel, userId, popupTitle.textContent, popupDesc.textContent);
+      checkForProductsInCart();
     } else {
       moveUnauthorizedToLogIn();
     }
