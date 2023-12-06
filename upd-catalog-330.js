@@ -188,7 +188,7 @@ const totalPriceText = document.getElementById('total-price-text');
 const checkOutAlert = document.getElementById('check-out-alert');
 
 goToCheckoutBtn.addEventListener('click', (event) => {
-  if !(parseFloat(totalPriceText.textContent.replace('$', '')) === 0) {
+  if (!(parseFloat(totalPriceText.textContent.replace('$', '')) === 0)) {
     checkOut(parseFloat(totalPriceText.textContent.replace('$', '')));
   } else {
     checkOutAlert.textContent = "Choose some products to purchase first";
