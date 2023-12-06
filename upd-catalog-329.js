@@ -112,6 +112,40 @@ cartIconBtn.addEventListener('click', (event) => {
 
             cartGrid.appendChild(cartCard);
 
+	    const currentQuantityElement = cartCard.querySelector('#quantity-product-text');
+	    let currentQuantity = parseInt(currentQuantityElement.textContent);
+
+	    cartCard.querySelector("#plus-btn").addEventListener('click', (event) => {
+
+  	      // Increase quantity by one
+  	      currentQuantity += 1;
+  	      currentQuantityElement.textContent = currentQuantity;
+
+  	      // Update the corresponding price
+  	      const productPrice = parseFloat(cartCard.querySelector('#cart-product-price').textContent.replace('$', ''));
+  	      totalAmount += productPrice;
+  	      updateSubtotal(userId);
+	    });
+
+	    // Ensure the minimum quantity is 1
+  	    if (currentQuantity > 1) {
+	      cartCard.querySelector("#minus-btn").classList.remove('disablegrid');
+	    } else {
+	      cartCard.querySelector("#minus-btn").classList.add('disablegrid');
+	    }
+
+	    cartCard.querySelector("#minus-btn").addEventListener('click', (event) => {
+	
+    	      // Decrease quantity by one
+    	      currentQuantity -= 1;
+    	      currentQuantityElement.textContent = currentQuantity;
+
+    	      // Update the corresponding price
+    	      const productPrice = parseFloat(cartCard.querySelector('#cart-product-price').textContent.replace('$', ''));
+    	      totalAmount -= productPrice;
+   	      updateSubtotal(userId);
+	    });
+
 	    cartCard.querySelector("#delete-from-cart-btn").addEventListener('click', (event) => {
 	      const currentProductPrice = parseFloat(cartCard.querySelector('#cart-product-price').textContent.replace('$', ''));
 		    
@@ -148,10 +182,77 @@ cartIconBtn.addEventListener('click', (event) => {
   });
 });
 
+const goToCheckoutBtn = document.getElementById('go-to-checkout-btn');
+const cartNotification = document.getElementById('cart-notification');
+const totalPriceText = document.getElementById('total-price-text');
+const checkOutAlert = document.getElementById('check-out-alert');
+
+goToCheckoutBtn.addEventListener('click', (event) => {
+  if !(parseFloat(totalPriceText.textContent.replace('$', '')) === 0) {
+    checkOut(parseFloat(totalPriceText.textContent.replace('$', '')));
+  } else {
+    checkOutAlert.textContent = "Choose some products to purchase first";
+    checkOutAlert.style.display = 'block';
+  }
+});
+
+async function checkOut(totalAmount) {
+  try {
+      const checkoutSessionRef = await firebase.firestore()
+      .collection('customers')
+      .doc(user.uid)
+      .collection('checkout_sessions')
+      .add({
+        userId: user.uid,
+        automatic_tax: true,
+        price: totalAmount,
+        success_url: "https://www.smappy.io/recommendations",
+        cancel_url: "https://www.smappy.io/recommendations",
+      });
+
+      checkoutSessionRef.onSnapshot((snap) => {
+        const { error, url } = snap.data();
+        if (error) {
+          // Show an error to your customer and
+          alert(`An error occured: ${error.message}`);
+        } 
+        if (url) {
+          // We have a Stripe Checkout URL, let's redirect.
+          window.location.assign(url);
+        }
+      });
+    } catch (error) {
+      console.error(`An error occurred: ${error.message}`);
+    }
+  }
+
+function checkForProductsInCart() {
+  firebase.auth().onAuthStateChanged(function(authUser) {
+    user = authUser;
+    if (user) {
+      const userId = user.uid;
+
+      firebase.firestore().collection('users').doc(userId).get()
+      .then((doc) => {
+	const data = doc.data();
+	const cart = data.cart || [];
+
+	if (cart.length === 0) {
+	  cartIconBtn.classList.add('disablegrid');
+	  cartNotification.style.display = 'none';
+	} else {
+	  cartIconBtn.classList.remove('disablegrid');
+	  cartNotification.style.display = 'block';
+	}
+      });
+      
+    }
+  });
+}
+
 // Function to update the subtotal element
 function updateSubtotal(userId) {
   const subtotalPriceElement = document.getElementById('subtotal-price');
-  const totalPriceText = document.getElementById('total-price-text');
   let feeRate = 1.08;
 
   // Calculate subtotal
@@ -825,6 +926,7 @@ addToCartBtn.addEventListener('click', () => {
     if (user) {
       const userId = user.uid;
       toggleCart(addToCartLabel, userId, popupTitle.textContent, popupDesc.textContent);
+      checkForProductsInCart();
     } else {
       moveUnauthorizedToLogIn();
     }
