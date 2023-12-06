@@ -81,7 +81,7 @@ cartIconBtn.addEventListener('click', (event) => {
     user = authUser;
     if (user) {
       const userId = user.uid;
-      const checkbox = document.getElementById('expressDelivery');
+      const deliveryCheckbox = document.getElementById('expressDelivery');
 	    
       firebase.firestore().collection('users').doc(userId).get()
       .then((doc) => {
@@ -205,13 +205,21 @@ cartIconBtn.addEventListener('click', (event) => {
           totalAmount += additionalCharge;
 
 	  // Check if the checkbox is clicked
-      	  if (checkbox.checked) {
+      	  if (deliveryCheckbox.checked) {
             additionalCharge = 14.99;
-	    updateSubtotal(userId);
       	  } else {
 	    additionalCharge = 0;
-	    updateSubtotal(userId);
       	  }
+
+	  deliveryCheckbox.addEventListener('change', function() {
+            if (this.checked) {
+              additionalCharge = 14.99;
+	      updateSubtotal(userId);
+            } else {
+              additionalCharge = 0;
+	      updateSubtotal(userId);
+            }
+          });
 
           Promise.all(promises).then(() => {
 	    updateSubtotal(userId);
@@ -258,9 +266,13 @@ const goToCheckoutBtn = document.getElementById('go-to-checkout-btn');
 const cartNotification = document.getElementById('cart-notification');
 const totalPriceText = document.getElementById('total-price-text');
 const checkOutAlert = document.getElementById('check-out-alert');
+const loaderCopy = document.getElementById('lottie-loader-copy');
+
+loaderCopy.style.visibility = "hidden";
 
 goToCheckoutBtn.addEventListener('click', (event) => {
   if (!(parseFloat(totalPriceText.textContent.replace('$', '')) === 0)) {
+    loaderCopy.style.visibility = "visible";
     checkOut(parseFloat(totalPriceText.textContent.replace('$', '')));
   } else {
     checkOutAlert.textContent = "Choose some products to purchase first";
