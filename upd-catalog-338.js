@@ -72,8 +72,9 @@ popupCloseCart.addEventListener('click', (event) => {
 });
 
 const cartCardTemplate = document.querySelector('.cart-card');
+const addExpressDelivery = document.getElementById('add-express-delivery');
 let totalAmount = 0;
-let additionalCharge = 0;
+let additionalCharge = 14.99;
 
 cartIconBtn.addEventListener('click', (event) => {
   totalAmount = 0;
@@ -201,29 +202,24 @@ cartIconBtn.addEventListener('click', (event) => {
 	    });
           });
 
-	  // Add the additional charge to the totalAmount
-          totalAmount += additionalCharge;
-
-	  // Check if the checkbox is clicked
-      	  if (deliveryCheckbox.checked) {
-            additionalCharge = 14.99;
-      	  } else {
-	    additionalCharge = 0;
-      	  }
-
-	  deliveryCheckbox.addEventListener('change', function() {
-            if (this.checked) {
-              additionalCharge = 14.99;
-	      updateSubtotal(userId);
-            } else {
-              additionalCharge = 0;
-	      updateSubtotal(userId);
-            }
-          });
-
           Promise.all(promises).then(() => {
 	    updateSubtotal(userId);
             cartPopupContainer.style.display = 'flex';
+
+	    addExpressDelivery.addEventListener('click', (event) => {
+	      let isPlus = addExpressDelivery.textContent === "+";
+
+	      if (isPlus) {
+		totalAmount += additionalCharge;
+		updateSubtotal(userId);
+		addExpressDelivery.textContent = "-";
+	      } else {
+		totalAmount -= additionalCharge;
+		updateSubtotal(userId);
+		addExpressDelivery.textContent = "+";
+	      }
+		    
+	    });
           });
         }
       })
