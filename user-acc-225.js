@@ -37,6 +37,8 @@ const cartIconBtn = document.getElementById("cart-icon-button");
 const cartPopupContainer = document.getElementById("cart-popup-container");
 const popupCloseCart = document.getElementById("popup-close-cart");
 const addToCartLabel = document.getElementById("add-to-cart-label");
+const showProfileAddToCartBtn = document.getElementById("show-profile-add-to-cart-btn");
+const showProfileAddToCartLabel = document.getElementById("show-profile-add-to-cart-label");
 
 var bodyAuth = document.body.getAttribute('data-user-auth');
 var bodyUnauth = document.body.getAttribute('data-user-unauth');
@@ -650,6 +652,15 @@ function showPopupForProfileProducts(productName, userId) {
           } else {
 	    profileFavoritesLabel.textContent = "Add to Favorites";
           }
+
+	  const cart = doc.data().cart;
+          const isInCart = cart.some(item => item.productId === productId && item.productDesc === productDesc);
+
+          if (isInCart) {
+            showProfileAddToCartLabel.textContent = "Remove from Cart";
+          } else {
+            showProfileAddToCartLabel.textContent = "Add to Cart";
+          }
         })
         .catch(error => {
           console.log("Error getting favorites:", error);
@@ -719,6 +730,18 @@ profileFavoritesBtn.addEventListener("click", () => {
     if (user) {
       const userId = user.uid;
       toggleFavorite(profileFavoritesLabel, userId, profilePopupTitle.textContent);
+    } else {
+      moveUnauthorizedToLogIn();
+    }
+  }); 
+});
+
+showProfileAddToCartBtn.addEventListener("click", () => {
+  firebase.auth().onAuthStateChanged(function(authUser) {
+    user = authUser;
+    if (user) {
+      const userId = user.uid;
+      toggleCart(showProfileAddToCartLabel, userId, profilePopupTitle.textContent, profilePopupDesc.textContent);
     } else {
       moveUnauthorizedToLogIn();
     }
