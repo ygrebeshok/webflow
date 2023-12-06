@@ -1058,6 +1058,7 @@ function showPopupUser(productData, card) {
   const user = firebase.auth().currentUser;
   const userId = user.uid;
   const productId = productData.name;
+  const productDesc = productData.description;
 
   if (user) {
     const userId = user.uid;
