@@ -263,6 +263,7 @@ async function checkOut(totalAmount) {
     .add({
       userId: user.uid,
       automatic_tax: true,
+      shipping_address_collection: true,
       payment_method_types: ['card'],
       line_items: [
         {
