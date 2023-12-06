@@ -160,9 +160,9 @@ cartIconBtn.addEventListener('click', (event) => {
 
 	    // Ensure the minimum quantity is 1
   	    if (currentQuantity > 1) {
-	      cartCard.querySelector("#minus-btn").classList.remove('disablegrid');
+	      cartCard.querySelector("#minus-btn").classList.remove('disableBtn');
 	    } else {
-	      cartCard.querySelector("#minus-btn").classList.add('disablegrid');
+	      cartCard.querySelector("#minus-btn").classList.add('disableBtn');
 	    }
 
 	    cartCard.querySelector("#minus-btn").addEventListener('click', async (event) => {
@@ -352,10 +352,10 @@ function checkForProductsInCart() {
 	const cart = data.cart || [];
 
 	if (cart.length === 0) {
-	  cartIconBtn.classList.add('disablegrid');
+	  cartIconBtn.classList.add('disableBtn');
 	  cartNotification.style.display = 'none';
 	} else {
-	  cartIconBtn.classList.remove('disablegrid');
+	  cartIconBtn.classList.remove('disableBtn');
 	  cartNotification.style.display = 'block';
 	}
       });
@@ -963,10 +963,10 @@ function uuidv4() {
 }
 
 function checkInputForCollection() {
-  createNewCollectionBtn.classList.add('disablegrid');
+  createNewCollectionBtn.classList.add('disableBtn');
 
   collectionNameInput.addEventListener('input', (event) => {
-    createNewCollectionBtn.classList.remove('disablegrid');
+    createNewCollectionBtn.classList.remove('disableBtn');
   });
 }
 
