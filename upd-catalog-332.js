@@ -140,7 +140,7 @@ cartIconBtn.addEventListener('click', (event) => {
 	      cartCard.querySelector("#minus-btn").classList.add('disablegrid');
 	    }
 
-	    cartCard.querySelector("#minus-btn").addEventListener('click', (event) => {
+	    cartCard.querySelector("#minus-btn").addEventListener('click', async (event) => {
 	
     	      // Decrease quantity by one
     	      currentQuantity -= 1;
