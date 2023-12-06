@@ -33,7 +33,7 @@ const addToCollectionProfileBtn = document.getElementById("show-products-page-li
 const cardTemplate = document.querySelector(".card");
 const addToCartBtn = document.getElementById("add-to-cart-btn");
 const cartGrid = document.getElementById("cart-grid");
-const cartIconBtn = document.getElementById("cart-icon-btn");
+const cartIconBtn = document.getElementById("cart-icon-button");
 const cartPopupContainer = document.getElementById("cart-popup-container");
 const popupCloseCart = document.getElementById("popup-close-cart");
 
@@ -278,7 +278,7 @@ async function updateCartItemQuantity(userId, productId, quantity) {
 
 
 const goToCheckoutBtn = document.getElementById('go-to-checkout-btn');
-const cartNotification = document.getElementById('cart-notification');
+const cartNotification = document.getElementById('cart-notification-user');
 const totalPriceText = document.getElementById('total-price-text');
 const checkOutAlert = document.getElementById('check-out-alert');
 const loaderCopy = document.getElementById('lottie-loader-copy');
