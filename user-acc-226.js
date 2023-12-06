@@ -641,6 +641,7 @@ function showPopupForProfileProducts(productName, userId) {
 
       const user = firebase.auth().currentUser;
       const productId = productData.name;
+      const productDesc = productData.description;
 
       if (user) {
         const userId = user.uid;
