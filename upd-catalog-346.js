@@ -293,6 +293,10 @@ goToCheckoutBtn.addEventListener('click', async (event) => {
         const cartData = cartSnapshot.data();
         const cart = cartData.cart || []; // Ensure cart is defined
 
+	console.log(product.productId);
+	console.log(product.quantity);
+	console.log(addExpressDelivery.textContent === "–");
+
         // Assuming you have access to the orderData at this point
         const orderData = {
           userId,
