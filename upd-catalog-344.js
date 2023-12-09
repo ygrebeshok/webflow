@@ -286,6 +286,11 @@ goToCheckoutBtn.addEventListener('click', async (event) => {
       const user = firebase.auth().currentUser;
       if (user) {
         const userId = user.uid;
+	// Retrieve the user's cart
+        const cartRef = firebase.firestore().collection('users').doc(userId);
+        const cartSnapshot = await cartRef.get();
+        const cartData = cartSnapshot.data();
+        const cart = cartData.cart || []; // Ensure cart is defined
 
         // Assuming you have access to the orderData at this point
         const orderData = {
@@ -305,7 +310,6 @@ goToCheckoutBtn.addEventListener('click', async (event) => {
         console.log('Order created:', orderId);
 
         // Clear the user's cart after successfully creating the order
-        const cartRef = firebase.firestore().collection('users').doc(userId);
         await cartRef.update({
           cart: [],
         });
@@ -346,8 +350,8 @@ async function checkOut(totalAmount, orderId) {
         },
       ],
       mode: 'payment',
-      success_url: "https://www.smappy.io/recommendations",
-      cancel_url: "https://www.smappy.io/recommendations",
+      success_url: "https://www.smappyai.com/recommendations",
+      cancel_url: "https://www.smappyai.com/recommendations",
     });
 
     checkoutSessionRef.onSnapshot((snap) => {
