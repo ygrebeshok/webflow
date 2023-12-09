@@ -275,20 +275,54 @@ const loaderCopy = document.getElementById('lottie-loader-copy');
 
 loaderCopy.style.visibility = "hidden";
 
-goToCheckoutBtn.addEventListener('click', (event) => {
+goToCheckoutBtn.addEventListener('click', async (event) => {
   if (!(parseFloat(totalPriceText.textContent.replace('$', '')) === 0)) {
     loaderCopy.style.visibility = "visible";
-    checkOut(parseFloat(totalPriceText.textContent.replace('$', '')));
+
+    // Generate a unique order ID using uuid
+    const orderId = uuidv4();
+
+    try {
+      const user = firebase.auth().currentUser;
+      if (user) {
+        const userId = user.uid;
+
+        // Assuming you have access to the orderData at this point
+        const orderData = {
+          userId,
+          orderId,
+          totalAmount,
+          expressDelivery: addExpressDelivery.textContent === "–",
+          products: cart.map(product => ({
+            productName: product.productId,
+            quantity: product.quantity,
+          })),
+        };
+
+        // Add the order to the 'orders' collection
+        await firebase.firestore().collection('orders').doc(orderId).set(orderData);
+
+        console.log('Order created:', orderId);
+
+        // Clear the user's cart after successfully creating the order
+        const cartRef = firebase.firestore().collection('users').doc(userId);
+        await cartRef.update({
+          cart: [],
+        });
+      }
+    } catch (error) {
+      console.error(`Error creating order: ${error.message}`);
+    }
+	  
+    checkOut(parseFloat(totalPriceText.textContent.replace('$', '')), orderId);
   } else {
     checkOutAlert.textContent = "Choose some products to purchase first";
     checkOutAlert.style.display = 'block';
   }
 });
 
-async function checkOut(totalAmount) {
+async function checkOut(totalAmount, orderId) {
   try {
-    const orderId = uuidv4();
-	  
     const checkoutSessionRef = await firebase.firestore()
     .collection('customers')
     .doc(user.uid)
@@ -305,7 +339,7 @@ async function checkOut(totalAmount) {
             currency: 'usd',
 	    tax_behavior: "exclusive",
             product_data: {
-              name: `Order-${orderId}`
+              name: 'Order #' + orderId,
             },
           },
           quantity: 1, // You can adjust the quantity as needed
@@ -331,82 +365,6 @@ async function checkOut(totalAmount) {
     console.error(`An error occurred: ${error.message}`);
   }
 }
-
-// Listen for changes on the 'checkout_sessions' collection
-const unsubscribe = firebase.firestore()
-  .collection('customers')
-  .doc(user.uid)
-  .collection('checkout_sessions')
-  .onSnapshot(async (snap) => {
-    const checkoutSession = snap.docs[0];
-
-    if (checkoutSession) {
-      const { payment_intent } = checkoutSession.data();
-
-      if (payment_intent && payment_intent.status === 'succeeded') {
-        // Payment successful, add order to the database
-        await createOrder(totalAmount);
-      }
-    }
-  });
-
-
-async function createOrder(totalAmount) {
-  try {
-    // Generate a unique order ID using uuid
-    const orderId = uuidv4();
-
-    // Wrap the code in a Promise for cleaner asynchronous handling
-    const user = await new Promise((resolve, reject) => {
-      const unsubscribe = firebase.auth().onAuthStateChanged(user => {
-        unsubscribe(); // Unsubscribe after resolving or rejecting
-        if (user) {
-          resolve(user);
-        } else {
-          reject(new Error('User not authenticated'));
-        }
-      });
-    });
-
-    const userId = user.uid;
-
-    // Get a reference to the user's cart
-    const cartRef = firebase.firestore().collection('users').doc(userId);
-
-    // Get the current cart data
-    const cartSnapshot = await cartRef.get();
-    const cartData = cartSnapshot.data();
-    const userCart = cartData.cart || [];
-
-    // Create an order object
-    const orderData = {
-      userId,
-      orderId,
-      totalAmount,
-      expressDelivery: addExpressDelivery.textContent === "–",
-      products: userCart.map(product => ({
-        productName: product.productId,
-        quantity: product.quantity,
-      })),
-    };
-
-    // Add the order to the 'orders' collection
-    await firebase.firestore().collection('orders').doc(orderId).set(orderData);
-
-    // Clear the user's cart after successfully creating the order
-    await cartRef.update({
-      cart: [],
-    });
-
-    console.log('Order created:', orderId);
-
-    // Clean up: unsubscribe from the 'checkout_sessions' collection
-    unsubscribe();
-  } catch (error) {
-    console.error(`Error creating order: ${error.message}`);
-  }
-}
-
 
 
 function checkForProductsInCart() {
