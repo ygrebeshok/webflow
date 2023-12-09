@@ -293,14 +293,6 @@ goToCheckoutBtn.addEventListener('click', async (event) => {
         const cartData = cartSnapshot.data();
         const cart = cartData.cart || []; // Ensure cart is defined
 
-	cart.map(product => {
-  	  console.log("Product ID:", product.productId);
-  	  console.log("Quantity:", product.quantity);
-  	  console.log("Express Delivery:", addExpressDelivery.textContent === "–");
-
-  	  return product; // Return the original product object
-	});
-
         // Assuming you have access to the orderData at this point
         const orderData = {
           userId,
@@ -309,7 +301,7 @@ goToCheckoutBtn.addEventListener('click', async (event) => {
           expressDelivery: addExpressDelivery.textContent === "–",
           products: cart.map(product => ({
             productName: product.productId,
-            quantity: product.quantity,
+            quantity: product.quantity || 1,
           })),
         };
 
