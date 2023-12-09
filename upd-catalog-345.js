@@ -286,7 +286,8 @@ goToCheckoutBtn.addEventListener('click', async (event) => {
       const user = firebase.auth().currentUser;
       if (user) {
         const userId = user.uid;
-	// Retrieve the user's cart
+
+        // Retrieve the user's cart
         const cartRef = firebase.firestore().collection('users').doc(userId);
         const cartSnapshot = await cartRef.get();
         const cartData = cartSnapshot.data();
@@ -324,6 +325,7 @@ goToCheckoutBtn.addEventListener('click', async (event) => {
     checkOutAlert.style.display = 'block';
   }
 });
+
 
 async function checkOut(totalAmount, orderId) {
   try {
