@@ -295,17 +295,60 @@ const loaderCopy = document.getElementById('lottie-loader-copy');
 
 loaderCopy.style.visibility = "hidden";
 
-goToCheckoutBtn.addEventListener('click', (event) => {
+goToCheckoutBtn.addEventListener('click', async (event) => {
   if (!(parseFloat(totalPriceText.textContent.replace('$', '')) === 0)) {
     loaderCopy.style.visibility = "visible";
-    checkOut(parseFloat(totalPriceText.textContent.replace('$', '')));
+
+    // Generate a unique order ID using uuid
+    const orderId = uuidv4();
+
+    try {
+      const user = firebase.auth().currentUser;
+      if (user) {
+        const userId = user.uid;
+
+        // Retrieve the user's cart
+        const cartRef = firebase.firestore().collection('users').doc(userId);
+        const cartSnapshot = await cartRef.get();
+        const cartData = cartSnapshot.data();
+        const cart = cartData.cart || []; // Ensure cart is defined
+
+	const totalPrice = totalPriceText.textContent.replace('$', '');
+
+        // Assuming you have access to the orderData at this point
+        const orderData = {
+          userId,
+          orderId,
+          totalPrice,
+          expressDelivery: addExpressDelivery.textContent === "–",
+          products: cart.map(product => ({
+            productName: product.productId,
+            quantity: product.quantity || 1,
+          })),
+        };
+
+        // Add the order to the 'orders' collection
+        await firebase.firestore().collection('orders').doc(orderId).set(orderData);
+
+        console.log('Order created:', orderId);
+
+        // Clear the user's cart after successfully creating the order
+        await cartRef.update({
+          cart: [],
+        });
+      }
+    } catch (error) {
+      console.error(`Error creating order: ${error.message}`);
+    }
+	  
+    checkOut(parseFloat(totalPriceText.textContent.replace('$', '')), orderId);
   } else {
     checkOutAlert.textContent = "Choose some products to purchase first";
     checkOutAlert.style.display = 'block';
   }
 });
 
-async function checkOut(totalAmount) {
+async function checkOut(totalAmount, orderId) {
   try {
     const checkoutSessionRef = await firebase.firestore()
     .collection('customers')
@@ -323,15 +366,15 @@ async function checkOut(totalAmount) {
             currency: 'usd',
 	    tax_behavior: "exclusive",
             product_data: {
-              name: 'Order #' + user.uid,
+              name: 'Order #' + orderId,
             },
           },
           quantity: 1, // You can adjust the quantity as needed
         },
       ],
       mode: 'payment',
-      success_url: "https://www.smappy.io/recommendations",
-      cancel_url: "https://www.smappy.io/recommendations",
+      success_url: "https://www.smappyai.com/order-success",
+      cancel_url: "https://www.smappyai.com/recommendations",
     });
 
     checkoutSessionRef.onSnapshot((snap) => {
