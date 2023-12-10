@@ -293,7 +293,7 @@ goToCheckoutBtn.addEventListener('click', async (event) => {
         const cartData = cartSnapshot.data();
         const cart = cartData.cart || []; // Ensure cart is defined
 
-	const totalPrice = totalPriceText.textContent.replace('$', ''));
+	const totalPrice = totalPriceText.textContent.replace('$', '');
 
         // Assuming you have access to the orderData at this point
         const orderData = {
@@ -321,7 +321,7 @@ goToCheckoutBtn.addEventListener('click', async (event) => {
       console.error(`Error creating order: ${error.message}`);
     }
 	  
-    checkOut(parseFloat(totalPrice, orderId);
+    checkOut(parseFloat(totalPrice), orderId);
   } else {
     checkOutAlert.textContent = "Choose some products to purchase first";
     checkOutAlert.style.display = 'block';
