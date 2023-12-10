@@ -321,7 +321,7 @@ goToCheckoutBtn.addEventListener('click', async (event) => {
       console.error(`Error creating order: ${error.message}`);
     }
 	  
-    checkOut(parseFloat(totalPrice), orderId);
+    checkOut(parseFloat(totalPriceText.textContent.replace('$', '')), orderId);
   } else {
     checkOutAlert.textContent = "Choose some products to purchase first";
     checkOutAlert.style.display = 'block';
