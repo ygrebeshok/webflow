@@ -150,7 +150,7 @@ async function getOrderDetails(orderId) {
         const expressDelivery = orderData.expressDelivery ? 'Yes' : 'No';
         const totalPrice = orderData.totalPrice;
         const userId = orderData.userId;
-        const status = orderData.status || 'Pending';
+        const status = orderData.status || 'pending';
 
         // Get shipping address information
         const addressInfo = await getShippingAddress();
