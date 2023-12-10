@@ -222,7 +222,7 @@ function addColumns(orderId, products, expressDelivery, totalPrice, status, user
   // Create "Completed" button
   const completedCell = document.createElement('td');
   const completedButton = document.createElement('button');
-  completedButton.textContent = 'Completed';
+  completedButton.textContent = 'Confirm';
   completedButton.style.backgroundColor = "#6e70ff";
   completedButton.style.color = "white";
   completedButton.style.borderRadius = "3px";
