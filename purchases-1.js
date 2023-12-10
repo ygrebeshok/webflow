@@ -150,12 +150,13 @@ async function getOrderDetails(orderId) {
         const expressDelivery = orderData.expressDelivery ? 'Yes' : 'No';
         const totalPrice = orderData.totalPrice;
         const userId = orderData.userId;
+        const status = orderData.status || 'Pending';
 
         // Get shipping address information
         const addressInfo = await getShippingAddress();
 
         // Add columns with shipping address information
-        addColumns(orderId, products, expressDelivery, totalPrice, userId, addressInfo);
+        addColumns(orderId, products, expressDelivery, totalPrice, status, userId, addressInfo);
 
         return {
           orderId,
@@ -181,7 +182,7 @@ async function getOrderDetails(orderId) {
 
 
 // Modified addColumns function to include shipping address information
-function addColumns(orderId, products, expressDelivery, totalPrice, userId, addressInfo) {
+function addColumns(orderId, products, expressDelivery, totalPrice, status, userId, addressInfo) {
   const tableBody = document.querySelector('#ordersTable tbody');
   
   // Create a new row
@@ -236,7 +237,7 @@ function addColumns(orderId, products, expressDelivery, totalPrice, userId, addr
 
   // Create "Status" cell
   const statusCell = document.createElement('td');
-  statusCell.textContent = 'Pending'; // Default status
+  statusCell.textContent = status; // Default status
 
 
   // Append cells to the row
