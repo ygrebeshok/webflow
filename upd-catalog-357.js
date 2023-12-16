@@ -1573,6 +1573,7 @@ const holidayPopupGrid = document.getElementById("holiday-popup-grid");
 async function showHolidayPopup(holidayName) {
   const holidaysRef = firebase.firestore().collection("holiday-selections");
   document.getElementById("holiday-popup-title").textContent = holidayName;
+  holidayPopupGrid.innerHTML = '';
 
   try {
     const holidayDoc = await holidaysRef.doc(holidayName).get();
@@ -1580,7 +1581,6 @@ async function showHolidayPopup(holidayName) {
     if (holidayDoc.exists) {
       const data = holidayDoc.data();
       const products = data.products;
-      console.log(products);
 
       for (const productName of products) {
         const giftQuerySnapshot = await firebase.firestore().collection("added-by-parsing").where("name", "==", productName).get();
