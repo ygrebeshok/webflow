@@ -1572,6 +1572,7 @@ const holidayPopupGrid = document.getElementById("holiday-popup-grid");
 
 async function showHolidayPopup(holidayName) {
   const holidaysRef = firebase.firestore().collection("holiday-selections");
+  document.getElementById("holiday-popup-title").textContent = holidayName;
 
   try {
     const holidayDoc = await holidaysRef.doc(holidayName).get();
