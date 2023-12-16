@@ -1520,3 +1520,49 @@ function checkInputs() {
   document.getElementById("button-container").classList.remove('disablegrid');
   mainButton.classList.remove('disablegrid');
 }
+
+
+const holidaySelectionsGrid = document.getElementById('holiday-selections-grid');
+const holidayCardTemplate = document.querySelector('.holiday-selection-card');
+
+function holidaySelections() {
+  const holidaysRef = firebase.firestore().collection("holiday-selections");
+	
+  holidaysRef.get().then((querySnapshot) => {
+    holidaySelectionsGrid.innerHTML = "";
+      
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+      const holidayCard = holidayCardTemplate.cloneNode(true);
+	    
+      holidayCard.querySelector("#holiday-selection-image").src = data.image,
+      holidayCard.querySelector("#holiday-selection-name").textContent = data.name
+
+      holidaySelectionsGrid.appendChild(holidayCard);
+
+      holidayCard.addEventListener('mouseenter', () => {
+        holidayCard.animate([
+        { transform: 'scale(1)' },
+        { transform: 'scale(1.05)' }
+        ], {
+        duration: 200,
+        fill: 'forwards'
+        });
+      });
+
+      holidayCard.addEventListener('mouseleave', () => {
+        holidayCard.animate([
+        { transform: 'scale(1.05)' },
+        { transform: 'scale(1)' }
+        ], {
+        duration: 200,
+        fill: 'forwards'
+        });
+        });
+      });
+    });
+}
+
+
+
+
