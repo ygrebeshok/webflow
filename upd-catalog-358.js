@@ -66,6 +66,7 @@ const loadMoreButton = document.getElementById('load-more');
 const productExistsError = document.getElementById('product-exists-error');
 productExistsError.style.display = 'none';
 cartPopupContainer.style.display = 'none';
+holidayPopupContainer.style.display = 'none';
 
 popupCloseCart.addEventListener('click', (event) => {
   cartPopupContainer.style.display = 'none';
@@ -1588,9 +1589,30 @@ async function showHolidayPopup(holidayName) {
         if (!giftQuerySnapshot.empty) {
           const giftData = giftQuerySnapshot.docs[0].data();
 
+	  let productData = {
+	    images: [],
+	    name: '',
+	    brand: '',
+	    description: '',
+	    product_link: '',
+	    price: ''
+	  };
+
+	  productData = {
+	    images: giftData.images,
+	    name: giftData.name,
+	    brand: giftData.brand,
+	    description: giftData.description,
+	    product_link: giftData.product_link,
+	    price: giftData.price
+	  };
+
           const holidayPopupCard = holidayPopupCardTemplate.cloneNode(true);
           holidayPopupCard.querySelector('#holiday-popup-grid-text').textContent = giftData.name;
           holidayPopupCard.querySelector('#holiday-popup-grid-image').src = giftData.images[0];
+	  holidayPopupCard.querySelector('#holiday-popup-grid-link').addEventListener('click', () => {
+	    showPopup(productData);
+	  });
           
           holidayPopupGrid.appendChild(holidayPopupCard);
         }
