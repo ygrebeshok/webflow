@@ -1579,15 +1579,14 @@ async function showHolidayPopup(holidayName) {
     
     if (holidayDoc.exists) {
       const data = holidayDoc.data();
-      const products = data.products; // Assuming 'products' is the array of product names
+      const products = data.products;
+      console.log(products);
 
       for (const productName of products) {
-        // Snapshot the 'gifts' collection and find the object with the same name
-        const giftQuerySnapshot = await firebase.firestore().collection("gifts").where("name", "==", productName).get();
+        const giftQuerySnapshot = await firebase.firestore().collection("added-by-parsing").where("name", "==", productName).get();
 
         if (!giftQuerySnapshot.empty) {
           const giftData = giftQuerySnapshot.docs[0].data();
-          // Now you can use 'giftData' to do something with the matching gift object
 
           const holidayPopupCard = holidayPopupCardTemplate.cloneNode(true);
           holidayPopupCard.querySelector('#holiday-popup-grid-text').textContent = giftData.name;
