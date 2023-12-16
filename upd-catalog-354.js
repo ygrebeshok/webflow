@@ -1538,30 +1538,78 @@ function holidaySelections() {
       holidayCard.querySelector("#holiday-selection-image").src = data.image,
       holidayCard.querySelector("#holiday-selection-name").textContent = data.name
 
+      holidayCard.querySelector("#holiday-selection-link").addEventListener('click', () => {
+	 showHolidayPopup(holidayCard.querySelector("#holiday-selection-name").textContent);     
+      });
+
       holidaySelectionsGrid.appendChild(holidayCard);
 
       holidayCard.addEventListener('mouseenter', () => {
         holidayCard.animate([
-        { transform: 'scale(1)' },
-        { transform: 'scale(1.05)' }
+          { transform: 'scale(1)' },
+          { transform: 'scale(1.05)' }
         ], {
-        duration: 200,
-        fill: 'forwards'
+          duration: 200,
+          fill: 'forwards'
         });
       });
 
       holidayCard.addEventListener('mouseleave', () => {
         holidayCard.animate([
-        { transform: 'scale(1.05)' },
-        { transform: 'scale(1)' }
+          { transform: 'scale(1.05)' },
+          { transform: 'scale(1)' }
         ], {
-        duration: 200,
-        fill: 'forwards'
-        });
+          duration: 200,
+          fill: 'forwards'
         });
       });
     });
+  });
 }
+
+const holidayPopupCardTemplate = document.querySelector(".holiday-popup-card");
+const holidayPopupGrid = document.getElementById("holiday-popup-grid");
+
+async function showHolidayPopup(holidayName) {
+  const holidaysRef = firebase.firestore().collection("holiday-selections");
+
+  try {
+    const holidayDoc = await holidaysRef.doc(holidayName).get();
+    
+    if (holidayDoc.exists) {
+      const data = holidayDoc.data();
+      const products = data.products; // Assuming 'products' is the array of product names
+
+      for (const productName of products) {
+        // Snapshot the 'gifts' collection and find the object with the same name
+        const giftQuerySnapshot = await firebase.firestore().collection("gifts").where("name", "==", productName).get();
+
+        if (!giftQuerySnapshot.empty) {
+          const giftData = giftQuerySnapshot.docs[0].data();
+          // Now you can use 'giftData' to do something with the matching gift object
+
+          const holidayPopupCard = holidayPopupCardTemplate.cloneNode(true);
+          holidayPopupCard.querySelector('#holiday-popup-grid-text').textContent = giftData.name;
+          holidayPopupCard.querySelector('#holiday-popup-grid-image').src = giftData.images[0];
+          
+          holidayPopupGrid.appendChild(holidayPopupCard);
+        }
+      }
+      holidayPopupContainer.style.display = 'flex';
+    } else {
+      console.log("Holiday not found");
+    }
+  } catch (error) {
+    console.error("Error fetching holiday data:", error);
+  }
+}
+
+const holidayPopupClose = document.getElementById("holiday-popup-close");
+const holidayPopupContainer = document.getElementById("holiday-popup-container");
+
+holidayPopupClose.addEventListener('click', () => {
+  holidayPopupContainer.style.display = 'none';
+});
 
 
 
