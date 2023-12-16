@@ -62,6 +62,7 @@ let totalDisplayedItems = 0;
 const itemsPerPage = 50;
 const itemsToAdd = 50;
 const loadMoreButton = document.getElementById('load-more');
+const holidayPopupContainer = document.getElementById("holiday-popup-container");
 
 const productExistsError = document.getElementById('product-exists-error');
 productExistsError.style.display = 'none';
@@ -1627,7 +1628,6 @@ async function showHolidayPopup(holidayName) {
 }
 
 const holidayPopupClose = document.getElementById("holiday-popup-close");
-const holidayPopupContainer = document.getElementById("holiday-popup-container");
 
 holidayPopupClose.addEventListener('click', () => {
   holidayPopupContainer.style.display = 'none';
