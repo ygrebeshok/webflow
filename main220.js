@@ -360,43 +360,13 @@ async function recommend() {
     } else if (selected_gender === "Non-binary") {
       subject_reference = "unisex";
     }
-  } else if (age >= 31 && age <= 40) {
-    age_reference = "31-40 years";
+  } else if (age >= 31) {
+    age_reference = "31+ years";
 
     if (selected_who === "Daughter" || selected_who === "Sister" || selected_who === "Niece" || selected_who === "Aunt" || selected_who === "Girlfriend" || selected_who === "Wife" || selected_who === "Mom" || selected_gender === "Female") {
       subject_reference = "adult woman";
     } else if (selected_who === "Son" || selected_who === "Brother" || selected_who === "Nephew" || selected_who === "Uncle" || selected_who === "Boyfriend" || selected_who === "Husband" || selected_who === "Dad" || selected_gender === "Male") {
       subject_reference = "adult man";
-    } else if (selected_gender === "Non-binary") {
-      subject_reference = "unisex";
-    }
-  } else if (age >= 41 && age <= 50) {
-    age_reference = "41-50 years";
-
-    if (selected_who === "Daughter" || selected_who === "Sister" || selected_who === "Niece" || selected_who === "Aunt" || selected_who === "Girlfriend" || selected_who === "Wife" || selected_who === "Mom" || selected_gender === "Female") {
-      subject_reference = "adult woman";
-    } else if (selected_who === "Son" || selected_who === "Brother" || selected_who === "Nephew" || selected_who === "Uncle" || selected_who === "Boyfriend" || selected_who === "Husband" || selected_who === "Dad" || selected_gender === "Male") {
-      subject_reference = "adult man";
-    } else if (selected_gender === "Non-binary") {
-      subject_reference = "unisex";
-    }
-  } else if (age >= 51 && age <= 60) {
-    age_reference = "51-60 years";
-
-    if (selected_who === "Daughter" || selected_who === "Sister" || selected_who === "Niece" || selected_who === "Aunt" || selected_who === "Girlfriend" || selected_who === "Wife" || selected_who === "Mom" || selected_gender === "Female") {
-      subject_reference = "old woman";
-    } else if (selected_who === "Son" || selected_who === "Brother" || selected_who === "Nephew" || selected_who === "Uncle" || selected_who === "Boyfriend" || selected_who === "Husband" || selected_who === "Dad" || selected_gender === "Male") {
-      subject_reference = "old man";
-    } else if (selected_gender === "Non-binary") {
-      subject_reference = "unisex";
-    }
-  } else if (age >= 61) {
-    age_reference = "61+ years";
-
-    if (selected_who === "Daughter" || selected_who === "Sister" || selected_who === "Niece" || selected_who === "Aunt" || selected_who === "Girlfriend" || selected_who === "Wife" || selected_who === "Mom" || selected_gender === "Female") {
-      subject_reference = "old woman";
-    } else if (selected_who === "Son" || selected_who === "Brother" || selected_who === "Nephew" || selected_who === "Uncle" || selected_who === "Boyfriend" || selected_who === "Husband" || selected_who === "Dad" || selected_gender === "Male") {
-      subject_reference = "old man";
     } else if (selected_gender === "Non-binary") {
       subject_reference = "unisex";
     }
