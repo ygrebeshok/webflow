@@ -6,8 +6,8 @@
   function resetFilters() {
     brandFilters = [];
     const priceDisplay = document.getElementById("price-display");
-    priceRange.value = 2000;
-    priceDisplay.textContent = '$0 - $2000';
+    priceRange.value = 3000;
+    priceDisplay.textContent = '$0 - $3000';
     priceRangeInitialized = false;
     categoryFilter = null;
 
