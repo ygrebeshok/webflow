@@ -147,7 +147,7 @@
   function categories() {
     const categoryGrid = document.getElementById("category-grid");
   
-    const categories = ["Electronics and Gadgets", "Books and Stationery", "Clothing and Accessories", "Art", "Beauty and Hair Products", "Jewelry and Watches", "Fitness and Wellness Items", "Experiences", "Kitchen Appliances", "Outdoor Gear", "Toys and Games", "Anime", "Food and Beverage", "Plants and Gardening", "Travel Accessories", "Home Decor", "Pets"];
+    const categories = ["Electronics and Gadgets", "Books and Stationery", "Clothing and Accessories", "Art", "DIY", "Beauty and Hair Products", "Jewelry and Watches", "Fitness and Wellness Items", "Experiences", "Kitchen Appliances", "Outdoor Gear", "Toys and Games", "Anime", "Food and Beverage", "Plants and Gardening", "Travel Accessories", "Home Decor", "Pets"];
     categories.forEach((category) => {
     	const button = document.createElement('button');
       button.textContent = category;
