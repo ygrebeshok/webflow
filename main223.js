@@ -329,6 +329,10 @@ async function recommend() {
     subject_reference = "old woman";
   } else if (selected_who === "Grandpa") {
     subject_reference = "old man";
+  } else if (selected_who == "Dog") {
+    subject_reference = "dog";
+  } else if (selected_who == "Cat") {
+    subject_reference = "cat";
   }
   
   if (age <= 4) {
@@ -430,7 +434,7 @@ async function recommend() {
       .then(data => {
         const responseText = data.choices[0].text;
 
-        const subjectCategories = ["adult woman", "adult man", "girl", "boy", "kid", "toddler", "old man", "old woman", "unisex"];
+        const subjectCategories = ["adult woman", "adult man", "girl", "boy", "kid", "toddler", "old man", "old woman", "unisex", "dog", "cat"];
     
         for (const category of subjectCategories) {
           if (responseText.toLowerCase().includes(category)) {
@@ -522,7 +526,7 @@ async function recommend() {
              let cardBrand = card.querySelector("#brand").textContent;
 
              const keywordsToExclude = [];
-             if (!(selected_who === "Dog" || selected_who === "Cat")) {
+             if (!(selected_who === "dog" || selected_who === "cat")) {
                keywordsToExclude.push("dog", "bark", "cat", "meow", "pet", "paw");
              } else if (selected_who === "Dad" || selected_who === "Grandpa" || selected_who === "Brother") {
                keywordsToExclude.push("woman", "women", "girl", "female", "feminine", "womanly");
@@ -561,7 +565,7 @@ async function recommend() {
                card.style.display = "none";
              }
 
-             if (!(selected_who === "Dog" || selected_who === "Cat")) {
+             if (!(selected_who === "dog" || selected_who === "cat")) {
                // Filter out cards with brands found in petStores
                if (petStores.includes(card.querySelector("#brand").textContent)) {
                  const index = visibleCards.indexOf(card);
