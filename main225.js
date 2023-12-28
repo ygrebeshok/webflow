@@ -521,7 +521,7 @@ async function recommend() {
              let cardBrand = card.querySelector("#brand").textContent;
 
              const keywordsToExclude = [];
-             if (!(selected_who === "dog" || selected_who === "cat")) {
+             if (!(selected_who === "Dog" || selected_who === "Cat")) {
                keywordsToExclude.push("dog", "bark", "cat", "meow", "pet", "paw");
              } else if (selected_who === "Dad" || selected_who === "Grandpa" || selected_who === "Brother") {
                keywordsToExclude.push("woman", "women", "girl", "female", "feminine", "womanly");
@@ -560,7 +560,7 @@ async function recommend() {
                card.style.display = "none";
              }
 
-             if (!(selected_who === "dog" || selected_who === "cat")) {
+             if (!(selected_who === "Dog" || selected_who === "Cat")) {
                // Filter out cards with brands found in petStores
                if (petStores.includes(card.querySelector("#brand").textContent)) {
                  const index = visibleCards.indexOf(card);
