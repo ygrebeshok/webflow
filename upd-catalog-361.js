@@ -278,7 +278,7 @@ const loaderCopy = document.getElementById('lottie-loader-copy');
 loaderCopy.style.visibility = "hidden";
 
 goToCheckoutBtn.addEventListener('click', async (event) => {
-  if (!(parseFloat(totalPriceText.textContent.replace('$', '')) === 0)) {
+  if (!(parseFloat(totalPriceText.textContent.replace('$', '')) < 20)) {
     loaderCopy.style.visibility = "visible";
 
     // Generate a unique order ID using uuid
@@ -325,7 +325,7 @@ goToCheckoutBtn.addEventListener('click', async (event) => {
 	  
     checkOut(parseFloat(totalPriceText.textContent.replace('$', '')), orderId);
   } else {
-    checkOutAlert.textContent = "Choose some products to purchase first";
+    checkOutAlert.textContent = "Minimum order price is $20";
     checkOutAlert.style.display = 'block';
   }
 });
