@@ -247,11 +247,6 @@ mainButton.addEventListener('click', async () => {
     ageAlert.style.display = "block";
     ageAlert.textContent = "The input for age field is wrong";
   
-  } else if ((age === "") && (personality === ""))  {
-    
-    ageAlert.style.display = "block";
-    ageAlert.textContent = "Please, enter the age or personality";
-  
   } else {
     ageAlert.style.display = "none";
 
