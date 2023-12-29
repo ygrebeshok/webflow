@@ -42,6 +42,7 @@ const holidayBack = document.getElementById("holiday-back");
 let selected_holiday = null;
 let selected_who = null;
 let selected_category = null;
+let selected_sub_category = null;
 let visibleCards = [];
 const catalogGrid = document.getElementById("catalog");
 const cardTemplate = document.querySelector(".card");
