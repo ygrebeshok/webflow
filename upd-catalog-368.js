@@ -1166,7 +1166,7 @@ function filterCatalog() {
 
   if (subCategoryFilter !== null) {
     visibleCards = visibleCards.filter(card => {
-      const cardSubCategory = card.querySelector("#sub_category").textContent;
+      const cardSubCategory = card.querySelector("#sub-category").textContent;
       return cardSubCategory === subCategoryFilter;
     });
   }
