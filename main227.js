@@ -146,6 +146,7 @@
 
   function categories() {
     const categoryGrid = document.getElementById("category-grid");
+    const subCategoryGrid = document.getElementById("sub-category-grid");
   
     const categories = ["Electronics and Gadgets", "Books and Stationery", "Clothing and Accessories", "Art", "DIY", "Beauty and Hair Products", "Jewelry and Watches", "Fitness and Wellness Items", "Experiences", "Kitchen Appliances", "Outdoor Gear", "Toys and Games", "Anime", "Food and Beverage", "Plants and Gardening", "Travel Accessories", "Home Decor", "Pets", "Gift Cards"];
     categories.forEach((category) => {
@@ -162,6 +163,388 @@
         if (selected_category !== category) {
           selected_category = category;
         }
+        switch(selected_category) {
+          case "Electronics and Gadgets":
+            const electronicsSubs = ["Vinyl", "Lovebox", "Camera", "Speaker", "Bird Feeder", "Home Device", "Instrument"];
+            electronicsSubs.forEach((sub_category) => {
+              const subButton = document.createElement('button');
+              subButton.textContent = sub_category;
+              subButton.className = 'sub-category-button';
+              subButton.addEventListener('mouseenter', () => {
+      	        subButton.classList.add('hover');
+              });
+  	          subButton.addEventListener('mouseleave', () => {
+                subButton.classList.remove('hover');
+              });
+              subButton.addEventListener('click', function() {
+                if (selected_sub_category !== sub_category) {
+                  selected_sub_category = sub_category;
+                }
+              });
+              subCategoryGrid.appendChild(subButton);
+            });
+            break;
+          case "Books and Stationery":
+            const booksSubs = ["Book", "Notebook", "Pen"];
+            booksSubs.forEach((sub_category) => {
+              const subButton = document.createElement('button');
+              subButton.textContent = sub_category;
+              subButton.className = 'sub-category-button';
+              subButton.addEventListener('mouseenter', () => {
+      	        subButton.classList.add('hover');
+              });
+  	          subButton.addEventListener('mouseleave', () => {
+                subButton.classList.remove('hover');
+              });
+              subButton.addEventListener('click', function() {
+                if (selected_sub_category !== sub_category) {
+                  selected_sub_category = sub_category;
+                }
+              });
+              subCategoryGrid.appendChild(subButton);
+            });
+            break;
+          case "Clothing and Accessories":
+            const clothingSubs = ["Sleepers", "Socks", "Bag", "Hat", "Scarf", "Sweater", "T-shirt", "Watches", "Glasses", "For Babies", "Tiny Details"];
+            clothingSubs.forEach((sub_category) => {
+              const subButton = document.createElement('button');
+              subButton.textContent = sub_category;
+              subButton.className = 'sub-category-button';
+              subButton.addEventListener('mouseenter', () => {
+      	        subButton.classList.add('hover');
+              });
+  	          subButton.addEventListener('mouseleave', () => {
+                subButton.classList.remove('hover');
+              });
+              subButton.addEventListener('click', function() {
+                if (selected_sub_category !== sub_category) {
+                  selected_sub_category = sub_category;
+                }
+              });
+              subCategoryGrid.appendChild(subButton);
+            });
+            break;
+          case "Art":
+            const artSubs = ["Painting", "Vase", "Statue"];
+            artSubs.forEach((sub_category) => {
+              const subButton = document.createElement('button');
+              subButton.textContent = sub_category;
+              subButton.className = 'sub-category-button';
+              subButton.addEventListener('mouseenter', () => {
+      	        subButton.classList.add('hover');
+              });
+  	          subButton.addEventListener('mouseleave', () => {
+                subButton.classList.remove('hover');
+              });
+              subButton.addEventListener('click', function() {
+                if (selected_sub_category !== sub_category) {
+                  selected_sub_category = sub_category;
+                }
+              });
+              subCategoryGrid.appendChild(subButton);
+            });
+            break;
+          case "DIY":
+            const diySubs = ["DIY House", "DIY Candle", "DIY Pottery"];
+            diySubs.forEach((sub_category) => {
+              const subButton = document.createElement('button');
+              subButton.textContent = sub_category;
+              subButton.className = 'sub-category-button';
+              subButton.addEventListener('mouseenter', () => {
+      	        subButton.classList.add('hover');
+              });
+  	          subButton.addEventListener('mouseleave', () => {
+                subButton.classList.remove('hover');
+              });
+              subButton.addEventListener('click', function() {
+                if (selected_sub_category !== sub_category) {
+                  selected_sub_category = sub_category;
+                }
+              });
+              subCategoryGrid.appendChild(subButton);
+            });
+            break;
+          case "Beauty and Hair Products":
+            const beautySubs = ["Skincare", "Body", "Relax", "Hair", "Soap"];
+            beautySubs.forEach((sub_category) => {
+              const subButton = document.createElement('button');
+              subButton.textContent = sub_category;
+              subButton.className = 'sub-category-button';
+              subButton.addEventListener('mouseenter', () => {
+      	        subButton.classList.add('hover');
+              });
+  	          subButton.addEventListener('mouseleave', () => {
+                subButton.classList.remove('hover');
+              });
+              subButton.addEventListener('click', function() {
+                if (selected_sub_category !== sub_category) {
+                  selected_sub_category = sub_category;
+                }
+              });
+              subCategoryGrid.appendChild(subButton);
+            });
+            break;
+          case "Jewelry and Watches":
+            const jewelrySubs = ["Earrings", "Bracelet", "Necklace", "Cuffs", "Ring", "Stone"];
+            jewelrySubs.forEach((sub_category) => {
+              const subButton = document.createElement('button');
+              subButton.textContent = sub_category;
+              subButton.className = 'sub-category-button';
+              subButton.addEventListener('mouseenter', () => {
+      	        subButton.classList.add('hover');
+              });
+  	          subButton.addEventListener('mouseleave', () => {
+                subButton.classList.remove('hover');
+              });
+              subButton.addEventListener('click', function() {
+                if (selected_sub_category !== sub_category) {
+                  selected_sub_category = sub_category;
+                }
+              });
+              subCategoryGrid.appendChild(subButton);
+            });
+            break;
+          case "Fitness and Wellness Items":
+            const fitnessSubs = ["Sport Tops", "Sport Bottoms", "Sport Socks", "Sport Towel"];
+            fitnessSubs.forEach((sub_category) => {
+              const subButton = document.createElement('button');
+              subButton.textContent = sub_category;
+              subButton.className = 'sub-category-button';
+              subButton.addEventListener('mouseenter', () => {
+      	        subButton.classList.add('hover');
+              });
+  	          subButton.addEventListener('mouseleave', () => {
+                subButton.classList.remove('hover');
+              });
+              subButton.addEventListener('click', function() {
+                if (selected_sub_category !== sub_category) {
+                  selected_sub_category = sub_category;
+                }
+              });
+              subCategoryGrid.appendChild(subButton);
+            });
+            break;
+          case "Experiences":
+            const experiencesSubs = ["Spa Retreat", "Class"];
+            experiencesSubs.forEach((sub_category) => {
+              const subButton = document.createElement('button');
+              subButton.textContent = sub_category;
+              subButton.className = 'sub-category-button';
+              subButton.addEventListener('mouseenter', () => {
+      	        subButton.classList.add('hover');
+              });
+  	          subButton.addEventListener('mouseleave', () => {
+                subButton.classList.remove('hover');
+              });
+              subButton.addEventListener('click', function() {
+                if (selected_sub_category !== sub_category) {
+                  selected_sub_category = sub_category;
+                }
+              });
+              subCategoryGrid.appendChild(subButton);
+            });
+            break;
+          case "Kitchen Appliances":
+            const kitchenSubs = ["Mugs and Cups", "Utensils", "Board", "Bowl", "Plate", "Pans and Pots", "Coffee", "Jar", "Stand", "Coaster", "Tray", "Apron", "Lunch Box"];
+            kitchenSubs.forEach((sub_category) => {
+              const subButton = document.createElement('button');
+              subButton.textContent = sub_category;
+              subButton.className = 'sub-category-button';
+              subButton.addEventListener('mouseenter', () => {
+      	        subButton.classList.add('hover');
+              });
+  	          subButton.addEventListener('mouseleave', () => {
+                subButton.classList.remove('hover');
+              });
+              subButton.addEventListener('click', function() {
+                if (selected_sub_category !== sub_category) {
+                  selected_sub_category = sub_category;
+                }
+              });
+              subCategoryGrid.appendChild(subButton);
+            });
+            break;
+          case "Outdoor Gear":
+            const outdoorSubs = ["For Cars", "Backpack", "Tent", "Bottle"];
+            outdoorSubs.forEach((sub_category) => {
+              const subButton = document.createElement('button');
+              subButton.textContent = sub_category;
+              subButton.className = 'sub-category-button';
+              subButton.addEventListener('mouseenter', () => {
+      	        subButton.classList.add('hover');
+              });
+  	          subButton.addEventListener('mouseleave', () => {
+                subButton.classList.remove('hover');
+              });
+              subButton.addEventListener('click', function() {
+                if (selected_sub_category !== sub_category) {
+                  selected_sub_category = sub_category;
+                }
+              });
+              subCategoryGrid.appendChild(subButton);
+            });
+            break;
+          case "Toys and Games":
+            const toysSubs = ["Lego", "Board Game", "Storage", "Baby Mobile", "Toy"];
+            toysSubs.forEach((sub_category) => {
+              const subButton = document.createElement('button');
+              subButton.textContent = sub_category;
+              subButton.className = 'sub-category-button';
+              subButton.addEventListener('mouseenter', () => {
+      	        subButton.classList.add('hover');
+              });
+  	          subButton.addEventListener('mouseleave', () => {
+                subButton.classList.remove('hover');
+              });
+              subButton.addEventListener('click', function() {
+                if (selected_sub_category !== sub_category) {
+                  selected_sub_category = sub_category;
+                }
+              });
+              subCategoryGrid.appendChild(subButton);
+            });
+            break;
+          case "Anime":
+            const animeSubs = ["Toy", "Accessory", "Stationery", "Utensils", "Home Decor"];
+            animeSubs.forEach((sub_category) => {
+              const subButton = document.createElement('button');
+              subButton.textContent = sub_category;
+              subButton.className = 'sub-category-button';
+              subButton.addEventListener('mouseenter', () => {
+      	        subButton.classList.add('hover');
+              });
+  	          subButton.addEventListener('mouseleave', () => {
+                subButton.classList.remove('hover');
+              });
+              subButton.addEventListener('click', function() {
+                if (selected_sub_category !== sub_category) {
+                  selected_sub_category = sub_category;
+                }
+              });
+              subCategoryGrid.appendChild(subButton);
+            });
+            break;
+          case "Food and Beverage":
+            const foodSubs = ["Chocolate", "Tea"];
+            foodSubs.forEach((sub_category) => {
+              const subButton = document.createElement('button');
+              subButton.textContent = sub_category;
+              subButton.className = 'sub-category-button';
+              subButton.addEventListener('mouseenter', () => {
+      	        subButton.classList.add('hover');
+              });
+  	          subButton.addEventListener('mouseleave', () => {
+                subButton.classList.remove('hover');
+              });
+              subButton.addEventListener('click', function() {
+                if (selected_sub_category !== sub_category) {
+                  selected_sub_category = sub_category;
+                }
+              });
+              subCategoryGrid.appendChild(subButton);
+            });
+            break;
+          case "Plants and Gardening":
+            const plantsSubs = ["Plant", "Pot"];
+            plantsSubs.forEach((sub_category) => {
+              const subButton = document.createElement('button');
+              subButton.textContent = sub_category;
+              subButton.className = 'sub-category-button';
+              subButton.addEventListener('mouseenter', () => {
+      	        subButton.classList.add('hover');
+              });
+  	          subButton.addEventListener('mouseleave', () => {
+                subButton.classList.remove('hover');
+              });
+              subButton.addEventListener('click', function() {
+                if (selected_sub_category !== sub_category) {
+                  selected_sub_category = sub_category;
+                }
+              });
+              subCategoryGrid.appendChild(subButton);
+            });
+            break;
+          case "Travel Accessories":
+            const travelSubs = ["Bag", "Pouch", "Pillow"];
+            travelSubs.forEach((sub_category) => {
+              const subButton = document.createElement('button');
+              subButton.textContent = sub_category;
+              subButton.className = 'sub-category-button';
+              subButton.addEventListener('mouseenter', () => {
+      	        subButton.classList.add('hover');
+              });
+  	          subButton.addEventListener('mouseleave', () => {
+                subButton.classList.remove('hover');
+              });
+              subButton.addEventListener('click', function() {
+                if (selected_sub_category !== sub_category) {
+                  selected_sub_category = sub_category;
+                }
+              });
+              subCategoryGrid.appendChild(subButton);
+            });
+            break;
+          case "Home Decor":
+            const homeSubs = ["Candle", "Blanket", "Pillow", "Cushion", "Pouf", "Rug", "Table", "Diffuser", "Photo Box", "Lamp", "Vase", "Napkins", "Chairs and Sofas", "Storage", "Other Decor"];
+            homeSubs.forEach((sub_category) => {
+              const subButton = document.createElement('button');
+              subButton.textContent = sub_category;
+              subButton.className = 'sub-category-button';
+              subButton.addEventListener('mouseenter', () => {
+      	        subButton.classList.add('hover');
+              });
+  	          subButton.addEventListener('mouseleave', () => {
+                subButton.classList.remove('hover');
+              });
+              subButton.addEventListener('click', function() {
+                if (selected_sub_category !== sub_category) {
+                  selected_sub_category = sub_category;
+                }
+              });
+              subCategoryGrid.appendChild(subButton);
+            });
+            break;
+          case "Pets":
+            const petsSubs = ["Bed", "Treats", "Toy", "Clothing", "Cover"];
+            petsSubs.forEach((sub_category) => {
+              const subButton = document.createElement('button');
+              subButton.textContent = sub_category;
+              subButton.className = 'sub-category-button';
+              subButton.addEventListener('mouseenter', () => {
+      	        subButton.classList.add('hover');
+              });
+  	          subButton.addEventListener('mouseleave', () => {
+                subButton.classList.remove('hover');
+              });
+              subButton.addEventListener('click', function() {
+                if (selected_sub_category !== sub_category) {
+                  selected_sub_category = sub_category;
+                }
+              });
+              subCategoryGrid.appendChild(subButton);
+            });
+            break;
+          case "Gift Cards":
+            const cardsSubs = ["Electronics and Gadgets", "Books and Stationery", "Clothing and Accessories", "Art", "DIY", "Beauty and Hair Products", "Jewelry and Watches", "Fitness and Wellness Items", "Experiences", "Kitchen Appliances", "Outdoor Gear", "Toys and Games", "Anime", "Food and Beverage", "Plants and Gardening", "Travel Accessories", "Home Decor", "Pets", "Gift Cards"];
+            cardsSubs.forEach((sub_category) => {
+              const subButton = document.createElement('button');
+              subButton.textContent = sub_category;
+              subButton.className = 'sub-category-button';
+              subButton.addEventListener('mouseenter', () => {
+      	        subButton.classList.add('hover');
+              });
+  	          subButton.addEventListener('mouseleave', () => {
+                subButton.classList.remove('hover');
+              });
+              subButton.addEventListener('click', function() {
+                if (selected_sub_category !== sub_category) {
+                  selected_sub_category = sub_category;
+                }
+              });
+              subCategoryGrid.appendChild(subButton);
+            });
+            break;
+        }
         resetCategories.classList.remove('disablegrid');
         handleCategoryChange(selected_category);
       });
@@ -169,6 +552,7 @@
       categoryGrid.appendChild(button);
     });
   }
+
 
 const angry = document.getElementById("angry");
 const sad = document.getElementById("sad");
