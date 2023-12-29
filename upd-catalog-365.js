@@ -1135,6 +1135,7 @@ function handleBrandCheckboxChange(checkbox) {
 function handleCategoryChange(category, sub_category) {
   categoryFilter = category; // Update category filter
   subCategoryFilter = sub_category;
+  console.log(subCategoryFilter);
   filterCatalog();
 }
 
