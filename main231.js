@@ -210,7 +210,7 @@
             });
             break;
           case "Clothing and Accessories":
-            const clothingSubs = ["Sleepers", "Socks", "Bag", "Hat", "Scarf", "Sweater", "T-shirt", "Watches", "Glasses", "For Babies", "Tiny Details"];
+            const clothingSubs = ["Slippers", "Socks", "Bag", "Hat", "Scarf", "Sweater", "T-shirt", "Watches", "Glasses", "For Babies", "Tiny Details"];
             subCategoryGrid.innerHTML = "";
             clothingSubs.forEach((sub_category) => {
               const subButton = document.createElement('button');
@@ -298,7 +298,7 @@
             });
             break;
           case "Jewelry and Watches":
-            const jewelrySubs = ["Earrings", "Bracelet", "Necklace", "Cuffs", "Ring", "Stone"];
+            const jewelrySubs = ["Earrings", "Bracelet", "Necklace", "Cuffs", "Ring", "Watches", "Stone"];
             subCategoryGrid.innerHTML = "";
             jewelrySubs.forEach((sub_category) => {
               const subButton = document.createElement('button');
