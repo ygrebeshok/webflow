@@ -121,6 +121,30 @@
      background: linear-gradient(30deg, #742eff, #2461fb, #ff1cf7);
    }
 
+   .sub-category-button {
+    display: flex;
+    color: #333;
+    font-family: Montserrat;
+    font-size: 0.8em;
+    font-weight: 400;
+    justify-content: center;
+    align-items: center;
+    border-radius: 6px;
+    border-width: 1px;
+    width: auto;
+    padding: 5 20px;
+  }
+
+  .sub-category-button:hover {
+    color: #ffffff;
+    background-color: #c4c3c3;
+   }
+
+   .sub-category-button:focus {
+     color: #ffffff;
+     background-color: #c4c3c3;
+   }
+
   .disablegrid {
     pointer-events: none;
     opacity: 0.5;
