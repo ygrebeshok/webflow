@@ -1135,8 +1135,16 @@ function handleBrandCheckboxChange(checkbox) {
 function handleCategoryChange(category, sub_category) {
   categoryFilter = category; // Update category filter
   subCategoryFilter = sub_category;
-  console.log(subCategoryFilter);
   filterCatalog();
+}
+
+function handleSubCategoryChange(subCategoryFilter) {
+  if (subCategoryFilter !== null) {
+    visibleCards = visibleCards.filter(card => {
+      const subCardCategory = card.querySelector("#sub-category").textContent;
+      return subCardCategory === subCategoryFilter;
+    });
+  }
 }
 
 function filterCatalog() {
@@ -1162,13 +1170,6 @@ function filterCatalog() {
     visibleCards = visibleCards.filter(card => {
       const cardCategory = card.querySelector("#category").textContent;
       return cardCategory === categoryFilter;
-    });
-  }
-
-  if (subCategoryFilter !== null) {
-    visibleCards = visibleCards.filter(card => {
-      const subCardCategory = card.querySelector("#sub-category").textContent;
-      return subCardCategory === subCategoryFilter;
     });
   }
 
