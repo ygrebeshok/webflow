@@ -1162,13 +1162,13 @@ function filterCatalog() {
       const cardCategory = card.querySelector("#category").textContent;
       return cardCategory === categoryFilter;
     });
-	  
-    if (subCategoryFilter !== null) {
-      visibleCards = visibleCards.filter(card => {
-        const subCardCategory = card.querySelector("#sub-category").textContent;
-        return subCardCategory === subCategoryFilter;
-      });
-    }
+  }
+
+  if (subCategoryFilter !== null) {
+    visibleCards = visibleCards.filter(card => {
+      const subCardCategory = card.querySelector("#sub-category").textContent;
+      return subCardCategory === subCategoryFilter;
+    });
   }
 
   visibleCards = visibleCards.filter(card => {
