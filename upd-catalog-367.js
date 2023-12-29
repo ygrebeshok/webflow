@@ -1138,15 +1138,6 @@ function handleCategoryChange(category, sub_category) {
   filterCatalog();
 }
 
-function handleSubCategoryChange(subCategoryFilter) {
-  if (subCategoryFilter !== null) {
-    visibleCards = visibleCards.filter(card => {
-      const subCardCategory = card.querySelector("#sub-category").textContent;
-      return subCardCategory === subCategoryFilter;
-    });
-  }
-}
-
 function filterCatalog() {
   const minPrice = 0;
   const maxPrice = parseInt(priceRange.value);
@@ -1170,6 +1161,13 @@ function filterCatalog() {
     visibleCards = visibleCards.filter(card => {
       const cardCategory = card.querySelector("#category").textContent;
       return cardCategory === categoryFilter;
+    });
+  }
+
+  if (subCategoryFilter !== null) {
+    visibleCards = visibleCards.filter(card => {
+      const cardSubCategory = card.querySelector("#sub_category").textContent;
+      return cardSubCategory === subCategoryFilter;
     });
   }
 
