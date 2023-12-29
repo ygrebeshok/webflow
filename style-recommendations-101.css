@@ -108,7 +108,7 @@
     align-items: center;
     border-radius: 6px;
     width: auto;
-    padding: 10px 20px;
+    padding: 8px 20px;
   }
 
   .category-button:hover {
@@ -132,7 +132,7 @@
     border-radius: 6px;
     border: 0.5px solid #c4c3c3;
     width: auto;
-    padding: 10px 20px;
+    padding: 8px 20px;
   }
 
   .sub-category-button:hover {
