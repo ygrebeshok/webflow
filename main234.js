@@ -369,6 +369,7 @@ const subCategoryButtons = document.querySelectorAll('.sub-category-button');
 // Add click event listener to each button
 subCategoryButtons.forEach((subButton) => {
   subButton.addEventListener('click', function() {
+    console.log('Button clicked:', subButton.textContent);
     handleSubCategoryChange(subButton.textContent);
   });
 });
