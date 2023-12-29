@@ -3,6 +3,9 @@
     return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
   }
 
+  const subCategoryGrid = document.getElementById("sub-category-grid");
+  subCategoryGrid.style.display = "none";
+
   function resetFilters() {
     brandFilters = [];
     const priceDisplay = document.getElementById("price-display");
@@ -19,6 +22,7 @@
 
     filterCatalog();
     resetCategories.classList.add('disablegrid');
+    subCategoryGrid.style.display = "none";
   }
 
   function holidays() {
@@ -147,7 +151,6 @@
 
   function categories() {
     const categoryGrid = document.getElementById("category-grid");
-    const subCategoryGrid = document.getElementById("sub-category-grid");
   
     const categories = ["Electronics and Gadgets", "Books and Stationery", "Clothing and Accessories", "Art", "DIY", "Beauty and Hair Products", "Jewelry and Watches", "Fitness and Wellness Items", "Experiences", "Kitchen Appliances", "Outdoor Gear", "Toys and Games", "Anime", "Food and Beverage", "Plants and Gardening", "Travel Accessories", "Home Decor", "Pets", "Gift Cards"];
     categories.forEach((category) => {
@@ -164,6 +167,8 @@
         if (selected_category !== category) {
           selected_category = category;
         }
+        subCategoryGrid.style.display = "grid";
+        
         switch(selected_category) {
           case "Electronics and Gadgets":
             const electronicsSubs = ["Vinyl", "Lovebox", "Camera", "Speaker", "Bird Feeder", "Home Device", "Instrument"];
@@ -414,7 +419,7 @@
             break;
         }
         resetCategories.classList.remove('disablegrid');
-        handleCategoryChange(selected_category);
+        handleCategoryChange(selected_category, null);
       });
 
       categoryGrid.appendChild(button);
