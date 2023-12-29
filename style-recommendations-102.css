@@ -194,6 +194,17 @@
     scroll-behavior: smooth;
   }
 
+  .sub-category-grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .subcategory-grid {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+    scroll-behavior: smooth;
+  }
+
   .holiday-card {
     ::-webkit-scrollbar {
       display: none;
@@ -235,8 +246,22 @@
       align-items: center;
       border-radius: 6px;
       width: auto;
-      padding: 2 15px;
-    }  
+      padding: 5px 15px;
+    }
+    
+    .sub-category-button {
+      display: flex;
+      color: #333;
+      font-family: Montserrat;
+      font-size: 0.7em;
+      font-weight: 400;
+      justify-content: center;
+      align-items: center;
+      border-radius: 6px;
+      width: auto;
+      border: 0.5px solid #333;
+      padding: 5px 15px;
+    }
   }
 
 
