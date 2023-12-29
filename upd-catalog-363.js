@@ -1132,8 +1132,9 @@ function handleBrandCheckboxChange(checkbox) {
   resetCategories.classList.remove('disablegrid');
 }
 
-function handleCategoryChange(category) {
+function handleCategoryChange(category, sub_category) {
   categoryFilter = category; // Update category filter
+  subCategoryFilter = sub_category;
   filterCatalog();
 }
 
@@ -1161,6 +1162,13 @@ function filterCatalog() {
       const cardCategory = card.querySelector("#category").textContent;
       return cardCategory === categoryFilter;
     });
+	  
+    if (subCategoryFilter !== null) {
+      visibleCards = visibleCards.filter(card => {
+        const subCardCategory = card.querySelector("#sub-category").textContent;
+        return subCardCategory === subCategoryFilter;
+      });
+    }
   }
 
   visibleCards = visibleCards.filter(card => {
@@ -1203,6 +1211,7 @@ function updateCatalog() {
       card.querySelector("#keywords").textContent = data.all_keywords,
       card.querySelector("#brand").textContent = data.brand,
       card.querySelector("#category").textContent = data.product_category,
+      card.querySelector("#sub-category").textContent = data.sub_category,
       card.querySelector("#age-category").textContent = data.age,
       card.querySelector("#subject-category").textContent = data.subject_category
 
