@@ -184,7 +184,7 @@
                 }
               });
               subCategoryGrid.appendChild(subButton);
-              handleCategoryChange(selected_sub_category);
+              handleCategoryChange(selected_category, selected_sub_category);
             });
             break;
           case "Books and Stationery":
@@ -206,7 +206,7 @@
                 }
               });
               subCategoryGrid.appendChild(subButton);
-              handleCategoryChange(selected_sub_category);
+              handleCategoryChange(selected_category, selected_sub_category);
             });
             break;
           case "Clothing and Accessories":
@@ -228,7 +228,7 @@
                 }
               });
               subCategoryGrid.appendChild(subButton);
-              handleCategoryChange(selected_sub_category);
+              handleCategoryChange(selected_category, selected_sub_category);
             });
             break;
           case "Art":
@@ -250,7 +250,7 @@
                 }
               });
               subCategoryGrid.appendChild(subButton);
-              handleCategoryChange(selected_sub_category);
+              handleCategoryChange(selected_category, selected_sub_category);
             });
             break;
           case "DIY":
@@ -272,7 +272,7 @@
                 }
               });
               subCategoryGrid.appendChild(subButton);
-              handleCategoryChange(selected_sub_category);
+              handleCategoryChange(selected_category, selected_sub_category);
             });
             break;
           case "Beauty and Hair Products":
@@ -294,7 +294,7 @@
                 }
               });
               subCategoryGrid.appendChild(subButton);
-              handleCategoryChange(selected_sub_category);
+              handleCategoryChange(selected_category, selected_sub_category);
             });
             break;
           case "Jewelry and Watches":
@@ -316,7 +316,7 @@
                 }
               });
               subCategoryGrid.appendChild(subButton);
-              handleCategoryChange(selected_sub_category);
+              handleCategoryChange(selected_category, selected_sub_category);
             });
             break;
           case "Fitness and Wellness Items":
@@ -338,7 +338,7 @@
                 }
               });
               subCategoryGrid.appendChild(subButton);
-              handleCategoryChange(selected_sub_category);
+              handleCategoryChange(selected_category, selected_sub_category);
             });
             break;
           case "Experiences":
@@ -360,7 +360,7 @@
                 }
               });
               subCategoryGrid.appendChild(subButton);
-              handleCategoryChange(selected_sub_category);
+              handleCategoryChange(selected_category, selected_sub_category);
             });
             break;
           case "Kitchen Appliances":
@@ -382,7 +382,7 @@
                 }
               });
               subCategoryGrid.appendChild(subButton);
-              handleCategoryChange(selected_sub_category);
+              handleCategoryChange(selected_category, selected_sub_category);
             });
             break;
           case "Outdoor Gear":
@@ -404,7 +404,7 @@
                 }
               });
               subCategoryGrid.appendChild(subButton);
-              handleCategoryChange(selected_sub_category);
+              handleCategoryChange(selected_category, selected_sub_category);
             });
             break;
           case "Toys and Games":
@@ -426,7 +426,7 @@
                 }
               });
               subCategoryGrid.appendChild(subButton);
-              handleCategoryChange(selected_sub_category);
+              handleCategoryChange(selected_category, selected_sub_category);
             });
             break;
           case "Anime":
@@ -448,7 +448,7 @@
                 }
               });
               subCategoryGrid.appendChild(subButton);
-              handleCategoryChange(selected_sub_category);
+              handleCategoryChange(selected_category, selected_sub_category);
             });
             break;
           case "Food and Beverage":
@@ -470,7 +470,7 @@
                 }
               });
               subCategoryGrid.appendChild(subButton);
-              handleCategoryChange(selected_sub_category);
+              handleCategoryChange(selected_category, selected_sub_category);
             });
             break;
           case "Plants and Gardening":
@@ -492,7 +492,7 @@
                 }
               });
               subCategoryGrid.appendChild(subButton);
-              handleCategoryChange(selected_sub_category);
+              handleCategoryChange(selected_category, selected_sub_category);
             });
             break;
           case "Travel Accessories":
@@ -514,7 +514,7 @@
                 }
               });
               subCategoryGrid.appendChild(subButton);
-              handleCategoryChange(selected_sub_category);
+              handleCategoryChange(selected_category, selected_sub_category);
             });
             break;
           case "Home Decor":
@@ -536,7 +536,7 @@
                 }
               });
               subCategoryGrid.appendChild(subButton);
-              handleCategoryChange(selected_sub_category);
+              handleCategoryChange(selected_category, selected_sub_category);
             });
             break;
           case "Pets":
@@ -558,7 +558,7 @@
                 }
               });
               subCategoryGrid.appendChild(subButton);
-              handleCategoryChange(selected_sub_category);
+              handleCategoryChange(selected_category, selected_sub_category);
             });
             break;
           case "Gift Cards":
@@ -580,12 +580,12 @@
                 }
               });
               subCategoryGrid.appendChild(subButton);
-              handleCategoryChange(selected_sub_category);
+              handleCategoryChange(selected_category, selected_sub_category);
             });
             break;
         }
         resetCategories.classList.remove('disablegrid');
-        handleCategoryChange(selected_category);
+        handleCategoryChange(selected_category, selected_sub_category);
       });
 
       categoryGrid.appendChild(button);
