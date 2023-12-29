@@ -10,6 +10,7 @@
     priceDisplay.textContent = '$0 - $3000';
     priceRangeInitialized = false;
     categoryFilter = null;
+    subCategoryFilter = null;
 
     const brandCheckboxes = document.querySelectorAll('.brand-checkbox');
     brandCheckboxes.forEach(checkbox => {
