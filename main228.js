@@ -166,6 +166,7 @@
         switch(selected_category) {
           case "Electronics and Gadgets":
             const electronicsSubs = ["Vinyl", "Lovebox", "Camera", "Speaker", "Bird Feeder", "Home Device", "Instrument"];
+            subCategoryGrid.innerHTML = "";
             electronicsSubs.forEach((sub_category) => {
               const subButton = document.createElement('button');
               subButton.textContent = sub_category;
@@ -186,6 +187,7 @@
             break;
           case "Books and Stationery":
             const booksSubs = ["Book", "Notebook", "Pen"];
+            subCategoryGrid.innerHTML = "";
             booksSubs.forEach((sub_category) => {
               const subButton = document.createElement('button');
               subButton.textContent = sub_category;
@@ -206,6 +208,7 @@
             break;
           case "Clothing and Accessories":
             const clothingSubs = ["Sleepers", "Socks", "Bag", "Hat", "Scarf", "Sweater", "T-shirt", "Watches", "Glasses", "For Babies", "Tiny Details"];
+            subCategoryGrid.innerHTML = "";
             clothingSubs.forEach((sub_category) => {
               const subButton = document.createElement('button');
               subButton.textContent = sub_category;
@@ -226,6 +229,7 @@
             break;
           case "Art":
             const artSubs = ["Painting", "Vase", "Statue"];
+            subCategoryGrid.innerHTML = "";
             artSubs.forEach((sub_category) => {
               const subButton = document.createElement('button');
               subButton.textContent = sub_category;
@@ -246,6 +250,7 @@
             break;
           case "DIY":
             const diySubs = ["DIY House", "DIY Candle", "DIY Pottery"];
+            subCategoryGrid.innerHTML = "";
             diySubs.forEach((sub_category) => {
               const subButton = document.createElement('button');
               subButton.textContent = sub_category;
@@ -266,6 +271,7 @@
             break;
           case "Beauty and Hair Products":
             const beautySubs = ["Skincare", "Body", "Relax", "Hair", "Soap"];
+            subCategoryGrid.innerHTML = "";
             beautySubs.forEach((sub_category) => {
               const subButton = document.createElement('button');
               subButton.textContent = sub_category;
@@ -286,6 +292,7 @@
             break;
           case "Jewelry and Watches":
             const jewelrySubs = ["Earrings", "Bracelet", "Necklace", "Cuffs", "Ring", "Stone"];
+            subCategoryGrid.innerHTML = "";
             jewelrySubs.forEach((sub_category) => {
               const subButton = document.createElement('button');
               subButton.textContent = sub_category;
@@ -306,6 +313,7 @@
             break;
           case "Fitness and Wellness Items":
             const fitnessSubs = ["Sport Tops", "Sport Bottoms", "Sport Socks", "Sport Towel"];
+            subCategoryGrid.innerHTML = "";
             fitnessSubs.forEach((sub_category) => {
               const subButton = document.createElement('button');
               subButton.textContent = sub_category;
@@ -326,6 +334,7 @@
             break;
           case "Experiences":
             const experiencesSubs = ["Spa Retreat", "Class"];
+            subCategoryGrid.innerHTML = "";
             experiencesSubs.forEach((sub_category) => {
               const subButton = document.createElement('button');
               subButton.textContent = sub_category;
@@ -346,6 +355,7 @@
             break;
           case "Kitchen Appliances":
             const kitchenSubs = ["Mugs and Cups", "Utensils", "Board", "Bowl", "Plate", "Pans and Pots", "Coffee", "Jar", "Stand", "Coaster", "Tray", "Apron", "Lunch Box"];
+            subCategoryGrid.innerHTML = "";
             kitchenSubs.forEach((sub_category) => {
               const subButton = document.createElement('button');
               subButton.textContent = sub_category;
@@ -366,6 +376,7 @@
             break;
           case "Outdoor Gear":
             const outdoorSubs = ["For Cars", "Backpack", "Tent", "Bottle"];
+            subCategoryGrid.innerHTML = "";
             outdoorSubs.forEach((sub_category) => {
               const subButton = document.createElement('button');
               subButton.textContent = sub_category;
@@ -386,6 +397,7 @@
             break;
           case "Toys and Games":
             const toysSubs = ["Lego", "Board Game", "Storage", "Baby Mobile", "Toy"];
+            subCategoryGrid.innerHTML = "";
             toysSubs.forEach((sub_category) => {
               const subButton = document.createElement('button');
               subButton.textContent = sub_category;
@@ -406,6 +418,7 @@
             break;
           case "Anime":
             const animeSubs = ["Toy", "Accessory", "Stationery", "Utensils", "Home Decor"];
+            subCategoryGrid.innerHTML = "";
             animeSubs.forEach((sub_category) => {
               const subButton = document.createElement('button');
               subButton.textContent = sub_category;
@@ -426,6 +439,7 @@
             break;
           case "Food and Beverage":
             const foodSubs = ["Chocolate", "Tea"];
+            subCategoryGrid.innerHTML = "";
             foodSubs.forEach((sub_category) => {
               const subButton = document.createElement('button');
               subButton.textContent = sub_category;
@@ -446,6 +460,7 @@
             break;
           case "Plants and Gardening":
             const plantsSubs = ["Plant", "Pot"];
+            subCategoryGrid.innerHTML = "";
             plantsSubs.forEach((sub_category) => {
               const subButton = document.createElement('button');
               subButton.textContent = sub_category;
@@ -466,6 +481,7 @@
             break;
           case "Travel Accessories":
             const travelSubs = ["Bag", "Pouch", "Pillow"];
+            subCategoryGrid.innerHTML = "";
             travelSubs.forEach((sub_category) => {
               const subButton = document.createElement('button');
               subButton.textContent = sub_category;
@@ -486,6 +502,7 @@
             break;
           case "Home Decor":
             const homeSubs = ["Candle", "Blanket", "Pillow", "Cushion", "Pouf", "Rug", "Table", "Diffuser", "Photo Box", "Lamp", "Vase", "Napkins", "Chairs and Sofas", "Storage", "Other Decor"];
+            subCategoryGrid.innerHTML = "";
             homeSubs.forEach((sub_category) => {
               const subButton = document.createElement('button');
               subButton.textContent = sub_category;
@@ -506,6 +523,7 @@
             break;
           case "Pets":
             const petsSubs = ["Bed", "Treats", "Toy", "Clothing", "Cover"];
+            subCategoryGrid.innerHTML = "";
             petsSubs.forEach((sub_category) => {
               const subButton = document.createElement('button');
               subButton.textContent = sub_category;
@@ -526,6 +544,7 @@
             break;
           case "Gift Cards":
             const cardsSubs = ["Electronics and Gadgets", "Books and Stationery", "Clothing and Accessories", "Art", "DIY", "Beauty and Hair Products", "Jewelry and Watches", "Fitness and Wellness Items", "Experiences", "Kitchen Appliances", "Outdoor Gear", "Toys and Games", "Anime", "Food and Beverage", "Plants and Gardening", "Travel Accessories", "Home Decor", "Pets", "Gift Cards"];
+            subCategoryGrid.innerHTML = "";
             cardsSubs.forEach((sub_category) => {
               const subButton = document.createElement('button');
               subButton.textContent = sub_category;
