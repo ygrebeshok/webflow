@@ -172,6 +172,9 @@
               const subButton = document.createElement('button');
               subButton.textContent = sub_category;
               subButton.className = 'sub-category-button';
+              subButton.addEventListener('click', function () {
+                handleCategoryChange(selected_category, sub_category);
+              });
               subCategoryGrid.appendChild(subButton);
             });
             break;
@@ -182,6 +185,9 @@
               const subButton = document.createElement('button');
               subButton.textContent = sub_category;
               subButton.className = 'sub-category-button';
+              subButton.addEventListener('click', function () {
+                handleCategoryChange(selected_category, sub_category);
+              });
               subCategoryGrid.appendChild(subButton);
             });
             break;
@@ -192,6 +198,9 @@
               const subButton = document.createElement('button');
               subButton.textContent = sub_category;
               subButton.className = 'sub-category-button';
+              subButton.addEventListener('click', function () {
+                handleCategoryChange(selected_category, sub_category);
+              });
               subCategoryGrid.appendChild(subButton);
             });
             break;
@@ -202,6 +211,9 @@
               const subButton = document.createElement('button');
               subButton.textContent = sub_category;
               subButton.className = 'sub-category-button';
+              subButton.addEventListener('click', function () {
+                handleCategoryChange(selected_category, sub_category);
+              });
               subCategoryGrid.appendChild(subButton);
             });
             break;
@@ -212,6 +224,9 @@
               const subButton = document.createElement('button');
               subButton.textContent = sub_category;
               subButton.className = 'sub-category-button';
+              subButton.addEventListener('click', function () {
+                handleCategoryChange(selected_category, sub_category);
+              });
               subCategoryGrid.appendChild(subButton);
             });
             break;
@@ -222,6 +237,9 @@
               const subButton = document.createElement('button');
               subButton.textContent = sub_category;
               subButton.className = 'sub-category-button';
+              subButton.addEventListener('click', function () {
+                handleCategoryChange(selected_category, sub_category);
+              });
               subCategoryGrid.appendChild(subButton);
             });
             break;
@@ -232,6 +250,9 @@
               const subButton = document.createElement('button');
               subButton.textContent = sub_category;
               subButton.className = 'sub-category-button';
+              subButton.addEventListener('click', function () {
+                handleCategoryChange(selected_category, sub_category);
+              });
               subCategoryGrid.appendChild(subButton);
             });
             break;
@@ -242,6 +263,9 @@
               const subButton = document.createElement('button');
               subButton.textContent = sub_category;
               subButton.className = 'sub-category-button';
+              subButton.addEventListener('click', function () {
+                handleCategoryChange(selected_category, sub_category);
+              });
               subCategoryGrid.appendChild(subButton);
             });
             break;
@@ -252,6 +276,9 @@
               const subButton = document.createElement('button');
               subButton.textContent = sub_category;
               subButton.className = 'sub-category-button';
+              subButton.addEventListener('click', function () {
+                handleCategoryChange(selected_category, sub_category);
+              });
               subCategoryGrid.appendChild(subButton);
             });
             break;
@@ -262,6 +289,9 @@
               const subButton = document.createElement('button');
               subButton.textContent = sub_category;
               subButton.className = 'sub-category-button';
+              subButton.addEventListener('click', function () {
+                handleCategoryChange(selected_category, sub_category);
+              });
               subCategoryGrid.appendChild(subButton);
             });
             break;
@@ -272,6 +302,9 @@
               const subButton = document.createElement('button');
               subButton.textContent = sub_category;
               subButton.className = 'sub-category-button';
+              subButton.addEventListener('click', function () {
+                handleCategoryChange(selected_category, sub_category);
+              });
               subCategoryGrid.appendChild(subButton);
             });
             break;
@@ -282,6 +315,9 @@
               const subButton = document.createElement('button');
               subButton.textContent = sub_category;
               subButton.className = 'sub-category-button';
+              subButton.addEventListener('click', function () {
+                handleCategoryChange(selected_category, sub_category);
+              });
               subCategoryGrid.appendChild(subButton);
             });
             break;
@@ -292,6 +328,9 @@
               const subButton = document.createElement('button');
               subButton.textContent = sub_category;
               subButton.className = 'sub-category-button';
+              subButton.addEventListener('click', function () {
+                handleCategoryChange(selected_category, sub_category);
+              });
               subCategoryGrid.appendChild(subButton);
             });
             break;
@@ -302,6 +341,9 @@
               const subButton = document.createElement('button');
               subButton.textContent = sub_category;
               subButton.className = 'sub-category-button';
+              subButton.addEventListener('click', function () {
+                handleCategoryChange(selected_category, sub_category);
+              });
               subCategoryGrid.appendChild(subButton);
             });
             break;
@@ -312,6 +354,9 @@
               const subButton = document.createElement('button');
               subButton.textContent = sub_category;
               subButton.className = 'sub-category-button';
+              subButton.addEventListener('click', function () {
+                handleCategoryChange(selected_category, sub_category);
+              });
               subCategoryGrid.appendChild(subButton);
             });
             break;
@@ -322,6 +367,9 @@
               const subButton = document.createElement('button');
               subButton.textContent = sub_category;
               subButton.className = 'sub-category-button';
+              subButton.addEventListener('click', function () {
+                handleCategoryChange(selected_category, sub_category);
+              });
               subCategoryGrid.appendChild(subButton);
             });
             break;
@@ -332,6 +380,9 @@
               const subButton = document.createElement('button');
               subButton.textContent = sub_category;
               subButton.className = 'sub-category-button';
+              subButton.addEventListener('click', function () {
+                handleCategoryChange(selected_category, sub_category);
+              });
               subCategoryGrid.appendChild(subButton);
             });
             break;
@@ -342,6 +393,9 @@
               const subButton = document.createElement('button');
               subButton.textContent = sub_category;
               subButton.className = 'sub-category-button';
+              subButton.addEventListener('click', function () {
+                handleCategoryChange(selected_category, sub_category);
+              });
               subCategoryGrid.appendChild(subButton);
             });
             break;
@@ -352,27 +406,20 @@
               const subButton = document.createElement('button');
               subButton.textContent = sub_category;
               subButton.className = 'sub-category-button';
+              subButton.addEventListener('click', function () {
+                handleCategoryChange(selected_category, sub_category);
+              });
               subCategoryGrid.appendChild(subButton);
             });
             break;
         }
         resetCategories.classList.remove('disablegrid');
-        handleCategoryChange(selected_category, selected_sub_category);
+        handleCategoryChange(selected_category);
       });
 
       categoryGrid.appendChild(button);
     });
   }
-
-const subCategoryButtons = document.querySelectorAll('.sub-category-button');
-
-// Add click event listener to each button
-subCategoryButtons.forEach((subButton) => {
-  subButton.addEventListener('click', function() {
-    console.log('Button clicked:', subButton.textContent);
-    handleSubCategoryChange(subButton.textContent);
-  });
-});
 
 
 const angry = document.getElementById("angry");
