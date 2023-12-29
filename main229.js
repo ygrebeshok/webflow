@@ -183,6 +183,7 @@
                 }
               });
               subCategoryGrid.appendChild(subButton);
+              handleCategoryChange(selected_sub_category);
             });
             break;
           case "Books and Stationery":
@@ -204,6 +205,7 @@
                 }
               });
               subCategoryGrid.appendChild(subButton);
+              handleCategoryChange(selected_sub_category);
             });
             break;
           case "Clothing and Accessories":
@@ -225,6 +227,7 @@
                 }
               });
               subCategoryGrid.appendChild(subButton);
+              handleCategoryChange(selected_sub_category);
             });
             break;
           case "Art":
@@ -246,6 +249,7 @@
                 }
               });
               subCategoryGrid.appendChild(subButton);
+              handleCategoryChange(selected_sub_category);
             });
             break;
           case "DIY":
@@ -267,6 +271,7 @@
                 }
               });
               subCategoryGrid.appendChild(subButton);
+              handleCategoryChange(selected_sub_category);
             });
             break;
           case "Beauty and Hair Products":
@@ -288,6 +293,7 @@
                 }
               });
               subCategoryGrid.appendChild(subButton);
+              handleCategoryChange(selected_sub_category);
             });
             break;
           case "Jewelry and Watches":
@@ -309,6 +315,7 @@
                 }
               });
               subCategoryGrid.appendChild(subButton);
+              handleCategoryChange(selected_sub_category);
             });
             break;
           case "Fitness and Wellness Items":
@@ -330,6 +337,7 @@
                 }
               });
               subCategoryGrid.appendChild(subButton);
+              handleCategoryChange(selected_sub_category);
             });
             break;
           case "Experiences":
@@ -351,6 +359,7 @@
                 }
               });
               subCategoryGrid.appendChild(subButton);
+              handleCategoryChange(selected_sub_category);
             });
             break;
           case "Kitchen Appliances":
@@ -372,6 +381,7 @@
                 }
               });
               subCategoryGrid.appendChild(subButton);
+              handleCategoryChange(selected_sub_category);
             });
             break;
           case "Outdoor Gear":
@@ -393,6 +403,7 @@
                 }
               });
               subCategoryGrid.appendChild(subButton);
+              handleCategoryChange(selected_sub_category);
             });
             break;
           case "Toys and Games":
@@ -414,6 +425,7 @@
                 }
               });
               subCategoryGrid.appendChild(subButton);
+              handleCategoryChange(selected_sub_category);
             });
             break;
           case "Anime":
@@ -435,6 +447,7 @@
                 }
               });
               subCategoryGrid.appendChild(subButton);
+              handleCategoryChange(selected_sub_category);
             });
             break;
           case "Food and Beverage":
@@ -456,6 +469,7 @@
                 }
               });
               subCategoryGrid.appendChild(subButton);
+              handleCategoryChange(selected_sub_category);
             });
             break;
           case "Plants and Gardening":
@@ -477,6 +491,7 @@
                 }
               });
               subCategoryGrid.appendChild(subButton);
+              handleCategoryChange(selected_sub_category);
             });
             break;
           case "Travel Accessories":
@@ -498,6 +513,7 @@
                 }
               });
               subCategoryGrid.appendChild(subButton);
+              handleCategoryChange(selected_sub_category);
             });
             break;
           case "Home Decor":
@@ -519,6 +535,7 @@
                 }
               });
               subCategoryGrid.appendChild(subButton);
+              handleCategoryChange(selected_sub_category);
             });
             break;
           case "Pets":
@@ -540,10 +557,11 @@
                 }
               });
               subCategoryGrid.appendChild(subButton);
+              handleCategoryChange(selected_sub_category);
             });
             break;
           case "Gift Cards":
-            const cardsSubs = ["Electronics and Gadgets", "Books and Stationery", "Clothing and Accessories", "Art", "DIY", "Beauty and Hair Products", "Jewelry and Watches", "Fitness and Wellness Items", "Experiences", "Kitchen Appliances", "Outdoor Gear", "Toys and Games", "Anime", "Food and Beverage", "Plants and Gardening", "Travel Accessories", "Home Decor", "Pets", "Gift Cards"];
+            const cardsSubs = ["Electronics and Gadgets", "Books and Stationery", "Clothing and Accessories", "Art", "DIY", "Beauty and Hair Products", "Jewelry and Watches", "Fitness and Wellness Items", "Experiences", "Kitchen Appliances", "Outdoor Gear", "Toys and Games", "Anime", "Food and Beverage", "Plants and Gardening", "Travel Accessories", "Home Decor", "Pets"];
             subCategoryGrid.innerHTML = "";
             cardsSubs.forEach((sub_category) => {
               const subButton = document.createElement('button');
@@ -561,6 +579,7 @@
                 }
               });
               subCategoryGrid.appendChild(subButton);
+              handleCategoryChange(selected_sub_category);
             });
             break;
         }
