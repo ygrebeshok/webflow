@@ -59,7 +59,7 @@ document.querySelectorAll(".remove-collection-products-btn").forEach(btn => {
   btn.style.display = "none";
 });
 
-subscriptionBtn.addEventListener("click", () => {
+subscriptionBtn.addEventListener('click', async (event) => {
   const functionRef = firebase
   .app()
   .functions('us-central1')
