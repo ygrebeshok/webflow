@@ -39,7 +39,6 @@ const popupCloseCart = document.getElementById("popup-close-cart");
 const addToCartLabel = document.getElementById("add-to-cart-label");
 const showProfileAddToCartBtn = document.getElementById("show-profile-add-to-cart-btn");
 const showProfileAddToCartLabel = document.getElementById("show-profile-add-to-cart-label");
-const subscriptionBtn = document.getElementById("subscription-btn");
 
 var bodyAuth = document.body.getAttribute('data-user-auth');
 var bodyUnauth = document.body.getAttribute('data-user-unauth');
@@ -59,40 +58,6 @@ document.querySelectorAll(".remove-collection-products-btn").forEach(btn => {
   btn.style.display = "none";
 });
 
-subscriptionBtn.addEventListener('click', async (event) => {
-  firebase.auth().onAuthStateChanged(async function(authUser) {
-    user = authUser;
-    if (user) {
-      const userId = user.uid;
-      const customerDoc = await firebase
-      .firestore()
-      .collection('customers')
-      .doc(userId)
-      .get();
-
-      const stripeId = customerDoc.data().stripeId;
-      console.log(stripeId);
-      const returnURL = "https://www.smappyai.com/user";
-
-      fetch("https://api.stripe.com/v1/billing_portal/sessions", {
-        method: "POST",
-        headers: {
-          "Authorization": `Basic ${btoa(stripeSecretKey + ":")}`,
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: `customer=${stripeId}&return_url=${encodeURIComponent(returnURL)}`,
-      })
-      .then(response => response.json())
-      .then(data => {
-        window.location.assign(data.url);  // Redirect to the Billing Portal session URL
-      })
-      .catch(error => {
-        // Handle errors
-        console.error(error);
-      });
-    }
-  });
-});
 
 editProfileDivBtn.addEventListener("click", () => {
   if (editProfileDivBtn.textContent === "Edit List") {
