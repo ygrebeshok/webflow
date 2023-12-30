@@ -197,7 +197,7 @@
             });
             break;
           case "Clothing and Accessories":
-            const clothingSubs = ["Slippers", "Socks", "Bag", "Hat", "Scarf", "Sweater", "T-shirt", "Watches", "Glasses", "For Babies", "Tiny Details"];
+            const clothingSubs = ["Slippers", "Socks", "Bag", "Hat", "Scarf", "Sweater", "T-shirt", "Glasses", "For Babies", "Tiny Details"];
             subCategoryGrid.innerHTML = "";
             clothingSubs.forEach((sub_category) => {
               const subButton = document.createElement('button');
