@@ -1554,7 +1554,7 @@ function holidaySelections() {
       holidayCard.addEventListener('mouseenter', () => {
         holidayCard.querySelector("#holiday-selection-image").animate([
           { transform: 'scale(1)' },
-          { transform: 'scale(1.05)' }
+          { transform: 'scale(1.1)' }
         ], {
           duration: 200,
           fill: 'forwards'
@@ -1563,7 +1563,7 @@ function holidaySelections() {
 
       holidayCard.addEventListener('mouseleave', () => {
         holidayCard.querySelector("#holiday-selection-image").animate([
-          { transform: 'scale(1.05)' },
+          { transform: 'scale(1.1)' },
           { transform: 'scale(1)' }
         ], {
           duration: 200,
