@@ -60,15 +60,37 @@ document.querySelectorAll(".remove-collection-products-btn").forEach(btn => {
 });
 
 subscriptionBtn.addEventListener('click', async (event) => {
-  const functionRef = firebase
-  .app()
-  .functions('us-central1')
-  .httpsCallable('ext-firestore-stripe-payments-createPortalLink');
-  const { data } = await functionRef({
-    returnUrl: "https://www.smappyai.com/user",
-    locale: "auto", // Optional, defaults to "auto"
+  firebase.auth().onAuthStateChanged(function(authUser) {
+    user = authUser;
+    if (user) {
+      const userId = user.uid;
+      const customerDoc = await firebase
+      .firestore()
+      .collection('customers')
+      .doc(userId)
+      .get();
+
+      const stripeId = customerDoc.data().stripeId;
+      const returnURL = "https://www.smappyai.com/user";
+
+      fetch("https://api.stripe.com/v1/billing_portal/sessions", {
+        method: "POST",
+        headers: {
+          "Authorization": `Basic ${btoa(stripeSecretKey + ":")}`,
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: `customer=${stripeId}&return_url=${encodeURIComponent(returnURL)}`,
+      })
+      .then(response => response.json())
+      .then(data => {
+        window.location.assign(data.url);  // Redirect to the Billing Portal session URL
+      })
+      .catch(error => {
+        // Handle errors
+        console.error(error);
+      });
+    }
   });
-  window.location.assign(data.url);
 });
 
 editProfileDivBtn.addEventListener("click", () => {
