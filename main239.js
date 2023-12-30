@@ -379,7 +379,7 @@
             });
             break;
           case "Home Decor":
-            const homeSubs = ["Candle", "Blanket", "Pillow", "Cushion", "Pouf", "Rug", "Table", "Diffuser", "Photo Box", "Lamp", "Vase", "Napkins", "Chairs and Sofas", "Storage", "Other Decor"];
+            const homeSubs = ["Candle", "Blanket", "Pillow", "Cushion", "Pouf", "Rug", "Table", "Diffuser", "Lamp", "Vase", "Napkins", "Chairs and Sofas", "Storage", "Other Decor"];
             subCategoryGrid.innerHTML = "";
             homeSubs.forEach((sub_category) => {
               const subButton = document.createElement('button');
