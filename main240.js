@@ -770,9 +770,10 @@ async function recommend() {
 
              // Formating the set of card's keywords
              let cardKeywords = card.querySelector("#keywords").textContent.toLowerCase().split(",").flatMap(keyword => keyword.trim());
+             const subCategory = card.querySelector("#sub-category").textContent.toLowerCase();
              cardKeywords = cardKeywords.map(str => str.replace(/^\s+|\s+$/g, '').replace(/[,.\'"*•-]+/g, ''));
              cardKeywords = cardKeywords.filter(keyword => keyword !== "");
-             const cardKeywordsSet = new Set(cardKeywords);
+             const cardKeywordsSet = new Set([...cardKeywords, ...subCategory]);
 
              let cardDescription = card.querySelector("#description").textContent;
              let cardBrand = card.querySelector("#brand").textContent;
