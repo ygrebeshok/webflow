@@ -60,7 +60,7 @@ document.querySelectorAll(".remove-collection-products-btn").forEach(btn => {
 });
 
 subscriptionBtn.addEventListener('click', async (event) => {
-  firebase.auth().onAuthStateChanged(function(authUser) {
+  firebase.auth().onAuthStateChanged(async function(authUser) {
     user = authUser;
     if (user) {
       const userId = user.uid;
