@@ -340,7 +340,7 @@
             });
             break;
           case "Food and Beverage":
-            const foodSubs = ["Chocolate", "Tea"];
+            const foodSubs = ["Chocolate", "Tea", "Accessory"];
             subCategoryGrid.innerHTML = "";
             foodSubs.forEach((sub_category) => {
               const subButton = document.createElement('button');
