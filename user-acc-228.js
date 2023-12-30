@@ -39,6 +39,7 @@ const popupCloseCart = document.getElementById("popup-close-cart");
 const addToCartLabel = document.getElementById("add-to-cart-label");
 const showProfileAddToCartBtn = document.getElementById("show-profile-add-to-cart-btn");
 const showProfileAddToCartLabel = document.getElementById("show-profile-add-to-cart-label");
+const subscriptionBtn = document.getElementById("subscription-btn");
 
 var bodyAuth = document.body.getAttribute('data-user-auth');
 var bodyUnauth = document.body.getAttribute('data-user-unauth');
@@ -56,6 +57,18 @@ document.querySelectorAll(".remove-profile-div-btn").forEach(btn => {
 
 document.querySelectorAll(".remove-collection-products-btn").forEach(btn => {
   btn.style.display = "none";
+});
+
+subscriptionBtn.addEventListener("click", () => {
+  const functionRef = firebase
+  .app()
+  .functions('us-central1')
+  .httpsCallable('ext-firestore-stripe-payments-createPortalLink');
+  const { data } = await functionRef({
+    returnUrl: "https://www.smappyai.com/user",
+    locale: "auto", // Optional, defaults to "auto"
+  });
+  window.location.assign(data.url);
 });
 
 editProfileDivBtn.addEventListener("click", () => {
