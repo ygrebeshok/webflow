@@ -71,6 +71,7 @@ subscriptionBtn.addEventListener('click', async (event) => {
       .get();
 
       const stripeId = customerDoc.data().stripeId;
+      console.log(stripeId);
       const returnURL = "https://www.smappyai.com/user";
 
       fetch("https://api.stripe.com/v1/billing_portal/sessions", {
