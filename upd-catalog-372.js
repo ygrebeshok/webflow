@@ -1114,7 +1114,6 @@ popupClose.addEventListener("click", () => {
 let brandFilters = [];
 let priceRange;
 let priceRangeInitialized = false;
-let categoryFilter = null;
 let allCards = [];
 
 function handleBrandCheckboxChange(checkbox) {
