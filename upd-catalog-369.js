@@ -1552,7 +1552,7 @@ function holidaySelections() {
       holidaySelectionsGrid.appendChild(holidayCard);
 
       holidayCard.addEventListener('mouseenter', () => {
-        holidayCard.animate([
+        holidayCard.querySelector("#holiday-selection-image").animate([
           { transform: 'scale(1)' },
           { transform: 'scale(1.05)' }
         ], {
@@ -1562,7 +1562,7 @@ function holidaySelections() {
       });
 
       holidayCard.addEventListener('mouseleave', () => {
-        holidayCard.animate([
+        holidayCard.querySelector("#holiday-selection-image").animate([
           { transform: 'scale(1.05)' },
           { transform: 'scale(1)' }
         ], {
